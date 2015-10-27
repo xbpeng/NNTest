@@ -3,9 +3,10 @@
 #include <string>
 #include "util/MathUtil.h"
 #include "scenarios/ScenarioSimChar.h"
-#include "learning/ExpTuple.h"
 #include "render/TextureDesc.h"
 #include "render/camera.h"
+#include "learning/ExpTuple.h"
+#include "learning/QNetTrainer.h"
 
 class cScenarioArmRL : public cScenarioSimChar
 {
@@ -32,12 +33,15 @@ public:
 	virtual void DrawTarget() const;
 
 	virtual const std::unique_ptr<cTextureDesc>& GetViewRT() const;
+	virtual const std::shared_ptr<cSimCharacter>& GetCoach() const;
 
 	virtual void SaveNet(const std::string& out_file) const;
 	virtual std::string GetName() const;
 	
 protected:
 	bool mEnableTraining;
+
+	std::shared_ptr<cSimCharacter> mCoach;
 
 	int mIter;
 	std::string mSolverFile;
@@ -53,12 +57,16 @@ protected:
 	cCamera mRTCam;
 	std::unique_ptr<cTextureDesc> mRenderTarget;
 	
+	virtual void BuildWorld();
 	virtual bool BuildController(std::shared_ptr<cCharController>& out_ctrl);
+	virtual bool BuildCoachController(std::shared_ptr<cCharController>& out_ctrl);
 	virtual void BuildGround();
 
 	virtual void CreateCharacter(std::shared_ptr<cSimCharacter>& out_char) const;
 	virtual void InitCharacterPos(std::shared_ptr<cSimCharacter>& out_char) const;
+	virtual void BuildCoach();
 
+	virtual void UpdateCoach(double time_step);
 	virtual void UpdateGround();
 	virtual void ResetGround();
 	virtual void SetCtrlTargetPos(const tVector& target);

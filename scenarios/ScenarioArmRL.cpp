@@ -1,6 +1,7 @@
 #include "ScenarioArmRL.h"
 #include "stuff/SimArm.h"
 #include "stuff/ArmQPController.h"
+#include "stuff/ArmNNController.h"
 #include "render/DrawUtil.h"
 #include "render/DrawSimCharacter.h"
 
@@ -12,6 +13,9 @@ const tVector gLineColor = tVector(0, 0, 0, 1);
 const tVector gFillTint = tVector(1, 1, 1, 1);
 const double gTorqueLim = 400;
 const double gCtrlUpdatePeriod = 1 / 60.0;
+
+const double gLinearDamping = 0;
+const double gAngularDamping = 0;
 
 cScenarioArmRL::cScenarioArmRL()
 {
@@ -27,7 +31,8 @@ cScenarioArmRL::~cScenarioArmRL()
 void cScenarioArmRL::Init()
 {
 	cScenarioSimChar::Init();
-	
+	BuildCoach();
+
 	mCurrTuple = tExpTuple(GetStateSize(), GetActionSize());
 	InitTupleBuffer();
 	InitTrainer();
@@ -49,12 +54,14 @@ void cScenarioArmRL::Reset()
 {
 	cScenarioSimChar::Reset();
 	mNumTuples = 0;
+	mCoach->Reset();
 }
 
 void cScenarioArmRL::Clear()
 {
 	cScenarioSimChar::Clear();
 	mRenderTarget.reset();
+	mCoach->Clear();
 }
 
 void cScenarioArmRL::Update(double time_elapsed)
@@ -110,6 +117,11 @@ const std::unique_ptr<cTextureDesc>& cScenarioArmRL::GetViewRT() const
 	return mRenderTarget;
 }
 
+const std::shared_ptr<cSimCharacter>& cScenarioArmRL::GetCoach() const
+{
+	return mCoach;
+}
+
 void cScenarioArmRL::SaveNet(const std::string& out_file) const
 {
 	//const cBallController& ctrl = mBall.GetController();
@@ -121,11 +133,44 @@ std::string cScenarioArmRL::GetName() const
 	return "Arm RL";
 }
 
+void cScenarioArmRL::BuildWorld()
+{
+	cScenarioSimChar::BuildWorld();
+	mWorld->SetLinearDamping(gLinearDamping);
+	mWorld->SetAngularDamping(gAngularDamping);
+}
+
 bool cScenarioArmRL::BuildController(std::shared_ptr<cCharController>& out_ctrl)
 {
 	bool succ = true;
+	std::shared_ptr<cArmNNController> ctrl = std::shared_ptr<cArmNNController>(new cArmNNController());
+	ctrl->Init(mChar.get());
+	ctrl->SetTorqueLimit(gTorqueLim);
+	ctrl->SetUpdatePeriod(gCtrlUpdatePeriod);
+
+	if (succ && mNetFile != "")
+	{
+		succ &= ctrl->LoadNet(mNetFile);
+
+		if (succ && mModelFile != "")
+		{
+			ctrl->LoadModel(mModelFile);
+		}
+	}
+	
+	if (succ)
+	{
+		out_ctrl = ctrl;
+	}
+	
+	return succ;
+}
+
+bool cScenarioArmRL::BuildCoachController(std::shared_ptr<cCharController>& out_ctrl)
+{
+	bool succ = true;
 	std::shared_ptr<cArmQPController> ctrl = std::shared_ptr<cArmQPController>(new cArmQPController());
-	ctrl->Init(mChar.get(), gGravity);
+	ctrl->Init(mCoach.get(), gGravity);
 	ctrl->SetTorqueLimit(gTorqueLim);
 	ctrl->SetUpdatePeriod(gCtrlUpdatePeriod);
 	out_ctrl = ctrl;
@@ -146,6 +191,36 @@ void cScenarioArmRL::InitCharacterPos(std::shared_ptr<cSimCharacter>& out_char) 
 {
 }
 
+void cScenarioArmRL::BuildCoach()
+{
+	CreateCharacter(mCoach);
+
+	cSimCharacter::tParams char_params;
+	char_params.mPos = GetDefaultCharPos();
+	char_params.mCharFile = mCharacterFile;
+	char_params.mStateFile = mCharStateFile;
+	char_params.mPlaneCons = GetCharPlaneCons();
+
+	bool succ = mCoach->Init(mWorld, char_params);
+	if (succ)
+	{
+		mCoach->RegisterContacts(cWorld::eContactFlagCharacter, cWorld::eContactFlagEnvironment);
+		InitCharacterPos(mCoach);
+
+		std::shared_ptr<cCharController> ctrl;
+		succ = BuildCoachController(ctrl);
+		if (succ)
+		{
+			mCoach->SetController(ctrl);
+		}
+	}
+}
+
+void cScenarioArmRL::UpdateCoach(double time_step)
+{
+	mCoach->Update(time_step);
+}
+
 void cScenarioArmRL::UpdateGround()
 {
 }
@@ -156,7 +231,7 @@ void cScenarioArmRL::ResetGround()
 
 void cScenarioArmRL::SetCtrlTargetPos(const tVector& target)
 {
-	std::shared_ptr<cArmQPController> ctrl = std::static_pointer_cast<cArmQPController>(mChar->GetController());
+	std::shared_ptr<cArmQPController> ctrl = std::static_pointer_cast<cArmQPController>(mCoach->GetController());
 	ctrl->SetTargetPos(target);
 }
 
@@ -204,6 +279,7 @@ void cScenarioArmRL::UpdateCharacter(double time_step)
 		UpdateViewBuffer();
 	}
 	
+	UpdateCoach(time_step);
 	cScenarioSimChar::UpdateCharacter(time_step);
 }
 

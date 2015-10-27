@@ -2,6 +2,8 @@
 #include "render/DrawUtil.h"
 #include "render/DrawSimCharacter.h"
 
+const tVector gLineColor = tVector(0, 0, 0, 1);
+const tVector gCoachFillTint = tVector(0, 0, 0, 0);
 const tVector gCamPos0 = tVector(0, 0, 1, 0);
 
 cDrawScenarioArmRL::cDrawScenarioArmRL(cCamera& cam)
@@ -66,13 +68,19 @@ void cDrawScenarioArmRL::Reset()
 void cDrawScenarioArmRL::DrawScene()
 {
 	DrawGrid();
-	DrawCharacter();
 	DrawTarget();
+	DrawCharacter();
 	DrawViewRT();
 }
 
 void cDrawScenarioArmRL::DrawCharacter()
 {
+	glPushMatrix();
+	const auto& coach = mScene->GetCoach();
+	cDrawUtil::Translate(tVector(0, 0, -0.05, 0));
+	cDrawSimCharacter::Draw(*(coach.get()), gCoachFillTint, gLineColor);
+	glPopMatrix();
+
 	mScene->DrawCharacter();
 }
 
