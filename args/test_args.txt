@@ -1,0 +1,32 @@
+-scenario= arm_rl
+-solver_file= data/balL_rl/balL_rl_solver.prototxt
+-net_file= data/balL_rl/balL_rl_test.prototxt
+//-model_file= data/ball_rl/ball_rl_model_noise.h5
+-character_file= data/arm_rl/arm.txt
+
+-epsilon_greedy_rate= 0.2
+
+-output_net_file= output/ball_rl_model.h5
+
+-ground_height= 0
+
+//-ctrl_noise= 0
+
+//-ground_min_spacing= 0.2
+//-ground_max_spacing= 2.0
+//-ground_min_box_size= 0.3
+//-ground_max_box_size= 2.0
+//-ground_num_boxes= 16
+//-ground_spacing_prob1= 0
+
+-ctrl_noise= 0.1
+
+-ground_min_spacing= 0.1
+-ground_max_spacing= 0.25
+-ground_min_box_size= 0.1
+-ground_max_box_size= 0.5
+-ground_num_boxes= 256
+
+-ground_spacing_prob1= 0.2
+-ground_min_spacing1= 0.75
+-ground_max_spacing1= 1.25

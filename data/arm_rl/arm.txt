@@ -1,0 +1,127 @@
+{
+	"Skeleton": 
+	{
+		"Joints": 
+		[
+			{
+				"Name": "root",
+				"Type": 2,
+				"Parent": -1,
+				"AttachX": 0,
+				"AttachY": 0,
+				"AttachZ": 0,		
+				"LinkStiffness": 1,
+				"LimLow": 1,
+				"LimHigh": 0
+			},
+			{
+				"Name": "link0",
+				"Type": 0,
+				"Parent": 0,
+				"AttachX": 0,
+				"AttachY": 0,
+				"AttachZ": 0,		
+				"LinkStiffness": 1,
+				"LimLow": 1,
+				"LimHigh": 0
+			},
+			{
+				"Name": "link1",
+				"Type": 0,
+				"Parent": 1,
+				"AttachX": 0.5,
+				"AttachY": 0,
+				"AttachZ": 0,		
+				"LinkStiffness": 1,
+				"LimLow": 1,
+				"LimHigh": 0
+			},
+			{
+				"Name": "link2",
+				"Type": 0,
+				"Parent": 2,
+				"AttachX": 0.5,
+				"AttachY": 0,
+				"AttachZ": 0,		
+				"LinkStiffness": 1,
+				"LimLow": 1,
+				"LimHigh": 0
+			},
+			{
+				"Name": "end",
+				"Type": 0,
+				"Parent": 3,
+				"AttachX": 0.5,
+				"AttachY": 0,
+				"AttachZ": 0,		
+				"LinkStiffness": 1,
+				"LimLow": 1,
+				"LimHigh": 0
+			}
+		]
+	},
+
+	"BodyDefs": 
+	[
+			{
+				"Name": "root",
+				"Shape": "box",
+				"Mass": 5.0,
+				"AttachX": 0,
+				"AttachY": 0,
+				"AttachZ": 0,
+				"Theta": 0,
+				"Param0": 0.2,
+				"Param1": 0.2,
+				"Param2": 0.14
+			},
+			{
+				"Name": "link0",
+				"Shape": "box",
+				"Mass": 5.0,
+				"AttachX": 0.25,
+				"AttachY": 0,
+				"AttachZ": 0,
+				"Theta": 0,
+				"Param0": 0.55,
+				"Param1": 0.1,
+				"Param2": 0.13
+			},
+			{
+				"Name": "link1",
+				"Shape": "box",
+				"Mass": 5.0,
+				"AttachX": 0.25,
+				"AttachY": 0,
+				"AttachZ": 0,
+				"Theta": 0,
+				"Param0": 0.55,
+				"Param1": 0.08,
+				"Param2": 0.12
+			},
+			{
+				"Name": "link2",
+				"Shape": "box",
+				"Mass": 5.0,
+				"AttachX": 0.25,
+				"AttachY": 0,
+				"AttachZ": 0,
+				"Theta": 0,
+				"Param0": 0.55,
+				"Param1": 0.06,
+				"Param2": 0.11
+			},
+			{
+				"Name": "end",
+				"Shape": "box",
+				"Mass": 2.0,
+				"AttachX": 0,
+				"AttachY": 0,
+				"AttachZ": 0,
+				"Theta": 0,
+				"Param0": 0.1,
+				"Param1": 0.1,
+				"Param2": 0.12
+			}
+		]
+}
