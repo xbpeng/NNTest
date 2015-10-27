@@ -1,7 +1,7 @@
+#include <caffe/caffe.hpp>
 #include <iostream>
 #include <memory>
 #include <Eigen/Dense>
-#include <caffe/caffe.hpp>
 #include <GL/glew.h>
 #include <GL/GL.h>
 

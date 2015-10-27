@@ -3,10 +3,14 @@
 #include <string>
 #include "util/MathUtil.h"
 #include "scenarios/ScenarioSimChar.h"
-#include "render/TextureDesc.h"
-#include "render/camera.h"
+
+#include "stuff/ArmNNController.h"
 #include "learning/ExpTuple.h"
 #include "learning/QNetTrainer.h"
+
+#include "render/TextureDesc.h"
+#include "render/camera.h"
+
 
 class cScenarioArmRL : public cScenarioSimChar
 {

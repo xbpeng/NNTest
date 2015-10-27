@@ -1,7 +1,6 @@
 #include "ScenarioArmRL.h"
 #include "stuff/SimArm.h"
 #include "stuff/ArmQPController.h"
-#include "stuff/ArmNNController.h"
 #include "render/DrawUtil.h"
 #include "render/DrawSimCharacter.h"
 
