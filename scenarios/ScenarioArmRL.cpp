@@ -279,7 +279,7 @@ void cScenarioArmRL::UpdateCharacter(double time_step)
 	}
 	
 	UpdateCoach(time_step);
-	cScenarioSimChar::UpdateCharacter(time_step);
+	//cScenarioSimChar::UpdateCharacter(time_step);
 }
 
 void cScenarioArmRL::InitTupleBuffer()

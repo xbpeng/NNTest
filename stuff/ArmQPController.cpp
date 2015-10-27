@@ -41,7 +41,7 @@ void cArmQPController::UpdateRBDModel()
 	cRBDUtil::BuildJacobianDot(mRBDModel, mJacobianDot);
 }
 
-void cArmQPController::UpdateContolForce()
+void cArmQPController::UpdatePoliAction()
 {
 	UpdateRBDModel();
 	ComputeQPTau();
@@ -51,7 +51,8 @@ void cArmQPController::UpdateContolForce()
 	const auto& tau = mSoln.mX.segment(tau_offset, tau_size);
 
 	int root_size = mChar->GetParamSize(mChar->GetRootID());
-	mCtrlForce = tau.segment(root_size, tau_size - root_size);
+	mPoliAction = tau.segment(root_size, tau_size - root_size);
+	mPoliAction *= gTorqueScale;
 }
 
 void cArmQPController::ComputeQPTau()

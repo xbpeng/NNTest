@@ -15,21 +15,29 @@ public:
 	virtual void Clear();
 	virtual void Update(double time_step);
 
-	virtual const Eigen::VectorXd& GetControlForce() const;
 	virtual void SetTorqueLimit(double torque_lim);
 	virtual void SetUpdatePeriod(double period);
 	virtual bool NeedUpdate() const;
-	virtual int GetControlDim() const;
+
+	virtual int GetPoliStateSize() const;
+	virtual int GetPoliActionSize() const;
+	virtual void RecordPoliState(Eigen::VectorXd& out_state) const;
+	virtual void RecordPoliAction(Eigen::VectorXd& out_action) const;
 
 protected:
+	static const double gTorqueScale;
+
 	double mTorqueLim;
 	double mUpdatePeriod;
 	double mUpdateCounter;
 
-	Eigen::VectorXd mCtrlForce;
+	Eigen::VectorXd mPoliState;
+	Eigen::VectorXd mPoliAction;
 	
-	virtual void UpdateContolForce();
-	virtual void InitControlForce();
+	virtual void InitPoliState();
+	virtual void InitPoliAction();
+	virtual void UpdatePoliState();
+	virtual void UpdatePoliAction();
 	
-	virtual void ApplyControlForce(const Eigen::VectorXd& tau) const;
+	virtual void ApplyPoliAction(const Eigen::VectorXd& action) const;
 };

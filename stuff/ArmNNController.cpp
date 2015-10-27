@@ -33,8 +33,8 @@ bool cArmNNController::LoadNet(const std::string& net_file)
 
 	int input_size = mNet.GetInputSize();
 	int output_size = mNet.GetOutputSize();
-	int state_size = GetStateSize();
-	int action_size = GetActionSize();
+	int state_size = GetPoliStateSize();
+	int action_size = GetPoliActionSize();
 
 	if (output_size != action_size)
 	{
@@ -72,20 +72,15 @@ void cArmNNController::SaveNet(const std::string& out_file) const
 	mNet.OutputModel(out_file);
 }
 
-int cArmNNController::GetStateSize() const
+bool cArmNNController::HasNet() const
 {
-	int num_dof = mChar->GetNumDof();
-	int root_size = mChar->GetParamSize(mChar->GetRootID());
-	int pose_dim = num_dof - root_size;
-	int state_size = 2 * pose_dim;
-	return state_size;
+	return mNet.HasNet();
 }
 
-int cArmNNController::GetActionSize() const
+void cArmNNController::UpdatePoliAction()
 {
-	return GetControlDim();
-}
-
-void cArmNNController::UpdateContolForce()
-{
+	if (HasNet())
+	{
+		mNet.Eval(mPoliState, mPoliAction);
+	}
 }

@@ -34,7 +34,7 @@ protected:
 	cQuadProg::tSoln mSoln;
 
 	virtual void UpdateRBDModel();
-	virtual void UpdateContolForce();
+	virtual void UpdatePoliAction();
 	virtual void ComputeQPTau();
 	virtual void InitQP();
 	virtual void SetupQPTorqueLim(double torque_lim);

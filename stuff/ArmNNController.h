@@ -21,11 +21,10 @@ public:
 	virtual void CopyNet(const cNeuralNet& net);
 	virtual void SaveNet(const std::string& out_file) const;
 
+	virtual bool HasNet() const;
+
 protected:
 	cNeuralNet mNet;
 
-	virtual int GetStateSize() const;
-	virtual int GetActionSize() const;
-
-	virtual void UpdateContolForce();
+	virtual void UpdatePoliAction();
 };

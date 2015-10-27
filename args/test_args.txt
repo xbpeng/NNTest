@@ -8,7 +8,7 @@
 
 -solver_file= data/arm_rl/arm_solver.prototxt
 -net_file= data/arm_rl/arm_deploy.prototxt
--model_file= data/arm_rl/arm_model_noise.h5
+//-model_file= data/arm_rl/arm_model.h5
 
 -epsilon_greedy_rate= 0.2
 
