@@ -10,8 +10,8 @@
 //-net_file= data/arm_rl/arm_deploy.prototxt
 //-model_file= data/arm_rl/arm_model.h5
 
--solver_file= data/reg1D/reg1D_solver.prototxt
--net_file= data/reg1D/reg1D_deploy.prototxt
+-solver_file= data/reg1D/reg1D_multi_solver.prototxt
+-net_file= data/reg1D/reg1D_multi_deploy.prototxt
 
 -epsilon_greedy_rate= 0.2
 

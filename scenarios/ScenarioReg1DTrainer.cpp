@@ -70,6 +70,15 @@ void cScenarioReg1DTrainer::BuildTuple(const tVector& pt, tExpTuple& out_tuple) 
 	out_tuple.mStateBeg.resize(state_size);
 	out_tuple.mAction.resize(action_size);
 
+	for (int i = 0; i < state_size; ++i)
+	{
+		out_tuple.mStateBeg[i] = cMathUtil::RandDouble(-1, 1);
+	}
+	for (int i = 0; i < action_size; ++i)
+	{
+		out_tuple.mAction[i] = cMathUtil::RandDouble(-1, 1);
+	}
+
 	out_tuple.mStateBeg[0] = pt[0];
 	out_tuple.mAction[0] = pt[1];
 	out_tuple.mStateEnd = out_tuple.mStateBeg;
