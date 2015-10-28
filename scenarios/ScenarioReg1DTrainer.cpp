@@ -22,11 +22,13 @@ void cScenarioReg1DTrainer::ParseArgs(const cArgParser& parser)
 void cScenarioReg1DTrainer::Reset()
 {
 	cScenarioReg1D::Reset();
+	mTrainer.Reset();
 }
 
 void cScenarioReg1DTrainer::Clear()
 {
 	cScenarioReg1D::Clear();
+	mTrainer.Reset();
 }
 
 void cScenarioReg1DTrainer::Update(double time_elapsed)
@@ -37,11 +39,22 @@ void cScenarioReg1DTrainer::Update(double time_elapsed)
 void cScenarioReg1DTrainer::AddPt(const tVector& pt)
 {
 	cScenarioReg1D::AddPt(pt);
+	tExpTuple tuple;
+	BuildTuple(pt, tuple);
+	mTrainer.AddTuple(tuple);
 }
 
 void cScenarioReg1DTrainer::TrainNet()
 {
-	cScenarioReg1D::TrainNet();
+	if (GetNumPts() > 0)
+	{
+		int num_steps = 1;
+		mTrainer.Train(num_steps);
+
+		const cNeuralNet& trainer_net = mTrainer.GetNet();
+		mNet.CopyModel(trainer_net);
+		EvalNet();
+	}
 }
 
 std::string cScenarioReg1DTrainer::GetName() const
@@ -49,6 +62,27 @@ std::string cScenarioReg1DTrainer::GetName() const
 	return "Regression 1D Trainer";
 }
 
+void cScenarioReg1DTrainer::BuildTuple(const tVector& pt, tExpTuple& out_tuple) const
+{
+	int state_size = mTrainer.GetStateSize();
+	int action_size = mTrainer.GetActionSize();
+
+	out_tuple.mStateBeg.resize(state_size);
+	out_tuple.mAction.resize(action_size);
+
+	out_tuple.mStateBeg[0] = pt[0];
+	out_tuple.mAction[0] = pt[1];
+	out_tuple.mStateEnd = out_tuple.mStateBeg;
+}
+
 void cScenarioReg1DTrainer::SetupTrainer()
 {
+	cNeuralNetTrainer::tParams params;
+	params.mNetFile = mNetFile;
+	params.mSolverFile = mSolverFile;
+	params.mPlaybackMemSize = 1000;
+	params.mPoolSize = 1;
+	params.mNumInitSamples = 0;
+	params.mCalcScale = false;
+	mTrainer.Init(params);
 }

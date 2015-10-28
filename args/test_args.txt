@@ -1,4 +1,4 @@
--scenario= reg_1d
+-scenario= reg_1d_trainer
 
 -character_file= data/arm_rl/arm.txt
 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "scenarios/ScenarioReg1D.h"
+#include "learning/NeuralNetTrainer.h"
 
 class cScenarioReg1DTrainer : public cScenarioReg1D
 {
@@ -21,5 +22,8 @@ public:
 	virtual std::string GetName() const;
 	
 protected:
+	cNeuralNetTrainer mTrainer;
+
+	virtual void BuildTuple(const tVector& pt, tExpTuple& out_tuple) const;
 	virtual void SetupTrainer();
 };

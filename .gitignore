@@ -4,6 +4,7 @@
 *.vcxproj
 *.filters
 *.user
+*.suo
 
 .vs/
 x64/
