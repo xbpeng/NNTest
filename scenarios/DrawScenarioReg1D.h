@@ -25,10 +25,12 @@ public:
 	std::string GetName() const;
 
 protected:
-	cScenarioReg1D mScene;
+	cArgParser mArgParser;
+	std::unique_ptr<cScenarioReg1D> mScene;
 	tVector mMousePos;
 	bool mMousePressed;
 
+	virtual void BuildScene(std::unique_ptr<cScenarioReg1D>& out_scene);
 	virtual void DrawScene();
 	virtual void DrawPoints() const;
 	virtual void DrawNetEval() const;

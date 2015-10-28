@@ -29,6 +29,9 @@ public:
 	virtual void ToggleTraining();
 	virtual bool EnableTraining() const;
 
+	virtual bool EnabledAutoTarget() const;
+	virtual void EnableAutoTarget(bool enable);
+
 	virtual void SetTargetPos(const tVector& target);
 	virtual const tVector& GetTargetPos() const;
 
@@ -42,8 +45,10 @@ public:
 	virtual std::string GetName() const;
 	
 protected:
+	bool mEnableAutoTarget;
 	bool mEnableTraining;
 
+	double mTargetCounter;
 	std::shared_ptr<cSimCharacter> mCoach;
 
 	std::string mSolverFile;
@@ -77,6 +82,8 @@ protected:
 	virtual void RandReset();
 	virtual void ApplyRandPose();
 	virtual void SetRandTarget();
+	virtual void ResetTargetCounter();
+	virtual void UpdateTargetCounter(double time_step);
 
 	virtual int GetStateSize() const;
 	virtual int GetActionSize() const;
@@ -89,6 +96,7 @@ protected:
 
 	virtual void InitTupleBuffer();
 	virtual void InitTrainer();
+	virtual void SetupScale();
 
 	virtual void Train();
 	virtual int GetIter() const;
@@ -99,4 +107,6 @@ protected:
 	virtual bool NeedCtrlUpdate() const;
 
 	virtual std::shared_ptr<cArmQPController> GetCoachController() const;
+	virtual std::shared_ptr<cArmNNController> GetStudentController() const;
+	virtual void SyncCoach();
 };

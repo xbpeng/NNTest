@@ -18,29 +18,32 @@ cDrawScenarioReg1D::~cDrawScenarioReg1D()
 
 void cDrawScenarioReg1D::Init()
 {
-	mScene.Init();
+	BuildScene(mScene);
+	mScene->ParseArgs(mArgParser);
+	mScene->Init();
 	mMousePressed = false;
 }
 
 void cDrawScenarioReg1D::ParseArgs(const cArgParser& parser)
 {
-	mScene.ParseArgs(parser);
+	cDrawScenario::ParseArgs(parser);
+	mArgParser = parser;
 }
 
 void cDrawScenarioReg1D::Reset()
 {
-	mScene.Reset();
+	mScene->Reset();
 	mMousePressed = false;
 }
 
 void cDrawScenarioReg1D::Clear()
 {
-	mScene.Clear();
+	mScene->Clear();
 }
 
 void cDrawScenarioReg1D::Update(double time_elapsed)
 {
-	mScene.Update(time_elapsed);
+	mScene->Update(time_elapsed);
 }
 
 void cDrawScenarioReg1D::Keyboard(unsigned char key, int x, int y)
@@ -65,7 +68,7 @@ void cDrawScenarioReg1D::MouseClick(int button, int state, double x, double y)
 	{
 		mMousePressed = true;
 		tVector pos = mCam.ScreenToWorldPos(tVector(x, y, 0, 0));
-		mScene.AddPt(pos);
+		mScene->AddPt(pos);
 		mMousePos = pos;
 	}
 	else if (state == GLUT_UP)
@@ -83,7 +86,7 @@ void cDrawScenarioReg1D::MouseMove(double x, double y)
 		double dist = (mMousePos - curr_pos).squaredNorm();
 		if (dist > dist_threshold)
 		{
-			mScene.AddPt(curr_pos);
+			mScene->AddPt(curr_pos);
 			mMousePos = curr_pos;
 		}
 	}
@@ -91,7 +94,12 @@ void cDrawScenarioReg1D::MouseMove(double x, double y)
 
 std::string cDrawScenarioReg1D::GetName() const
 {
-	return mScene.GetName();
+	return mScene->GetName();
+}
+
+void cDrawScenarioReg1D::BuildScene(std::unique_ptr<cScenarioReg1D>& out_scene)
+{
+	out_scene = std::unique_ptr<cScenarioReg1D>(new cScenarioReg1D());
 }
 
 void cDrawScenarioReg1D::DrawScene()
@@ -107,12 +115,12 @@ void cDrawScenarioReg1D::DrawPoints() const
 
 	double pt_r = 0.015;
 	int slices = 16;
-	int num_points = mScene.GetNumPts();
+	int num_points = mScene->GetNumPts();
 
 	glLineWidth(1);
 	for (int i = 0; i < num_points; ++i)
 	{
-		const tVector pt = mScene.GetPt(i);
+		const tVector pt = mScene->GetPt(i);
 		glPushMatrix();
 		glTranslated(pt[0], pt[1], pt[2]);
 
@@ -131,7 +139,7 @@ void cDrawScenarioReg1D::DrawNetEval() const
 	const tVector col = tVector(0, 0, 1, 0.75);
 	const double weight = 3;
 
-	const auto& eval_pts = mScene.GetEvalPts();
+	const auto& eval_pts = mScene->GetEvalPts();
 	glColor4d(col[0], col[1], col[2], col[3]);
 	glLineWidth(static_cast<float>(weight));
 	cDrawUtil::DrawLineStrip(eval_pts);
@@ -139,5 +147,5 @@ void cDrawScenarioReg1D::DrawNetEval() const
 
 void cDrawScenarioReg1D::TrainNet()
 {
-	mScene.TrainNet();
+	mScene->TrainNet();
 }

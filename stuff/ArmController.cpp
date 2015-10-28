@@ -1,13 +1,14 @@
 #include "ArmController.h"
 #include "SimArm.h"
 
-const double cArmController::gTorqueScale = 0.01;
+const double cArmController::gTorqueScale = 0.1;
 
 cArmController::cArmController()
 {
 	mTorqueLim = 400;
 	mUpdatePeriod = 1 / 60.0;
 	mUpdateCounter = mUpdatePeriod;
+	mTargetPos = tVector::Zero();
 }
 
 cArmController::~cArmController()
@@ -17,6 +18,8 @@ cArmController::~cArmController()
 void cArmController::Init(cSimCharacter* character)
 {
 	cCharController::Init(character);
+	mTargetPos = mChar->GetBodyPart(GetEndEffectorID())->GetPos();
+
 	InitPoliState();
 	InitPoliAction();
 }
@@ -67,10 +70,11 @@ bool cArmController::NeedUpdate() const
 
 int cArmController::GetPoliStateSize() const
 {
+	int target_size = GetTargetPosSize();
 	int num_dof = mChar->GetNumDof();
 	int root_size = mChar->GetParamSize(mChar->GetRootID());
 	int pose_dim = num_dof - root_size;
-	int state_size = 2 * pose_dim;
+	int state_size = target_size + 2 * pose_dim;
 	return state_size;
 }
 
@@ -90,6 +94,21 @@ void cArmController::RecordPoliState(Eigen::VectorXd& out_state) const
 void cArmController::RecordPoliAction(Eigen::VectorXd& out_action) const
 {
 	out_action = mPoliAction;
+}
+
+int cArmController::GetTargetPosSize() const
+{
+	return 2;
+}
+
+void cArmController::SetTargetPos(const tVector& target)
+{
+	mTargetPos = target;
+}
+
+int cArmController::GetEndEffectorID() const
+{
+	return static_cast<int>(cSimArm::eJointLinkEnd);
 }
 
 void cArmController::InitPoliState()
@@ -112,9 +131,11 @@ void cArmController::UpdatePoliState()
 	int root_size = mChar->GetParamSize(mChar->GetRootID());
 	int idx_beg = root_size;
 	int param_size = static_cast<int>(pose.size()) - root_size;
+	int target_size = GetTargetPosSize();
 
-	mPoliState.segment(0, param_size) = pose.segment(root_size, param_size);
-	mPoliState.segment(param_size, param_size) = vel.segment(root_size, param_size);
+	mPoliState.segment(0, target_size) = mTargetPos.segment(0, target_size);
+	mPoliState.segment(target_size, param_size) = pose.segment(root_size, param_size);
+	mPoliState.segment(target_size + param_size, param_size) = vel.segment(root_size, param_size);
 }
 
 void cArmController::UpdatePoliAction()

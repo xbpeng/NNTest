@@ -4,7 +4,6 @@
 cArmQPController::cArmQPController()
 {
 	mGravity = gGravity;
-	mEndTarget = tVector::Zero();
 	mReach = 1;
 }
 
@@ -19,14 +18,8 @@ void cArmQPController::Init(cSimCharacter* character, const tVector& gravity)
 	mRBDModel.Init(mChar->GetJointMat(), mChar->GetBodyDefs(), mGravity);
 	InitQP();
 
-	mEndTarget = mChar->GetBodyPart(GetEndEffectorID())->GetPos();
 	mUpdateCounter = mUpdatePeriod;
 	mReach = CalcReach();
-}
-
-void cArmQPController::SetTargetPos(const tVector& target)
-{
-	mEndTarget = target;
 }
 
 void cArmQPController::UpdateRBDModel()
@@ -53,11 +46,16 @@ void cArmQPController::UpdatePoliAction()
 	int root_size = mChar->GetParamSize(mChar->GetRootID());
 	mPoliAction = tau.segment(root_size, tau_size - root_size);
 	mPoliAction *= gTorqueScale;
+
+	// hack
+	mPoliAction.setZero();
+	mPoliState[0] = cMathUtil::RandDouble(-1, 1);
+	mPoliAction[0] = mPoliState[0];
 }
 
 void cArmQPController::ComputeQPTau()
 {
-	BuildQPProb(mEndTarget, mProb);
+	BuildQPProb(mTargetPos, mProb);
 	int fail = cQuadProg::Solve(mProb, mSoln);
 	assert(fail == 0);
 }
@@ -325,11 +323,6 @@ int cArmQPController::GetQPParamSize(eQPParam param) const
 		break;
 	}
 	return size;
-}
-
-int cArmQPController::GetEndEffectorID() const
-{
-	return static_cast<int>(cSimArm::eJointLinkEnd);
 }
 
 double cArmQPController::CalcReach() const

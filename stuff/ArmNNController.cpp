@@ -81,6 +81,10 @@ void cArmNNController::UpdatePoliAction()
 {
 	if (HasNet())
 	{
+		// hack
+		mPoliState[0] = cMathUtil::RandDouble(-1, 1);
 		mNet.Eval(mPoliState, mPoliAction);
+
+		printf("Test %.5f, %.5f\n", mPoliState[0], mPoliAction[0]);
 	}
 }

@@ -3,8 +3,9 @@
 #include "render/DrawUtil.h"
 #include "render/DrawSimCharacter.h"
 
-const int gTupleBufferSize = 16;
-const int gTrainerBufferSize = 20000;
+const int gTupleBufferSize = 32;
+const int gTrainerPlaybackMemSize = 20000;
+
 const double gCamSize = 4;
 const int gRTSize = 128;
 
@@ -19,8 +20,10 @@ const double gAngularDamping = 0;
 cScenarioArmRL::cScenarioArmRL()
 {
 	mEnableTraining = true;
-	mSimStepsPerUpdate = 5;
+	mEnableAutoTarget = true;
+	mSimStepsPerUpdate = 20;
 	mTargetPos = tVector(1, 0, 0, 0);
+	ResetTargetCounter();
 }
 
 cScenarioArmRL::~cScenarioArmRL()
@@ -38,6 +41,7 @@ void cScenarioArmRL::Init()
 
 	InitRenderResources();
 	InitCam();
+	ResetTargetCounter();
 }
 
 void cScenarioArmRL::ParseArgs(const cArgParser& parser)
@@ -52,6 +56,7 @@ void cScenarioArmRL::Reset()
 {
 	//cScenarioSimChar::Reset();
 	//mCoach->Reset();
+	ResetTargetCounter();
 	RandReset();
 }
 
@@ -65,6 +70,7 @@ void cScenarioArmRL::Clear()
 
 void cScenarioArmRL::Update(double time_elapsed)
 {
+	UpdateTargetCounter(time_elapsed);
 	SetCtrlTargetPos(mTargetPos);
 	cScenarioSimChar::Update(time_elapsed);
 
@@ -85,11 +91,22 @@ bool cScenarioArmRL::EnableTraining() const
 	return mEnableTraining;
 }
 
+bool cScenarioArmRL::EnabledAutoTarget() const
+{
+	return mEnableAutoTarget;
+}
+
+void cScenarioArmRL::EnableAutoTarget(bool enable)
+{
+	mEnableAutoTarget = enable;
+}
+
 void cScenarioArmRL::SetTargetPos(const tVector& target)
 {
 	mTargetPos = target;
-	mTargetPos[0] = cMathUtil::Clamp(mTargetPos[0] , -0.5 * gCamSize, gCamSize);
-	mTargetPos[1] = cMathUtil::Clamp(mTargetPos[1], -0.5 * gCamSize, gCamSize);
+	mTargetPos[0] = cMathUtil::Clamp(mTargetPos[0] , -0.5 * gCamSize, 0.5 * gCamSize);
+	mTargetPos[1] = cMathUtil::Clamp(mTargetPos[1], -0.5 * gCamSize, 0.5 * gCamSize);
+	ResetTargetCounter();
 }
 
 const tVector& cScenarioArmRL::GetTargetPos() const
@@ -238,8 +255,10 @@ void cScenarioArmRL::ResetGround()
 
 void cScenarioArmRL::SetCtrlTargetPos(const tVector& target)
 {
-	auto ctrl = GetCoachController();
-	ctrl->SetTargetPos(target);
+	auto coach = GetCoachController();
+	auto student = GetStudentController();
+	coach->SetTargetPos(target);
+	student->SetTargetPos(target);
 }
 
 bool cScenarioArmRL::HasExploded() const
@@ -269,7 +288,7 @@ void cScenarioArmRL::ApplyRandPose()
 	for (int i = root_size; i < static_cast<int>(pose.size()); ++i)
 	{
 		double rand_pose_val = cMathUtil::RandDouble(-M_PI, M_PI);
-		double rand_vel_val = cMathUtil::RandDouble(-M_PI, M_PI) * 0.5;
+		double rand_vel_val = cMathUtil::RandDouble(-M_PI, M_PI);
 		pose[i] = rand_pose_val;
 		vel[i] = rand_vel_val;
 	}
@@ -283,11 +302,28 @@ void cScenarioArmRL::ApplyRandPose()
 void cScenarioArmRL::SetRandTarget()
 {
 	tVector target = tVector::Zero();
-	target[0] = cMathUtil::RandDouble(-0.25 * gCamSize, 0.25 * gCamSize);
-	target[1] = cMathUtil::RandDouble(-0.25 * gCamSize, 0.25 * gCamSize);
+	target[0] = cMathUtil::RandDouble(-0.5 * gCamSize, 0.5 * gCamSize);
+	target[1] = cMathUtil::RandDouble(-0.5 * gCamSize, 0.5 * gCamSize);
 	SetTargetPos(target);
+	ResetTargetCounter();
 }
 
+void cScenarioArmRL::ResetTargetCounter()
+{
+	double max_time = 1.5;
+	double min_time = 0.5;
+	mTargetCounter = cMathUtil::RandDouble(min_time, max_time);
+}
+
+void cScenarioArmRL::UpdateTargetCounter(double time_step)
+{
+	mTargetCounter -= time_step;
+	mTargetCounter = std::max(0.0, mTargetCounter);
+	if ((mEnableAutoTarget || mEnableTraining) && mTargetCounter <= 0)
+	{
+		SetRandTarget();
+	}
+}
 
 int cScenarioArmRL::GetStateSize() const
 {
@@ -330,19 +366,55 @@ void cScenarioArmRL::UpdateCharacter(double time_step)
 		UpdateViewBuffer();
 	}
 	
+	cNeuralNetTrainer::eStage trainer_stage = mTrainer.GetStage();
+	if (trainer_stage != cNeuralNetTrainer::eStageInit
+		|| !mEnableTraining)
+	{
+		if (mEnableTraining)
+		{
+			//SyncCoach();
+		}
+		cScenarioSimChar::UpdateCharacter(time_step);
+	}
+
 	UpdateCoach(time_step);
 
-	// hack
-	//cScenarioSimChar::UpdateCharacter(time_step);
+	if (new_update && mEnableTraining)
+	{
+		bool exploaded = HasExploded();
+		if (!exploaded)
+		{
+			RecordTuple();
+
+			if (mNumTuples >= static_cast<int>(mTupleBuffer.size()))
+			{
+				Train();
+			}
+		}
+	}
+
+	Eigen::VectorXd coach_action;
+	Eigen::VectorXd student_action;
+	auto coach = GetCoachController();
+	auto student = GetStudentController();
+	coach->RecordPoliAction(coach_action);
+	student->RecordPoliAction(student_action);
 
 	if (new_update)
 	{
-		RecordTuple();
-
-		if (mNumTuples == static_cast<int>(mTupleBuffer.size()))
+		printf("Coach Action: ");
+		for (int i = 0; i < coach_action.size(); ++i)
 		{
-			Train();
+			printf("%.3f\t", coach_action[i]);
 		}
+		printf("\n");
+
+		printf("Student Action: ");
+		for (int i = 0; i < student_action.size(); ++i)
+		{
+			printf("%.3f\t", student_action[i]);
+		}
+		printf("\n\n");
 	}
 }
 
@@ -357,32 +429,66 @@ void cScenarioArmRL::InitTupleBuffer()
 
 void cScenarioArmRL::InitTrainer()
 {
-	int net_pool_size = 2; // double Q learning
-	//mTrainer.Init(mNetFile, mSolverFile, gTrainerBufferSize, net_pool_size);
+	cNeuralNetTrainer::tParams params;
+	params.mNetFile = mNetFile;
+	params.mSolverFile = mSolverFile;
+	params.mPlaybackMemSize = gTrainerPlaybackMemSize;
+	params.mPoolSize = 1;
+	params.mNumInitSamples = 1000;
+	params.mCalcScale = false;
+	mTrainer.Init(params);
+
+	SetupScale();
 
 	if (mModelFile != "")
 	{
-		//mTrainer.LoadModel(mModelFile);
+		mTrainer.LoadModel(mModelFile);
+	}
+}
+
+void cScenarioArmRL::SetupScale()
+{
+	int state_size = mTrainer.GetStateSize();
+	if (state_size > 0)
+	{
+		auto ctrl = GetStudentController();
+		Eigen::VectorXd mean = Eigen::VectorXd::Zero(state_size);
+		Eigen::VectorXd stdev = Eigen::VectorXd::Ones(state_size);
+		int target_size = ctrl->GetTargetPosSize();
+		int pose_size = (state_size - target_size) / 2;
+
+		stdev.segment(0, target_size) = 0.5 * gCamSize * Eigen::VectorXd::Ones(target_size);
+		stdev.segment(target_size, pose_size) = M_PI * Eigen::VectorXd::Ones(pose_size);
+		stdev.segment(target_size + pose_size, pose_size) = 2 * M_PI * Eigen::VectorXd::Ones(pose_size);
+
+		//mTrainer.SetScale(mean, stdev);
 	}
 }
 
 void cScenarioArmRL::Train()
 {
 	int iter = GetIter();
-	printf("\nTraining iter: %i\n", iter);
+	int num_tuples = mTrainer.GetNumTuples();
+	printf("\nTraining Iter: %i\n", iter);
+	printf("Num Tuples: %i\n", num_tuples);
 
 	const int num_steps = 1;
-
-	mNumTuples = 0;
-
-	/*
 	mTrainer.AddTuples(mTupleBuffer);
+
+	cNeuralNetTrainer::eStage stage0 = mTrainer.GetStage();
 	mTrainer.Train(num_steps);
+	cNeuralNetTrainer::eStage stage1 = mTrainer.GetStage();
+
+	if (stage0 != stage1)
+	{
+		mTrainer.Train(10);
+	}
 
 	const cNeuralNet& trainer_net = mTrainer.GetNet();
-	std::shared_ptr<cArmNNController> ctrl = std::static_pointer_cast<cArmNNController>(mChar->GetController());
+	std::shared_ptr<cArmNNController> ctrl = GetStudentController();
 	ctrl->CopyNet(trainer_net);
-	*/
+
+	mNumTuples = 0;
 }
 
 int cScenarioArmRL::GetIter() const
@@ -443,5 +549,21 @@ bool cScenarioArmRL::NeedCtrlUpdate() const
 
 std::shared_ptr<cArmQPController> cScenarioArmRL::GetCoachController() const
 {
-	return std::static_pointer_cast<cArmQPController>(mCoach->GetController());;
+	return std::static_pointer_cast<cArmQPController>(mCoach->GetController());
+}
+
+std::shared_ptr<cArmNNController> cScenarioArmRL::GetStudentController() const
+{
+	return std::static_pointer_cast<cArmNNController>(mChar->GetController());
+}
+
+void cScenarioArmRL::SyncCoach()
+{
+	Eigen::VectorXd pose;
+	Eigen::VectorXd vel;
+	mChar->BuildPose(pose);
+	mChar->BuildVel(vel);
+
+	mCoach->SetPose(pose);
+	mCoach->SetVel(vel);
 }

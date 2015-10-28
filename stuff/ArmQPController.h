@@ -13,7 +13,6 @@ public:
 	virtual ~cArmQPController();
 
 	virtual void Init(cSimCharacter* character, const tVector& gravity);
-	virtual void SetTargetPos(const tVector& target);
 
 protected:
 	enum eQPParam
@@ -24,7 +23,6 @@ protected:
 	};
 
 	tVector mGravity;
-	tVector mEndTarget;
 	double mReach;
 
 	cRBDModel mRBDModel;
@@ -56,6 +54,5 @@ protected:
 	virtual int GetQPParamOffset(eQPParam param) const;
 	virtual int GetQPParamSize(eQPParam param) const;
 
-	virtual int GetEndEffectorID() const;
 	virtual double CalcReach() const;
 };

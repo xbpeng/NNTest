@@ -31,6 +31,7 @@ protected:
 	bool mMouseDown;
 
 	virtual void ToggleTraining();
+	virtual void ToggleAutoTarget();
 	virtual const std::shared_ptr<cScenarioSimChar>& GetScene() const;
 	virtual void BuildScene();
 

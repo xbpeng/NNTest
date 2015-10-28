@@ -36,7 +36,7 @@ void cScenarioReg1D::Clear()
 	mPts.clear();
 	mNet.Clear();
 	mEvalPts.clear();
-	mNumEvalPts = 0;
+	mNumEvalPts = 100;
 	mPassesPerStep = 100;
 }
 

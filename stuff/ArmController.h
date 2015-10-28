@@ -23,6 +23,9 @@ public:
 	virtual int GetPoliActionSize() const;
 	virtual void RecordPoliState(Eigen::VectorXd& out_state) const;
 	virtual void RecordPoliAction(Eigen::VectorXd& out_action) const;
+	virtual int GetTargetPosSize() const;
+
+	virtual void SetTargetPos(const tVector& target);
 
 protected:
 	static const double gTorqueScale;
@@ -33,7 +36,9 @@ protected:
 
 	Eigen::VectorXd mPoliState;
 	Eigen::VectorXd mPoliAction;
+	tVector mTargetPos;
 	
+	virtual int GetEndEffectorID() const;
 	virtual void InitPoliState();
 	virtual void InitPoliAction();
 	virtual void UpdatePoliState();

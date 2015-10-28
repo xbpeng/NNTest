@@ -38,6 +38,9 @@ void cDrawScenarioArmRL::Keyboard(unsigned char key, int x, int y)
 	case 's':
 		SaveNet(mOutputNetFile);
 		break;
+	case 'a':
+		ToggleAutoTarget();
+		break;
 	default:
 		break;
 	}
@@ -100,6 +103,22 @@ void cDrawScenarioArmRL::ToggleTraining()
 	else
 	{
 		printf("Training disabled\n");
+	}
+}
+
+void cDrawScenarioArmRL::ToggleAutoTarget()
+{
+	bool enable_auto_target = mScene->EnabledAutoTarget();
+	enable_auto_target = !enable_auto_target;
+	mScene->EnableAutoTarget(enable_auto_target);
+	
+	if (enable_auto_target)
+	{
+		printf("Auto Target enabled\n");
+	}
+	else
+	{
+		printf("Auto Target disabled\n");
 	}
 }
 
