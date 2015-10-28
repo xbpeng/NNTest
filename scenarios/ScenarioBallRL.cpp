@@ -266,12 +266,12 @@ void cScenarioBallRL::InitTupleBuffer()
 
 void cScenarioBallRL::InitTrainer()
 {
-	int net_pool_size = 2; // double Q learning
 	cQNetTrainer::tParams params;
 	params.mNetFile = mNetFile;
 	params.mSolverFile = mSolverFile;
 	params.mPlaybackMemSize = gTrainerPlaybackMemSize;
-	params.mPoolSize = net_pool_size;
+	params.mPoolSize = 2; // double Q learning
+	params.mNumInitSamples = 100;
 	mTrainer.Init(params);
 
 	if (mModelFile != "")

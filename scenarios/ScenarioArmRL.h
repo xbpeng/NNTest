@@ -3,11 +3,10 @@
 #include <string>
 #include "util/MathUtil.h"
 #include "scenarios/ScenarioSimChar.h"
-
 #include "stuff/ArmNNController.h"
+#include "stuff/ArmQPController.h"
 #include "learning/ExpTuple.h"
-#include "learning/QNetTrainer.h"
-
+#include "learning/NeuralNetTrainer.h"
 #include "render/TextureDesc.h"
 #include "render/camera.h"
 
@@ -47,13 +46,12 @@ protected:
 
 	std::shared_ptr<cSimCharacter> mCoach;
 
-	int mIter;
 	std::string mSolverFile;
 	std::string mNetFile;
 	std::string mModelFile;
 
+	cNeuralNetTrainer mTrainer;
 	std::vector<tExpTuple> mTupleBuffer;
-	tExpTuple mCurrTuple;
 	int mNumTuples;
 
 	tVector mTargetPos;
@@ -75,13 +73,17 @@ protected:
 	virtual void ResetGround();
 	virtual void SetCtrlTargetPos(const tVector& target);
 
+	virtual bool HasExploded() const;
+	virtual void RandReset();
+	virtual void ApplyRandPose();
+	virtual void SetRandTarget();
+
 	virtual int GetStateSize() const;
 	virtual int GetActionSize() const;
 
 	virtual void RecordState(Eigen::VectorXd& out_state) const;
 	virtual void RecordAction(Eigen::VectorXd& out_action) const;
-	virtual double CalcReward(const tExpTuple& tuple) const;
-	virtual bool CheckFail() const;
+	virtual void RecordTuple();
 
 	virtual void UpdateCharacter(double time_step);
 
@@ -89,9 +91,12 @@ protected:
 	virtual void InitTrainer();
 
 	virtual void Train();
+	virtual int GetIter() const;
 
 	virtual void InitCam();
 	virtual void UpdateViewBuffer();
 	virtual void InitRenderResources();
 	virtual bool NeedCtrlUpdate() const;
+
+	virtual std::shared_ptr<cArmQPController> GetCoachController() const;
 };

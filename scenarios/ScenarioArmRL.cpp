@@ -1,11 +1,11 @@
 #include "ScenarioArmRL.h"
 #include "stuff/SimArm.h"
-#include "stuff/ArmQPController.h"
 #include "render/DrawUtil.h"
 #include "render/DrawSimCharacter.h"
 
 const int gTupleBufferSize = 16;
 const int gTrainerBufferSize = 20000;
+const double gCamSize = 4;
 const int gRTSize = 128;
 
 const tVector gLineColor = tVector(0, 0, 0, 1);
@@ -32,7 +32,6 @@ void cScenarioArmRL::Init()
 	cScenarioSimChar::Init();
 	BuildCoach();
 
-	mCurrTuple = tExpTuple(GetStateSize(), GetActionSize());
 	InitTupleBuffer();
 	InitTrainer();
 	Reset();
@@ -51,9 +50,9 @@ void cScenarioArmRL::ParseArgs(const cArgParser& parser)
 
 void cScenarioArmRL::Reset()
 {
-	cScenarioSimChar::Reset();
-	mNumTuples = 0;
-	mCoach->Reset();
+	//cScenarioSimChar::Reset();
+	//mCoach->Reset();
+	RandReset();
 }
 
 void cScenarioArmRL::Clear()
@@ -61,12 +60,19 @@ void cScenarioArmRL::Clear()
 	cScenarioSimChar::Clear();
 	mRenderTarget.reset();
 	mCoach->Clear();
+	mNumTuples = 0;
 }
 
 void cScenarioArmRL::Update(double time_elapsed)
 {
 	SetCtrlTargetPos(mTargetPos);
 	cScenarioSimChar::Update(time_elapsed);
+
+	bool exploded = HasExploded();
+	if (exploded)
+	{
+		RandReset();
+	}
 }
 
 void cScenarioArmRL::ToggleTraining()
@@ -82,6 +88,8 @@ bool cScenarioArmRL::EnableTraining() const
 void cScenarioArmRL::SetTargetPos(const tVector& target)
 {
 	mTargetPos = target;
+	mTargetPos[0] = cMathUtil::Clamp(mTargetPos[0] , -0.5 * gCamSize, gCamSize);
+	mTargetPos[1] = cMathUtil::Clamp(mTargetPos[1], -0.5 * gCamSize, gCamSize);
 }
 
 const tVector& cScenarioArmRL::GetTargetPos() const
@@ -230,56 +238,112 @@ void cScenarioArmRL::ResetGround()
 
 void cScenarioArmRL::SetCtrlTargetPos(const tVector& target)
 {
-	std::shared_ptr<cArmQPController> ctrl = std::static_pointer_cast<cArmQPController>(mCoach->GetController());
+	auto ctrl = GetCoachController();
 	ctrl->SetTargetPos(target);
 }
 
+bool cScenarioArmRL::HasExploded() const
+{
+	bool exploded = false;
+	exploded |= mChar->HasExploded();
+	exploded |= mCoach->HasExploded();
+	return exploded;
+}
+
+void cScenarioArmRL::RandReset()
+{
+	cScenarioSimChar::Reset();
+	mCoach->Reset();
+	ApplyRandPose();
+	SetRandTarget();
+}
+
+void cScenarioArmRL::ApplyRandPose()
+{
+	Eigen::VectorXd pose;
+	Eigen::VectorXd vel;
+	mCoach->BuildPose(pose);
+	mCoach->BuildVel(vel);
+	
+	int root_size = mCoach->GetParamSize(mCoach->GetRootID());
+	for (int i = root_size; i < static_cast<int>(pose.size()); ++i)
+	{
+		double rand_pose_val = cMathUtil::RandDouble(-M_PI, M_PI);
+		double rand_vel_val = cMathUtil::RandDouble(-M_PI, M_PI) * 0.5;
+		pose[i] = rand_pose_val;
+		vel[i] = rand_vel_val;
+	}
+
+	mCoach->SetPose(pose);
+	mChar->SetPose(pose);
+	mCoach->SetVel(vel);
+	mChar->SetVel(vel);
+}
+
+void cScenarioArmRL::SetRandTarget()
+{
+	tVector target = tVector::Zero();
+	target[0] = cMathUtil::RandDouble(-0.25 * gCamSize, 0.25 * gCamSize);
+	target[1] = cMathUtil::RandDouble(-0.25 * gCamSize, 0.25 * gCamSize);
+	SetTargetPos(target);
+}
+
+
 int cScenarioArmRL::GetStateSize() const
 {
-	//const cBallController& ctrl = mBall.GetController();
-	//return ctrl.GetStateSize();
-	return 0;
+	auto ctrl = GetCoachController();
+	return ctrl->GetPoliStateSize();
 }
 
 int cScenarioArmRL::GetActionSize() const
 {
-	//const cBallController& ctrl = mBall.GetController();
-	//return ctrl.GetActionSize();
-	return 0;
+	auto ctrl = GetCoachController();
+	return ctrl->GetPoliActionSize();
 }
 
 void cScenarioArmRL::RecordState(Eigen::VectorXd& out_state) const
 {
-	//const cBallController& ctrl = mBall.GetController();
-	//ctrl.RecordState(out_state);
+	auto ctrl = GetCoachController();
+	ctrl->RecordPoliState(out_state);
 }
 
 void cScenarioArmRL::RecordAction(Eigen::VectorXd& out_action) const
 {
-	//const cBallController& ctrl = mBall.GetController();
-	//ctrl.RecordAction(out_action);
+	auto ctrl = GetCoachController();
+	ctrl->RecordPoliAction(out_action);
 }
 
-double cScenarioArmRL::CalcReward(const tExpTuple& tuple) const
+void cScenarioArmRL::RecordTuple()
 {
-	double reward = 1;
-	return reward;
-}
-
-bool cScenarioArmRL::CheckFail() const
-{
-	return false;
+	tExpTuple& tuple = mTupleBuffer[mNumTuples];
+	RecordState(tuple.mStateBeg);
+	RecordAction(tuple.mAction);
+	tuple.mStateEnd = tuple.mStateBeg; // just a place holder
+	++mNumTuples;
 }
 
 void cScenarioArmRL::UpdateCharacter(double time_step)
 {
-	if (NeedCtrlUpdate())
+	bool new_update = NeedCtrlUpdate();
+	if (new_update)
 	{
 		UpdateViewBuffer();
 	}
 	
 	UpdateCoach(time_step);
+
+	// hack
 	//cScenarioSimChar::UpdateCharacter(time_step);
+
+	if (new_update)
+	{
+		RecordTuple();
+
+		if (mNumTuples == static_cast<int>(mTupleBuffer.size()))
+		{
+			Train();
+		}
+	}
 }
 
 void cScenarioArmRL::InitTupleBuffer()
@@ -300,26 +364,30 @@ void cScenarioArmRL::InitTrainer()
 	{
 		//mTrainer.LoadModel(mModelFile);
 	}
-	mIter = 0;
 }
 
 void cScenarioArmRL::Train()
 {
-	/*
-	printf("\nTraining iter: %i\n", mIter);
+	int iter = GetIter();
+	printf("\nTraining iter: %i\n", iter);
 
 	const int num_steps = 1;
 
 	mNumTuples = 0;
+
+	/*
 	mTrainer.AddTuples(mTupleBuffer);
 	mTrainer.Train(num_steps);
 
 	const cNeuralNet& trainer_net = mTrainer.GetNet();
-	cBallController& ctrl = mBall.GetController();
-	ctrl.CopyNet(trainer_net);
-
-	++mIter;
+	std::shared_ptr<cArmNNController> ctrl = std::static_pointer_cast<cArmNNController>(mChar->GetController());
+	ctrl->CopyNet(trainer_net);
 	*/
+}
+
+int cScenarioArmRL::GetIter() const
+{
+	return mTrainer.GetIter();
 }
 
 void cScenarioArmRL::InitCam()
@@ -327,8 +395,8 @@ void cScenarioArmRL::InitCam()
 	tVector focus = mChar->GetRootPos();
 	tVector pos = focus + tVector(0, 0, 1, 0);
 	tVector up = tVector(0, 1, 0, 0);
-	const double w = 4;
-	const double h = 4;
+	const double w = gCamSize;
+	const double h = gCamSize;
 	const double near_z = 0.01f;
 	const double far_z = 5.f;
 	mRTCam = cCamera(pos, focus, up, w, h, near_z, far_z);
@@ -369,6 +437,11 @@ void cScenarioArmRL::InitRenderResources()
 
 bool cScenarioArmRL::NeedCtrlUpdate() const
 {
-	const std::shared_ptr<cArmQPController> ctrl = std::static_pointer_cast<cArmQPController>(mChar->GetController());
+	const auto ctrl = GetCoachController();
 	return ctrl->NeedUpdate();
+}
+
+std::shared_ptr<cArmQPController> cScenarioArmRL::GetCoachController() const
+{
+	return std::static_pointer_cast<cArmQPController>(mCoach->GetController());;
 }

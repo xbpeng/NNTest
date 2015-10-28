@@ -1,7 +1,7 @@
 #include "ArmController.h"
 #include "SimArm.h"
 
-const double cArmController::gTorqueScale = 0.1;
+const double cArmController::gTorqueScale = 0.01;
 
 cArmController::cArmController()
 {
