@@ -85,7 +85,7 @@ void cArmNNController::UpdatePoliAction()
 	}
 }
 
-void cArmNNController::ApplyPoliAction(const Eigen::VectorXd& action) const
+void cArmNNController::ApplyPoliAction(double time_step, const Eigen::VectorXd& action)
 {
-	cArmController::ApplyPoliAction(action);
+	cArmController::ApplyPoliAction(time_step, action);
 }

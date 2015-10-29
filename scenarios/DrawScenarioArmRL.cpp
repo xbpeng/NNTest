@@ -1,10 +1,14 @@
 #include "DrawScenarioArmRL.h"
 #include "render/DrawUtil.h"
 #include "render/DrawSimCharacter.h"
+#include "util/FileUtil.h"
 
 const tVector gLineColor = tVector(0, 0, 0, 1);
 const tVector gCoachFillTint = tVector(0, 0, 0, 0);
 const tVector gCamPos0 = tVector(0, 0, 1, 0);
+
+const std::string gCoachTorqueFilename = "output/coach_torques.txt";
+const std::string gStudentTorqueFilename = "output/student_torques.txt";
 
 cDrawScenarioArmRL::cDrawScenarioArmRL(cCamera& cam)
 	: cDrawScenario(cam)
@@ -12,6 +16,9 @@ cDrawScenarioArmRL::cDrawScenarioArmRL(cCamera& cam)
 	cam.TranslateToPos(gCamPos0);
 	mOutputNetFile = "";
 	mMouseDown = false;
+	mOutputTorques = false;
+	mCoachTorqueFile = nullptr;
+	mStudentTorqueFile = nullptr;
 }
 
 cDrawScenarioArmRL::~cDrawScenarioArmRL()
@@ -41,6 +48,9 @@ void cDrawScenarioArmRL::Keyboard(unsigned char key, int x, int y)
 	case 'a':
 		ToggleAutoTarget();
 		break;
+	case 'w':
+		ToggleOutputTorques();
+		break;
 	default:
 		break;
 	}
@@ -50,6 +60,11 @@ void cDrawScenarioArmRL::Update(double time_elapsed)
 {
 	cDrawScenario::Update(time_elapsed);
 	mScene->Update(time_elapsed);
+
+	if (mOutputTorques)
+	{
+		WriteTorques();
+	}
 }
 
 void cDrawScenarioArmRL::Init()
@@ -224,4 +239,55 @@ void cDrawScenarioArmRL::MouseMove(double x, double y)
 		target_pos[2] = 0;
 		SetTarget(target_pos);
 	}
+}
+
+void cDrawScenarioArmRL::ToggleOutputTorques()
+{
+	if (mOutputTorques)
+	{
+		EndWrite();
+		printf("End Writing Torques.\n");
+	}
+	else
+	{
+		BeginWrite();
+		printf("Begin Writing Torques.\n");
+	}
+	mOutputTorques = !mOutputTorques;
+}
+
+void cDrawScenarioArmRL::BeginWrite()
+{
+	mCoachTorqueFile = cFileUtil::OpenFile(gCoachTorqueFilename, "w");
+	mStudentTorqueFile = cFileUtil::OpenFile(gStudentTorqueFilename, "w");
+}
+
+void cDrawScenarioArmRL::EndWrite()
+{
+	cFileUtil::CloseFile(mCoachTorqueFile);
+	cFileUtil::CloseFile(mStudentTorqueFile);
+}
+
+void cDrawScenarioArmRL::WriteTorques()
+{
+	WriteTorques(mScene->GetCoach(), mCoachTorqueFile);
+	WriteTorques(mScene->GetCharacter(), mStudentTorqueFile);
+}
+
+void cDrawScenarioArmRL::WriteTorques(const std::shared_ptr<cSimCharacter>& character, FILE* out_file) const
+{
+	int num_joints = character->GetNumJoints();
+	for (int j = 0; j < num_joints; ++j)
+	{
+		const cJoint& joint = character->GetJoint(j);
+		tVector torque = tVector::Zero();
+		
+		if (joint.IsValid())
+		{
+			torque = joint.GetTorque();
+		}
+		
+		fprintf(out_file, "%.5f\t", torque[2]);
+	}
+	fprintf(out_file, "\n");
 }

@@ -123,5 +123,49 @@
 				"Param1": 0.1,
 				"Param2": 0.12
 			}
+		],
+
+		"PDControllers": 
+		[
+			{
+				"Name": "root",
+				"Kp": 0,
+				"Kd": 0,
+				"TorqueLim": 0,
+				"TargetTheta": 0,
+				"UseWorldCoord": 0
+			},
+			{
+				"Name": "link0",
+				"Kp": 300,
+				"Kd": 30,
+				"TorqueLim": 300,
+				"TargetTheta": 0,
+				"UseWorldCoord": 0
+			},
+			{
+				"Name": "link1",
+				"Kp": 300,
+				"Kd": 30,
+				"TorqueLim": 300,
+				"TargetTheta": 0,
+				"UseWorldCoord": 0
+			},
+			{
+				"Name": "link2",
+				"Kp": 300,
+				"Kd": 30,
+				"TorqueLim": 300,
+				"TargetTheta": 0,
+				"UseWorldCoord": 0
+			},
+			{
+				"Name": "link3",
+				"Kp": 100,
+				"Kd": 10,
+				"TorqueLim": 300,
+				"TargetTheta": 0,
+				"UseWorldCoord": 0
+			}
 		]
 }

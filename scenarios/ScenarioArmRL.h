@@ -5,6 +5,7 @@
 #include "scenarios/ScenarioSimChar.h"
 #include "stuff/ArmNNController.h"
 #include "stuff/ArmQPController.h"
+#include "stuff/ArmPDQPController.h"
 #include "learning/ExpTuple.h"
 #include "learning/NeuralNetTrainer.h"
 #include "render/TextureDesc.h"

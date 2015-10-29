@@ -27,5 +27,5 @@ protected:
 	cNeuralNet mNet;
 
 	virtual void UpdatePoliAction();
-	virtual void ApplyPoliAction(const Eigen::VectorXd& action) const;
+	virtual void ApplyPoliAction(double time_step, const Eigen::VectorXd& action);
 };

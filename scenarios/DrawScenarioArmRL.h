@@ -29,6 +29,9 @@ protected:
 	std::shared_ptr<cScenarioSimChar> mSimScene;
 	std::string mOutputNetFile;
 	bool mMouseDown;
+	bool mOutputTorques;
+	FILE* mCoachTorqueFile;
+	FILE* mStudentTorqueFile;
 
 	virtual void ToggleTraining();
 	virtual void ToggleAutoTarget();
@@ -44,4 +47,10 @@ protected:
 	virtual void DrawTarget() const;
 	virtual void DrawGrid() const;
 	virtual void DrawViewRT() const;
+
+	virtual void ToggleOutputTorques();
+	virtual void BeginWrite();
+	virtual void EndWrite();
+	virtual void WriteTorques();
+	virtual void WriteTorques(const std::shared_ptr<cSimCharacter>& character, FILE* out_file) const;
 };

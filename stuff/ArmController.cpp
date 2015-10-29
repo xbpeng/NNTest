@@ -22,6 +22,7 @@ void cArmController::Init(cSimCharacter* character)
 
 	InitPoliState();
 	InitPoliAction();
+	ApplyTorqueLimit(mTorqueLim);
 }
 
 void cArmController::Reset()
@@ -48,14 +49,14 @@ void cArmController::Update(double time_step)
 		mUpdateCounter = 0;
 	}
 
-	ApplyPoliAction(mPoliAction);
-
+	ApplyPoliAction(time_step, mPoliAction);
 	mUpdateCounter += time_step;
 }
 
 void cArmController::SetTorqueLimit(double torque_lim)
 {
 	mTorqueLim = torque_lim;
+	ApplyTorqueLimit(torque_lim);
 }
 
 void cArmController::SetUpdatePeriod(double period)
@@ -142,7 +143,7 @@ void cArmController::UpdatePoliAction()
 {
 }
 
-void cArmController::ApplyPoliAction(const Eigen::VectorXd& action) const
+void cArmController::ApplyPoliAction(double time_step, const Eigen::VectorXd& action)
 {
 	int num_joints = mChar->GetNumJoints();
 	assert(static_cast<int>(action.size()) == num_joints - 1);
@@ -155,5 +156,15 @@ void cArmController::ApplyPoliAction(const Eigen::VectorXd& action) const
 		t = cMathUtil::Clamp(t, -mTorqueLim, mTorqueLim);
 		tVector torque = tVector(0, 0, t, 0);
 		joint.AddTorque(torque);
+	}
+}
+
+void cArmController::ApplyTorqueLimit(double lim)
+{
+	int num_joints = mChar->GetNumJoints();
+	for (int j = 0; j < num_joints; ++j)
+	{
+		cJoint& joint = mChar->GetJoint(j);
+		joint.SetTorqueLimit(lim);
 	}
 }

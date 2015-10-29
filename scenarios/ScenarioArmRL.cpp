@@ -198,8 +198,9 @@ bool cScenarioArmRL::BuildController(std::shared_ptr<cCharController>& out_ctrl)
 bool cScenarioArmRL::BuildCoachController(std::shared_ptr<cCharController>& out_ctrl)
 {
 	bool succ = true;
-	std::shared_ptr<cArmQPController> ctrl = std::shared_ptr<cArmQPController>(new cArmQPController());
-	ctrl->Init(mCoach.get(), gTestGravity);
+	std::shared_ptr<cArmPDQPController> ctrl = std::shared_ptr<cArmPDQPController>(new cArmPDQPController());
+	//ctrl->Init(mCoach.get(), gTestGravity);
+	ctrl->Init(mCoach.get(), gTestGravity, mCharacterFile);
 	ctrl->SetTorqueLimit(gTorqueLim);
 	ctrl->SetUpdatePeriod(gCtrlUpdatePeriod);
 	out_ctrl = ctrl;
@@ -393,7 +394,8 @@ void cScenarioArmRL::UpdateCharacter(double time_step)
 			{
 				SyncCoach();
 			}
-			cScenarioSimChar::UpdateCharacter(time_step);
+			// hack
+			//cScenarioSimChar::UpdateCharacter(time_step);
 		}
 	}
 
