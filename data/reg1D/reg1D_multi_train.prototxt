@@ -10,7 +10,7 @@ layer {
     batch_size: 4
 	channels: 1
 	height: 1
-	width: 8
+	width: 4
 	label_size: 4
   }
 }

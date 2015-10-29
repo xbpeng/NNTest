@@ -126,14 +126,13 @@ void cScenarioReg1D::EvalNet()
 		max_x += pad;
 
 		mEvalPts.resize(mNumEvalPts);
-		Eigen::VectorXd x(mNet.GetInputSize());
-		Eigen::VectorXd y(mNet.GetOutputSize());
+		Eigen::VectorXd x = Eigen::VectorXd::Zero(mNet.GetInputSize());
+		Eigen::VectorXd y = Eigen::VectorXd::Zero(mNet.GetOutputSize());
 
 		for (int i = 0; i < mNumEvalPts; ++i)
 		{
 			x(0) = static_cast<double>(i) / (mNumEvalPts - 1) * (max_x - min_x) + min_x;
 			mNet.Eval(x, y);
-
 			mEvalPts[i] = tVector(x(0), y(0), 0, 0);
 		}
 	}

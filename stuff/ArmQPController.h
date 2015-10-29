@@ -13,6 +13,7 @@ public:
 	virtual ~cArmQPController();
 
 	virtual void Init(cSimCharacter* character, const tVector& gravity);
+	virtual void SetTorqueLimit(double torque_lim);
 
 protected:
 	enum eQPParam

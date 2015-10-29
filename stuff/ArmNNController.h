@@ -27,4 +27,5 @@ protected:
 	cNeuralNet mNet;
 
 	virtual void UpdatePoliAction();
+	virtual void ApplyPoliAction(const Eigen::VectorXd& action) const;
 };

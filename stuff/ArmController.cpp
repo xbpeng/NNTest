@@ -152,7 +152,7 @@ void cArmController::ApplyPoliAction(const Eigen::VectorXd& action) const
 		cJoint& joint = mChar->GetJoint(j);
 		double t = action[j - 1];
 		t /= gTorqueScale;
-		t = std::min(mTorqueLim, t);
+		t = cMathUtil::Clamp(t, -mTorqueLim, mTorqueLim);
 		tVector torque = tVector(0, 0, t, 0);
 		joint.AddTorque(torque);
 	}

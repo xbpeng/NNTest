@@ -4,24 +4,26 @@
 #include "render/DrawSimCharacter.h"
 
 const int gTupleBufferSize = 32;
-const int gTrainerPlaybackMemSize = 20000;
+const int gTrainerPlaybackMemSize = 500000;
 
 const double gCamSize = 4;
 const int gRTSize = 128;
 
 const tVector gLineColor = tVector(0, 0, 0, 1);
 const tVector gFillTint = tVector(1, 1, 1, 1);
-const double gTorqueLim = 400;
-const double gCtrlUpdatePeriod = 1 / 60.0;
+const double gTorqueLim = 300;
+const double gCtrlUpdatePeriod = 1 / 120.0;
 
 const double gLinearDamping = 0;
 const double gAngularDamping = 0;
+
+const tVector gTestGravity = tVector::Zero();
 
 cScenarioArmRL::cScenarioArmRL()
 {
 	mEnableTraining = true;
 	mEnableAutoTarget = true;
-	mSimStepsPerUpdate = 20;
+	mSimStepsPerUpdate = 10;
 	mTargetPos = tVector(1, 0, 0, 0);
 	ResetTargetCounter();
 }
@@ -148,8 +150,8 @@ const std::shared_ptr<cSimCharacter>& cScenarioArmRL::GetCoach() const
 
 void cScenarioArmRL::SaveNet(const std::string& out_file) const
 {
-	//const cBallController& ctrl = mBall.GetController();
-	//ctrl.SaveNet(out_file);
+	auto student = GetStudentController();
+	student->SaveNet(out_file);
 }
 
 std::string cScenarioArmRL::GetName() const
@@ -162,6 +164,7 @@ void cScenarioArmRL::BuildWorld()
 	cScenarioSimChar::BuildWorld();
 	mWorld->SetLinearDamping(gLinearDamping);
 	mWorld->SetAngularDamping(gAngularDamping);
+	mWorld->SetGravity(gTestGravity);
 }
 
 bool cScenarioArmRL::BuildController(std::shared_ptr<cCharController>& out_ctrl)
@@ -194,7 +197,7 @@ bool cScenarioArmRL::BuildCoachController(std::shared_ptr<cCharController>& out_
 {
 	bool succ = true;
 	std::shared_ptr<cArmQPController> ctrl = std::shared_ptr<cArmQPController>(new cArmQPController());
-	ctrl->Init(mCoach.get(), gGravity);
+	ctrl->Init(mCoach.get(), gTestGravity);
 	ctrl->SetTorqueLimit(gTorqueLim);
 	ctrl->SetUpdatePeriod(gCtrlUpdatePeriod);
 	out_ctrl = ctrl;
@@ -266,6 +269,15 @@ bool cScenarioArmRL::HasExploded() const
 	bool exploded = false;
 	exploded |= mChar->HasExploded();
 	exploded |= mCoach->HasExploded();
+
+	Eigen::VectorXd vel;
+	mCoach->BuildVel(vel);
+	double hack_test = vel.lpNorm<Eigen::Infinity>();
+	if (hack_test > 60)
+	{
+		exploded = true;
+	}
+
 	return exploded;
 }
 
@@ -274,7 +286,10 @@ void cScenarioArmRL::RandReset()
 	cScenarioSimChar::Reset();
 	mCoach->Reset();
 	ApplyRandPose();
-	SetRandTarget();
+	if (mEnableAutoTarget)
+	{
+		SetRandTarget();
+	}
 }
 
 void cScenarioArmRL::ApplyRandPose()
@@ -310,7 +325,7 @@ void cScenarioArmRL::SetRandTarget()
 
 void cScenarioArmRL::ResetTargetCounter()
 {
-	double max_time = 1.5;
+	double max_time = 2;
 	double min_time = 0.5;
 	mTargetCounter = cMathUtil::RandDouble(min_time, max_time);
 }
@@ -319,7 +334,7 @@ void cScenarioArmRL::UpdateTargetCounter(double time_step)
 {
 	mTargetCounter -= time_step;
 	mTargetCounter = std::max(0.0, mTargetCounter);
-	if ((mEnableAutoTarget || mEnableTraining) && mTargetCounter <= 0)
+	if (mEnableAutoTarget && mTargetCounter <= 0)
 	{
 		SetRandTarget();
 	}
@@ -372,7 +387,7 @@ void cScenarioArmRL::UpdateCharacter(double time_step)
 	{
 		if (mEnableTraining)
 		{
-			//SyncCoach();
+			SyncCoach();
 		}
 		cScenarioSimChar::UpdateCharacter(time_step);
 	}
@@ -461,7 +476,7 @@ void cScenarioArmRL::SetupScale()
 		stdev.segment(target_size, pose_size) = M_PI * Eigen::VectorXd::Ones(pose_size);
 		stdev.segment(target_size + pose_size, pose_size) = 2 * M_PI * Eigen::VectorXd::Ones(pose_size);
 
-		//mTrainer.SetScale(mean, stdev);
+		mTrainer.SetScale(mean, stdev);
 	}
 }
 
@@ -561,9 +576,15 @@ void cScenarioArmRL::SyncCoach()
 {
 	Eigen::VectorXd pose;
 	Eigen::VectorXd vel;
+	
 	mChar->BuildPose(pose);
 	mChar->BuildVel(vel);
-
 	mCoach->SetPose(pose);
 	mCoach->SetVel(vel);
+	/*
+	mCoach->BuildPose(pose);
+	mCoach->BuildVel(vel);
+	mChar->SetPose(pose);
+	mChar->SetVel(vel);
+	*/
 }

@@ -22,6 +22,12 @@ void cArmQPController::Init(cSimCharacter* character, const tVector& gravity)
 	mReach = CalcReach();
 }
 
+void cArmQPController::SetTorqueLimit(double torque_lim)
+{
+	cArmController::SetTorqueLimit(torque_lim);
+	SetupQPTorqueLim(torque_lim);
+}
+
 void cArmQPController::UpdateRBDModel()
 {
 	Eigen::VectorXd pose;
@@ -46,11 +52,6 @@ void cArmQPController::UpdatePoliAction()
 	int root_size = mChar->GetParamSize(mChar->GetRootID());
 	mPoliAction = tau.segment(root_size, tau_size - root_size);
 	mPoliAction *= gTorqueScale;
-
-	// hack
-	mPoliAction.setZero();
-	mPoliState[0] = cMathUtil::RandDouble(-1, 1);
-	mPoliAction[0] = mPoliState[0];
 }
 
 void cArmQPController::ComputeQPTau()
@@ -191,7 +192,7 @@ void cArmQPController::BuildObjectivePose(const Eigen::VectorXd& pose, const Eig
 											Eigen::MatrixXd& out_C, Eigen::VectorXd& out_d) const
 {
 	const double omega_p = 10;
-	const double si_p = 2;
+	const double si_p = 4;
 	
 	int acc_offset = GetQPParamOffset(eQPParamAcc);
 	int acc_size = GetQPParamSize(eQPParamAcc);
