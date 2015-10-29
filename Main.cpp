@@ -305,7 +305,7 @@ void Keyboard(unsigned char key, int x, int y) {
 	case '.':
 		ChangePlaybackSpeed(gPlaybackDelta);
 		break;
-	case 'f':
+	case '/':
 		gPlaybackSpeed = 1;
 		break;
 	default:

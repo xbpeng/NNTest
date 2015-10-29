@@ -47,6 +47,7 @@ public:
 protected:
 	bool mEnableAutoTarget;
 	bool mEnableTraining;
+	bool mPretrain;
 
 	double mTargetCounter;
 	std::shared_ptr<cSimCharacter> mCoach;

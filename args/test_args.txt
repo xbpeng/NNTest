@@ -14,6 +14,7 @@
 //-net_file= data/reg1D/reg1D_multi_deploy.prototxt
 
 -epsilon_greedy_rate= 0.2
+-arm_pretrain= false
 
 //-output_net_file= output/ball_rl_model.h5
 -output_net_file= output/arm_rl_model.h5

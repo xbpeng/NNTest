@@ -23,6 +23,7 @@ cScenarioArmRL::cScenarioArmRL()
 {
 	mEnableTraining = true;
 	mEnableAutoTarget = true;
+	mPretrain = false;
 	mSimStepsPerUpdate = 10;
 	mTargetPos = tVector(1, 0, 0, 0);
 	ResetTargetCounter();
@@ -52,6 +53,7 @@ void cScenarioArmRL::ParseArgs(const cArgParser& parser)
 	parser.ParseString("solver_file", mSolverFile);
 	parser.ParseString("net_file", mNetFile);
 	parser.ParseString("model_file", mModelFile);
+	parser.ParseBool("arm_pretrain", mPretrain);
 }
 
 void cScenarioArmRL::Reset()
@@ -325,8 +327,8 @@ void cScenarioArmRL::SetRandTarget()
 
 void cScenarioArmRL::ResetTargetCounter()
 {
-	double max_time = 2;
-	double min_time = 0.5;
+	double max_time = 3;
+	double min_time = 1;
 	mTargetCounter = cMathUtil::RandDouble(min_time, max_time);
 }
 
@@ -381,15 +383,18 @@ void cScenarioArmRL::UpdateCharacter(double time_step)
 		UpdateViewBuffer();
 	}
 	
-	cNeuralNetTrainer::eStage trainer_stage = mTrainer.GetStage();
-	if (trainer_stage != cNeuralNetTrainer::eStageInit
-		|| !mEnableTraining)
+	if (!mPretrain)
 	{
-		if (mEnableTraining)
+		cNeuralNetTrainer::eStage trainer_stage = mTrainer.GetStage();
+		if (trainer_stage != cNeuralNetTrainer::eStageInit
+			|| !mEnableTraining)
 		{
-			SyncCoach();
+			if (mEnableTraining)
+			{
+				SyncCoach();
+			}
+			cScenarioSimChar::UpdateCharacter(time_step);
 		}
-		cScenarioSimChar::UpdateCharacter(time_step);
 	}
 
 	UpdateCoach(time_step);
@@ -581,10 +586,4 @@ void cScenarioArmRL::SyncCoach()
 	mChar->BuildVel(vel);
 	mCoach->SetPose(pose);
 	mCoach->SetVel(vel);
-	/*
-	mCoach->BuildPose(pose);
-	mCoach->BuildVel(vel);
-	mChar->SetPose(pose);
-	mChar->SetVel(vel);
-	*/
 }
