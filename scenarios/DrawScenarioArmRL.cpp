@@ -96,12 +96,11 @@ void cDrawScenarioArmRL::DrawScene()
 
 void cDrawScenarioArmRL::DrawCharacter()
 {
-	glPushMatrix();
 	const auto& coach = mScene->GetCoach();
-	cDrawUtil::Translate(tVector(0, 0, -0.05, 0));
-	cDrawSimCharacter::Draw(*(coach.get()), gCoachFillTint, gLineColor);
+	glPushMatrix();
+	mScene->DrawArm(coach, gCoachFillTint, gLineColor);
 	glPopMatrix();
-
+	
 	mScene->DrawCharacter();
 }
 

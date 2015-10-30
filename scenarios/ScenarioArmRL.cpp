@@ -2,6 +2,7 @@
 #include "stuff/SimArm.h"
 #include "render/DrawUtil.h"
 #include "render/DrawSimCharacter.h"
+#include "util/FileUtil.h"
 
 const int gTupleBufferSize = 32;
 const int gTrainerPlaybackMemSize = 500000;
@@ -12,7 +13,7 @@ const int gRTSize = 128;
 const tVector gLineColor = tVector(0, 0, 0, 1);
 const tVector gFillTint = tVector(1, 1, 1, 1);
 const double gTorqueLim = 300;
-const double gCtrlUpdatePeriod = 1 / 120.0; // hack
+const double gCtrlUpdatePeriod = 1 / 120.0;
 
 const double gLinearDamping = 0;
 const double gAngularDamping = 0;
@@ -134,7 +135,7 @@ const tVector& cScenarioArmRL::GetTargetPos() const
 
 void cScenarioArmRL::DrawCharacter() const
 {
-	cDrawSimCharacter::Draw(*(mChar.get()), gFillTint, gLineColor);
+	DrawArm(mChar, gFillTint, gLineColor);
 }
 
 void cScenarioArmRL::DrawTarget() const
@@ -152,6 +153,29 @@ void cScenarioArmRL::DrawTarget() const
 	cDrawUtil::SetLineWidth(1);
 	cDrawUtil::DrawCalibMarker(target + offset, r, slices, line_col, line_col, 
 								cDrawUtil::eDrawWire);
+}
+
+void cScenarioArmRL::DrawArm(const std::shared_ptr<cSimCharacter>& arm, const tVector& fill_tint, const tVector& line_col) const
+{
+	cDrawSimCharacter::Draw(*(arm.get()), fill_tint, line_col);
+
+	// draw end effector
+	int end_id = cSimArm::eJointLinkEnd;
+	tVector end_pos = arm->CalcJointPos(end_id);
+	tVector axis;
+	double theta;
+	arm->CalcJointWorldRotation(end_id - 1, axis, theta);
+	
+	tVector col = arm->GetPartColor(end_id);
+
+	glPushMatrix();
+	cDrawUtil::Translate(end_pos);
+	cDrawUtil::Rotate(theta, axis);
+	cDrawUtil::SetColor(fill_tint.cwiseProduct(col));
+	cDrawUtil::DrawBox(tVector::Zero(), tVector(0.1, 0.1, 0.12, 0), cDrawUtil::eDrawSolid);
+	cDrawUtil::SetColor(line_col);
+	cDrawUtil::DrawBox(tVector::Zero(), tVector(0.1, 0.1, 0.12, 0), cDrawUtil::eDrawWire);
+	glPopMatrix();
 }
 
 const std::unique_ptr<cTextureDesc>& cScenarioArmRL::GetViewRT() const
@@ -188,7 +212,8 @@ bool cScenarioArmRL::BuildController(std::shared_ptr<cCharController>& out_ctrl)
 	bool succ = true;
 	//std::shared_ptr<cArmPDNNController> ctrl = std::shared_ptr<cArmPDNNController>(new cArmPDNNController());
 	//ctrl->Init(mChar.get(), gTestGravity, mCharacterFile);
-	std::shared_ptr<cArmNNController> ctrl = std::shared_ptr<cArmNNController>(new cArmNNController());
+	//std::shared_ptr<cArmNNController> ctrl = std::shared_ptr<cArmNNController>(new cArmNNController());
+	std::shared_ptr<cArmNNPixelController> ctrl = std::shared_ptr<cArmNNPixelController>(new cArmNNPixelController());
 	ctrl->Init(mChar.get());
 	ctrl->SetTorqueLimit(gTorqueLim);
 	ctrl->SetUpdatePeriod(gCtrlUpdatePeriod);
@@ -393,7 +418,7 @@ int cScenarioArmRL::GetActionSize() const
 
 void cScenarioArmRL::RecordState(Eigen::VectorXd& out_state) const
 {
-	auto ctrl = GetCoachController();
+	auto ctrl = GetStudentController();
 	ctrl->RecordPoliState(out_state);
 }
 
@@ -420,18 +445,12 @@ void cScenarioArmRL::UpdateCharacter(double time_step)
 		UpdateViewBuffer();
 	}
 	
-	cNeuralNetTrainer::eStage trainer_stage = mTrainer.GetStage();
-	if (trainer_stage != cNeuralNetTrainer::eStageInit
-		|| !mEnableTraining)
+	if (mEnableTraining)
 	{
-		if (mEnableTraining)
-		{
-			SyncCoach();
-		}
-
-		cScenarioSimChar::UpdateCharacter(time_step);
+		SyncCharacters();
 	}
 
+	cScenarioSimChar::UpdateCharacter(time_step);
 	UpdateCoach(time_step);
 
 	if (new_update && mEnableTraining)
@@ -510,8 +529,8 @@ void cScenarioArmRL::InitTrainer()
 	params.mSolverFile = mSolverFile;
 	params.mPlaybackMemSize = gTrainerPlaybackMemSize;
 	params.mPoolSize = 1;
-	params.mNumInitSamples = 10000;
-	//params.mNumInitSamples = 100;
+	//params.mNumInitSamples = 10000;
+	params.mNumInitSamples = 100;
 	params.mCalcScale = false;
 	mTrainer.Init(params);
 
@@ -608,6 +627,27 @@ void cScenarioArmRL::UpdateViewBuffer()
 	cDrawUtil::Finish();
 
 	mRenderTarget->ReadPixels(mViewBufferRaw);
+	int num_texels = mRenderTarget->GetNumTexels();
+	int w = mRenderTarget->GetWidth();
+	int h = mRenderTarget->GetHeight();
+
+	mViewBuffer.resize(num_texels);
+	for (int y = 0; y < h; ++y)
+	{
+		for (int x = 0; x < w; ++x)
+		{
+			tVector texel = ReadTexel(x, y, w, h, mViewBufferRaw);
+			int idx = w * y + x;
+			mViewBuffer[idx] = (texel[0] + texel[1] + texel[2]) / 3;
+		}
+	}
+
+	auto student = GetStudentController();
+	if (typeid(*student.get()).hash_code() == typeid(cArmNNPixelController).hash_code())
+	{
+		std::shared_ptr<cArmNNPixelController> pixel_ctrl = std::static_pointer_cast<cArmNNPixelController>(student);
+		pixel_ctrl->SetViewBuffer(mViewBuffer);
+	}
 }
 
 void cScenarioArmRL::InitRenderResources()
@@ -631,12 +671,15 @@ std::shared_ptr<cArmNNController> cScenarioArmRL::GetStudentController() const
 	return std::static_pointer_cast<cArmNNController>(mChar->GetController());
 }
 
-void cScenarioArmRL::SyncCoach()
+void cScenarioArmRL::SyncCharacters()
 {
 	Eigen::VectorXd pose;
 	Eigen::VectorXd vel;
 	
-	if (mPretrain)
+	cNeuralNetTrainer::eStage trainer_stage = mTrainer.GetStage();
+	bool sync_char = mPretrain || trainer_stage == cNeuralNetTrainer::eStageInit;
+
+	if (sync_char)
 	{
 		mCoach->BuildPose(pose);
 		mCoach->BuildVel(vel);

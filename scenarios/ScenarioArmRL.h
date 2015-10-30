@@ -7,6 +7,7 @@
 #include "stuff/ArmQPController.h"
 #include "stuff/ArmPDQPController.h"
 #include "stuff/ArmPDNNController.h"
+#include "stuff/ArmNNPixelController.h"
 #include "learning/ExpTuple.h"
 #include "learning/NeuralNetTrainer.h"
 #include "render/TextureDesc.h"
@@ -42,6 +43,7 @@ public:
 
 	virtual void DrawCharacter() const;
 	virtual void DrawTarget() const;
+	virtual void DrawArm(const std::shared_ptr<cSimCharacter>& arm, const tVector& fill_tint, const tVector& line_col) const;
 
 	virtual const std::unique_ptr<cTextureDesc>& GetViewRT() const;
 	virtual const std::shared_ptr<cSimCharacter>& GetCoach() const;
@@ -120,5 +122,5 @@ protected:
 
 	virtual std::shared_ptr<cArmQPController> GetCoachController() const;
 	virtual std::shared_ptr<cArmNNController> GetStudentController() const;
-	virtual void SyncCoach();
+	virtual void SyncCharacters();
 };
