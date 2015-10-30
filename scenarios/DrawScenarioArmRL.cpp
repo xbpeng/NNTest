@@ -51,6 +51,9 @@ void cDrawScenarioArmRL::Keyboard(unsigned char key, int x, int y)
 	case 'w':
 		ToggleOutputTorques();
 		break;
+	case 'p':
+		ToggleRandPose();
+		break;
 	default:
 		break;
 	}
@@ -134,6 +137,22 @@ void cDrawScenarioArmRL::ToggleAutoTarget()
 	else
 	{
 		printf("Auto Target disabled\n");
+	}
+}
+
+void cDrawScenarioArmRL::ToggleRandPose()
+{
+	bool enable_rand_pose = mScene->EnabledRandPose();
+	enable_rand_pose = !enable_rand_pose;
+	mScene->EnableRandPose(enable_rand_pose);
+
+	if (enable_rand_pose)
+	{
+		printf("Rand Pose Enabled\n");
+	}
+	else
+	{
+		printf("Rand Pose Disabled\n");
 	}
 }
 

@@ -1,15 +1,15 @@
 #pragma once
 
-#include "ArmQPController.h"
+#include "ArmNNController.h"
 #include "sim/ImpPDController.h"
 
-class cArmPDQPController : public cArmQPController
+class cArmPDNNController : public cArmNNController
 {
 public:
 	EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
-	cArmPDQPController();
-	virtual ~cArmPDQPController();
+	cArmPDNNController();
+	virtual ~cArmPDNNController();
 
 	virtual void Init(cSimCharacter* character, const tVector& gravity, const std::string& param_file);
 	virtual void Reset();

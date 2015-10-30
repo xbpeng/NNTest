@@ -5,7 +5,7 @@ const double cArmController::gTorqueScale = 0.1;
 
 cArmController::cArmController()
 {
-	mTorqueLim = 400;
+	mTorqueLim = 300;
 	mUpdatePeriod = 1 / 60.0;
 	mUpdateCounter = mUpdatePeriod;
 	mTargetPos = tVector::Zero();
@@ -18,7 +18,7 @@ cArmController::~cArmController()
 void cArmController::Init(cSimCharacter* character)
 {
 	cCharController::Init(character);
-	mTargetPos = mChar->GetBodyPart(GetEndEffectorID())->GetPos();
+	mTargetPos = mChar->CalcJointPos(GetEndEffectorID());
 
 	InitPoliState();
 	InitPoliAction();

@@ -113,7 +113,7 @@
 			},
 			{
 				"Name": "end",
-				"Shape": "box",
+				"Shape": "null",
 				"Mass": 2.0,
 				"AttachX": 0,
 				"AttachY": 0,
@@ -160,7 +160,7 @@
 				"UseWorldCoord": 0
 			},
 			{
-				"Name": "link3",
+				"Name": "end",
 				"Kp": 100,
 				"Kd": 10,
 				"TorqueLim": 300,

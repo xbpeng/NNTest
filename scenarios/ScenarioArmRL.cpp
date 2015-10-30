@@ -12,7 +12,7 @@ const int gRTSize = 128;
 const tVector gLineColor = tVector(0, 0, 0, 1);
 const tVector gFillTint = tVector(1, 1, 1, 1);
 const double gTorqueLim = 300;
-const double gCtrlUpdatePeriod = 1 / 120.0;
+const double gCtrlUpdatePeriod = 1 / 120.0; // hack
 
 const double gLinearDamping = 0;
 const double gAngularDamping = 0;
@@ -23,10 +23,12 @@ cScenarioArmRL::cScenarioArmRL()
 {
 	mEnableTraining = true;
 	mEnableAutoTarget = true;
+	mEnableRandPose = true;
 	mPretrain = false;
-	mSimStepsPerUpdate = 10;
+	mSimStepsPerUpdate = 5;
 	mTargetPos = tVector(1, 0, 0, 0);
 	ResetTargetCounter();
+	ResetPoseCounter();
 }
 
 cScenarioArmRL::~cScenarioArmRL()
@@ -45,6 +47,7 @@ void cScenarioArmRL::Init()
 	InitRenderResources();
 	InitCam();
 	ResetTargetCounter();
+	ResetPoseCounter();
 }
 
 void cScenarioArmRL::ParseArgs(const cArgParser& parser)
@@ -75,6 +78,7 @@ void cScenarioArmRL::Clear()
 void cScenarioArmRL::Update(double time_elapsed)
 {
 	UpdateTargetCounter(time_elapsed);
+	UpdatePoseCounter(time_elapsed);
 	SetCtrlTargetPos(mTargetPos);
 	cScenarioSimChar::Update(time_elapsed);
 
@@ -103,6 +107,16 @@ bool cScenarioArmRL::EnabledAutoTarget() const
 void cScenarioArmRL::EnableAutoTarget(bool enable)
 {
 	mEnableAutoTarget = enable;
+}
+
+bool cScenarioArmRL::EnabledRandPose() const
+{
+	return mEnableRandPose;
+}
+
+void cScenarioArmRL::EnableRandPose(bool enable)
+{
+	mEnableRandPose = enable;
 }
 
 void cScenarioArmRL::SetTargetPos(const tVector& target)
@@ -172,6 +186,8 @@ void cScenarioArmRL::BuildWorld()
 bool cScenarioArmRL::BuildController(std::shared_ptr<cCharController>& out_ctrl)
 {
 	bool succ = true;
+	//std::shared_ptr<cArmPDNNController> ctrl = std::shared_ptr<cArmPDNNController>(new cArmPDNNController());
+	//ctrl->Init(mChar.get(), gTestGravity, mCharacterFile);
 	std::shared_ptr<cArmNNController> ctrl = std::shared_ptr<cArmNNController>(new cArmNNController());
 	ctrl->Init(mChar.get());
 	ctrl->SetTorqueLimit(gTorqueLim);
@@ -198,9 +214,10 @@ bool cScenarioArmRL::BuildController(std::shared_ptr<cCharController>& out_ctrl)
 bool cScenarioArmRL::BuildCoachController(std::shared_ptr<cCharController>& out_ctrl)
 {
 	bool succ = true;
-	std::shared_ptr<cArmPDQPController> ctrl = std::shared_ptr<cArmPDQPController>(new cArmPDQPController());
-	//ctrl->Init(mCoach.get(), gTestGravity);
-	ctrl->Init(mCoach.get(), gTestGravity, mCharacterFile);
+	//std::shared_ptr<cArmPDQPController> ctrl = std::shared_ptr<cArmPDQPController>(new cArmPDQPController());
+	//ctrl->Init(mCoach.get(), gTestGravity, mCharacterFile);
+	std::shared_ptr<cArmQPController> ctrl = std::shared_ptr<cArmQPController>(new cArmQPController());
+	ctrl->Init(mCoach.get(), gTestGravity);
 	ctrl->SetTorqueLimit(gTorqueLim);
 	ctrl->SetUpdatePeriod(gCtrlUpdatePeriod);
 	out_ctrl = ctrl;
@@ -288,6 +305,7 @@ void cScenarioArmRL::RandReset()
 {
 	cScenarioSimChar::Reset();
 	mCoach->Reset();
+	
 	ApplyRandPose();
 	if (mEnableAutoTarget)
 	{
@@ -315,6 +333,7 @@ void cScenarioArmRL::ApplyRandPose()
 	mChar->SetPose(pose);
 	mCoach->SetVel(vel);
 	mChar->SetVel(vel);
+	ResetPoseCounter();
 }
 
 void cScenarioArmRL::SetRandTarget()
@@ -328,9 +347,16 @@ void cScenarioArmRL::SetRandTarget()
 
 void cScenarioArmRL::ResetTargetCounter()
 {
-	double max_time = 3;
-	double min_time = 1;
+	double max_time = 6;
+	double min_time = 2;
 	mTargetCounter = cMathUtil::RandDouble(min_time, max_time);
+}
+
+void cScenarioArmRL::ResetPoseCounter()
+{
+	double max_time = 10;
+	double min_time = 8;
+	mPoseCounter = cMathUtil::RandDouble(min_time, max_time);
 }
 
 void cScenarioArmRL::UpdateTargetCounter(double time_step)
@@ -340,6 +366,16 @@ void cScenarioArmRL::UpdateTargetCounter(double time_step)
 	if (mEnableAutoTarget && mTargetCounter <= 0)
 	{
 		SetRandTarget();
+	}
+}
+
+void cScenarioArmRL::UpdatePoseCounter(double time_elapsed)
+{
+	mPoseCounter -= time_elapsed;
+	mPoseCounter = std::max(0.0, mPoseCounter);
+	if (mEnableRandPose && mPoseCounter <= 0 && mEnableTraining)
+	{
+		ApplyRandPose();
 	}
 }
 
@@ -384,19 +420,16 @@ void cScenarioArmRL::UpdateCharacter(double time_step)
 		UpdateViewBuffer();
 	}
 	
-	if (!mPretrain)
+	cNeuralNetTrainer::eStage trainer_stage = mTrainer.GetStage();
+	if (trainer_stage != cNeuralNetTrainer::eStageInit
+		|| !mEnableTraining)
 	{
-		cNeuralNetTrainer::eStage trainer_stage = mTrainer.GetStage();
-		if (trainer_stage != cNeuralNetTrainer::eStageInit
-			|| !mEnableTraining)
+		if (mEnableTraining)
 		{
-			if (mEnableTraining)
-			{
-				SyncCoach();
-			}
-			// hack
-			//cScenarioSimChar::UpdateCharacter(time_step);
+			SyncCoach();
 		}
+
+		cScenarioSimChar::UpdateCharacter(time_step);
 	}
 
 	UpdateCoach(time_step);
@@ -436,7 +469,28 @@ void cScenarioArmRL::UpdateCharacter(double time_step)
 		{
 			printf("%.3f\t", student_action[i]);
 		}
-		printf("\n\n");
+		printf("\n");
+
+		Eigen::VectorXd pose;
+		Eigen::VectorXd vel;
+		mChar->BuildPose(pose);
+		mChar->BuildVel(vel);
+
+		printf("Student Pose: ");
+		for (int i = 3; i < pose.size(); ++i)
+		{
+			printf("%.3f\t", pose[i]);
+		}
+		printf("\n");
+
+		printf("Student Vel: ");
+		for (int i = 3; i < vel.size(); ++i)
+		{
+			printf("%.3f\t", vel[i]);
+		}
+		printf("\n");
+
+		printf("\n");
 	}
 }
 
@@ -456,7 +510,8 @@ void cScenarioArmRL::InitTrainer()
 	params.mSolverFile = mSolverFile;
 	params.mPlaybackMemSize = gTrainerPlaybackMemSize;
 	params.mPoolSize = 1;
-	params.mNumInitSamples = 1000;
+	params.mNumInitSamples = 10000;
+	//params.mNumInitSamples = 100;
 	params.mCalcScale = false;
 	mTrainer.Init(params);
 
@@ -500,11 +555,6 @@ void cScenarioArmRL::Train()
 	cNeuralNetTrainer::eStage stage0 = mTrainer.GetStage();
 	mTrainer.Train(num_steps);
 	cNeuralNetTrainer::eStage stage1 = mTrainer.GetStage();
-
-	if (stage0 != stage1)
-	{
-		mTrainer.Train(10);
-	}
 
 	const cNeuralNet& trainer_net = mTrainer.GetNet();
 	std::shared_ptr<cArmNNController> ctrl = GetStudentController();
@@ -556,6 +606,8 @@ void cScenarioArmRL::UpdateViewBuffer()
 	glPopMatrix();
 
 	cDrawUtil::Finish();
+
+	mRenderTarget->ReadPixels(mViewBufferRaw);
 }
 
 void cScenarioArmRL::InitRenderResources()
@@ -584,8 +636,18 @@ void cScenarioArmRL::SyncCoach()
 	Eigen::VectorXd pose;
 	Eigen::VectorXd vel;
 	
-	mChar->BuildPose(pose);
-	mChar->BuildVel(vel);
-	mCoach->SetPose(pose);
-	mCoach->SetVel(vel);
+	if (mPretrain)
+	{
+		mCoach->BuildPose(pose);
+		mCoach->BuildVel(vel);
+		mChar->SetPose(pose);
+		mChar->SetVel(vel);
+	}
+	else
+	{
+		mChar->BuildPose(pose);
+		mChar->BuildVel(vel);
+		mCoach->SetPose(pose);
+		mCoach->SetVel(vel);
+	}
 }

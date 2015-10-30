@@ -35,6 +35,7 @@ protected:
 
 	virtual void ToggleTraining();
 	virtual void ToggleAutoTarget();
+	virtual void ToggleRandPose();
 	virtual const std::shared_ptr<cScenarioSimChar>& GetScene() const;
 	virtual void BuildScene();
 

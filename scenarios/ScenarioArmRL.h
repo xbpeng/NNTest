@@ -6,6 +6,7 @@
 #include "stuff/ArmNNController.h"
 #include "stuff/ArmQPController.h"
 #include "stuff/ArmPDQPController.h"
+#include "stuff/ArmPDNNController.h"
 #include "learning/ExpTuple.h"
 #include "learning/NeuralNetTrainer.h"
 #include "render/TextureDesc.h"
@@ -33,6 +34,9 @@ public:
 	virtual bool EnabledAutoTarget() const;
 	virtual void EnableAutoTarget(bool enable);
 
+	virtual bool EnabledRandPose() const;
+	virtual void EnableRandPose(bool enable);
+
 	virtual void SetTargetPos(const tVector& target);
 	virtual const tVector& GetTargetPos() const;
 
@@ -48,8 +52,10 @@ public:
 protected:
 	bool mEnableAutoTarget;
 	bool mEnableTraining;
+	bool mEnableRandPose;
 	bool mPretrain;
 
+	double mPoseCounter;
 	double mTargetCounter;
 	std::shared_ptr<cSimCharacter> mCoach;
 
@@ -65,6 +71,8 @@ protected:
 
 	cCamera mRTCam;
 	std::unique_ptr<cTextureDesc> mRenderTarget;
+	Eigen::VectorXd mViewBuffer;
+	std::vector<GLubyte> mViewBufferRaw;
 	
 	virtual void BuildWorld();
 	virtual bool BuildController(std::shared_ptr<cCharController>& out_ctrl);
@@ -85,7 +93,9 @@ protected:
 	virtual void ApplyRandPose();
 	virtual void SetRandTarget();
 	virtual void ResetTargetCounter();
+	virtual void ResetPoseCounter();
 	virtual void UpdateTargetCounter(double time_step);
+	virtual void UpdatePoseCounter(double time_elapsed);
 
 	virtual int GetStateSize() const;
 	virtual int GetActionSize() const;
