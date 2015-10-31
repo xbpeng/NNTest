@@ -5,7 +5,7 @@
 #include "util/FileUtil.h"
 
 const int gTupleBufferSize = 32;
-const int gTrainerPlaybackMemSize = 20000;
+const int gTrainerPlaybackMemSize = 100000;
 
 const double gCamSize = 4;
 const int gRTSize = 128;
@@ -666,12 +666,24 @@ void cScenarioArmRL::UpdateViewBuffer()
 	int w = mRenderTarget->GetWidth();
 	int h = mRenderTarget->GetHeight();
 
+	num_texels /= 4;
+	w /= 2;
+	h /= 2;
 	mViewBuffer.resize(num_texels);
 	for (int y = 0; y < h; ++y)
 	{
 		for (int x = 0; x < w; ++x)
 		{
-			tVector texel = ReadTexel(x, y, w, h, mViewBufferRaw);
+			int tex_x = 2 * x;
+			int tex_y = 2 * y;
+
+			tVector texel0 = ReadTexel(tex_x, tex_y, w * 2, h * 2, mViewBufferRaw);
+			tVector texel1 = ReadTexel(tex_x + 1, tex_y, w * 2, h * 2, mViewBufferRaw);
+			tVector texel2 = ReadTexel(tex_x, tex_y + 1, w * 2, h * 2, mViewBufferRaw);
+			tVector texel3 = ReadTexel(tex_x + 1, tex_y + 1, w * 2, h * 2, mViewBufferRaw);
+
+			tVector texel = (texel0 + texel1 + texel2 + texel3) / 4;
+
 			int idx = w * y + x;
 			mViewBuffer[idx] = (texel[0] + texel[1] + texel[2]) / 3;
 		}

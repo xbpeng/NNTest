@@ -10,10 +10,11 @@ layer {
     batch_size: 32
 	channels: 1
 	height: 1
-	width: 16392
+	width: 4104
 	label_size: 4
   }
 }
+
 
 layer {
 	name: "slice0"
@@ -23,7 +24,7 @@ layer {
 	top: "data_char"
 	slice_param {
 		axis: 3
-		slice_point: 16384
+		slice_point: 4096
 	}
 }
 
@@ -36,11 +37,11 @@ layer {
       shape {
         dim: 0 
         dim: 0
-        dim: 128
-        dim: 128
+        dim: 64
+        dim: 64
       }
     }
-  }
+}
 
 layer {
   name: "conv0"
@@ -54,7 +55,7 @@ layer {
     lr_mult: 2
   }
   convolution_param {
-    num_output: 8
+    num_output: 16
     kernel_h: 8
 	kernel_w: 8
     stride: 1
@@ -120,7 +121,7 @@ layer {
 	decay_mult: 0
   }
   inner_product_param {
-    num_output: 32
+    num_output: 16
     weight_filler {
       type: "xavier"
     }
