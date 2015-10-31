@@ -670,28 +670,31 @@ void cScenarioArmRL::UpdateViewBuffer()
 		int w = mRenderTarget->GetWidth();
 		int h = mRenderTarget->GetHeight();
 
-		num_texels /= 4;
-		w /= 2;
-		h /= 2;
-		mViewBuffer.resize(num_texels);
-		//FILE* hack_f = cFileUtil::OpenFile("output/tex_data.txt", "w");
+		//num_texels /= 4;
+		//w /= 2;
+		//h /= 2;
 
+		mViewBuffer.resize(num_texels);
+
+		//FILE* hack_f = cFileUtil::OpenFile("output/tex_data.txt", "w");
 		for (int y = 0; y < h; ++y)
 		{
 			for (int x = 0; x < w; ++x)
 			{
-				int tex_x = 2 * x;
-				int tex_y = 2 * y;
+				//int tex_x = 2 * x;
+				//int tex_y = 2 * y;
 
-				tVector texel0 = ReadTexel(tex_x, tex_y, w * 2, h * 2, mViewBufferRaw);
-				tVector texel1 = ReadTexel(tex_x + 1, tex_y, w * 2, h * 2, mViewBufferRaw);
-				tVector texel2 = ReadTexel(tex_x, tex_y + 1, w * 2, h * 2, mViewBufferRaw);
-				tVector texel3 = ReadTexel(tex_x + 1, tex_y + 1, w * 2, h * 2, mViewBufferRaw);
+				//tVector texel0 = ReadTexel(tex_x, tex_y, w * 2, h * 2, mViewBufferRaw);
+				//tVector texel1 = ReadTexel(tex_x + 1, tex_y, w * 2, h * 2, mViewBufferRaw);
+				//tVector texel2 = ReadTexel(tex_x, tex_y + 1, w * 2, h * 2, mViewBufferRaw);
+				//tVector texel3 = ReadTexel(tex_x + 1, tex_y + 1, w * 2, h * 2, mViewBufferRaw);
+				//tVector texel = (texel0 + texel1 + texel2 + texel3) / 4;
 
-				tVector texel = (texel0 + texel1 + texel2 + texel3) / 4;
+				tVector texel = ReadTexel(x, y, w, h, mViewBufferRaw);
 
 				int idx = w * y + x;
-				double val = (texel[0] + texel[1] + texel[2]) / 3 * texel[3];
+				// hack
+				double val = 1 - (texel[0] + texel[1] + texel[2]) / 3;// *texel[3];
 				mViewBuffer[idx] = val;
 
 				//fprintf(hack_f, "%.5f\t", val);

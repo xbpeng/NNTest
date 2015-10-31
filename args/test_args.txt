@@ -22,7 +22,7 @@
 //-student_type= nn
 
 -epsilon_greedy_rate= 0.2
--arm_pretrain= false
+-arm_pretrain= true
 
 //-output_net_file= output/ball_rl_model.h5
 -output_net_file= output/arm_pixel_model.h5

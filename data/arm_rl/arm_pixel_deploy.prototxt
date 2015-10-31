@@ -4,7 +4,7 @@ input: "data"
 input_dim:1
 input_dim:1
 input_dim:1
-input_dim:4104
+input_dim:16392
 
 layer {
 	name: "slice0"
@@ -14,7 +14,7 @@ layer {
 	top: "data_char"
 	slice_param {
 		axis: 3
-		slice_point: 4096
+		slice_point: 16384
 	}
 }
 
@@ -27,8 +27,8 @@ layer {
       shape {
         dim: 0 
         dim: 0
-        dim: 64
-        dim: 64
+        dim: 128
+        dim: 128
       }
     }
 }

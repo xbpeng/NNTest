@@ -10,7 +10,7 @@ layer {
     batch_size: 32
 	channels: 1
 	height: 1
-	width: 4104
+	width: 16392
 	label_size: 4
   }
 }
@@ -24,7 +24,7 @@ layer {
 	top: "data_char"
 	slice_param {
 		axis: 3
-		slice_point: 4096
+		slice_point: 16384
 	}
 }
 
@@ -37,8 +37,8 @@ layer {
       shape {
         dim: 0 
         dim: 0
-        dim: 64
-        dim: 64
+        dim: 128
+        dim: 128
       }
     }
 }

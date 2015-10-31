@@ -1,7 +1,7 @@
 #include "ArmNNPixelController.h"
 #include "SimArm.h"
 
-const int gViewBufferRes = 64;
+const int gViewBufferRes = 128;
 
 cArmNNPixelController::cArmNNPixelController()
 {

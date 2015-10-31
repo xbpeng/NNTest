@@ -255,13 +255,16 @@ void cArmQPController::BuildObjectiveEndEffectors(const Eigen::VectorXd& pose, c
 	cSpAlg::tSpVec end_vel = cRBDUtil::MultJacobianEndEff(joint_mat, vel, J, joint_id);
 	end_vel = cSpAlg::ApplyTransM(trans, end_vel);
 
+	cSpAlg::tSpVec end_vpa = cRBDUtil::CalcVelProdAcc(mRBDModel, Jd, joint_id);
+	end_vpa = cSpAlg::ApplyTransM(trans, end_vpa);
+
 	// pad positioon out to be 6d
 	cSpAlg::tSpVec pos_err = cSpAlg::BuildSV(tVector::Zero(), end_pos_ref - end_pos);
 	cSpAlg::tSpVec vel_err = target_vel - end_vel;
 
 	Eigen::MatrixXd J_end_eff = cRBDUtil::ExtractEndEffJacobian(joint_mat, J, joint_id);
 	Eigen::MatrixXd J_local = cSpAlg::BuildSpatialMatM(trans) * J_end_eff;
-	cSpAlg::tSpVec b = -omega * si * vel_err - omega * omega * pos_err;
+	cSpAlg::tSpVec b = end_vpa - omega * si * vel_err - omega * omega * pos_err;
 
 	C_acc += J_local.transpose() * weight * curr_W * J_local;
 	d_acc += J_local.transpose() * weight * curr_W * b;

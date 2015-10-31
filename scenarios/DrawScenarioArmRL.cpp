@@ -216,6 +216,7 @@ void cDrawScenarioArmRL::DrawViewRT() const
 	cDrawUtil::SetColor(tVector(0, 0, 0, 1));
 	cDrawUtil::DrawRect(pos, size, cDrawUtil::eDrawWire);
 
+	cDrawUtil::SetColor(tVector(1, 1, 1, 1));
 	cDrawUtil::DrawTexQuad(*view_rt.get(), pos, size);
 
 	glMatrixMode(GL_PROJECTION);
