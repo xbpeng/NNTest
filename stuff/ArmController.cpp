@@ -102,6 +102,21 @@ int cArmController::GetTargetPosSize() const
 	return 2;
 }
 
+void cArmController::BuildPoliStateScale(Eigen::VectorXd& out_mean, Eigen::VectorXd& out_stdev) const
+{
+	const double pos_scale = 2;
+	int state_size = GetPoliStateSize();
+
+	out_mean = Eigen::VectorXd::Zero(state_size);
+	out_stdev = Eigen::VectorXd::Ones(state_size);
+	int target_size = GetTargetPosSize();
+	int pose_size = (state_size - target_size) / 2;
+
+	out_stdev.segment(0, target_size) = pos_scale * Eigen::VectorXd::Ones(target_size);
+	out_stdev.segment(target_size, pose_size) = M_PI * Eigen::VectorXd::Ones(pose_size);
+	out_stdev.segment(target_size + pose_size, pose_size) = 2 * M_PI * Eigen::VectorXd::Ones(pose_size);
+}
+
 void cArmController::SetTargetPos(const tVector& target)
 {
 	mTargetPos = target;

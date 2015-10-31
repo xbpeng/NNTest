@@ -10,8 +10,11 @@ public:
 	cArmNNPixelController();
 	virtual ~cArmNNPixelController();
 
-	virtual void SetViewBuffer(const Eigen::VectorXd& view_buff);
+	virtual int GetPoliStateSize() const;
+	virtual void BuildPoliStateScale(Eigen::VectorXd& out_mean, Eigen::VectorXd& out_stdev) const;
 
+	virtual void SetViewBuffer(const Eigen::VectorXd& view_buff);
+	
 protected:
 	Eigen::VectorXd mViewBuffer;
 	virtual void UpdatePoliState();

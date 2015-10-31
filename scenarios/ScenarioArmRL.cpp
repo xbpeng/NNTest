@@ -5,7 +5,7 @@
 #include "util/FileUtil.h"
 
 const int gTupleBufferSize = 32;
-const int gTrainerPlaybackMemSize = 500000;
+const int gTrainerPlaybackMemSize = 20000;
 
 const double gCamSize = 4;
 const int gRTSize = 128;
@@ -30,6 +30,9 @@ cScenarioArmRL::cScenarioArmRL()
 	mTargetPos = tVector(1, 0, 0, 0);
 	ResetTargetCounter();
 	ResetPoseCounter();
+
+	mCoachType = eCoachQP;
+	mStudentType = eStudentNN;
 }
 
 cScenarioArmRL::~cScenarioArmRL()
@@ -58,6 +61,9 @@ void cScenarioArmRL::ParseArgs(const cArgParser& parser)
 	parser.ParseString("net_file", mNetFile);
 	parser.ParseString("model_file", mModelFile);
 	parser.ParseBool("arm_pretrain", mPretrain);
+
+	ParseCoach(parser, mCoachType);
+	ParseStudent(parser, mStudentType);
 }
 
 void cScenarioArmRL::Reset()
@@ -210,27 +216,47 @@ void cScenarioArmRL::BuildWorld()
 bool cScenarioArmRL::BuildController(std::shared_ptr<cCharController>& out_ctrl)
 {
 	bool succ = true;
-	//std::shared_ptr<cArmPDNNController> ctrl = std::shared_ptr<cArmPDNNController>(new cArmPDNNController());
-	//ctrl->Init(mChar.get(), gTestGravity, mCharacterFile);
-	//std::shared_ptr<cArmNNController> ctrl = std::shared_ptr<cArmNNController>(new cArmNNController());
-	std::shared_ptr<cArmNNPixelController> ctrl = std::shared_ptr<cArmNNPixelController>(new cArmNNPixelController());
-	ctrl->Init(mChar.get());
-	ctrl->SetTorqueLimit(gTorqueLim);
-	ctrl->SetUpdatePeriod(gCtrlUpdatePeriod);
+
+	std::shared_ptr<cArmNNController> student_ctrl;
+	if (mStudentType == eStudentNN)
+	{
+		std::shared_ptr<cArmNNController> ctrl = std::shared_ptr<cArmNNController>(new cArmNNController());
+		ctrl->Init(mChar.get());
+		student_ctrl = ctrl;
+	}
+	else if (mStudentType == eStudentPDNN)
+	{
+		std::shared_ptr<cArmPDNNController> ctrl = std::shared_ptr<cArmPDNNController>(new cArmPDNNController());
+		ctrl->Init(mChar.get(), gTestGravity, mCharacterFile);
+		student_ctrl = ctrl;
+	}
+	else if (mStudentType == eStudentNNPixel)
+	{
+		std::shared_ptr<cArmNNPixelController> ctrl = std::shared_ptr<cArmNNPixelController>(new cArmNNPixelController());
+		ctrl->Init(mChar.get());
+		student_ctrl = ctrl;
+	}
+	else
+	{
+		assert(false); // unsupported character type
+	}
+
+	student_ctrl->SetTorqueLimit(gTorqueLim);
+	student_ctrl->SetUpdatePeriod(gCtrlUpdatePeriod);
 
 	if (succ && mNetFile != "")
 	{
-		succ &= ctrl->LoadNet(mNetFile);
+		succ &= student_ctrl->LoadNet(mNetFile);
 
 		if (succ && mModelFile != "")
 		{
-			ctrl->LoadModel(mModelFile);
+			student_ctrl->LoadModel(mModelFile);
 		}
 	}
 	
 	if (succ)
 	{
-		out_ctrl = ctrl;
+		out_ctrl = student_ctrl;
 	}
 	
 	return succ;
@@ -239,13 +265,28 @@ bool cScenarioArmRL::BuildController(std::shared_ptr<cCharController>& out_ctrl)
 bool cScenarioArmRL::BuildCoachController(std::shared_ptr<cCharController>& out_ctrl)
 {
 	bool succ = true;
-	//std::shared_ptr<cArmPDQPController> ctrl = std::shared_ptr<cArmPDQPController>(new cArmPDQPController());
-	//ctrl->Init(mCoach.get(), gTestGravity, mCharacterFile);
-	std::shared_ptr<cArmQPController> ctrl = std::shared_ptr<cArmQPController>(new cArmQPController());
-	ctrl->Init(mCoach.get(), gTestGravity);
-	ctrl->SetTorqueLimit(gTorqueLim);
-	ctrl->SetUpdatePeriod(gCtrlUpdatePeriod);
-	out_ctrl = ctrl;
+	std::shared_ptr<cArmController> coach_ctrl;
+	
+	if (mCoachType == eCoachQP)
+	{
+		std::shared_ptr<cArmQPController> ctrl = std::shared_ptr<cArmQPController>(new cArmQPController());
+		ctrl->Init(mCoach.get(), gTestGravity);
+		coach_ctrl = ctrl;
+	}
+	else if (mCoachType == eCoachPDQP)
+	{
+		std::shared_ptr<cArmPDQPController> ctrl = std::shared_ptr<cArmPDQPController>(new cArmPDQPController());
+		ctrl->Init(mCoach.get(), gTestGravity, mCharacterFile);
+		coach_ctrl = ctrl;
+	}
+	else
+	{
+		assert(false); // unsupported coach type
+	}
+	
+	coach_ctrl->SetTorqueLimit(gTorqueLim);
+	coach_ctrl->SetUpdatePeriod(gCtrlUpdatePeriod);
+	out_ctrl = coach_ctrl;
 
 	return succ;
 }
@@ -529,8 +570,8 @@ void cScenarioArmRL::InitTrainer()
 	params.mSolverFile = mSolverFile;
 	params.mPlaybackMemSize = gTrainerPlaybackMemSize;
 	params.mPoolSize = 1;
-	//params.mNumInitSamples = 10000;
-	params.mNumInitSamples = 100;
+	params.mNumInitSamples = 10000;
+	//params.mNumInitSamples = 100;
 	params.mCalcScale = false;
 	mTrainer.Init(params);
 
@@ -550,13 +591,7 @@ void cScenarioArmRL::SetupScale()
 		auto ctrl = GetStudentController();
 		Eigen::VectorXd mean = Eigen::VectorXd::Zero(state_size);
 		Eigen::VectorXd stdev = Eigen::VectorXd::Ones(state_size);
-		int target_size = ctrl->GetTargetPosSize();
-		int pose_size = (state_size - target_size) / 2;
-
-		stdev.segment(0, target_size) = 0.5 * gCamSize * Eigen::VectorXd::Ones(target_size);
-		stdev.segment(target_size, pose_size) = M_PI * Eigen::VectorXd::Ones(pose_size);
-		stdev.segment(target_size + pose_size, pose_size) = 2 * M_PI * Eigen::VectorXd::Ones(pose_size);
-
+		ctrl->BuildPoliStateScale(mean, stdev);
 		mTrainer.SetScale(mean, stdev);
 	}
 }
@@ -657,7 +692,7 @@ void cScenarioArmRL::InitRenderResources()
 
 bool cScenarioArmRL::NeedCtrlUpdate() const
 {
-	const auto ctrl = GetCoachController();
+	const auto ctrl = GetStudentController();
 	return ctrl->NeedUpdate();
 }
 
@@ -692,5 +727,55 @@ void cScenarioArmRL::SyncCharacters()
 		mChar->BuildVel(vel);
 		mCoach->SetPose(pose);
 		mCoach->SetVel(vel);
+	}
+}
+
+void cScenarioArmRL::ParseCoach(const cArgParser& parser, eCoach& out_coach) const
+{
+	std::string str = "";
+	parser.ParseString("coach_type", str);
+
+	if (str == "")
+	{
+	}
+	else if (str == "qp")
+	{
+		out_coach = eCoachQP;
+	}
+	else if (str == "pd_qp")
+	{
+		out_coach = eCoachPDQP;
+	}
+	else
+	{
+		printf("Unsupported coach type %s\n", str.c_str());
+		assert(false);
+	}
+}
+
+void cScenarioArmRL::ParseStudent(const cArgParser& parser, eStudent& out_student) const
+{
+	std::string str = "";
+	parser.ParseString("student_type", str);
+
+	if (str == "")
+	{
+	}
+	else if (str == "nn")
+	{
+		out_student = eStudentNN;
+	}
+	else if (str == "pd_nn")
+	{
+		out_student = eStudentPDNN;
+	}
+	else if (str == "nn_pixel")
+	{
+		out_student = eStudentNNPixel;
+	}
+	else
+	{
+		printf("Unsupported student type %s\n", str.c_str());
+		assert(false);
 	}
 }

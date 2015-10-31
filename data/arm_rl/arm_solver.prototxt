@@ -1,4 +1,5 @@
-net: "data/arm_rl/arm_train.prototxt"
+#net: "data/arm_rl/arm_train.prototxt"
+net: "data/arm_rl/arm_pixel_train.prototxt"
 
 # The base learning rate, momentum and the weight decay of the network.
 base_lr: 0.001

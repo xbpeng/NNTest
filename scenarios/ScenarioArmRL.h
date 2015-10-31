@@ -52,10 +52,28 @@ public:
 	virtual std::string GetName() const;
 	
 protected:
+	enum eCoach
+	{
+		eCoachQP,
+		eCoachPDQP,
+		eCoachMax
+	};
+
+	enum eStudent
+	{
+		eStudentNN,
+		eStudentPDNN,
+		eStudentNNPixel,
+		eStudentMax
+	};
+
 	bool mEnableAutoTarget;
 	bool mEnableTraining;
 	bool mEnableRandPose;
 	bool mPretrain;
+
+	eCoach mCoachType;
+	eStudent mStudentType;
 
 	double mPoseCounter;
 	double mTargetCounter;
@@ -123,4 +141,7 @@ protected:
 	virtual std::shared_ptr<cArmQPController> GetCoachController() const;
 	virtual std::shared_ptr<cArmNNController> GetStudentController() const;
 	virtual void SyncCharacters();
+
+	virtual void ParseCoach(const cArgParser& parser, eCoach& out_coach) const;
+	virtual void ParseStudent(const cArgParser& parser, eStudent& out_student) const;
 };

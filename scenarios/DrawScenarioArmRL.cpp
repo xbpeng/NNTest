@@ -98,6 +98,7 @@ void cDrawScenarioArmRL::DrawCharacter()
 {
 	const auto& coach = mScene->GetCoach();
 	glPushMatrix();
+	cDrawUtil::Translate(tVector(0, 0, -0.2, 0));
 	mScene->DrawArm(coach, gCoachFillTint, gLineColor);
 	glPopMatrix();
 	
