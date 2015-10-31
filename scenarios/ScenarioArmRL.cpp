@@ -5,7 +5,7 @@
 #include "util/FileUtil.h"
 
 const int gTupleBufferSize = 32;
-const int gTrainerPlaybackMemSize = 100000;
+const int gTrainerPlaybackMemSize = 50000;
 
 const double gCamSize = 4;
 const int gRTSize = 128;
@@ -390,7 +390,7 @@ void cScenarioArmRL::ApplyRandPose()
 	for (int i = root_size; i < static_cast<int>(pose.size()); ++i)
 	{
 		double rand_pose_val = cMathUtil::RandDouble(-M_PI, M_PI);
-		double rand_vel_val = cMathUtil::RandDouble(-M_PI, M_PI);
+		double rand_vel_val = 0.2 * cMathUtil::RandDouble(-M_PI, M_PI);
 		pose[i] = rand_pose_val;
 		vel[i] = rand_vel_val;
 	}
@@ -415,13 +415,15 @@ void cScenarioArmRL::ResetTargetCounter()
 {
 	double max_time = 6;
 	double min_time = 2;
+	//double max_time = 3;
+	//double min_time = 1;
 	mTargetCounter = cMathUtil::RandDouble(min_time, max_time);
 }
 
 void cScenarioArmRL::ResetPoseCounter()
 {
-	double max_time = 10;
-	double min_time = 8;
+	double max_time = 8;
+	double min_time = 6;
 	mPoseCounter = cMathUtil::RandDouble(min_time, max_time);
 }
 
@@ -474,7 +476,6 @@ void cScenarioArmRL::RecordTuple()
 	tExpTuple& tuple = mTupleBuffer[mNumTuples];
 	RecordState(tuple.mStateBeg);
 	RecordAction(tuple.mAction);
-	tuple.mStateEnd = tuple.mStateBeg; // just a place holder
 	++mNumTuples;
 }
 
@@ -496,8 +497,8 @@ void cScenarioArmRL::UpdateCharacter(double time_step)
 
 	if (new_update && mEnableTraining)
 	{
-		bool exploaded = HasExploded();
-		if (!exploaded)
+		bool exploded = HasExploded();
+		if (!exploded)
 		{
 			RecordTuple();
 
@@ -637,61 +638,67 @@ void cScenarioArmRL::InitCam()
 
 void cScenarioArmRL::UpdateViewBuffer()
 {
-	mRenderTarget->BindBuffer();
-	cDrawUtil::ClearColor(tVector(1, 1, 1, 1));
-	cDrawUtil::ClearDepth(1);
-
-	glMatrixMode(GL_PROJECTION);
-	glPushMatrix();
-	mRTCam.SetupGLProj();
-
-	glMatrixMode(GL_MODELVIEW);
-	glPushMatrix();
-	mRTCam.SetupGLView();
-
-	DrawCharacter();
-	DrawTarget();
-
-	mRenderTarget->UnbindBuffer();
-
-	glMatrixMode(GL_PROJECTION);
-	glPopMatrix();
-	glMatrixMode(GL_MODELVIEW);
-	glPopMatrix();
-
-	cDrawUtil::Finish();
-
-	mRenderTarget->ReadPixels(mViewBufferRaw);
-	int num_texels = mRenderTarget->GetNumTexels();
-	int w = mRenderTarget->GetWidth();
-	int h = mRenderTarget->GetHeight();
-
-	num_texels /= 4;
-	w /= 2;
-	h /= 2;
-	mViewBuffer.resize(num_texels);
-	for (int y = 0; y < h; ++y)
-	{
-		for (int x = 0; x < w; ++x)
-		{
-			int tex_x = 2 * x;
-			int tex_y = 2 * y;
-
-			tVector texel0 = ReadTexel(tex_x, tex_y, w * 2, h * 2, mViewBufferRaw);
-			tVector texel1 = ReadTexel(tex_x + 1, tex_y, w * 2, h * 2, mViewBufferRaw);
-			tVector texel2 = ReadTexel(tex_x, tex_y + 1, w * 2, h * 2, mViewBufferRaw);
-			tVector texel3 = ReadTexel(tex_x + 1, tex_y + 1, w * 2, h * 2, mViewBufferRaw);
-
-			tVector texel = (texel0 + texel1 + texel2 + texel3) / 4;
-
-			int idx = w * y + x;
-			mViewBuffer[idx] = (texel[0] + texel[1] + texel[2]) / 3;
-		}
-	}
-
 	auto student = GetStudentController();
 	if (typeid(*student.get()).hash_code() == typeid(cArmNNPixelController).hash_code())
 	{
+		mRenderTarget->BindBuffer();
+		cDrawUtil::ClearColor(tVector(1, 1, 1, 0));
+		cDrawUtil::ClearDepth(1);
+
+		glMatrixMode(GL_PROJECTION);
+		glPushMatrix();
+		mRTCam.SetupGLProj();
+
+		glMatrixMode(GL_MODELVIEW);
+		glPushMatrix();
+		mRTCam.SetupGLView();
+
+		DrawCharacter();
+		DrawTarget();
+
+		mRenderTarget->UnbindBuffer();
+
+		glMatrixMode(GL_PROJECTION);
+		glPopMatrix();
+		glMatrixMode(GL_MODELVIEW);
+		glPopMatrix();
+
+		cDrawUtil::Finish();
+
+		mRenderTarget->ReadPixels(mViewBufferRaw);
+		int num_texels = mRenderTarget->GetNumTexels();
+		int w = mRenderTarget->GetWidth();
+		int h = mRenderTarget->GetHeight();
+
+		num_texels /= 4;
+		w /= 2;
+		h /= 2;
+		mViewBuffer.resize(num_texels);
+		//FILE* hack_f = cFileUtil::OpenFile("output/tex_data.txt", "w");
+
+		for (int y = 0; y < h; ++y)
+		{
+			for (int x = 0; x < w; ++x)
+			{
+				int tex_x = 2 * x;
+				int tex_y = 2 * y;
+
+				tVector texel0 = ReadTexel(tex_x, tex_y, w * 2, h * 2, mViewBufferRaw);
+				tVector texel1 = ReadTexel(tex_x + 1, tex_y, w * 2, h * 2, mViewBufferRaw);
+				tVector texel2 = ReadTexel(tex_x, tex_y + 1, w * 2, h * 2, mViewBufferRaw);
+				tVector texel3 = ReadTexel(tex_x + 1, tex_y + 1, w * 2, h * 2, mViewBufferRaw);
+
+				tVector texel = (texel0 + texel1 + texel2 + texel3) / 4;
+
+				int idx = w * y + x;
+				double val = (texel[0] + texel[1] + texel[2]) / 3 * texel[3];
+				mViewBuffer[idx] = val;
+
+				//fprintf(hack_f, "%.5f\t", val);
+			}
+			//fprintf(hack_f, "\n");
+		}
+		//cFileUtil::CloseFile(hack_f);
 		std::shared_ptr<cArmNNPixelController> pixel_ctrl = std::static_pointer_cast<cArmNNPixelController>(student);
 		pixel_ctrl->SetViewBuffer(mViewBuffer);
 	}
@@ -699,7 +706,7 @@ void cScenarioArmRL::UpdateViewBuffer()
 
 void cScenarioArmRL::InitRenderResources()
 {
-	mRenderTarget = std::unique_ptr<cTextureDesc>(new cTextureDesc(gRTSize, gRTSize, GL_RGB, GL_RGB, GL_UNSIGNED_BYTE, false));
+	mRenderTarget = std::unique_ptr<cTextureDesc>(new cTextureDesc(gRTSize, gRTSize, GL_RGBA, GL_RGBA, GL_UNSIGNED_BYTE, false));
 }
 
 bool cScenarioArmRL::NeedCtrlUpdate() const

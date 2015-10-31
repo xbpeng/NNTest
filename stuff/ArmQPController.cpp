@@ -112,7 +112,7 @@ void cArmQPController::BuildObjective(const Eigen::VectorXd& pose, const Eigen::
 
 	// pose objective
 	{
-		double w = 0.05;
+		double w = 0.5;
 		Eigen::MatrixXd curr_C = Eigen::MatrixXd::Zero(n, n);
 		Eigen::VectorXd curr_d = Eigen::VectorXd::Zero(n);
 		BuildObjectivePose(pose, vel, curr_C, curr_d);
@@ -132,7 +132,7 @@ void cArmQPController::BuildObjective(const Eigen::VectorXd& pose, const Eigen::
 
 	// force objective
 	{
-		double w = 0.001;
+		double w = 0.01;
 		Eigen::MatrixXd curr_C = Eigen::MatrixXd::Zero(n, n);
 		Eigen::VectorXd curr_d = Eigen::VectorXd::Zero(n);
 		BuildObjectiveForce(pose, vel, curr_C, curr_d);
@@ -191,8 +191,11 @@ Eigen::VectorXd cArmQPController::BuildTotalBodyForce() const
 void cArmQPController::BuildObjectivePose(const Eigen::VectorXd& pose, const Eigen::VectorXd& vel,
 											Eigen::MatrixXd& out_C, Eigen::VectorXd& out_d) const
 {
-	const double omega_p = 10;
-	const double si_p = 4;
+	//const double omega_p = 10;
+	//const double si_p = 4;
+
+	const double omega_p = 5;
+	const double si_p = 5;
 	
 	int acc_offset = GetQPParamOffset(eQPParamAcc);
 	int acc_size = GetQPParamSize(eQPParamAcc);

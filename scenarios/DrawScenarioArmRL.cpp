@@ -210,12 +210,13 @@ void cDrawScenarioArmRL::DrawViewRT() const
 	const tVector size = 0.5 * tVector(1 / aspect, 1, 0, 0);
 	const tVector pos = tVector(0.96, 0.96, -1, 0) - 0.5 * size;
 
-	cDrawUtil::SetColor(tVector(1, 1, 1, 1));
-	cDrawUtil::DrawTexQuad(*view_rt.get(), pos, size);
-
 	cDrawUtil::SetLineWidth(1);
+	cDrawUtil::SetColor(tVector(1, 1, 1, 1));
+	cDrawUtil::DrawRect(pos, size);
 	cDrawUtil::SetColor(tVector(0, 0, 0, 1));
 	cDrawUtil::DrawRect(pos, size, cDrawUtil::eDrawWire);
+
+	cDrawUtil::DrawTexQuad(*view_rt.get(), pos, size);
 
 	glMatrixMode(GL_PROJECTION);
 	glPopMatrix();
