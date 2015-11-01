@@ -134,7 +134,9 @@ protected:
 	virtual int GetIter() const;
 
 	virtual void InitCam();
+	virtual bool NeedViewBuffer() const;
 	virtual void UpdateViewBuffer();
+	virtual void SetNNViewFeatures();
 	virtual void InitRenderResources();
 	virtual bool NeedCtrlUpdate() const;
 
@@ -144,4 +146,9 @@ protected:
 
 	virtual void ParseCoach(const cArgParser& parser, eCoach& out_coach) const;
 	virtual void ParseStudent(const cArgParser& parser, eStudent& out_student) const;
+
+	virtual void PrintInfo() const;
+
+	virtual void GetRandTargetMinMaxTime(double& out_min, double& out_max) const;
+	virtual void GetRandPoseMinMaxTime(double& out_min, double& out_max) const;
 };

@@ -1,4 +1,4 @@
--scenario= arm_rl
+-scenario= arm_rl_pretrain
 
 -character_file= data/arm_rl/arm.txt
 
@@ -12,7 +12,7 @@
 
 -solver_file= data/arm_rl/arm_solver.prototxt
 -net_file= data/arm_rl/arm_pixel_deploy.prototxt
-//-model_file= data/arm_rl/arm_pixel_model.h5
+-model_file= data/arm_rl/arm_pixel_model.h5
 
 //-solver_file= data/reg1D/reg1D_multi_solver.prototxt
 //-net_file= data/reg1D/reg1D_multi_deploy.prototxt
@@ -22,7 +22,7 @@
 //-student_type= nn
 
 -epsilon_greedy_rate= 0.2
--arm_pretrain= true
+-arm_pretrain= false
 
 //-output_net_file= output/ball_rl_model.h5
 -output_net_file= output/arm_pixel_model.h5

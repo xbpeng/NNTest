@@ -44,8 +44,8 @@ void cScenarioArmRL::Init()
 	cScenarioSimChar::Init();
 	BuildCoach();
 
-	InitTupleBuffer();
 	InitTrainer();
+	InitTupleBuffer();
 	Reset();
 
 	InitRenderResources();
@@ -346,8 +346,15 @@ void cScenarioArmRL::SetCtrlTargetPos(const tVector& target)
 {
 	auto coach = GetCoachController();
 	auto student = GetStudentController();
-	coach->SetTargetPos(target);
-	student->SetTargetPos(target);
+
+	if (coach != nullptr)
+	{
+		coach->SetTargetPos(target);
+	}
+	if (student != nullptr)
+	{
+		student->SetTargetPos(target);
+	}
 }
 
 bool cScenarioArmRL::HasExploded() const
@@ -413,17 +420,17 @@ void cScenarioArmRL::SetRandTarget()
 
 void cScenarioArmRL::ResetTargetCounter()
 {
-	double max_time = 6;
-	double min_time = 2;
-	//double max_time = 3;
-	//double min_time = 1;
+	double min_time = 0;
+	double max_time = 0;
+	GetRandTargetMinMaxTime(min_time, max_time);
 	mTargetCounter = cMathUtil::RandDouble(min_time, max_time);
 }
 
 void cScenarioArmRL::ResetPoseCounter()
 {
-	double max_time = 8;
-	double min_time = 6;
+	double min_time = 0;
+	double max_time = 0;
+	GetRandPoseMinMaxTime(min_time, max_time);
 	mPoseCounter = cMathUtil::RandDouble(min_time, max_time);
 }
 
@@ -449,14 +456,12 @@ void cScenarioArmRL::UpdatePoseCounter(double time_elapsed)
 
 int cScenarioArmRL::GetStateSize() const
 {
-	auto ctrl = GetCoachController();
-	return ctrl->GetPoliStateSize();
+	return mTrainer.GetStateSize();
 }
 
 int cScenarioArmRL::GetActionSize() const
 {
-	auto ctrl = GetCoachController();
-	return ctrl->GetPoliActionSize();
+	return mTrainer.GetActionSize();
 }
 
 void cScenarioArmRL::RecordState(Eigen::VectorXd& out_state) const
@@ -485,6 +490,7 @@ void cScenarioArmRL::UpdateCharacter(double time_step)
 	if (new_update)
 	{
 		UpdateViewBuffer();
+		SetNNViewFeatures();
 	}
 	
 	if (mEnableTraining)
@@ -509,49 +515,9 @@ void cScenarioArmRL::UpdateCharacter(double time_step)
 		}
 	}
 
-	Eigen::VectorXd coach_action;
-	Eigen::VectorXd student_action;
-	auto coach = GetCoachController();
-	auto student = GetStudentController();
-	coach->RecordPoliAction(coach_action);
-	student->RecordPoliAction(student_action);
-
 	if (new_update)
 	{
-		printf("Coach Action: ");
-		for (int i = 0; i < coach_action.size(); ++i)
-		{
-			printf("%.3f\t", coach_action[i]);
-		}
-		printf("\n");
-
-		printf("Student Action: ");
-		for (int i = 0; i < student_action.size(); ++i)
-		{
-			printf("%.3f\t", student_action[i]);
-		}
-		printf("\n");
-
-		Eigen::VectorXd pose;
-		Eigen::VectorXd vel;
-		mChar->BuildPose(pose);
-		mChar->BuildVel(vel);
-
-		printf("Student Pose: ");
-		for (int i = 3; i < pose.size(); ++i)
-		{
-			printf("%.3f\t", pose[i]);
-		}
-		printf("\n");
-
-		printf("Student Vel: ");
-		for (int i = 3; i < vel.size(); ++i)
-		{
-			printf("%.3f\t", vel[i]);
-		}
-		printf("\n");
-
-		printf("\n");
+		PrintInfo();
 	}
 }
 
@@ -613,7 +579,10 @@ void cScenarioArmRL::Train()
 
 	const cNeuralNet& trainer_net = mTrainer.GetNet();
 	std::shared_ptr<cArmNNController> ctrl = GetStudentController();
-	ctrl->CopyNet(trainer_net);
+	if (ctrl != nullptr)
+	{
+		ctrl->CopyNet(trainer_net);
+	}
 
 	mNumTuples = 0;
 }
@@ -636,10 +605,22 @@ void cScenarioArmRL::InitCam()
 	mRTCam.SetProj(cCamera::eProjOrtho);
 }
 
+bool cScenarioArmRL::NeedViewBuffer() const
+{
+	bool need = false;
+	auto student = GetStudentController();
+	
+	if (student != nullptr)
+	{
+		need = (typeid(*student.get()).hash_code() == typeid(cArmNNPixelController).hash_code());
+	}
+	
+	return need;
+}
+
 void cScenarioArmRL::UpdateViewBuffer()
 {
-	auto student = GetStudentController();
-	if (typeid(*student.get()).hash_code() == typeid(cArmNNPixelController).hash_code())
+	if (NeedViewBuffer())
 	{
 		mRenderTarget->BindBuffer();
 		cDrawUtil::ClearColor(tVector(1, 1, 1, 0));
@@ -702,6 +683,14 @@ void cScenarioArmRL::UpdateViewBuffer()
 			//fprintf(hack_f, "\n");
 		}
 		//cFileUtil::CloseFile(hack_f);
+	}
+}
+
+void cScenarioArmRL::SetNNViewFeatures()
+{
+	auto student = GetStudentController();
+	if (typeid(*student.get()).hash_code() == typeid(cArmNNPixelController).hash_code())
+	{
 		std::shared_ptr<cArmNNPixelController> pixel_ctrl = std::static_pointer_cast<cArmNNPixelController>(student);
 		pixel_ctrl->SetViewBuffer(mViewBuffer);
 	}
@@ -800,4 +789,61 @@ void cScenarioArmRL::ParseStudent(const cArgParser& parser, eStudent& out_studen
 		printf("Unsupported student type %s\n", str.c_str());
 		assert(false);
 	}
+}
+
+void cScenarioArmRL::PrintInfo() const
+{
+	Eigen::VectorXd coach_action;
+	Eigen::VectorXd student_action;
+	auto coach = GetCoachController();
+	auto student = GetStudentController();
+	coach->RecordPoliAction(coach_action);
+	student->RecordPoliAction(student_action);
+
+	printf("Coach Action: ");
+	for (int i = 0; i < coach_action.size(); ++i)
+	{
+		printf("%.3f\t", coach_action[i]);
+	}
+	printf("\n");
+
+	printf("Student Action: ");
+	for (int i = 0; i < student_action.size(); ++i)
+	{
+		printf("%.3f\t", student_action[i]);
+	}
+	printf("\n");
+
+	Eigen::VectorXd pose;
+	Eigen::VectorXd vel;
+	mChar->BuildPose(pose);
+	mChar->BuildVel(vel);
+
+	printf("Student Pose: ");
+	for (int i = 3; i < pose.size(); ++i)
+	{
+		printf("%.3f\t", pose[i]);
+	}
+	printf("\n");
+
+	printf("Student Vel: ");
+	for (int i = 3; i < vel.size(); ++i)
+	{
+		printf("%.3f\t", vel[i]);
+	}
+	printf("\n");
+
+	printf("\n");
+}
+
+void cScenarioArmRL::GetRandTargetMinMaxTime(double& out_min, double& out_max) const
+{
+	out_min = 2;
+	out_max = 6;
+}
+
+void cScenarioArmRL::GetRandPoseMinMaxTime(double& out_min, double& out_max) const
+{
+	out_min = 6;
+	out_max = 8;
 }
