@@ -143,6 +143,7 @@ protected:
 	virtual std::shared_ptr<cArmQPController> GetCoachController() const;
 	virtual std::shared_ptr<cArmNNController> GetStudentController() const;
 	virtual void SyncCharacters();
+	virtual bool EnableSyncCharacters() const;
 
 	virtual void ParseCoach(const cArgParser& parser, eCoach& out_coach) const;
 	virtual void ParseStudent(const cArgParser& parser, eStudent& out_student) const;

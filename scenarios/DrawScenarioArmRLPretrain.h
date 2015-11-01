@@ -9,4 +9,7 @@ public:
 
 protected:
 	virtual void BuildScene();
+
+	virtual void DrawScene();
+	virtual void DrawPredTarget() const;
 };

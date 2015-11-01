@@ -9,10 +9,18 @@ public:
 
 	cScenarioArmRLPretrain();
 	virtual ~cScenarioArmRLPretrain();
+	
+	virtual void Init();
+	virtual void Reset();
 
+	virtual void Update(double time_elapsed);
+
+	virtual const tVector& GetPredTarget() const;
 	virtual std::string GetName() const;
 	
 protected:
+	tVector mPredTarget;
+
 	virtual bool BuildController(std::shared_ptr<cCharController>& out_ctrl);
 
 	virtual void SetupScale();
@@ -23,6 +31,10 @@ protected:
 
 	virtual bool NeedViewBuffer() const;
 	virtual void SetNNViewFeatures();
+	virtual void Train();
+	virtual void UpdatePredTarget();
+
+	virtual void SyncCharacters();
 
 	virtual void PrintInfo() const;
 	virtual void GetRandTargetMinMaxTime(double& out_min, double& out_max) const;

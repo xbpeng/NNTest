@@ -4,6 +4,7 @@
 
 -solver_file= data/arm_rl/arm_vis_solver.prototxt
 -net_file= data/arm_rl/arm_pixel_vis_deploy.prototxt
+//-model_file= data/arm_rl/arm_pixel_vis_model.h5
 
 -coach_type= qp
 -student_type= nn_pixel

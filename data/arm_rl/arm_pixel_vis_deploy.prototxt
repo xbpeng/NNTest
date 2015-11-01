@@ -22,21 +22,9 @@ layer {
 }
 
 layer {
-  name: "pool0"
-  type: "Pooling"
-  bottom: "reshape0"
-  top: "pool0"
-  pooling_param {
-    pool: AVE
-    kernel_size: 2
-    stride: 1
-  }
-}
-
-layer {
   name: "conv0"
   type: "Convolution"
-  bottom: "pool0"
+  bottom: "reshape0"
   top: "conv0"
   param {
     lr_mult: 1

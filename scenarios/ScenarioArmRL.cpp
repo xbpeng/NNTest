@@ -9,6 +9,7 @@ const int gTrainerPlaybackMemSize = 50000;
 
 const double gCamSize = 4;
 const int gRTSize = 128;
+const double gTargetRadius = 0.15;
 
 const tVector gLineColor = tVector(0, 0, 0, 1);
 const tVector gFillTint = tVector(1, 1, 1, 1);
@@ -129,8 +130,10 @@ void cScenarioArmRL::EnableRandPose(bool enable)
 void cScenarioArmRL::SetTargetPos(const tVector& target)
 {
 	mTargetPos = target;
-	mTargetPos[0] = cMathUtil::Clamp(mTargetPos[0] , -0.5 * gCamSize, 0.5 * gCamSize);
-	mTargetPos[1] = cMathUtil::Clamp(mTargetPos[1], -0.5 * gCamSize, 0.5 * gCamSize);
+	double min_dist = -0.5 * gCamSize + gTargetRadius;
+	double max_dist = 0.5 * gCamSize - gTargetRadius;
+	mTargetPos[0] = cMathUtil::Clamp(mTargetPos[0], min_dist, max_dist);
+	mTargetPos[1] = cMathUtil::Clamp(mTargetPos[1], min_dist, max_dist);
 	ResetTargetCounter();
 }
 
@@ -148,7 +151,7 @@ void cScenarioArmRL::DrawTarget() const
 {
 	const int slices = 8;
 	const tVector offset = tVector(0, 0, 0, 0);
-	const double r = 0.15;
+	const double r = gTargetRadius;
 	const tVector col0 = tVector(0, 0, 0, 1);
 	const tVector col1 = tVector(1, 1, 0, 1);
 	const tVector line_col = tVector(0, 0, 0, 1);
@@ -196,8 +199,7 @@ const std::shared_ptr<cSimCharacter>& cScenarioArmRL::GetCoach() const
 
 void cScenarioArmRL::SaveNet(const std::string& out_file) const
 {
-	auto student = GetStudentController();
-	student->SaveNet(out_file);
+	mTrainer.OutputModel(out_file);
 }
 
 std::string cScenarioArmRL::GetName() const
@@ -493,7 +495,7 @@ void cScenarioArmRL::UpdateCharacter(double time_step)
 		SetNNViewFeatures();
 	}
 	
-	if (mEnableTraining)
+	if (EnableSyncCharacters())
 	{
 		SyncCharacters();
 	}
@@ -709,12 +711,22 @@ bool cScenarioArmRL::NeedCtrlUpdate() const
 
 std::shared_ptr<cArmQPController> cScenarioArmRL::GetCoachController() const
 {
-	return std::static_pointer_cast<cArmQPController>(mCoach->GetController());
+	const auto& coach = mCoach->GetController();
+	if (coach == nullptr)
+	{
+		return nullptr;
+	}
+	return std::static_pointer_cast<cArmQPController>(coach);
 }
 
 std::shared_ptr<cArmNNController> cScenarioArmRL::GetStudentController() const
 {
-	return std::static_pointer_cast<cArmNNController>(mChar->GetController());
+	const auto& student = mChar->GetController();
+	if (student == nullptr)
+	{
+		return nullptr;
+	}
+	return std::static_pointer_cast<cArmNNController>(student);
 }
 
 void cScenarioArmRL::SyncCharacters()
@@ -723,9 +735,9 @@ void cScenarioArmRL::SyncCharacters()
 	Eigen::VectorXd vel;
 	
 	cNeuralNetTrainer::eStage trainer_stage = mTrainer.GetStage();
-	bool sync_char = mPretrain || trainer_stage == cNeuralNetTrainer::eStageInit;
+	bool sync_student = mPretrain || trainer_stage == cNeuralNetTrainer::eStageInit;
 
-	if (sync_char)
+	if (sync_student)
 	{
 		mCoach->BuildPose(pose);
 		mCoach->BuildVel(vel);
@@ -739,6 +751,11 @@ void cScenarioArmRL::SyncCharacters()
 		mCoach->SetPose(pose);
 		mCoach->SetVel(vel);
 	}
+}
+
+bool cScenarioArmRL::EnableSyncCharacters() const
+{
+	return mEnableTraining;
 }
 
 void cScenarioArmRL::ParseCoach(const cArgParser& parser, eCoach& out_coach) const
