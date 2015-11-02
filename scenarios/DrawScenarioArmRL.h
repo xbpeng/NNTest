@@ -4,6 +4,7 @@
 #include "scenarios/DrawScenarioSimInteractive.h"
 #include "scenarios/ScenarioArmRL.h"
 #include "util/CircularBuffer.h"
+#include "sim/CharTracer.h"
 
 class cDrawScenarioArmRL : public cDrawScenario
 {
@@ -15,6 +16,7 @@ public:
 	virtual void Keyboard(unsigned char key, int x, int y);
 	virtual void Update(double time_elapsed);
 	virtual void Init();
+	virtual void Clear();
 	virtual void Reset();
 
 	virtual std::string BuildTextInfoStr() const;
@@ -33,11 +35,19 @@ protected:
 	FILE* mCoachTorqueFile;
 	FILE* mStudentTorqueFile;
 
+	bool mEnableTrace;
+	cCharTracer mTracer;
+
 	virtual void ToggleTraining();
 	virtual void ToggleAutoTarget();
 	virtual void ToggleRandPose();
 	virtual const std::shared_ptr<cScenarioSimChar>& GetScene() const;
 	virtual void BuildScene();
+
+	virtual void InitTracer();
+	virtual void AddCharTrace(const std::shared_ptr<cSimCharacter>& character,
+							const tVector& col);
+	virtual void ToggleTrace();
 
 	virtual void SetTarget(const tVector& target);
 
@@ -54,4 +64,6 @@ protected:
 	virtual void EndWrite();
 	virtual void WriteTorques();
 	virtual void WriteTorques(const std::shared_ptr<cSimCharacter>& character, FILE* out_file) const;
+
+	virtual void ToggleOutputErr();
 };

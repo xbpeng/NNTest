@@ -1,11 +1,15 @@
 #include "DrawScenarioArmRL.h"
 #include "render/DrawUtil.h"
 #include "render/DrawSimCharacter.h"
+#include "stuff/SimArm.h"
 #include "util/FileUtil.h"
 
 const tVector gLineColor = tVector(0, 0, 0, 1);
 const tVector gCoachFillTint = tVector(0, 0, 0, 0);
 const tVector gCamPos0 = tVector(0, 0, 1, 0);
+
+const int gTracerBufferSize = 50;
+const double gTracerSamplePeriod = 0.033;
 
 const std::string gCoachTorqueFilename = "output/coach_torques.txt";
 const std::string gStudentTorqueFilename = "output/student_torques.txt";
@@ -54,6 +58,12 @@ void cDrawScenarioArmRL::Keyboard(unsigned char key, int x, int y)
 	case 'p':
 		ToggleRandPose();
 		break;
+	case 'y':
+		ToggleTrace();
+		break;
+	case 'e':
+		ToggleOutputErr();
+		break;
 	default:
 		break;
 	}
@@ -68,6 +78,11 @@ void cDrawScenarioArmRL::Update(double time_elapsed)
 	{
 		WriteTorques();
 	}
+
+	if (mEnableTrace)
+	{
+		mTracer.Update(time_elapsed);
+	}
 }
 
 void cDrawScenarioArmRL::Init()
@@ -76,7 +91,15 @@ void cDrawScenarioArmRL::Init()
 	BuildScene();
 	mScene->ParseArgs(mArgParser);
 	mScene->Init();
+	InitTracer();
 	mMouseDown = false;
+}
+
+void cDrawScenarioArmRL::Clear()
+{
+	cDrawScenario::Clear();
+	mScene->Clear();
+	mTracer.Clear();
 }
 
 void cDrawScenarioArmRL::Reset()
@@ -84,6 +107,7 @@ void cDrawScenarioArmRL::Reset()
 	cDrawScenario::Reset();
 	mScene->Reset();
 	mMouseDown = false;
+	mTracer.Reset();
 }
 
 void cDrawScenarioArmRL::DrawScene()
@@ -91,6 +115,12 @@ void cDrawScenarioArmRL::DrawScene()
 	DrawGrid();
 	DrawTarget();
 	DrawCharacter();
+
+	if (mEnableTrace)
+	{
+		mTracer.Draw();
+	}
+
 	DrawViewRT();
 }
 
@@ -165,6 +195,39 @@ void cDrawScenarioArmRL::BuildScene()
 {
 	mScene = std::shared_ptr<cScenarioArmRL>(new cScenarioArmRL());
 	mSimScene = std::static_pointer_cast<cScenarioSimChar>(mScene); // arg hack
+}
+
+void cDrawScenarioArmRL::InitTracer()
+{
+	mTracer.Init(gTracerBufferSize, gTracerSamplePeriod);
+	AddCharTrace(mScene->GetCharacter(), tVector(0, 0, 1, 0.5));
+	AddCharTrace(mScene->GetCoach(), tVector(0, 0, 0, 0.5));
+}
+
+void cDrawScenarioArmRL::AddCharTrace(const std::shared_ptr<cSimCharacter>& character,
+									const tVector& col)
+{
+	cCharTracer::tParams params;
+	params.mChar = character;
+	params.mColor = col;
+	params.mType = cCharTracer::eTraceJoint;
+	params.mTraceID = cSimArm::eJointLinkEnd;
+	mTracer.AddTrace(params);
+}
+
+void cDrawScenarioArmRL::ToggleTrace()
+{
+	mTracer.Reset();
+	mEnableTrace = !mEnableTrace;
+
+	if (mEnableTrace)
+	{
+		printf("Trace Enabled\n");
+	}
+	else
+	{
+		printf("Trace Disabled\n");
+	}
 }
 
 void cDrawScenarioArmRL::SetTarget(const tVector& target)
@@ -311,4 +374,10 @@ void cDrawScenarioArmRL::WriteTorques(const std::shared_ptr<cSimCharacter>& char
 		fprintf(out_file, "%.5f\t", torque[2]);
 	}
 	fprintf(out_file, "\n");
+}
+
+void cDrawScenarioArmRL::ToggleOutputErr()
+{
+	bool enable = mScene->EnabledOutputErr();
+	mScene->EnableOutputErr(!enable);
 }

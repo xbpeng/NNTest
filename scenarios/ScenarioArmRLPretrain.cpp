@@ -117,12 +117,12 @@ void cScenarioArmRLPretrain::PrintInfo() const
 
 void cScenarioArmRLPretrain::GetRandTargetMinMaxTime(double& out_min, double& out_max) const
 {
-	out_min = 0.5;
-	out_max = 1;
+	out_min = 0.75;
+	out_max = 1.5;
 }
 
 void cScenarioArmRLPretrain::GetRandPoseMinMaxTime(double& out_min, double& out_max) const
 {
-	out_min = 1;
-	out_max = 2;
+	out_min = 1.5;
+	out_max = 2.5;
 }

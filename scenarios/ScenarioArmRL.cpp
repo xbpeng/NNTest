@@ -20,6 +20,7 @@ const double gLinearDamping = 0;
 const double gAngularDamping = 0;
 
 const tVector gTestGravity = tVector::Zero();
+const std::string gErrFile = "output/arm_rl_err.txt";
 
 cScenarioArmRL::cScenarioArmRL()
 {
@@ -34,6 +35,8 @@ cScenarioArmRL::cScenarioArmRL()
 
 	mCoachType = eCoachQP;
 	mStudentType = eStudentNN;
+
+	mOutputErr = false;
 }
 
 cScenarioArmRL::~cScenarioArmRL()
@@ -94,6 +97,11 @@ void cScenarioArmRL::Update(double time_elapsed)
 	if (exploded)
 	{
 		RandReset();
+	}
+
+	if (mOutputErr)
+	{
+		OutputErr();
 	}
 }
 
@@ -863,4 +871,38 @@ void cScenarioArmRL::GetRandPoseMinMaxTime(double& out_min, double& out_max) con
 {
 	out_min = 6;
 	out_max = 8;
+}
+
+bool cScenarioArmRL::EnabledOutputErr() const
+{
+	return mOutputErr;
+}
+
+void cScenarioArmRL::EnableOutputErr(bool enable)
+{
+	mOutputErr = enable;
+
+	if (mOutputErr)
+	{
+		mErrFile = cFileUtil::OpenFile(gErrFile, "w");
+		printf("Begin writing error to %s\n", gErrFile.c_str());
+	}
+	else
+	{
+		cFileUtil::CloseFile(mErrFile);
+		printf("End writing error\n");
+	}
+}
+
+void cScenarioArmRL::OutputErr() const
+{
+	int end_id = cSimArm::eJointLinkEnd;
+	tVector coach_end_pos = mCoach->CalcJointPos(end_id);
+	tVector student_end_pos = mChar->CalcJointPos(end_id);
+
+	tVector coach_err = mTargetPos - coach_end_pos;
+	tVector student_err = mTargetPos - student_end_pos;
+
+	fprintf(mErrFile, "%.5f\t%.5f\t%.5f\t%.5f\n", coach_err[0], coach_err[1], 
+			student_err[0], student_err[1]);
 }
