@@ -15,7 +15,6 @@ layer {
   }
 }
 
-
 layer {
 	name: "slice0"
 	type: "Slice"
@@ -87,7 +86,7 @@ layer {
     lr_mult: 2
   }
   convolution_param {
-    num_output: 16
+    num_output: 8
     kernel_h: 4
 	kernel_w: 4
     stride: 1
@@ -157,10 +156,10 @@ layer {
 }
 
 layer {
-  name: "ip1"
+  name: "m_ip0"
   type: "InnerProduct"
   bottom: "concat0"
-  top: "ip1"
+  top: "m_ip0"
   param {
     lr_mult: 1
 	decay_mult: 1
@@ -181,17 +180,17 @@ layer {
 }
 
 layer {
-  name: "relu3"
+  name: "m_relu0"
   type: "ReLU"
-  bottom: "ip1"
-  top: "relu3"
+  bottom: "m_ip0"
+  top: "m_relu0"
 }
 
 layer {
-  name: "ip2"
+  name: "m_ip1"
   type: "InnerProduct"
-  bottom: "relu3"
-  top: "ip2"
+  bottom: "m_relu0"
+  top: "m_ip1"
   param {
     lr_mult: 1
 	decay_mult: 1
@@ -212,17 +211,17 @@ layer {
 }
 
 layer {
-  name: "relu4"
+  name: "m_relu1"
   type: "ReLU"
-  bottom: "ip2"
-  top: "relu4"
+  bottom: "m_ip1"
+  top: "m_relu1"
 }
 
 layer {
-  name: "ip3"
+  name: "m_ip2"
   type: "InnerProduct"
-  bottom: "relu4"
-  top: "ip3"
+  bottom: "m_relu1"
+  top: "m_ip2"
   param {
     lr_mult: 1
 	decay_mult: 1
@@ -245,7 +244,7 @@ layer {
 layer {
   name: "loss"
   type: "EuclideanLoss"
-  bottom: "ip3"
+  bottom: "m_ip2"
   bottom: "label"
   top: "loss"
 }

@@ -136,6 +136,8 @@ protected:
 	virtual void InitTrainer();
 	virtual void SetupScale();
 
+	virtual void InitViewBuffer();
+
 	virtual void Train();
 	virtual int GetIter() const;
 

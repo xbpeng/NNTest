@@ -50,6 +50,7 @@ void cScenarioArmRL::Init()
 
 	InitTrainer();
 	InitTupleBuffer();
+	InitViewBuffer();
 	Reset();
 
 	InitRenderResources();
@@ -571,6 +572,11 @@ void cScenarioArmRL::SetupScale()
 		ctrl->BuildPoliStateScale(mean, stdev);
 		mTrainer.SetScale(mean, stdev);
 	}
+}
+
+void cScenarioArmRL::InitViewBuffer()
+{
+	mViewBuffer = Eigen::VectorXd::Zero(GetStateSize());
 }
 
 void cScenarioArmRL::Train()
