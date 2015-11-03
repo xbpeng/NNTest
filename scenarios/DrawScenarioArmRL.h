@@ -53,8 +53,11 @@ protected:
 
 	virtual void SaveNet(const std::string& out_file) const;
 
+	virtual void ApplyRandForce();
+
 	virtual void DrawScene();
 	virtual void DrawCharacter();
+	virtual void DrawPerturbs() const;
 	virtual void DrawTarget() const;
 	virtual void DrawGrid() const;
 	virtual void DrawViewRT() const;
@@ -65,5 +68,5 @@ protected:
 	virtual void WriteTorques();
 	virtual void WriteTorques(const std::shared_ptr<cSimCharacter>& character, FILE* out_file) const;
 
-	virtual void ToggleOutputErr();
+	virtual void ToggleOutputData();
 };

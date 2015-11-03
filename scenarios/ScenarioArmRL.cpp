@@ -19,8 +19,8 @@ const double gCtrlUpdatePeriod = 1 / 120.0;
 const double gLinearDamping = 0;
 const double gAngularDamping = 0;
 
-const tVector gTestGravity = tVector::Zero();
 const std::string gErrFile = "output/arm_rl_err.txt";
+const std::string gActionFile = "output/arm_rl_action.txt";
 
 cScenarioArmRL::cScenarioArmRL()
 {
@@ -36,7 +36,12 @@ cScenarioArmRL::cScenarioArmRL()
 	mCoachType = eCoachQP;
 	mStudentType = eStudentNN;
 
-	mOutputErr = false;
+	mOutputData = false;
+
+	mErrFile = nullptr;
+	mActionFile = nullptr;
+
+	mGravity = tVector(0, 0, 0, 0);
 }
 
 cScenarioArmRL::~cScenarioArmRL()
@@ -85,6 +90,8 @@ void cScenarioArmRL::Clear()
 	mRenderTarget.reset();
 	mCoach->Clear();
 	mNumTuples = 0;
+
+	EnableOutputData(false);
 }
 
 void cScenarioArmRL::Update(double time_elapsed)
@@ -100,9 +107,9 @@ void cScenarioArmRL::Update(double time_elapsed)
 		RandReset();
 	}
 
-	if (mOutputErr)
+	if (mOutputData)
 	{
-		OutputErr();
+		OutputData();
 	}
 }
 
@@ -221,7 +228,6 @@ void cScenarioArmRL::BuildWorld()
 	cScenarioSimChar::BuildWorld();
 	mWorld->SetLinearDamping(gLinearDamping);
 	mWorld->SetAngularDamping(gAngularDamping);
-	mWorld->SetGravity(gTestGravity);
 }
 
 bool cScenarioArmRL::BuildController(std::shared_ptr<cCharController>& out_ctrl)
@@ -238,7 +244,7 @@ bool cScenarioArmRL::BuildController(std::shared_ptr<cCharController>& out_ctrl)
 	else if (mStudentType == eStudentPDNN)
 	{
 		std::shared_ptr<cArmPDNNController> ctrl = std::shared_ptr<cArmPDNNController>(new cArmPDNNController());
-		ctrl->Init(mChar.get(), gTestGravity, mCharacterFile);
+		ctrl->Init(mChar.get(), mGravity, mCharacterFile);
 		student_ctrl = ctrl;
 	}
 	else if (mStudentType == eStudentNNPixel)
@@ -281,13 +287,13 @@ bool cScenarioArmRL::BuildCoachController(std::shared_ptr<cCharController>& out_
 	if (mCoachType == eCoachQP)
 	{
 		std::shared_ptr<cArmQPController> ctrl = std::shared_ptr<cArmQPController>(new cArmQPController());
-		ctrl->Init(mCoach.get(), gTestGravity);
+		ctrl->Init(mCoach.get(), mGravity);
 		coach_ctrl = ctrl;
 	}
 	else if (mCoachType == eCoachPDQP)
 	{
 		std::shared_ptr<cArmPDQPController> ctrl = std::shared_ptr<cArmPDQPController>(new cArmPDQPController());
-		ctrl->Init(mCoach.get(), gTestGravity, mCharacterFile);
+		ctrl->Init(mCoach.get(), mGravity, mCharacterFile);
 		coach_ctrl = ctrl;
 	}
 	else
@@ -879,29 +885,32 @@ void cScenarioArmRL::GetRandPoseMinMaxTime(double& out_min, double& out_max) con
 	out_max = 8;
 }
 
-bool cScenarioArmRL::EnabledOutputErr() const
+bool cScenarioArmRL::EnabledOutputData() const
 {
-	return mOutputErr;
+	return mOutputData;
 }
 
-void cScenarioArmRL::EnableOutputErr(bool enable)
+void cScenarioArmRL::EnableOutputData(bool enable)
 {
-	mOutputErr = enable;
+	mOutputData = enable;
 
-	if (mOutputErr)
+	if (mOutputData)
 	{
 		mErrFile = cFileUtil::OpenFile(gErrFile, "w");
-		printf("Begin writing error to %s\n", gErrFile.c_str());
+		mActionFile = cFileUtil::OpenFile(gActionFile, "w");
 	}
 	else
 	{
 		cFileUtil::CloseFile(mErrFile);
-		printf("End writing error\n");
+		cFileUtil::CloseFile(mActionFile);
 	}
 }
 
-void cScenarioArmRL::OutputErr() const
+void cScenarioArmRL::OutputData() const
 {
+	auto coach = GetCoachController();
+	auto student = GetStudentController();
+
 	int end_id = cSimArm::eJointLinkEnd;
 	tVector coach_end_pos = mCoach->CalcJointPos(end_id);
 	tVector student_end_pos = mChar->CalcJointPos(end_id);
@@ -911,4 +920,19 @@ void cScenarioArmRL::OutputErr() const
 
 	fprintf(mErrFile, "%.5f\t%.5f\t%.5f\t%.5f\n", coach_err[0], coach_err[1], 
 			student_err[0], student_err[1]);
+
+	Eigen::VectorXd coach_action;
+	Eigen::VectorXd student_action;
+	coach->RecordPoliAction(coach_action);
+	student->RecordPoliAction(student_action);
+
+	for (int i = 0; i < coach_action.size(); ++i)
+	{
+		fprintf(mActionFile, "%.5f\t", coach_action[i]);
+	}
+	for (int i = 0; i < student_action.size(); ++i)
+	{
+		fprintf(mActionFile, "%.5f\t", student_action[i]);
+	}
+	fprintf(mActionFile, "\n");
 }

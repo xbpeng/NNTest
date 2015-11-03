@@ -51,8 +51,8 @@ public:
 	virtual void SaveNet(const std::string& out_file) const;
 	virtual std::string GetName() const;
 
-	virtual bool EnabledOutputErr() const;
-	virtual void EnableOutputErr(bool enable);
+	virtual bool EnabledOutputData() const;
+	virtual void EnableOutputData(bool enable);
 
 protected:
 	enum eCoach
@@ -98,7 +98,8 @@ protected:
 	std::vector<GLubyte> mViewBufferRaw;
 	
 	FILE* mErrFile;
-	bool mOutputErr;
+	FILE* mActionFile;
+	bool mOutputData;
 
 	virtual void BuildWorld();
 	virtual bool BuildController(std::shared_ptr<cCharController>& out_ctrl);
@@ -161,5 +162,5 @@ protected:
 	virtual void GetRandTargetMinMaxTime(double& out_min, double& out_max) const;
 	virtual void GetRandPoseMinMaxTime(double& out_min, double& out_max) const;
 
-	virtual void OutputErr() const;
+	virtual void OutputData() const;
 };

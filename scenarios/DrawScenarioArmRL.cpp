@@ -1,6 +1,7 @@
 #include "DrawScenarioArmRL.h"
 #include "render/DrawUtil.h"
 #include "render/DrawSimCharacter.h"
+#include "render/DrawWorld.h"
 #include "stuff/SimArm.h"
 #include "util/FileUtil.h"
 
@@ -52,6 +53,9 @@ void cDrawScenarioArmRL::Keyboard(unsigned char key, int x, int y)
 	case 'a':
 		ToggleAutoTarget();
 		break;
+	case 'g':
+		ApplyRandForce();
+		break;
 	case 'w':
 		ToggleOutputTorques();
 		break;
@@ -61,8 +65,8 @@ void cDrawScenarioArmRL::Keyboard(unsigned char key, int x, int y)
 	case 'y':
 		ToggleTrace();
 		break;
-	case 'e':
-		ToggleOutputErr();
+	case 'o':
+		ToggleOutputData();
 		break;
 	default:
 		break;
@@ -115,6 +119,7 @@ void cDrawScenarioArmRL::DrawScene()
 	DrawGrid();
 	DrawTarget();
 	DrawCharacter();
+	DrawPerturbs();
 
 	if (mEnableTrace)
 	{
@@ -128,11 +133,17 @@ void cDrawScenarioArmRL::DrawCharacter()
 {
 	const auto& coach = mScene->GetCoach();
 	glPushMatrix();
-	cDrawUtil::Translate(tVector(0, 0, -0.2, 0));
+	cDrawUtil::Translate(tVector(0, 0, -0.01, 0));
 	mScene->DrawArm(coach, gCoachFillTint, gLineColor);
 	glPopMatrix();
 	
 	mScene->DrawCharacter();
+}
+
+void cDrawScenarioArmRL::DrawPerturbs() const
+{
+	const auto& world = mScene->GetWorld();
+	cDrawWorld::DrawPerturbs(*world.get());
 }
 
 void cDrawScenarioArmRL::DrawTarget() const
@@ -241,6 +252,11 @@ void cDrawScenarioArmRL::SaveNet(const std::string& out_file) const
 	printf("Model saved to %s\n", out_file.c_str());
 }
 
+void cDrawScenarioArmRL::ApplyRandForce()
+{
+	mScene->ApplyRandForce();
+}
+
 std::string cDrawScenarioArmRL::GetName() const
 {
 	return mScene->GetName();
@@ -250,7 +266,8 @@ void cDrawScenarioArmRL::DrawGrid() const
 {
 	const double spacing = 0.10f;
 	const double big_spacing = spacing * 5.f;
-	const tVector& origin = mCam.GetFocus();
+	tVector origin = mCam.GetFocus();
+	origin += tVector(0, 0, -1, 0);
 	tVector size = tVector(mCam.GetWidth(), mCam.GetHeight(), 0, 0);
 
 	glColor4f(188 / 255.f, 219 / 255.f, 242 / 255.f, 1.f);
@@ -376,8 +393,18 @@ void cDrawScenarioArmRL::WriteTorques(const std::shared_ptr<cSimCharacter>& char
 	fprintf(out_file, "\n");
 }
 
-void cDrawScenarioArmRL::ToggleOutputErr()
+void cDrawScenarioArmRL::ToggleOutputData()
 {
-	bool enable = mScene->EnabledOutputErr();
-	mScene->EnableOutputErr(!enable);
+	bool enable = mScene->EnabledOutputData();
+	mScene->EnableOutputData(!enable);
+
+	enable = mScene->EnabledOutputData();
+	if (enable)
+	{
+		printf("Begin writing data\n");
+	}
+	else
+	{
+		printf("End writing data\n");
+	}
 }
