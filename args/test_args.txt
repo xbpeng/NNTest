@@ -1,9 +1,9 @@
--scenario= arm_rl
+-scenario= ball_rl
 
 -character_file= data/arm_rl/arm.txt
 
-//-solver_file= data/balL_rl/balL_rl_solver.prototxt
-//-net_file= data/balL_rl/balL_rl_test.prototxt
+-solver_file= data/balL_rl/balL_rl_solver.prototxt
+-net_file= data/balL_rl/balL_rl_test.prototxt
 //-model_file= data/ball_rl/ball_rl_model_noise.h5
 
 //-solver_file= data/arm_rl/arm_solver.prototxt
@@ -18,9 +18,9 @@
 //-solver_file= data/reg1D/reg1D_multi_solver.prototxt
 //-net_file= data/reg1D/reg1D_multi_deploy.prototxt
 
--solver_file= data/arm_rl/arm_torque_solver.prototxt
--net_file= data/arm_rl/arm_torque_deploy.prototxt
--model_file= data/arm_rl/arm_torque_model.h5
+//-solver_file= data/arm_rl/arm_torque_solver.prototxt
+//-net_file= data/arm_rl/arm_torque_deploy.prototxt
+//-model_file= data/arm_rl/arm_torque_model.h5
 
 -coach_type= qp
 -student_type= nn
