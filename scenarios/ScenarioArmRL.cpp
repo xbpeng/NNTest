@@ -656,8 +656,8 @@ void cScenarioArmRL::UpdateViewBuffer()
 		glPushMatrix();
 		mRTCam.SetupGLView();
 
-		DrawCharacter();
 		DrawTarget();
+		DrawCharacter();
 
 		mRenderTarget->UnbindBuffer();
 
