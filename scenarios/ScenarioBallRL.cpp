@@ -272,7 +272,7 @@ void cScenarioBallRL::InitTrainer()
 	params.mPlaybackMemSize = gTrainerPlaybackMemSize;
 	params.mPoolSize = 2; // double Q learning
 	params.mNumInitSamples = 500;
-	params.mFreezeTargetIters = 10;
+	params.mFreezeTargetIters = 500;
 	mTrainer.Init(params);
 
 	if (mModelFile != "")
@@ -289,7 +289,7 @@ void cScenarioBallRL::InitGround()
 
 void cScenarioBallRL::Train()
 {
-	printf("\nTraining iter: %i\n", mIter);
+	printf("\nTraining iter: %i\n", mTrainer.GetIter());
 
 	const int num_steps = 1;
 

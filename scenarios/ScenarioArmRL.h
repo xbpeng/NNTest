@@ -84,7 +84,8 @@ protected:
 
 	std::string mSolverFile;
 	std::string mNetFile;
-	std::string mModelFile;
+	std::vector<std::string> mModelFiles;
+	std::string mScaleFile;
 
 	cNeuralNetTrainer mTrainer;
 	std::vector<tExpTuple> mTupleBuffer;

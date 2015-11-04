@@ -1,9 +1,9 @@
--scenario= ball_rl
+-scenario= arm_rl
 
 -character_file= data/arm_rl/arm.txt
 
--solver_file= data/balL_rl/balL_rl_solver.prototxt
--net_file= data/balL_rl/balL_rl_test.prototxt
+//-solver_file= data/balL_rl/balL_rl_solver.prototxt
+//-net_file= data/balL_rl/balL_rl_test.prototxt
 //-model_file= data/ball_rl/ball_rl_model_noise.h5
 
 //-solver_file= data/arm_rl/arm_solver.prototxt
@@ -22,15 +22,24 @@
 //-net_file= data/arm_rl/arm_torque_deploy.prototxt
 //-model_file= data/arm_rl/arm_torque_model.h5
 
+//-solver_file= data/arm_rl/arm_pixel_motor_solver.prototxt
+//-net_file= data/arm_rl/arm_pixel_motor_deploy.prototxt
+//-model_file= data/arm_rl/arm_pixel_motor_model.h5
+
+-solver_file= data/arm_rl/arm_pixel_vis_motor_solver.prototxt
+-net_file= data/arm_rl/arm_pixel_vis_motor_deploy.prototxt
+-model_file= data/arm_rl/arm_pixel_vis_motor_model.h5
+//-scale_file= data/arm_rl/arm_pixel_vis_motor_model_scale.txt
+
 -coach_type= qp
--student_type= nn
-//-student_type= nn_pixel
+//-student_type= nn
+-student_type= nn_pixel
 
 -epsilon_greedy_rate= 0.2
 -arm_pretrain= false
 
 //-output_net_file= output/ball_rl_model.h5
--output_net_file= output/arm_pixel_model.h5
+-output_net_file= output/arm_pixel_vis_motor_model.h5
 
 -ground_height= 0
 

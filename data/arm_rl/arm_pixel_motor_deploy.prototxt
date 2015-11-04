@@ -1,0 +1,93 @@
+name: "Arm_Pixel"
+
+input: "data"
+input_dim:1
+input_dim:1
+input_dim:1
+input_dim:10
+
+layer {
+  name: "m_ip0"
+  type: "InnerProduct"
+  bottom: "data"
+  top: "m_ip0"
+  param {
+    lr_mult: 1
+	decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+	decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 256
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+layer {
+  name: "m_relu0"
+  type: "ReLU"
+  bottom: "m_ip0"
+  top: "m_relu0"
+}
+
+layer {
+  name: "m_ip1"
+  type: "InnerProduct"
+  bottom: "m_relu0"
+  top: "m_ip1"
+  param {
+    lr_mult: 1
+	decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+	decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 128
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+layer {
+  name: "m_relu1"
+  type: "ReLU"
+  bottom: "m_ip1"
+  top: "m_relu1"
+}
+
+layer {
+  name: "m_ip2"
+  type: "InnerProduct"
+  bottom: "m_relu1"
+  top: "m_ip2"
+  param {
+    lr_mult: 1
+	decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+	decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 4
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}

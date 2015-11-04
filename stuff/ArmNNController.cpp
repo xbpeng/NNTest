@@ -62,6 +62,11 @@ void cArmNNController::LoadModel(const std::string& model_file)
 	mNet.LoadModel(model_file);
 }
 
+void cArmNNController::LoadScale(const std::string& scale_file)
+{
+	mNet.LoadScale(scale_file);
+}
+
 void cArmNNController::CopyNet(const cNeuralNet& net)
 {
 	mNet.CopyModel(net);

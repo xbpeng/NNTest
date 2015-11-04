@@ -69,7 +69,8 @@ void cScenarioArmRL::ParseArgs(const cArgParser& parser)
 	cScenarioSimChar::ParseArgs(parser);
 	parser.ParseString("solver_file", mSolverFile);
 	parser.ParseString("net_file", mNetFile);
-	parser.ParseString("model_file", mModelFile);
+	parser.ParseStringArray("model_file", mModelFiles);
+	parser.ParseString("scale_file", mScaleFile);
 	parser.ParseBool("arm_pretrain", mPretrain);
 
 	ParseCoach(parser, mCoachType);
@@ -265,9 +266,17 @@ bool cScenarioArmRL::BuildController(std::shared_ptr<cCharController>& out_ctrl)
 	{
 		succ &= student_ctrl->LoadNet(mNetFile);
 
-		if (succ && mModelFile != "")
+		if (succ && mModelFiles.size() > 0)
 		{
-			student_ctrl->LoadModel(mModelFile);
+			for (size_t i = 0; i < mModelFiles.size(); ++i)
+			{
+				student_ctrl->LoadModel(mModelFiles[i]);
+			}
+		}
+
+		if (succ && mScaleFile != "")
+		{
+			student_ctrl->LoadScale(mScaleFile);
 		}
 	}
 	
@@ -561,9 +570,17 @@ void cScenarioArmRL::InitTrainer()
 
 	SetupScale();
 
-	if (mModelFile != "")
+	if (mModelFiles.size() > 0)
 	{
-		mTrainer.LoadModel(mModelFile);
+		for (size_t i = 0; i < mModelFiles.size(); ++i)
+		{
+			mTrainer.LoadModel(mModelFiles[i]);
+		}
+	}
+
+	if (mScaleFile != "")
+	{
+		mTrainer.LoadScale(mScaleFile);
 	}
 }
 

@@ -17,6 +17,7 @@ public:
 
 	virtual bool LoadNet(const std::string& net_file);
 	virtual void LoadModel(const std::string& model_file);
+	virtual void LoadScale(const std::string& scale_file);
 
 	virtual void CopyNet(const cNeuralNet& net);
 	virtual void SaveNet(const std::string& out_file) const;
