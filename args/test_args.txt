@@ -29,6 +29,8 @@
 -solver_file= data/arm_rl/arm_pixel_vis_motor_solver.prototxt
 -net_file= data/arm_rl/arm_pixel_vis_motor_deploy.prototxt
 -model_file= data/arm_rl/arm_pixel_vis_motor_model.h5
+//-model_file= data/arm_rl/arm_pixel_vis_model.h5
+//				data/arm_rl/arm_pixel_motor_model.h5
 //-scale_file= data/arm_rl/arm_pixel_vis_motor_model_scale.txt
 
 -coach_type= qp
