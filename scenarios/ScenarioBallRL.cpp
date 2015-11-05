@@ -273,6 +273,8 @@ void cScenarioBallRL::InitTrainer()
 	params.mPoolSize = 2; // double Q learning
 	params.mNumInitSamples = 500;
 	params.mFreezeTargetIters = 500;
+	//params.mIntOutputFile = "output/intermediate/ball_int.h5";
+	//params.mIntOutputIters = 10;
 	mTrainer.Init(params);
 
 	if (mModelFile != "")

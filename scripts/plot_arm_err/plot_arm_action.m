@@ -5,6 +5,8 @@ action_size = m / 2;
 coach_idx = 1;
 student_idx = action_size + 1;
 
+data = data .* 10;
+
 line_width = 1;
 for i = 1:2
     subplot(2, 1, i);
@@ -13,9 +15,10 @@ for i = 1:2
     plot(data(:,student_idx + i - 1), 'b-', 'LineWidth', line_width);
     hold off;
 
-    title('Torque');
+    plot_title = sprintf('Joint %i Torque', i - 1);
+    title(plot_title);
     xlabel('Time (seconds)');
-    ylabel('Tracking Error (m)');
+    ylabel('Torque (Nm)');
 
     legend('QP', 'Reduced Network');
 end
