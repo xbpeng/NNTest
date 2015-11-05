@@ -230,7 +230,7 @@ double cScenarioBallRL::CalcReward(const tExpTuple& tuple) const
 	reward /= (1 + dist * dist);
 
 	double discount = mTrainer.GetDiscount();
-	double norm = (1 + 1 / (1 - discount));
+	double norm = 1 / (1 - discount);
 
 	reward *= 10 / norm;
 

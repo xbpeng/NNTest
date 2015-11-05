@@ -1,17 +1,17 @@
--scenario= ball_rl
+-scenario= arm_rl
 
 -character_file= data/arm_rl/arm.txt
 
--solver_file= data/balL_rl/balL_rl_solver.prototxt
--net_file= data/balL_rl/balL_rl_test.prototxt
+//-solver_file= data/balL_rl/balL_rl_solver.prototxt
+//-net_file= data/balL_rl/balL_rl_test.prototxt
 //-model_file= data/ball_rl/ball_rl_model_noise.h5
 
 //-solver_file= data/arm_rl/arm_solver.prototxt
 //-net_file= data/arm_rl/arm_deploy.prototxt
 //-model_file= data/arm_rl/arm_torque_model.h5
 
-//-solver_file= data/arm_rl/arm_solver.prototxt
-//-net_file= data/arm_rl/arm_pixel_deploy.prototxt
+-solver_file= data/arm_rl/arm_solver.prototxt
+-net_file= data/arm_rl/arm_pixel_deploy.prototxt
 //-model_file= data/arm_rl/arm_pixel_model.h5
 //-model_file= data/arm_rl/arm_pixel_vis_model.h5
 
