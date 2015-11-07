@@ -590,10 +590,10 @@ void cScenarioArmRL::SetupScale()
 	if (state_size > 0)
 	{
 		auto ctrl = GetStudentController();
-		Eigen::VectorXd mean = Eigen::VectorXd::Zero(state_size);
-		Eigen::VectorXd stdev = Eigen::VectorXd::Ones(state_size);
-		ctrl->BuildPoliStateScale(mean, stdev);
-		mTrainer.SetScale(mean, stdev);
+		Eigen::VectorXd offset = Eigen::VectorXd::Zero(state_size);
+		Eigen::VectorXd scale = Eigen::VectorXd::Ones(state_size);
+		ctrl->BuildPoliStateOffsetScale(offset, scale);
+		mTrainer.SetOffsetScale(offset, scale);
 	}
 }
 

@@ -22,7 +22,7 @@ int cArmNNPixelController::GetPoliStateSize() const
 	return state_size;
 }
 
-void cArmNNPixelController::BuildPoliStateScale(Eigen::VectorXd& out_mean, Eigen::VectorXd& out_stdev) const
+void cArmNNPixelController::BuildPoliStateOffsetScale(Eigen::VectorXd& out_mean, Eigen::VectorXd& out_stdev) const
 {
 	const double pixel_mean = 0.5;
 	const double pixel_scale = 0.5;
@@ -36,8 +36,8 @@ void cArmNNPixelController::BuildPoliStateScale(Eigen::VectorXd& out_mean, Eigen
 
 	//out_mean.segment(0, pixel_size) = pixel_mean * Eigen::VectorXd::Ones(pixel_size);
 	//out_stdev.segment(0, pixel_size) = pixel_scale * Eigen::VectorXd::Ones(pixel_size);
-	out_stdev.segment(pixel_size, pose_size) = M_PI * Eigen::VectorXd::Ones(pose_size);
-	out_stdev.segment(pixel_size + pose_size, pose_size) = 2 * M_PI * Eigen::VectorXd::Ones(pose_size);
+	out_stdev.segment(pixel_size, pose_size) = (1 / M_PI) * Eigen::VectorXd::Ones(pose_size);
+	out_stdev.segment(pixel_size + pose_size, pose_size) = (1 / (2 * M_PI)) * Eigen::VectorXd::Ones(pose_size);
 }
 
 

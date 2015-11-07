@@ -42,9 +42,9 @@ void cScenarioArmRLPretrain::SetupScale()
 	int state_size = mTrainer.GetStateSize();
 	if (state_size > 0)
 	{
-		Eigen::VectorXd mean = Eigen::VectorXd::Zero(state_size);
-		Eigen::VectorXd stdev = Eigen::VectorXd::Ones(state_size);
-		mTrainer.SetScale(mean, stdev);
+		Eigen::VectorXd offset = Eigen::VectorXd::Zero(state_size);
+		Eigen::VectorXd scale = Eigen::VectorXd::Ones(state_size);
+		mTrainer.SetOffsetScale(offset, scale);
 	}
 }
 

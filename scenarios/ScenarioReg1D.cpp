@@ -71,10 +71,10 @@ void cScenarioReg1D::TrainNet()
 		cNeuralNet::tProblem prob;
 		BuildProb(prob);
 
-		Eigen::VectorXd mean;
-		Eigen::VectorXd stdev;
-		mNet.CalcMeanStdev(prob.mX, mean, stdev);
-		mNet.SetMeanStdev(mean, stdev);
+		Eigen::VectorXd offset;
+		Eigen::VectorXd scale;
+		mNet.CalcOffsetScale(prob.mX, offset, scale);
+		mNet.SetOffsetScale(offset, scale);
 
 		mNet.Train(prob);
 		EvalNet();

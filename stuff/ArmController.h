@@ -25,7 +25,7 @@ public:
 	virtual void RecordPoliAction(Eigen::VectorXd& out_action) const;
 	virtual int GetTargetPosSize() const;
 
-	virtual void BuildPoliStateScale(Eigen::VectorXd& out_mean, Eigen::VectorXd& out_stdev) const;
+	virtual void BuildPoliStateOffsetScale(Eigen::VectorXd& out_mean, Eigen::VectorXd& out_stdev) const;
 
 	virtual void SetTargetPos(const tVector& target);
 
