@@ -37,29 +37,8 @@ void cArmPDNNController::Clear()
 void cArmPDNNController::UpdatePoliAction()
 {
 	cArmNNController::UpdatePoliAction();
-	Eigen::VectorXd torques = mPoliAction;
-	TorquesToTheta(torques, mPoliAction);
 	// hack
 	mPoliAction(mPoliAction.size() - 1) = 0;
-}
-
-void cArmPDNNController::TorquesToTheta(const Eigen::VectorXd& torques, Eigen::VectorXd& out_theta) const
-{
-	int idx = 0;
-	int num_joints = mImpPDCtrl.GetNumJoints();
-	out_theta.resize(torques.size());
-
-	for (int j = 0; j < num_joints; ++j)
-	{
-		const cPDController& pd_ctrl = mImpPDCtrl.GetPDCtrl(j);
-		if (pd_ctrl.IsValid())
-		{
-			double t = torques[idx] / gTorqueScale;
-			double tar_theta = pd_ctrl.CalcTargetTheta(t);
-			out_theta[idx] = tar_theta;
-			++idx;
-		}
-	}
 }
 
 void cArmPDNNController::ApplyPoliAction(double time_step, const Eigen::VectorXd& action)
