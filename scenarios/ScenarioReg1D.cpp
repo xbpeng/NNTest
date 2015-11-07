@@ -74,7 +74,7 @@ void cScenarioReg1D::TrainNet()
 		Eigen::VectorXd offset;
 		Eigen::VectorXd scale;
 		mNet.CalcOffsetScale(prob.mX, offset, scale);
-		mNet.SetOffsetScale(offset, scale);
+		mNet.SetInputOffsetScale(offset, scale);
 
 		mNet.Train(prob);
 		EvalNet();

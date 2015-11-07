@@ -44,7 +44,7 @@ void cScenarioArmRLPretrain::SetupScale()
 	{
 		Eigen::VectorXd offset = Eigen::VectorXd::Zero(state_size);
 		Eigen::VectorXd scale = Eigen::VectorXd::Ones(state_size);
-		mTrainer.SetOffsetScale(offset, scale);
+		mTrainer.SetInputOffsetScale(offset, scale);
 	}
 }
 

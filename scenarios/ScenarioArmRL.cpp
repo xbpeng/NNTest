@@ -593,7 +593,7 @@ void cScenarioArmRL::SetupScale()
 		Eigen::VectorXd offset = Eigen::VectorXd::Zero(state_size);
 		Eigen::VectorXd scale = Eigen::VectorXd::Ones(state_size);
 		ctrl->BuildPoliStateOffsetScale(offset, scale);
-		mTrainer.SetOffsetScale(offset, scale);
+		mTrainer.SetInputOffsetScale(offset, scale);
 	}
 }
 
