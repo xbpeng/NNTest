@@ -1,0 +1,10 @@
+-scenario= arm_eval
+-playback_speed= 10
+
+-character_file= data/arm_rl/arm.txt
+-output_file= output/arm_int_eval.txt
+
+-net_file= data/arm_rl/arm_reduced_deploy.prototxt
+
+-arm_ctrl_type= nn
+-eval_max_samples= 3000
