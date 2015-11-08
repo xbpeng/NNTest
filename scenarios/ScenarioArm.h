@@ -4,9 +4,13 @@
 #include "util/MathUtil.h"
 #include "util/ArgParser.h"
 #include "scenarios/ScenarioSimChar.h"
+#include "stuff/ArmController.h"
+#include "stuff/ArmNNController.h"
+#include "stuff/ArmPDNNController.h"
+#include "stuff/ArmNNPixelController.h"
+
 #include "render/TextureDesc.h"
 #include "render/camera.h"
-#include "stuff/ArmController.h"
 
 class cScenarioArm : public cScenarioSimChar
 {
@@ -38,15 +42,12 @@ public:
 	
 	virtual const std::unique_ptr<cTextureDesc>& GetViewRT() const;
 
-	virtual void SaveNet(const std::string& out_file) const;
 	virtual std::string GetName() const;
-
-	virtual bool EnabledOutputData() const;
-	virtual void EnableOutputData(bool enable);
 
 protected:
 	enum eCtrlType
 	{
+		eCtrlNone,
 		eCtrlQP,
 		eCtrlPDQP,
 		eCtrlNN,
@@ -62,7 +63,6 @@ protected:
 
 	double mPoseCounter;
 	double mTargetCounter;
-	std::shared_ptr<cSimCharacter> mCoach;
 
 	std::string mSolverFile;
 	std::string mNetFile;
@@ -78,16 +78,16 @@ protected:
 	
 	virtual void BuildWorld();
 	virtual bool BuildController(std::shared_ptr<cCharController>& out_ctrl);
-	virtual bool BuildCoachController(std::shared_ptr<cCharController>& out_ctrl);
+	virtual bool BuildController(const std::shared_ptr<cSimCharacter>& character, eCtrlType ctrl_type, std::shared_ptr<cCharController>& out_ctrl);
+	virtual bool BuildNNController(eCtrlType ctrl_type, std::shared_ptr<cArmController>& out_ctrl);
+	
 	virtual void BuildGround();
 
 	virtual void CreateCharacter(std::shared_ptr<cSimCharacter>& out_char) const;
 	virtual void InitCharacterPos(std::shared_ptr<cSimCharacter>& out_char) const;
-	virtual void BuildCoach();
 
 	virtual std::shared_ptr<cArmController> GetArmController() const;
 
-	virtual void UpdateCoach(double time_step);
 	virtual void UpdateGround();
 	virtual void ResetGround();
 	virtual void SetCtrlTargetPos(const tVector& target);
@@ -101,15 +101,7 @@ protected:
 	virtual void UpdateTargetCounter(double time_step);
 	virtual void UpdatePoseCounter(double time_elapsed);
 
-	virtual int GetStateSize() const;
-	virtual int GetActionSize() const;
-
-	virtual void RecordState(Eigen::VectorXd& out_state) const;
-	virtual void RecordAction(Eigen::VectorXd& out_action) const;
-	virtual void RecordTuple();
-
 	virtual void UpdateCharacter(double time_step);
-	virtual void InitTupleBuffer();
 	virtual void InitViewBuffer();
 
 	virtual void InitCam();
@@ -118,9 +110,6 @@ protected:
 	virtual void SetNNViewFeatures();
 	virtual void InitRenderResources();
 	virtual bool NeedCtrlUpdate() const;
-
-	virtual void SyncCharacters();
-	virtual bool EnableSyncCharacters() const;
 
 	virtual void ParseCtrlType(const cArgParser& parser, eCtrlType& out_ctrl) const;
 	

@@ -1,4 +1,4 @@
--scenario= arm_rl
+-scenario= arm_eval
 
 -character_file= data/arm_rl/arm.txt
 
@@ -11,8 +11,8 @@
 //-model_file= data/arm_rl/arm_torque_model.h5
 
 //-solver_file= data/arm_rl/arm_pixel_solver.prototxt
-//-net_file= data/arm_rl/arm_pixel_deploy.prototxt
-//-model_file= data/arm_rl/arm_pixel_model.h5
+-net_file= data/arm_rl/arm_pixel_deploy.prototxt
+-model_file= data/arm_rl/arm_pixel_model.h5
 
 //-solver_file= data/reg1D/reg1D_multi_solver.prototxt
 //-net_file= data/reg1D/reg1D_multi_deploy.prototxt
@@ -20,6 +20,7 @@
 -solver_file= data/arm_rl/arm_reduced_solver.prototxt
 -net_file= data/arm_rl/arm_reduced_deploy.prototxt
 //-model_file= data/arm_rl/arm_torque_model.h5
+-model_file= data/arm_rl/arm_pd_model.h5
 
 //-solver_file= data/arm_rl/arm_pixel_motor_solver.prototxt
 //-net_file= data/arm_rl/arm_pixel_motor_deploy.prototxt
@@ -41,6 +42,7 @@
 
 -coach_type= pd_qp
 -student_type= pd_nn
+-arm_ctrl_type= nn_pixel
 
 -epsilon_greedy_rate= 0.2
 -arm_pretrain= false
