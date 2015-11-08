@@ -50,6 +50,7 @@ protected:
 		eCtrlNone,
 		eCtrlQP,
 		eCtrlPDQP,
+		eCtrlVelQP,
 		eCtrlNN,
 		eCtrlPDNN,
 		eCtrlNNPixel,

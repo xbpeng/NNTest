@@ -8,7 +8,7 @@ cScenarioArmEval::cScenarioArmEval()
 {
 	mAvgErr = 0;
 	mErrSampleCount = 0;
-	mMaxSamples = std::numeric_limits<int>::infinity();
+	mMaxSamples = std::numeric_limits<int>::max();
 	mOutputFile = "";
 }
 

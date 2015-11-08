@@ -11,9 +11,9 @@
 //-net_file= data/arm_rl/arm_deploy.prototxt
 //-model_file= data/arm_rl/arm_torque_model.h5
 
--solver_file= data/arm_rl/arm_pixel_solver.prototxt
--net_file= data/arm_rl/arm_pixel_deploy.prototxt
--model_file= data/arm_rl/arm_pixel_model.h5
+//-solver_file= data/arm_rl/arm_pixel_solver.prototxt
+//-net_file= data/arm_rl/arm_pixel_deploy.prototxt
+//-model_file= data/arm_rl/arm_pixel_model.h5
 
 //-solver_file= data/reg1D/reg1D_multi_solver.prototxt
 //-net_file= data/reg1D/reg1D_multi_deploy.prototxt
@@ -38,7 +38,7 @@
 //-scale_file= data/arm_rl/arm_pixel_vis_motor_model_scale.txt
 
 -coach_type= pd_qp
--arm_ctrl_type= nn_pixel
+-arm_ctrl_type= vel_qp
 
 //-coach_type= qp
 //-arm_ctrl_type= nn
@@ -50,7 +50,7 @@
 -epsilon_greedy_rate= 0.2
 -arm_pretrain= false
 
--eval_max_samples= 3000
+//-eval_max_samples= 3000
 
 //-output_net_file= output/ball_rl_model.h5
 -output_net_file= output/arm_pd_model.h5

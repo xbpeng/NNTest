@@ -2,6 +2,7 @@
 #include "stuff/SimArm.h"
 #include "stuff/ArmQPController.h"
 #include "stuff/ArmPDQPController.h"
+#include "stuff/ArmVelQPController.h"
 #include "render/DrawUtil.h"
 #include "render/DrawSimCharacter.h"
 #include "util/FileUtil.h"
@@ -209,6 +210,12 @@ bool cScenarioArm::BuildController(const std::shared_ptr<cSimCharacter>& charact
 	else if (ctrl_type == eCtrlPDQP)
 	{
 		std::shared_ptr<cArmPDQPController> curr_ctrl = std::shared_ptr<cArmPDQPController>(new cArmPDQPController());
+		curr_ctrl->Init(character.get(), mGravity, mCharacterFile);
+		ctrl = curr_ctrl;
+	}
+	else if (ctrl_type == eCtrlVelQP)
+	{
+		std::shared_ptr<cArmVelQPController> curr_ctrl = std::shared_ptr<cArmVelQPController>(new cArmVelQPController());
 		curr_ctrl->Init(character.get(), mGravity, mCharacterFile);
 		ctrl = curr_ctrl;
 	}
@@ -554,6 +561,10 @@ void cScenarioArm::ParseCtrlType(const cArgParser& parser, const std::string& ke
 	else if (str == "pd_qp")
 	{
 		out_ctrl = eCtrlPDQP;
+	}
+	else if (str == "vel_qp")
+	{
+		out_ctrl = eCtrlVelQP;
 	}
 	else if (str == "nn")
 	{

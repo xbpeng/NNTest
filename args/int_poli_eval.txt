@@ -7,4 +7,4 @@
 -net_file= data/arm_rl/arm_reduced_deploy.prototxt
 
 -arm_ctrl_type= nn
--eval_max_samples= 3000
+-eval_max_samples= 5000
