@@ -1,4 +1,5 @@
 -scenario= arm_eval
+-playback_speed= 1
 
 -character_file= data/arm_rl/arm.txt
 
@@ -10,17 +11,17 @@
 //-net_file= data/arm_rl/arm_deploy.prototxt
 //-model_file= data/arm_rl/arm_torque_model.h5
 
-//-solver_file= data/arm_rl/arm_pixel_solver.prototxt
+-solver_file= data/arm_rl/arm_pixel_solver.prototxt
 -net_file= data/arm_rl/arm_pixel_deploy.prototxt
 -model_file= data/arm_rl/arm_pixel_model.h5
 
 //-solver_file= data/reg1D/reg1D_multi_solver.prototxt
 //-net_file= data/reg1D/reg1D_multi_deploy.prototxt
 
--solver_file= data/arm_rl/arm_reduced_solver.prototxt
--net_file= data/arm_rl/arm_reduced_deploy.prototxt
+//-solver_file= data/arm_rl/arm_reduced_solver.prototxt
+//-net_file= data/arm_rl/arm_reduced_deploy.prototxt
 //-model_file= data/arm_rl/arm_torque_model.h5
--model_file= data/arm_rl/arm_pd_model.h5
+//-model_file= data/arm_rl/arm_pd_model.h5
 
 //-solver_file= data/arm_rl/arm_pixel_motor_solver.prototxt
 //-net_file= data/arm_rl/arm_pixel_motor_deploy.prototxt
@@ -36,19 +37,24 @@
 //				data/arm_rl/arm_pixel_motor_model.h5
 //-scale_file= data/arm_rl/arm_pixel_vis_motor_model_scale.txt
 
-//-coach_type= qp
-//-student_type= nn
-//-student_type= nn_pixel
-
 -coach_type= pd_qp
--student_type= pd_nn
 -arm_ctrl_type= nn_pixel
+
+//-coach_type= qp
+//-arm_ctrl_type= nn
+//-arm_ctrl_type= nn_pixel
+
+-trainer_int_iter= 1000
+-trainer_int_output= output/intermediate/trainer_int_model.h5
 
 -epsilon_greedy_rate= 0.2
 -arm_pretrain= false
 
+-eval_max_samples= 3000
+
 //-output_net_file= output/ball_rl_model.h5
 -output_net_file= output/arm_pd_model.h5
+-output_file= output/arm_eval.txt
 
 -ground_height= 0
 

@@ -64,7 +64,6 @@ protected:
 	double mPoseCounter;
 	double mTargetCounter;
 
-	std::string mSolverFile;
 	std::string mNetFile;
 	std::vector<std::string> mModelFiles;
 	std::string mScaleFile;
@@ -76,6 +75,8 @@ protected:
 	Eigen::VectorXd mViewBuffer;
 	std::vector<GLubyte> mViewBufferRaw;
 	
+	cRand mRand;
+
 	virtual void BuildWorld();
 	virtual bool BuildController(std::shared_ptr<cCharController>& out_ctrl);
 	virtual bool BuildController(const std::shared_ptr<cSimCharacter>& character, eCtrlType ctrl_type, std::shared_ptr<cCharController>& out_ctrl);
@@ -111,8 +112,9 @@ protected:
 	virtual void InitRenderResources();
 	virtual bool NeedCtrlUpdate() const;
 
-	virtual void ParseCtrlType(const cArgParser& parser, eCtrlType& out_ctrl) const;
+	virtual void ParseCtrlType(const cArgParser& parser, const std::string& key, eCtrlType& out_ctrl) const;
 	
 	virtual void GetRandTargetMinMaxTime(double& out_min, double& out_max) const;
 	virtual void GetRandPoseMinMaxTime(double& out_min, double& out_max) const;
+	virtual double GetRandTargetMaxDist() const;
 };

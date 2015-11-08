@@ -23,12 +23,14 @@ cScenarioArm::cScenarioArm()
 	mEnableAutoTarget = true;
 	mEnableRandPose = true;
 	mSimStepsPerUpdate = 5;
-	mTargetPos = tVector(1, 0, 0, 0);
+	mTargetPos = tVector(1, 1, 0, 0);
 	ResetTargetCounter();
 	ResetPoseCounter();
 
 	mCtrlType = eCtrlNone;
 	mGravity = tVector(0, 0, 0, 0);
+
+	mRand.Seed(static_cast<unsigned long int>(cMathUtil::RandInt(0, std::numeric_limits<int>::max())));
 }
 
 cScenarioArm::~cScenarioArm()
@@ -49,12 +51,11 @@ void cScenarioArm::Init()
 void cScenarioArm::ParseArgs(const cArgParser& parser)
 {
 	cScenarioSimChar::ParseArgs(parser);
-	parser.ParseString("solver_file", mSolverFile);
 	parser.ParseString("net_file", mNetFile);
 	parser.ParseStringArray("model_file", mModelFiles);
 	parser.ParseString("scale_file", mScaleFile);
 
-	ParseCtrlType(parser, mCtrlType);
+	ParseCtrlType(parser, "arm_ctrl_type", mCtrlType);
 }
 
 void cScenarioArm::Reset()
@@ -364,8 +365,8 @@ void cScenarioArm::ApplyRandPose()
 	int root_size = mChar->GetParamSize(root_id);
 	for (int i = root_size; i < pose_size; ++i)
 	{
-		double rand_pose_val = cMathUtil::RandDouble(-M_PI, M_PI);
-		double rand_vel_val = 0.2 * cMathUtil::RandDouble(-M_PI, M_PI);
+		double rand_pose_val = mRand.RandDouble(-M_PI, M_PI);
+		double rand_vel_val = 0.2 * mRand.RandDouble(-M_PI, M_PI);
 		pose[i] = rand_pose_val;
 		vel[i] = rand_vel_val;
 	}
@@ -378,8 +379,9 @@ void cScenarioArm::ApplyRandPose()
 void cScenarioArm::SetRandTarget()
 {
 	tVector target = tVector::Zero();
-	target[0] = cMathUtil::RandDouble(-0.5 * gCamSize, 0.5 * gCamSize);
-	target[1] = cMathUtil::RandDouble(-0.5 * gCamSize, 0.5 * gCamSize);
+	double max_dist = GetRandTargetMaxDist();
+	target[0] = mRand.RandDouble(-max_dist, max_dist);
+	target[1] = mRand.RandDouble(-max_dist, max_dist);
 	SetTargetPos(target);
 	ResetTargetCounter();
 }
@@ -389,7 +391,7 @@ void cScenarioArm::ResetTargetCounter()
 	double min_time = 0;
 	double max_time = 0;
 	GetRandTargetMinMaxTime(min_time, max_time);
-	mTargetCounter = cMathUtil::RandDouble(min_time, max_time);
+	mTargetCounter = mRand.RandDouble(min_time, max_time);
 }
 
 void cScenarioArm::ResetPoseCounter()
@@ -397,7 +399,7 @@ void cScenarioArm::ResetPoseCounter()
 	double min_time = 0;
 	double max_time = 0;
 	GetRandPoseMinMaxTime(min_time, max_time);
-	mPoseCounter = cMathUtil::RandDouble(min_time, max_time);
+	mPoseCounter = mRand.RandDouble(min_time, max_time);
 }
 
 void cScenarioArm::UpdateTargetCounter(double time_step)
@@ -453,11 +455,11 @@ void cScenarioArm::InitCam()
 bool cScenarioArm::NeedViewBuffer() const
 {
 	bool need = false;
-	auto student = GetArmController();
+	auto ctrl = GetArmController();
 	
-	if (student != nullptr)
+	if (ctrl != nullptr)
 	{
-		need = (typeid(*student.get()).hash_code() == typeid(cArmNNPixelController).hash_code());
+		need = (typeid(*ctrl.get()).hash_code() == typeid(cArmNNPixelController).hash_code());
 	}
 	
 	return need;
@@ -537,10 +539,10 @@ bool cScenarioArm::NeedCtrlUpdate() const
 	return false;
 }
 
-void cScenarioArm::ParseCtrlType(const cArgParser& parser, eCtrlType& out_ctrl) const
+void cScenarioArm::ParseCtrlType(const cArgParser& parser, const std::string& key, eCtrlType& out_ctrl) const
 {
 	std::string str = "";
-	parser.ParseString("arm_ctrl_type", str);
+	parser.ParseString(key, str);
 
 	if (str == "")
 	{
@@ -582,4 +584,9 @@ void cScenarioArm::GetRandPoseMinMaxTime(double& out_min, double& out_max) const
 {
 	out_min = 6;
 	out_max = 8;
+}
+
+double cScenarioArm::GetRandTargetMaxDist() const
+{
+	return 0.5 * gCamSize;
 }

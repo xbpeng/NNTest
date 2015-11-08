@@ -222,6 +222,8 @@ void ParseArgs(int argc, char** argv)
 		// this allows the cmd args to overwrite the file args
 		gArgParser.AppendArgs(arg_file);
 	}
+
+	gArgParser.ParseDouble("playback_speed", gPlaybackSpeed);
 }
 
 
@@ -244,6 +246,15 @@ void Update(double time_elapsed)
 	UpdateScenario(time_elapsed);
 }
 
+void Shutdown()
+{
+	if (gScenario != nullptr)
+	{
+		gScenario->Shutdown();
+	}
+	exit(0);
+}
+
 void Animate(int callback_val)
 {
 	if (gAnimate)
@@ -258,6 +269,14 @@ void Animate(int callback_val)
 		Update(time_step);
 
 		glutPostRedisplay();
+	}
+
+	if (gScenario != nullptr)
+	{
+		if (gScenario->IsDone())
+		{
+			Shutdown();
+		}
 	}
 }
 
@@ -292,7 +311,7 @@ void Keyboard(unsigned char key, int x, int y) {
 	switch (key) {
 		// Quit.
 	case 27: // escape
-		exit(0);
+		Shutdown();
 		break;
 	case '>':
 		StepAnim(gAnimStep);

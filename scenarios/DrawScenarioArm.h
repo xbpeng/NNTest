@@ -19,6 +19,8 @@ public:
 	virtual void Clear();
 	virtual void Reset();
 
+	virtual bool IsDone() const;
+
 	virtual std::string BuildTextInfoStr() const;
 	virtual void MouseClick(int button, int state, double x, double y);
 	virtual void MouseMove(double x, double y);
@@ -29,7 +31,6 @@ protected:
 	cArgParser mArgParser;
 	std::shared_ptr<cScenarioArm> mScene;
 	std::shared_ptr<cScenarioSimChar> mSimScene;
-	std::string mOutputNetFile;
 	bool mMouseDown;
 
 	bool mEnableTrace;

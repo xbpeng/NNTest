@@ -8,4 +8,7 @@ public:
 	virtual ~cDrawScenarioArmEval();
 
 protected:
+
+	virtual void BuildScene();
+	virtual std::string BuildTextInfoStr() const;
 };

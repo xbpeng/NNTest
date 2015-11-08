@@ -88,6 +88,11 @@ void cDrawScenarioArm::Reset()
 	mTracer.Reset();
 }
 
+bool cDrawScenarioArm::IsDone() const
+{
+	return mScene->IsDone();
+}
+
 void cDrawScenarioArm::DrawScene()
 {
 	DrawGrid();
