@@ -137,24 +137,24 @@
 			},
 			{
 				"Name": "link0",
-				"Kp": 300,
-				"Kd": 30,
+				"Kp": 100,
+				"Kd": 10,
 				"TorqueLim": 300,
 				"TargetTheta": 0,
 				"UseWorldCoord": 0
 			},
 			{
 				"Name": "link1",
-				"Kp": 300,
-				"Kd": 30,
+				"Kp": 100,
+				"Kd": 10,
 				"TorqueLim": 300,
 				"TargetTheta": 0,
 				"UseWorldCoord": 0
 			},
 			{
 				"Name": "link2",
-				"Kp": 300,
-				"Kd": 30,
+				"Kp": 100,
+				"Kd": 10,
 				"TorqueLim": 300,
 				"TargetTheta": 0,
 				"UseWorldCoord": 0

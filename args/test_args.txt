@@ -17,8 +17,8 @@
 //-solver_file= data/reg1D/reg1D_multi_solver.prototxt
 //-net_file= data/reg1D/reg1D_multi_deploy.prototxt
 
--solver_file= data/arm_rl/arm_torque_solver.prototxt
--net_file= data/arm_rl/arm_torque_deploy.prototxt
+-solver_file= data/arm_rl/arm_reduced_solver.prototxt
+-net_file= data/arm_rl/arm_reduced_deploy.prototxt
 //-model_file= data/arm_rl/arm_torque_model.h5
 
 //-solver_file= data/arm_rl/arm_pixel_motor_solver.prototxt

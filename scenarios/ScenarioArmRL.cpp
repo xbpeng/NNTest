@@ -773,8 +773,9 @@ void cScenarioArmRL::SyncCharacters()
 	
 	cNeuralNetTrainer::eStage trainer_stage = mTrainer.GetStage();
 	bool sync_student = mPretrain || trainer_stage == cNeuralNetTrainer::eStageInit;
-	
-	if (sync_student)
+
+	/*
+	if (sync_student && false) // hack
 	{
 		mCoach->BuildPose(pose);
 		mCoach->BuildVel(vel);
@@ -782,6 +783,7 @@ void cScenarioArmRL::SyncCharacters()
 		mChar->SetVel(vel);
 	}
 	else
+	*/
 	{
 		mChar->BuildPose(pose);
 		mChar->BuildVel(vel);
