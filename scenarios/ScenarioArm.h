@@ -7,7 +7,10 @@
 #include "stuff/ArmController.h"
 #include "stuff/ArmNNController.h"
 #include "stuff/ArmPDNNController.h"
+#include "stuff/ArmVelNNController.h"
 #include "stuff/ArmNNPixelController.h"
+#include "stuff/ArmPDNNPixelController.h"
+#include "stuff/ArmVelNNPixelController.h"
 
 #include "render/TextureDesc.h"
 #include "render/camera.h"
@@ -53,7 +56,10 @@ protected:
 		eCtrlVelQP,
 		eCtrlNN,
 		eCtrlPDNN,
+		eCtrlVelNN,
 		eCtrlNNPixel,
+		eCtrlPDNNPixel,
+		eCtrlVelNNPixel,
 		eCtrlMax
 	};
 

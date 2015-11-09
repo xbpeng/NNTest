@@ -1,17 +1,15 @@
 #pragma once
 
-#include "ArmQPController.h"
+#include "ArmNNPixelController.h"
 #include "sim/ImpPDController.h"
 
-class cArmVelQPController : public cArmQPController
+class cArmVelNNPixelController : public cArmNNPixelController
 {
 public:
 	EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
-	static const double gVelScale;
-
-	cArmVelQPController();
-	virtual ~cArmVelQPController();
+	cArmVelNNPixelController();
+	virtual ~cArmVelNNPixelController();
 
 	virtual void Init(cSimCharacter* character, const tVector& gravity, const std::string& param_file);
 	virtual void Reset();
@@ -19,8 +17,6 @@ public:
 
 protected:
 	cImpPDController mImpPDCtrl;
-
-	virtual void TorquesToVel(const Eigen::VectorXd& torques, Eigen::VectorXd& out_vel) const;
 
 	virtual void UpdatePoliAction();
 	virtual void ApplyPoliAction(double time_step, const Eigen::VectorXd& action);

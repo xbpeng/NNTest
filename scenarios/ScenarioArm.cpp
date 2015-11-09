@@ -197,7 +197,8 @@ bool cScenarioArm::BuildController(const std::shared_ptr<cSimCharacter>& charact
 	if (ctrl_type == eCtrlNone)
 	{
 	}
-	else if (ctrl_type == eCtrlNN || ctrl_type == eCtrlPDNN || ctrl_type == eCtrlNNPixel)
+	else if (ctrl_type == eCtrlNN || ctrl_type == eCtrlPDNN || ctrl_type == eCtrlVelNN 
+		|| ctrl_type == eCtrlNNPixel || ctrl_type == eCtrlPDNNPixel || ctrl_type == eCtrlVelNNPixel)
 	{
 		succ = BuildNNController(ctrl_type, ctrl);
 	}
@@ -256,10 +257,28 @@ bool cScenarioArm::BuildNNController(eCtrlType ctrl_type, std::shared_ptr<cArmCo
 		curr_ctrl->Init(mChar.get(), mGravity, mCharacterFile);
 		ctrl = curr_ctrl;
 	}
+	else if (ctrl_type == eCtrlVelNN)
+	{
+		std::shared_ptr<cArmVelNNController> curr_ctrl = std::shared_ptr<cArmVelNNController>(new cArmVelNNController());
+		curr_ctrl->Init(mChar.get(), mGravity, mCharacterFile);
+		ctrl = curr_ctrl;
+	}
 	else if (ctrl_type == eCtrlNNPixel)
 	{
 		std::shared_ptr<cArmNNPixelController> curr_ctrl = std::shared_ptr<cArmNNPixelController>(new cArmNNPixelController());
 		curr_ctrl->Init(mChar.get());
+		ctrl = curr_ctrl;
+	}
+	else if (ctrl_type == eCtrlPDNNPixel)
+	{
+		std::shared_ptr<cArmPDNNPixelController> curr_ctrl = std::shared_ptr<cArmPDNNPixelController>(new cArmPDNNPixelController());
+		curr_ctrl->Init(mChar.get(), mGravity, mCharacterFile);
+		ctrl = curr_ctrl;
+	}
+	else if (ctrl_type == eCtrlVelNNPixel)
+	{
+		std::shared_ptr<cArmVelNNPixelController> curr_ctrl = std::shared_ptr<cArmVelNNPixelController>(new cArmVelNNPixelController());
+		curr_ctrl->Init(mChar.get(), mGravity, mCharacterFile);
 		ctrl = curr_ctrl;
 	}
 	else
@@ -466,7 +485,9 @@ bool cScenarioArm::NeedViewBuffer() const
 	
 	if (ctrl != nullptr)
 	{
-		need = (typeid(*ctrl.get()).hash_code() == typeid(cArmNNPixelController).hash_code());
+		need = (typeid(*ctrl.get()).hash_code() == typeid(cArmNNPixelController).hash_code())
+			|| (typeid(*ctrl.get()).hash_code() == typeid(cArmPDNNPixelController).hash_code())
+			|| (typeid(*ctrl.get()).hash_code() == typeid(cArmVelNNPixelController).hash_code());
 	}
 	
 	return need;
@@ -529,6 +550,16 @@ void cScenarioArm::SetNNViewFeatures()
 		std::shared_ptr<cArmNNPixelController> pixel_ctrl = std::static_pointer_cast<cArmNNPixelController>(ctrl);
 		pixel_ctrl->SetViewBuffer(mViewBuffer);
 	}
+	else if (typeid(*ctrl.get()).hash_code() == typeid(cArmPDNNPixelController).hash_code())
+	{
+		std::shared_ptr<cArmPDNNPixelController> pixel_ctrl = std::static_pointer_cast<cArmPDNNPixelController>(ctrl);
+		pixel_ctrl->SetViewBuffer(mViewBuffer);
+	}
+	else if (typeid(*ctrl.get()).hash_code() == typeid(cArmVelNNPixelController).hash_code())
+	{
+		std::shared_ptr<cArmVelNNPixelController> pixel_ctrl = std::static_pointer_cast<cArmVelNNPixelController>(ctrl);
+		pixel_ctrl->SetViewBuffer(mViewBuffer);
+	}
 }
 
 void cScenarioArm::InitRenderResources()
@@ -574,9 +605,21 @@ void cScenarioArm::ParseCtrlType(const cArgParser& parser, const std::string& ke
 	{
 		out_ctrl = eCtrlPDNN;
 	}
+	else if (str == "vel_nn")
+	{
+		out_ctrl = eCtrlVelNN;
+	}
 	else if (str == "nn_pixel")
 	{
 		out_ctrl = eCtrlNNPixel;
+	}
+	else if (str == "pd_nn_pixel")
+	{
+		out_ctrl = eCtrlPDNNPixel;
+	}
+	else if (str == "vel_nn_pixel")
+	{
+		out_ctrl = eCtrlVelNNPixel;
 	}
 	else
 	{
