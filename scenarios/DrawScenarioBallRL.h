@@ -22,11 +22,14 @@ public:
 	std::string GetName() const;
 
 protected:
-	cScenarioBallRL mScene;
+	cArgParser mArgParser;
+	std::shared_ptr<cScenarioBallRL> mScene;
 	bool mTrackCharacter;
 	std::string mOutputNetFile;
 	bool mEnableTrace;
 	cCircularBuffer<tVector, Eigen::aligned_allocator<tVector>> mTraceBuffer;
+
+	virtual void BuildScene();
 
 	virtual void UpdateCamera();
 	virtual void ToggleTraining();

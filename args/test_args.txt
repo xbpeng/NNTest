@@ -1,18 +1,18 @@
--scenario= arm_rl
+-scenario= ball_rl
 -playback_speed= 1
 
 -character_file= data/arm_rl/arm.txt
 
-//-solver_file= data/balL_rl/balL_rl_solver.prototxt
-//-net_file= data/balL_rl/balL_rl_test.prototxt
+-solver_file= data/balL_rl/balL_rl_solver.prototxt
+-net_file= data/balL_rl/balL_rl_test.prototxt
 //-model_file= data/ball_rl/ball_rl_model_noise.h5
 
 //-solver_file= data/arm_rl/arm_solver.prototxt
 //-net_file= data/arm_rl/arm_deploy.prototxt
 //-model_file= data/arm_rl/arm_torque_model.h5
 
--solver_file= data/arm_rl/arm_pixel_solver.prototxt
--net_file= data/arm_rl/arm_pixel_deploy.prototxt
+//-solver_file= data/arm_rl/arm_pixel_solver.prototxt
+//-net_file= data/arm_rl/arm_pixel_deploy.prototxt
 //-model_file= data/arm_rl/arm_pixel_model.h5
 
 //-solver_file= data/reg1D/reg1D_multi_solver.prototxt
@@ -38,7 +38,7 @@
 //-scale_file= data/arm_rl/arm_pixel_vis_motor_model_scale.txt
 
 -coach_type= vel_qp
--arm_ctrl_type= vel_nn_pixel
+-arm_ctrl_type= qp
 
 //-coach_type= qp
 //-arm_ctrl_type= nn
@@ -50,7 +50,7 @@
 -epsilon_greedy_rate= 0.2
 -arm_pretrain= false
 
-//-eval_max_samples= 3000
+-eval_max_samples= 5000
 
 //-output_net_file= output/ball_rl_model.h5
 -output_net_file= output/arm_vel_model.h5

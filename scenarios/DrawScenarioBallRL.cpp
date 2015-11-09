@@ -23,7 +23,7 @@ cDrawScenarioBallRL::~cDrawScenarioBallRL()
 void cDrawScenarioBallRL::ParseArgs(const cArgParser& parser)
 {
 	cDrawScenario::ParseArgs(parser);
-	mScene.ParseArgs(parser);
+	mArgParser = parser;
 
 	parser.ParseString("output_net_file", mOutputNetFile);
 }
@@ -54,7 +54,7 @@ void cDrawScenarioBallRL::Keyboard(unsigned char key, int x, int y)
 void cDrawScenarioBallRL::Update(double time_elapsed)
 {
 	cDrawScenario::Update(time_elapsed);
-	mScene.Update(time_elapsed);
+	mScene->Update(time_elapsed);
 	UpdateCamera();
 
 	if (mEnableTrace && time_elapsed > 0)
@@ -66,13 +66,15 @@ void cDrawScenarioBallRL::Update(double time_elapsed)
 void cDrawScenarioBallRL::Init()
 {
 	cDrawScenario::Init();
-	mScene.Init();
+	BuildScene();
+	mScene->ParseArgs(mArgParser);
+	mScene->Init();
 }
 
 void cDrawScenarioBallRL::Reset()
 {
 	cDrawScenario::Reset();
-	mScene.Reset();
+	mScene->Reset();
 	mTraceBuffer.Clear();
 }
 
@@ -89,9 +91,14 @@ void cDrawScenarioBallRL::DrawScene()
 	DrawBall();
 }
 
+void cDrawScenarioBallRL::BuildScene()
+{
+	mScene = std::shared_ptr<cScenarioBallRL>(new cScenarioBallRL());
+}
+
 void cDrawScenarioBallRL::UpdateCamera()
 {
-	tVector char_pos = mScene.GetBallPos();
+	tVector char_pos = mScene->GetBallPos();
 	tVector cam_pos = mCam.GetPosition();
 
 	if (mTrackCharacter)
@@ -115,8 +122,8 @@ void cDrawScenarioBallRL::UpdateCamera()
 
 void cDrawScenarioBallRL::ToggleTraining()
 {
-	mScene.ToggleTraining();
-	bool enable_training = mScene.EnableTraining();
+	mScene->ToggleTraining();
+	bool enable_training = mScene->EnableTraining();
 	if (enable_training)
 	{
 		printf("Training enabled\n");
@@ -135,19 +142,19 @@ void cDrawScenarioBallRL::ToggleTrace()
 
 void cDrawScenarioBallRL::UpdateTrace()
 {
-	const tVector& pos = mScene.GetBallPos();
+	const tVector& pos = mScene->GetBallPos();
 	mTraceBuffer.Add(pos);
 }
 
 void cDrawScenarioBallRL::SaveNet(const std::string& out_file) const
 {
-	mScene.SaveNet(out_file);
+	mScene->SaveNet(out_file);
 	printf("Model saved to %s\n", out_file.c_str());
 }
 
 std::string cDrawScenarioBallRL::GetName() const
 {
-	return mScene.GetName();
+	return mScene->GetName();
 }
 
 void cDrawScenarioBallRL::DrawGrid() const
@@ -179,7 +186,7 @@ void cDrawScenarioBallRL::DrawTrace() const
 
 void cDrawScenarioBallRL::DrawGround() const
 {
-	const auto& ground = mScene.GetGround();
+	const auto& ground = mScene->GetGround();
 
 	tVector focus = mCam.GetFocus();
 	double cam_w = mCam.GetWidth();
@@ -195,13 +202,13 @@ void cDrawScenarioBallRL::DrawBall() const
 {
 	const tVector col = tVector(120 / 255.0, 140 / 255.0, 175 / 255.0, 1.0);
 
-	const auto& ball = mScene.GetBall();
+	const auto& ball = mScene->GetBall();
 	cDrawBall::Draw(ball, col);
 }
 
 std::string cDrawScenarioBallRL::BuildTextInfoStr() const
 {
-	double succ_rate = mScene.GetSuccRate();
+	double succ_rate = mScene->GetSuccRate();
 	std::string info = "Success Rate: " + std::to_string(succ_rate);
 	return info;
 }

@@ -187,7 +187,7 @@ void cScenarioBallRL::NewCycleUpdate()
 		}
 
 		double rand = cMathUtil::RandDouble(0, 1);
-		if (rand < mEpsilon || mTrainer.GetIter() == 0)
+		if (rand < mEpsilon || mTrainer->GetIter() == 0)
 		{
 			ApplyRandAction();
 		}
@@ -229,7 +229,7 @@ double cScenarioBallRL::CalcReward(const tExpTuple& tuple) const
 
 	reward /= (1 + dist * dist);
 
-	double discount = mTrainer.GetDiscount();
+	double discount = mTrainer->GetDiscount();
 	double norm = 1 / (1 - discount);
 
 	reward *= 10 / norm;
@@ -266,6 +266,8 @@ void cScenarioBallRL::InitTupleBuffer()
 
 void cScenarioBallRL::InitTrainer()
 {
+	std::shared_ptr<cQNetTrainer> trainer = std::shared_ptr<cQNetTrainer>(new cQNetTrainer());
+
 	cQNetTrainer::tParams params;
 	params.mNetFile = mNetFile;
 	params.mSolverFile = mSolverFile;
@@ -275,13 +277,14 @@ void cScenarioBallRL::InitTrainer()
 	params.mFreezeTargetIters = 500;
 	//params.mIntOutputFile = "output/intermediate/ball_int.h5";
 	//params.mIntOutputIters = 10;
-	mTrainer.Init(params);
+	trainer->Init(params);
 
 	if (mModelFile != "")
 	{
-		mTrainer.LoadModel(mModelFile);
+		trainer->LoadModel(mModelFile);
 	}
-	mIter = 0;
+
+	mTrainer = trainer;
 }
 
 void cScenarioBallRL::InitGround()
@@ -291,17 +294,15 @@ void cScenarioBallRL::InitGround()
 
 void cScenarioBallRL::Train()
 {
-	printf("\nTraining iter: %i\n", mTrainer.GetIter());
+	printf("\nTraining iter: %i\n", mTrainer->GetIter());
 
 	const int num_steps = 1;
 
 	mNumTuples = 0;
-	mTrainer.AddTuples(mTupleBuffer);
-	mTrainer.Train(num_steps);
+	mTrainer->AddTuples(mTupleBuffer);
+	mTrainer->Train(num_steps);
 
-	const cNeuralNet& trainer_net = mTrainer.GetNet();
+	const cNeuralNet& trainer_net = mTrainer->GetNet();
 	cBallController& ctrl = mBall.GetController();
 	ctrl.CopyNet(trainer_net);
-
-	++mIter;
 }

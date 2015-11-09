@@ -44,7 +44,6 @@ protected:
 	double mCtrlNoise;
 	bool mEnableTraining;
 
-	int mIter;
 	std::string mSolverFile;
 	std::string mNetFile;
 	std::string mModelFile;
@@ -53,7 +52,7 @@ protected:
 	std::vector<tExpTuple> mTupleBuffer;
 	tExpTuple mCurrTuple;
 
-	cQNetTrainer mTrainer;
+	std::shared_ptr<cNeuralNetTrainer> mTrainer;
 
 	virtual void SetupController();
 	virtual void UpdateGround();

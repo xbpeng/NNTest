@@ -8,7 +8,7 @@ exe_name = exe_path = 'NNTest.exe'
 args = '-arg_file= args/int_poli_eval.txt'
 
 os.chdir(poli_files_dir)
-files = os.listdir()
+files = os.listdir(poli_files_dir)
 
 model_files = []
 for f in files:

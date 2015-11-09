@@ -88,14 +88,14 @@ void cScenarioArmEval::UpdateTrackError()
 
 void cScenarioArmEval::GetRandTargetMinMaxTime(double& out_min, double& out_max) const
 {
-	out_min = 0.5;
-	out_max = 1;
+	out_min = 1;
+	out_max = 2;
 }
 
 void cScenarioArmEval::GetRandPoseMinMaxTime(double& out_min, double& out_max) const
 {
-	out_min = 1;
-	out_max = 2;
+	out_min = 2;
+	out_max = 4;
 }
 
 double cScenarioArmEval::GetRandTargetMaxDist() const
