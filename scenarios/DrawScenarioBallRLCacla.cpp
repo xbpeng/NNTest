@@ -11,5 +11,5 @@ cDrawScenarioBallRLCacla::~cDrawScenarioBallRLCacla()
 
 void cDrawScenarioBallRLCacla::BuildScene()
 {
-	mScene = std::shared_ptr<cScenarioBallRL>(new cScenarioBallRL());
+	mScene = std::shared_ptr<cScenarioBallRLCacla>(new cScenarioBallRLCacla());
 }
