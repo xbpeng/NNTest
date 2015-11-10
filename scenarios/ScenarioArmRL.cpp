@@ -5,7 +5,7 @@
 #include "util/FileUtil.h"
 
 const int gTupleBufferSize = 32;
-const int gTrainerPlaybackMemSize = 50000;
+const int gTrainerPlaybackMemSize = 25000;
 
 const double gCamSize = 4;
 const int gRTSize = 128;
