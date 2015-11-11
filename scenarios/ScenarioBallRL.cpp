@@ -171,7 +171,8 @@ void cScenarioBallRL::NewCycleUpdate()
 	{
 		// finish recording tuple from previous cycle
 		RecordState(mCurrTuple.mStateEnd);
-		mCurrTuple.mFail = CheckFail();
+		bool fail = CheckFail();
+		mCurrTuple.SetFlag(fail, cQNetTrainer::eFlagFail);
 		mCurrTuple.mReward = CalcReward(mCurrTuple);
 
 		// do something with the tuple
@@ -273,7 +274,8 @@ void cScenarioBallRL::InitTrainer()
 	params.mSolverFile = mSolverFile;
 	params.mPlaybackMemSize = gTrainerPlaybackMemSize;
 	params.mPoolSize = 2; // double Q learning
-	params.mNumInitSamples = 500;
+	//params.mNumInitSamples = 500;
+	params.mNumInitSamples = 5;
 	params.mFreezeTargetIters = 500;
 	//params.mIntOutputFile = "output/intermediate/ball_int.h5";
 	//params.mIntOutputIters = 10;
