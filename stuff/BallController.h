@@ -69,4 +69,5 @@ protected:
 
 	virtual void BuildState(Eigen::VectorXd& state) const;
 	virtual void ApplyAction(int a);
+	virtual void ApplyAction(const tAction& action);
 };

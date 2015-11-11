@@ -264,16 +264,20 @@ void cBallController::BuildState(Eigen::VectorXd& state) const
 
 void cBallController::ApplyAction(int a)
 {
-	mCurrAction = gActions[a];
 	mCurrActionIdx = a;
+	ApplyAction(mCurrAction);
+}
 
+void cBallController::ApplyAction(const tAction& action)
+{
 	mPosEnd = mPosBeg;
 
 	double noise = cMathUtil::RandDouble(-1, 1);
 	noise *= mCtrlNoise;
 
-	double dist = mCurrAction.mDist;
+	double dist = action.mDist;
 	dist *= 1 + noise;
 
 	mPosEnd[0] += dist;
+	mCurrAction = action;
 }

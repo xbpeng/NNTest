@@ -1,7 +1,6 @@
 #include "Ball.h"
 
-cBall::cBall() :
-	mCtrl(*this)
+cBall::cBall()
 {
 	mPos.setZero();
 	mRadius = 0.1;
@@ -28,26 +27,31 @@ double cBall::GetRadius() const
 
 bool cBall::IsNewCycle() const
 {
-	return mCtrl.IsNewCycle();
+	return mCtrl->IsNewCycle();
 }
 
-cBallController& cBall::GetController()
+std::shared_ptr<cBallController>& cBall::GetController()
 {
 	return mCtrl;
 }
 
-const cBallController& cBall::GetController() const
+const std::shared_ptr<cBallController>& cBall::GetController() const
 {
 	return mCtrl;
 }
 
 void cBall::Update(double time_step)
 {
-	mCtrl.Update(time_step);
+	mCtrl->Update(time_step);
 }
 
 void cBall::Reset()
 {
 	mPos.setZero();
-	mCtrl.Reset();
+	mCtrl->Reset();
+}
+
+void cBall::SetController(const std::shared_ptr<cBallController>& ctrl)
+{
+	mCtrl = ctrl;
 }

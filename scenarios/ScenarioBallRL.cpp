@@ -101,8 +101,8 @@ double cScenarioBallRL::GetSuccRate() const
 
 void cScenarioBallRL::SaveNet(const std::string& out_file) const
 {
-	const cBallController& ctrl = mBall.GetController();
-	ctrl.SaveNet(out_file);
+	const auto& ctrl = mBall.GetController();
+	ctrl->SaveNet(out_file);
 }
 
 const cBall& cScenarioBallRL::GetBall() const
@@ -117,13 +117,14 @@ std::string cScenarioBallRL::GetName() const
 
 void cScenarioBallRL::SetupController()
 {
-	cBallController& ctrl = mBall.GetController();
-	ctrl.SetGround(&mGround);
-	ctrl.SetCtrlNoise(mCtrlNoise);
+	std::shared_ptr<cBallController> ctrl;
+	BuildController(ctrl);
+	ctrl->SetGround(&mGround);
+	ctrl->SetCtrlNoise(mCtrlNoise);
 
 	if (mNetFile != "")
 	{
-		bool succ = ctrl.LoadNet(mNetFile);
+		bool succ = ctrl->LoadNet(mNetFile);
 		if (!succ)
 		{
 			printf("Failed to load network from %s\n", mNetFile.c_str());
@@ -132,8 +133,15 @@ void cScenarioBallRL::SetupController()
 
 	if (mModelFile != "")
 	{
-		ctrl.LoadModel(mModelFile);
+		ctrl->LoadModel(mModelFile);
 	}
+
+	mBall.SetController(ctrl);
+}
+
+void cScenarioBallRL::BuildController(std::shared_ptr<cBallController>& out_ctrl)
+{
+	out_ctrl = std::shared_ptr<cBallController>(new cBallController(mBall));
 }
 
 void cScenarioBallRL::UpdateGround()
@@ -155,14 +163,14 @@ void cScenarioBallRL::UpdateGround()
 
 int cScenarioBallRL::GetStateSize() const
 {
-	const cBallController& ctrl = mBall.GetController();
-	return ctrl.GetStateSize();
+	const auto& ctrl = mBall.GetController();
+	return ctrl->GetStateSize();
 }
 
 int cScenarioBallRL::GetActionSize() const
 {
-	const cBallController& ctrl = mBall.GetController();
-	return ctrl.GetActionSize();
+	const auto& ctrl = mBall.GetController();
+	return ctrl->GetActionSize();
 }
 
 void cScenarioBallRL::NewCycleUpdate()
@@ -172,6 +180,7 @@ void cScenarioBallRL::NewCycleUpdate()
 		// finish recording tuple from previous cycle
 		RecordState(mCurrTuple.mStateEnd);
 		bool fail = CheckFail();
+		mCurrTuple.mFlags = 0;
 		mCurrTuple.SetFlag(fail, cQNetTrainer::eFlagFail);
 		mCurrTuple.mReward = CalcReward(mCurrTuple);
 
@@ -203,14 +212,14 @@ void cScenarioBallRL::NewCycleUpdate()
 
 void cScenarioBallRL::RecordState(Eigen::VectorXd& out_state) const
 {
-	const cBallController& ctrl = mBall.GetController();
-	ctrl.RecordState(out_state);
+	const auto& ctrl = mBall.GetController();
+	ctrl->RecordState(out_state);
 }
 
 void cScenarioBallRL::RecordAction(Eigen::VectorXd& out_action) const
 {
-	const cBallController& ctrl = mBall.GetController();
-	ctrl.RecordAction(out_action);
+	const auto& ctrl = mBall.GetController();
+	ctrl->RecordAction(out_action);
 }
 
 double cScenarioBallRL::CalcReward(const tExpTuple& tuple) const
@@ -223,8 +232,8 @@ double cScenarioBallRL::CalcReward(const tExpTuple& tuple) const
 	int action_idx = 0;
 	tuple.mAction.maxCoeff(&action_idx);
 	
-	const cBallController& ctrl = mBall.GetController();
-	const cBallController::tAction& action = ctrl.GetAction(action_idx);
+	const auto& ctrl = mBall.GetController();
+	const cBallController::tAction& action = ctrl->GetAction(action_idx);
 	double dist = action.mDist;
 	dist -= 0.5;
 
@@ -252,8 +261,8 @@ bool cScenarioBallRL::CheckFail() const
 
 void cScenarioBallRL::ApplyRandAction()
 {
-	cBallController& ctrl = mBall.GetController();
-	ctrl.ApplyRandAction();
+	auto& ctrl = mBall.GetController();
+	ctrl->ApplyRandAction();
 }
 
 void cScenarioBallRL::InitTupleBuffer()
@@ -274,8 +283,8 @@ void cScenarioBallRL::InitTrainer()
 	params.mSolverFile = mSolverFile;
 	params.mPlaybackMemSize = gTrainerPlaybackMemSize;
 	params.mPoolSize = 2; // double Q learning
-	//params.mNumInitSamples = 500;
-	params.mNumInitSamples = 5;
+	params.mNumInitSamples = 500;
+	//params.mNumInitSamples = 5;
 	params.mFreezeTargetIters = 500;
 	//params.mIntOutputFile = "output/intermediate/ball_int.h5";
 	//params.mIntOutputIters = 10;
@@ -305,6 +314,6 @@ void cScenarioBallRL::Train()
 	mTrainer->Train(num_steps);
 
 	const cNeuralNet& trainer_net = mTrainer->GetNet();
-	cBallController& ctrl = mBall.GetController();
-	ctrl.CopyNet(trainer_net);
+	auto& ctrl = mBall.GetController();
+	ctrl->CopyNet(trainer_net);
 }

@@ -19,13 +19,13 @@ void cDrawBall::Draw(const cBall& ball, const tVector& col)
 	glPopMatrix();
 
 	// draw samples
-	const cBallController& ctrl = ball.GetController();
-	const Eigen::VectorXd& samples = ctrl.GetGroundSamples();
+	const auto& ctrl = ball.GetController();
+	const Eigen::VectorXd& samples = ctrl->GetGroundSamples();
 
 	cDrawUtil::SetColor(tVector(1, 0, 0, 0.5));
 	for (int i = 0; i < samples.size(); ++i)
 	{
-		tVector pos = ctrl.GetGroundSamplePos(i);
+		tVector pos = ctrl->GetGroundSamplePos(i);
 		pos[1] = samples[i];
 
 		glPushMatrix();

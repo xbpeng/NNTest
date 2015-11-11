@@ -12,17 +12,18 @@ public:
 
 	virtual void Update(double time_step);
 	virtual void Reset();
+	virtual void SetController(const std::shared_ptr<cBallController>& ctrl);
 
 	virtual const tVector& GetPos() const;
 	virtual void SetPos(const tVector& pos);
 	virtual double GetRadius() const;
 
 	virtual bool IsNewCycle() const;
-	virtual cBallController& GetController();
-	virtual const cBallController& GetController() const;
+	virtual std::shared_ptr<cBallController>& GetController();
+	virtual const std::shared_ptr<cBallController>& GetController() const;
 
 protected:
 	tVector mPos;
 	double mRadius;
-	cBallController mCtrl;
+	std::shared_ptr<cBallController> mCtrl;
 };

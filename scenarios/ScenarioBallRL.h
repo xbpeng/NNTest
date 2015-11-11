@@ -55,6 +55,7 @@ protected:
 	std::shared_ptr<cNeuralNetTrainer> mTrainer;
 
 	virtual void SetupController();
+	virtual void BuildController(std::shared_ptr<cBallController>& out_ctrl);
 	virtual void UpdateGround();
 
 	virtual int GetStateSize() const;
