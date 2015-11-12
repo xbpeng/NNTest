@@ -21,7 +21,7 @@ layer {
 layer {
     name: "reshape0"
     type: "Reshape"
-    bottom: "data_pixel"
+    bottom: "data"
     top: "reshape0"
     reshape_param {
       shape {
@@ -59,9 +59,21 @@ layer {
 }
 
 layer {
+  name: "pool0"
+  type: "Pooling"
+  bottom: "conv0"
+  top: "pool0"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+
+layer {
   name: "relu0"
   type: "ReLU"
-  bottom: "conv0"
+  bottom: "pool0"
   top: "relu0"
 }
 
