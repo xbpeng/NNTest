@@ -37,6 +37,8 @@ public:
 	virtual void RecordState(Eigen::VectorXd& out_state) const;
 	virtual void RecordAction(Eigen::VectorXd& out_action) const;
 
+	virtual bool IsOffPolicy() const;
+
 	virtual void ApplyRandAction();
 
 	virtual void CopyNet(const cNeuralNet& net);
@@ -56,6 +58,7 @@ protected:
 
 	int mCurrActionIdx;
 	tAction mCurrAction;
+	bool mOffPolicy;
 
 	virtual void UpdateAction();
 	virtual double CalcDeltaPhase() const;

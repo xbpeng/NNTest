@@ -63,6 +63,9 @@ protected:
 
 	virtual void NewCycleUpdate();
 
+	virtual void ClearFlags(tExpTuple& out_tuple) const;
+	virtual void RecordBegFlags(tExpTuple& out_tuple) const;
+	virtual void RecordEndFlags(tExpTuple& out_tuple) const;
 	virtual void RecordState(Eigen::VectorXd& out_state) const;
 	virtual void RecordAction(Eigen::VectorXd& out_action) const;
 	virtual double CalcReward(const tExpTuple& tuple) const;

@@ -13,8 +13,8 @@ cScenarioBallRLCacla::~cScenarioBallRLCacla()
 void cScenarioBallRLCacla::ParseArgs(const cArgParser& parser)
 {
 	cScenarioBallRL::ParseArgs(parser);
-	parser.ParseString("actor_solver_file", mActorSolverFile);
-	parser.ParseString("actor_net_file", mActorNetFile);
+	parser.ParseString("critic_solver_file", mCriticSolverFile);
+	parser.ParseString("critic_net_file", mCriticNetFile);
 }
 
 std::string cScenarioBallRLCacla::GetName() const
@@ -32,13 +32,13 @@ void cScenarioBallRLCacla::InitTrainer()
 	std::shared_ptr<cCaclaTrainer> trainer = std::shared_ptr<cCaclaTrainer>(new cCaclaTrainer());
 
 	cCaclaTrainer::tParams params;
-	params.mNetFile = mNetFile;
-	params.mSolverFile = mSolverFile;
+	params.mNetFile = mCriticNetFile;
+	params.mSolverFile = mCriticSolverFile;
 
 	params.mPlaybackMemSize = gTrainerPlaybackMemSize;
 	params.mPoolSize = 1;
 	params.mNumInitSamples = 50;
-	trainer->Init(params, mActorSolverFile, mActorNetFile);
+	trainer->Init(params, mSolverFile, mNetFile);
 
 	if (mModelFile != "")
 	{
@@ -46,4 +46,16 @@ void cScenarioBallRLCacla::InitTrainer()
 	}
 
 	mTrainer = trainer;
+}
+
+void cScenarioBallRLCacla::RecordBegFlags(tExpTuple& out_tuple) const
+{
+	bool off_policy = CheckOffPolicy();
+	out_tuple.SetFlag(off_policy, cCaclaTrainer::eFlagOffPolicy);
+}
+
+bool cScenarioBallRLCacla::CheckOffPolicy() const
+{
+	const auto& ctrl = mBall.GetController();
+	return ctrl->IsOffPolicy();
 }

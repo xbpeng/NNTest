@@ -21,6 +21,7 @@ void cBallControllerCont::ApplyRandAction()
 {
 	tAction action = GetRandomActionCont();
 	ApplyAction(action);
+	mOffPolicy = true;
 	printf("rand action: %.3f\n", action.mDist);
 }
 
@@ -32,6 +33,7 @@ void cBallControllerCont::RecordAction(Eigen::VectorXd& out_action) const
 
 void cBallControllerCont::UpdateAction()
 {
+	mOffPolicy = false;
 	mPosBeg = mBall.GetPos();
 
 	if (HasGround())
@@ -48,6 +50,7 @@ void cBallControllerCont::UpdateAction()
 	else
 	{
 		action = GetRandomActionCont();
+		mOffPolicy = true;
 	}
 
 	ApplyAction(action);
@@ -71,7 +74,7 @@ cBallController::tAction cBallControllerCont::CalcActionNetCont()
 cBallController::tAction cBallControllerCont::GetRandomActionCont()
 {
 	const double dist_mean = 0;
-	const double dist_stdev = 0.2;
+	const double dist_stdev = 1;
 
 	tAction action = CalcActionNetCont();
 	double rand_dist = cMathUtil::RandDoubleNorm(dist_mean, dist_stdev);

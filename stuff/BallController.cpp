@@ -20,6 +20,7 @@ const double gGroundSampleDist = 8;
 cBallController::cBallController(cBall& ball) :
 	mBall(ball)
 {
+	mOffPolicy = false;
 	mGround = nullptr;
 	mCtrlNoise = 0;
 	Reset();
@@ -123,6 +124,7 @@ void cBallController::LoadModel(const std::string& model_file)
 
 void cBallController::UpdateAction()
 {
+	mOffPolicy = false;
 	mPosBeg = mBall.GetPos();
 
 	if (HasGround())
@@ -138,6 +140,7 @@ void cBallController::UpdateAction()
 	else
 	{
 		a = GetRandomAction();
+		mOffPolicy = true;
 	}
 	
 	ApplyAction(a);
@@ -240,10 +243,16 @@ void cBallController::RecordAction(Eigen::VectorXd& out_action) const
 	out_action[mCurrActionIdx] = 1;
 }
 
+bool cBallController::IsOffPolicy() const
+{
+	return mOffPolicy;
+}
+
 void cBallController::ApplyRandAction()
 {
 	int a = GetRandomAction();
 	ApplyAction(a);
+	mOffPolicy = true;
 	printf("rand action: %i\n", a);
 }
 
@@ -265,7 +274,7 @@ void cBallController::BuildState(Eigen::VectorXd& state) const
 void cBallController::ApplyAction(int a)
 {
 	mCurrActionIdx = a;
-	ApplyAction(mCurrAction);
+	ApplyAction(gActions[a]);
 }
 
 void cBallController::ApplyAction(const tAction& action)

@@ -15,9 +15,12 @@ public:
 	virtual std::string GetName() const;
 	
 protected:
-	std::string mActorSolverFile;
-	std::string mActorNetFile;
+	std::string mCriticSolverFile;
+	std::string mCriticNetFile;
 
 	virtual void BuildController(std::shared_ptr<cBallController>& out_ctrl);
 	virtual void InitTrainer();
+
+	virtual void RecordBegFlags(tExpTuple& out_tuple) const;
+	virtual bool CheckOffPolicy() const;
 };

@@ -179,9 +179,7 @@ void cScenarioBallRL::NewCycleUpdate()
 	{
 		// finish recording tuple from previous cycle
 		RecordState(mCurrTuple.mStateEnd);
-		bool fail = CheckFail();
-		mCurrTuple.mFlags = 0;
-		mCurrTuple.SetFlag(fail, cQNetTrainer::eFlagFail);
+		RecordEndFlags(mCurrTuple);
 		mCurrTuple.mReward = CalcReward(mCurrTuple);
 
 		// do something with the tuple
@@ -205,9 +203,26 @@ void cScenarioBallRL::NewCycleUpdate()
 		// start recording new tuple
 		mCurrTuple.mStateBeg = mCurrTuple.mStateEnd;
 		RecordAction(mCurrTuple.mAction);
+		ClearFlags(mCurrTuple);
+		RecordBegFlags(mCurrTuple);
 
 		mFirstCycle = false;
 	}
+}
+
+void cScenarioBallRL::ClearFlags(tExpTuple& out_tuple) const
+{
+	out_tuple.mFlags = 0;
+}
+
+void cScenarioBallRL::RecordBegFlags(tExpTuple& out_tuple) const
+{
+}
+
+void cScenarioBallRL::RecordEndFlags(tExpTuple& out_tuple) const
+{
+	bool fail = CheckFail();
+	out_tuple.SetFlag(fail, cQNetTrainer::eFlagFail);
 }
 
 void cScenarioBallRL::RecordState(Eigen::VectorXd& out_state) const
@@ -283,7 +298,7 @@ void cScenarioBallRL::InitTrainer()
 	params.mSolverFile = mSolverFile;
 	params.mPlaybackMemSize = gTrainerPlaybackMemSize;
 	params.mPoolSize = 2; // double Q learning
-	params.mNumInitSamples = 500;
+	params.mNumInitSamples = 50;
 	//params.mNumInitSamples = 5;
 	params.mFreezeTargetIters = 500;
 	//params.mIntOutputFile = "output/intermediate/ball_int.h5";
