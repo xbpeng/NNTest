@@ -2,6 +2,7 @@
 #include "Ball.h"
 
 const double gMinDist = 0.1;
+const double gMaxDist = 2.5;
 
 cBallControllerCont::cBallControllerCont(cBall& ball) :
 	cBallController(ball)
@@ -65,8 +66,8 @@ cBallController::tAction cBallControllerCont::CalcActionNetCont()
 	mNet.Eval(state, action);
 
 	tAction ball_action;
-	ball_action.mDist = std::max(gMinDist, action[0]);
-	printf("action: %.5f \n", action[0]);
+	ball_action.mDist = cMathUtil::Clamp(action[0], gMinDist, gMaxDist);
+	printf("action: %.5f , %.5f\n", action[0], ball_action.mDist);
 
 	return ball_action;
 }
@@ -74,11 +75,12 @@ cBallController::tAction cBallControllerCont::CalcActionNetCont()
 cBallController::tAction cBallControllerCont::GetRandomActionCont()
 {
 	const double dist_mean = 0;
-	const double dist_stdev = 1;
+	const double dist_stdev = 0.5;
 
 	tAction action = CalcActionNetCont();
 	double rand_dist = cMathUtil::RandDoubleNorm(dist_mean, dist_stdev);
-	while (action.mDist + rand_dist <= gMinDist)
+	while (action.mDist + rand_dist <= gMinDist
+		|| action.mDist + rand_dist >= gMaxDist)
 	{
 		rand_dist = cMathUtil::RandDoubleNorm(dist_mean, dist_stdev);
 	}

@@ -37,7 +37,7 @@ void cScenarioBallRLCacla::InitTrainer()
 
 	params.mPlaybackMemSize = gTrainerPlaybackMemSize;
 	params.mPoolSize = 1;
-	params.mNumInitSamples = 50;
+	params.mNumInitSamples = 500;
 	trainer->Init(params, mSolverFile, mNetFile);
 
 	if (mModelFile != "")
