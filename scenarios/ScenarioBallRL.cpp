@@ -2,6 +2,7 @@
 
 const int gTupleBufferSize = 16;
 const int gTrainerPlaybackMemSize = 20000;
+const double gMaxCumReward = 10;
 
 cScenarioBallRL::cScenarioBallRL()
 {
@@ -254,10 +255,8 @@ double cScenarioBallRL::CalcReward(const tExpTuple& tuple) const
 
 	reward /= (1 + dist * dist);
 
-	double discount = mTrainer->GetDiscount();
-	double norm = 1 / (1 - discount);
-
-	reward *= 10 / norm;
+	double norm = GetDiscountNorm();
+	reward *= gMaxCumReward * norm;
 
 	if (contact)
 	{
@@ -311,11 +310,31 @@ void cScenarioBallRL::InitTrainer()
 	}
 
 	mTrainer = trainer;
+
+	Eigen::VectorXd output_offset;
+	Eigen::VectorXd output_scale;
+	BuildOutputOffsetScale(output_offset, output_scale);
+	mTrainer->SetOutputOffsetScale(output_offset, output_scale);
 }
 
 void cScenarioBallRL::InitGround()
 {
 	mGround.Init(mGroundParams);
+}
+
+double cScenarioBallRL::GetDiscountNorm() const
+{
+	double discount = mTrainer->GetDiscount();
+	double norm = 1 / (1 - discount);
+	norm = 1 / norm;
+	return norm;
+}
+
+void cScenarioBallRL::BuildOutputOffsetScale(Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const
+{
+	int output_size = mTrainer->GetOutputSize();
+	out_offset = -0.5 * gMaxCumReward * Eigen::VectorXd::Ones(output_size);
+	out_scale = 2 / gMaxCumReward * Eigen::VectorXd::Ones(output_size);
 }
 
 void cScenarioBallRL::Train()

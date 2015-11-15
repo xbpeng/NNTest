@@ -77,5 +77,8 @@ protected:
 	virtual void InitTrainer();
 	virtual void InitGround();
 
+	virtual double GetDiscountNorm() const;
+	virtual void BuildOutputOffsetScale(Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const;
+
 	virtual void Train();
 };

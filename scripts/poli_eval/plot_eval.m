@@ -6,6 +6,7 @@ nn_vel_data = load('nn_vel_eval.txt');
 n = length(nn_torque_data);
 n = min(n, length(nn_pd_data));
 n = min(n, length(nn_vel_data));
+n = min(100, n);
 
 qp_plot_vals = ones(n, 1);
 qp_plot_vals = qp_plot_vals .* qp_data(1);
@@ -25,4 +26,4 @@ xlabel('Iterations (10^3)');
 ylabel('Average Tracking Error (m)');
 title('Performance vs Training Iterations');
 
-legend('QP', 'NN Torque', 'NN PD', 'NN Vel');
+legend('QP', 'NN Torque', 'NN Angle', 'NN Velocity');

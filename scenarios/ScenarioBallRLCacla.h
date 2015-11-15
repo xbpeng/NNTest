@@ -20,6 +20,7 @@ protected:
 
 	virtual void BuildController(std::shared_ptr<cBallController>& out_ctrl);
 	virtual void InitTrainer();
+	virtual void BuildOutputOffsetScale(Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const;
 
 	virtual void RecordBegFlags(tExpTuple& out_tuple) const;
 	virtual bool CheckOffPolicy() const;

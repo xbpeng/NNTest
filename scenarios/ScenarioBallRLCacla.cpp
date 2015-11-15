@@ -48,6 +48,13 @@ void cScenarioBallRLCacla::InitTrainer()
 	mTrainer = trainer;
 }
 
+void cScenarioBallRLCacla::BuildOutputOffsetScale(Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const
+{
+	int output_size = mTrainer->GetOutputSize();
+	out_offset = Eigen::VectorXd::Zero(output_size);
+	out_scale = Eigen::VectorXd::Ones(output_size);
+}
+
 void cScenarioBallRLCacla::RecordBegFlags(tExpTuple& out_tuple) const
 {
 	bool off_policy = CheckOffPolicy();
