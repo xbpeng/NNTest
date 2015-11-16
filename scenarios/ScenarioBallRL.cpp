@@ -2,7 +2,6 @@
 
 const int gTupleBufferSize = 16;
 const int gTrainerPlaybackMemSize = 20000;
-const double gMaxCumReward = 10;
 
 cScenarioBallRL::cScenarioBallRL()
 {
@@ -256,7 +255,7 @@ double cScenarioBallRL::CalcReward(const tExpTuple& tuple) const
 	reward /= (1 + dist * dist);
 
 	double norm = GetDiscountNorm();
-	reward *= gMaxCumReward * norm;
+	reward *= norm;
 
 	if (contact)
 	{
@@ -309,12 +308,12 @@ void cScenarioBallRL::InitTrainer()
 		trainer->LoadModel(mModelFile);
 	}
 
-	mTrainer = trainer;
-
 	Eigen::VectorXd output_offset;
 	Eigen::VectorXd output_scale;
-	BuildOutputOffsetScale(output_offset, output_scale);
+	BuildOutputOffsetScale(trainer, output_offset, output_scale);
 	mTrainer->SetOutputOffsetScale(output_offset, output_scale);
+
+	mTrainer = trainer;
 }
 
 void cScenarioBallRL::InitGround()
@@ -330,11 +329,12 @@ double cScenarioBallRL::GetDiscountNorm() const
 	return norm;
 }
 
-void cScenarioBallRL::BuildOutputOffsetScale(Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const
+void cScenarioBallRL::BuildOutputOffsetScale(const std::shared_ptr<cNeuralNetTrainer>& trainer, 
+											Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const
 {
-	int output_size = mTrainer->GetOutputSize();
-	out_offset = -0.5 * gMaxCumReward * Eigen::VectorXd::Ones(output_size);
-	out_scale = 2 / gMaxCumReward * Eigen::VectorXd::Ones(output_size);
+	int output_size = trainer->GetOutputSize();
+	out_offset = -0.5 * Eigen::VectorXd::Ones(output_size);
+	out_scale = 2 * Eigen::VectorXd::Ones(output_size);
 }
 
 void cScenarioBallRL::Train()

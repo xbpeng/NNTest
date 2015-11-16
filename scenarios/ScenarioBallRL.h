@@ -78,7 +78,8 @@ protected:
 	virtual void InitGround();
 
 	virtual double GetDiscountNorm() const;
-	virtual void BuildOutputOffsetScale(Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const;
+	virtual void BuildOutputOffsetScale(const std::shared_ptr<cNeuralNetTrainer>& trainer, 
+										Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const;
 
 	virtual void Train();
 };

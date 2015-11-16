@@ -45,14 +45,37 @@ void cScenarioBallRLCacla::InitTrainer()
 		trainer->LoadModel(mModelFile);
 	}
 
+	Eigen::VectorXd critic_output_offset;
+	Eigen::VectorXd critic_output_scale;
+	BuildCriticOutputOffsetScale(trainer, critic_output_offset, critic_output_scale);
+	trainer->SetCriticOutputOffsetScale(critic_output_offset, critic_output_scale);
+
+	Eigen::VectorXd actor_output_offset;
+	Eigen::VectorXd actor_output_scale;
+	BuildActorOutputOffsetScale(trainer, actor_output_offset, actor_output_scale);
+	trainer->SetActorOutputOffsetScale(actor_output_offset, actor_output_scale);
+	
 	mTrainer = trainer;
 }
 
-void cScenarioBallRLCacla::BuildOutputOffsetScale(Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const
+void cScenarioBallRLCacla::BuildCriticOutputOffsetScale(const std::shared_ptr<cCaclaTrainer>& trainer,
+														Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const
 {
-	int output_size = mTrainer->GetOutputSize();
-	out_offset = Eigen::VectorXd::Zero(output_size);
-	out_scale = Eigen::VectorXd::Ones(output_size);
+	int output_size = trainer->GetCriticOutputSize();
+	out_offset = -0.5 * Eigen::VectorXd::Ones(output_size);
+	out_scale = 2 * Eigen::VectorXd::Ones(output_size);
+}
+
+void cScenarioBallRLCacla::BuildActorOutputOffsetScale(const std::shared_ptr<cCaclaTrainer>& trainer,
+														Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const
+{
+	int output_size = trainer->GetActorOutputSize();
+	double min_dist = cBallControllerCont::gMinDist;
+	double max_dist = cBallControllerCont::gMaxDist;
+	double offset = -0.5 * (max_dist + min_dist);
+	double scale = 2 / (max_dist - min_dist);
+	out_offset = offset * Eigen::VectorXd::Ones(output_size);
+	out_scale = scale * Eigen::VectorXd::Ones(output_size);
 }
 
 void cScenarioBallRLCacla::RecordBegFlags(tExpTuple& out_tuple) const

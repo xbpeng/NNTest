@@ -1,8 +1,8 @@
 #include "BallControllerCont.h"
 #include "Ball.h"
 
-const double gMinDist = 0.1;
-const double gMaxDist = 2.5;
+const double cBallControllerCont::gMinDist = 0.1;
+const double cBallControllerCont::gMaxDist = 2.5;
 
 cBallControllerCont::cBallControllerCont(cBall& ball) :
 	cBallController(ball)
