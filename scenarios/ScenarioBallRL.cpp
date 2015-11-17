@@ -1,7 +1,7 @@
 #include "ScenarioBallRL.h"
 
-const int gTupleBufferSize = 16;
-const int gTrainerPlaybackMemSize = 20000;
+const int gTupleBufferSize = 32;
+const int gTrainerPlaybackMemSize = 50000;
 
 cScenarioBallRL::cScenarioBallRL()
 {

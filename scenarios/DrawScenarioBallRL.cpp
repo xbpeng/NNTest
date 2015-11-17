@@ -41,7 +41,7 @@ void cDrawScenarioBallRL::Keyboard(unsigned char key, int x, int y)
 		ToggleTraining();
 		break;
 	case 's':
-		SaveNet(mOutputNetFile);
+		SaveNet();
 		break;
 	case 'w':
 		ToggleTrace();
@@ -144,6 +144,11 @@ void cDrawScenarioBallRL::UpdateTrace()
 {
 	const tVector& pos = mScene->GetBallPos();
 	mTraceBuffer.Add(pos);
+}
+
+void cDrawScenarioBallRL::SaveNet() const
+{
+	SaveNet(mOutputNetFile);
 }
 
 void cDrawScenarioBallRL::SaveNet(const std::string& out_file) const

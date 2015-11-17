@@ -17,6 +17,18 @@ void cScenarioBallRLCacla::ParseArgs(const cArgParser& parser)
 	parser.ParseString("critic_net_file", mCriticNetFile);
 }
 
+void cScenarioBallRLCacla::SaveCriticNet(const std::string& filename) const
+{
+	std::shared_ptr<cCaclaTrainer> trainer = std::static_pointer_cast<cCaclaTrainer>(mTrainer);
+	trainer->OutputCritic(filename);
+}
+
+void cScenarioBallRLCacla::SaveActorNet(const std::string& filename) const
+{
+	std::shared_ptr<cCaclaTrainer> trainer = std::static_pointer_cast<cCaclaTrainer>(mTrainer);
+	trainer->OutputActor(filename);
+}
+
 std::string cScenarioBallRLCacla::GetName() const
 {
 	return "Ball RL Cacla";
@@ -29,7 +41,8 @@ void cScenarioBallRLCacla::BuildController(std::shared_ptr<cBallController>& out
 
 void cScenarioBallRLCacla::InitTrainer()
 {
-	std::shared_ptr<cCaclaTrainer> trainer = std::shared_ptr<cCaclaTrainer>(new cCaclaTrainer());
+	//std::shared_ptr<cCaclaTrainer> trainer = std::shared_ptr<cCaclaTrainer>(new cCaclaTrainer());
+	std::shared_ptr<cCaclaTrainer> trainer = std::shared_ptr<cCaclaTrainer>(new cQCaclaTrainer());
 
 	cCaclaTrainer::tParams params;
 	params.mNetFile = mCriticNetFile;

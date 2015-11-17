@@ -11,6 +11,8 @@
 -net_file= data/balL_rl/balL_rl_actor_deploy.prototxt
 -critic_solver_file= data/balL_rl/balL_rl_critic_solver.prototxt
 -critic_net_file= data/balL_rl/balL_rl_critic_deploy.prototxt
+//-critic_solver_file= data/balL_rl/balL_rl_critic_q_solver.prototxt
+//-critic_net_file= data/balL_rl/balL_rl_critic_q_deploy.prototxt
 
 //-solver_file= data/arm_rl/arm_solver.prototxt
 //-net_file= data/arm_rl/arm_deploy.prototxt
@@ -60,9 +62,10 @@
 
 -eval_max_samples= 5000
 
-//-output_net_file= output/ball_rl_model.h5
--output_net_file= output/arm_vel_model.h5
--output_file= output/arm_eval.txt
+-output_net_file= output/ball_rl_model.h5
+-critic_output_net_file= output/ball_rl_critic_model.h5
+//-output_net_file= output/arm_vel_model.h5
+//-output_file= output/arm_eval.txt
 
 -ground_height= 0
 

@@ -36,6 +36,7 @@ protected:
 	virtual void ToggleTrace();
 	virtual void UpdateTrace();
 
+	virtual void SaveNet() const;
 	virtual void SaveNet(const std::string& out_file) const;
 
 	virtual void DrawScene();

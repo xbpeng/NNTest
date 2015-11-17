@@ -3,6 +3,7 @@
 #include "scenarios/ScenarioBallRL.h"
 #include "stuff/BallControllerCont.h"
 #include "learning/CaclaTrainer.h"
+#include "learning/QCaclaTrainer.h"
 
 class cScenarioBallRLCacla : public cScenarioBallRL
 {
@@ -11,6 +12,9 @@ public:
 	virtual ~cScenarioBallRLCacla();
 
 	virtual void ParseArgs(const cArgParser& parser);
+
+	virtual void SaveCriticNet(const std::string& filename) const;
+	virtual void SaveActorNet(const std::string& filename) const;
 
 	virtual std::string GetName() const;
 	
