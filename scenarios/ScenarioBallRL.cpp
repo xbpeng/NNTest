@@ -340,6 +340,7 @@ void cScenarioBallRL::BuildOutputOffsetScale(const std::shared_ptr<cNeuralNetTra
 void cScenarioBallRL::Train()
 {
 	printf("\nTraining iter: %i\n", mTrainer->GetIter());
+	printf("Num Tuples: %i\n", mTrainer->GetNumTuples());
 
 	const int num_steps = 1;
 
