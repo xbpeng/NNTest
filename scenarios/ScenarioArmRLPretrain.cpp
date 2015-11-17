@@ -97,13 +97,13 @@ void cScenarioArmRLPretrain::Train()
 
 void cScenarioArmRLPretrain::UpdatePredTarget()
 {
-	const cNeuralNet& net = mTrainer.GetNet();
+	const auto& net = mTrainer.GetNet();
 
 	Eigen::VectorXd state;
 	RecordState(state);
 
 	Eigen::VectorXd net_pos;
-	net.Eval(state, net_pos);
+	net->Eval(state, net_pos);
 
 	mPredTarget[0] = net_pos[0];
 	mPredTarget[1] = net_pos[1];

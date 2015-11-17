@@ -51,8 +51,8 @@ void cScenarioReg1DTrainer::TrainNet()
 		int num_steps = 1;
 		mTrainer.Train(num_steps);
 
-		const cNeuralNet& trainer_net = mTrainer.GetNet();
-		mNet.CopyModel(trainer_net);
+		const auto& trainer_net = mTrainer.GetNet();
+		mNet.CopyModel(*trainer_net.get());
 		EvalNet();
 	}
 }

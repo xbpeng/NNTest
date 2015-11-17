@@ -301,11 +301,11 @@ void cScenarioArmRL::Train()
 	mTrainer.Train(num_steps);
 	cNeuralNetTrainer::eStage stage1 = mTrainer.GetStage();
 
-	const cNeuralNet& trainer_net = mTrainer.GetNet();
+	const auto& trainer_net = mTrainer.GetNet();
 	std::shared_ptr<cArmNNController> ctrl = GetStudentController();
 	if (ctrl != nullptr)
 	{
-		ctrl->CopyNet(trainer_net);
+		ctrl->CopyNet(*trainer_net.get());
 	}
 
 	mNumTuples = 0;

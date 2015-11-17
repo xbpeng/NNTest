@@ -347,7 +347,7 @@ void cScenarioBallRL::Train()
 	mTrainer->AddTuples(mTupleBuffer);
 	mTrainer->Train(num_steps);
 
-	const cNeuralNet& trainer_net = mTrainer->GetNet();
+	const auto& trainer_net = mTrainer->GetNet();
 	auto& ctrl = mBall.GetController();
-	ctrl->CopyNet(trainer_net);
+	ctrl->CopyNet(*trainer_net.get());
 }
