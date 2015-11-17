@@ -1,9 +1,6 @@
 #include "BallControllerCont.h"
 #include "Ball.h"
 
-const double cBallControllerCont::gMinDist = 0.1;
-const double cBallControllerCont::gMaxDist = 2.5;
-
 cBallControllerCont::cBallControllerCont(cBall& ball) :
 	cBallController(ball)
 {
@@ -66,7 +63,7 @@ cBallController::tAction cBallControllerCont::CalcActionNetCont()
 	mNet.Eval(state, action);
 
 	tAction ball_action;
-	ball_action.mDist = cMathUtil::Clamp(action[0], gMinDist, gMaxDist);
+	ball_action.mDist = action[0];
 	printf("action: %.5f , %.5f\n", action[0], ball_action.mDist);
 
 	return ball_action;

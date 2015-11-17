@@ -15,6 +15,9 @@ public:
 		double mDist;
 	};
 
+	static const double gMinDist;
+	static const double gMaxDist;
+
 	cBallController(cBall& ball);
 	virtual ~cBallController();
 

@@ -6,9 +6,6 @@ class cBallControllerCont : public cBallController
 public:
 	EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
-	static const double gMinDist;
-	static const double gMaxDist;
-
 	cBallControllerCont(cBall& ball);
 	virtual ~cBallControllerCont();
 

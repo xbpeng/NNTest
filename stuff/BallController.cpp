@@ -17,6 +17,9 @@ const int gNumActions = sizeof(gActions) / sizeof(gActions[0]);
 const int gNumGroundSamples = 100;
 const double gGroundSampleDist = 8;
 
+const double cBallController::gMinDist = 0.1;
+const double cBallController::gMaxDist = 2.5;
+
 cBallController::cBallController(cBall& ball) :
 	mBall(ball)
 {
@@ -285,6 +288,8 @@ void cBallController::ApplyAction(const tAction& action)
 	noise *= mCtrlNoise;
 
 	double dist = action.mDist;
+	
+	dist = cMathUtil::Clamp(dist, gMinDist, gMaxDist);
 	dist *= 1 + noise;
 
 	mPosEnd[0] += dist;
