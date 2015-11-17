@@ -296,7 +296,7 @@ void cScenarioBallRL::InitTrainer()
 	params.mSolverFile = mSolverFile;
 	params.mPlaybackMemSize = gTrainerPlaybackMemSize;
 	params.mPoolSize = 2; // double Q learning
-	params.mNumInitSamples = 50;
+	params.mNumInitSamples = 500;
 	//params.mNumInitSamples = 5;
 	params.mFreezeTargetIters = 500;
 	//params.mIntOutputFile = "output/intermediate/ball_int.h5";
@@ -308,17 +308,21 @@ void cScenarioBallRL::InitTrainer()
 		trainer->LoadModel(mModelFile);
 	}
 
-	Eigen::VectorXd output_offset;
-	Eigen::VectorXd output_scale;
-	BuildOutputOffsetScale(trainer, output_offset, output_scale);
-	mTrainer->SetOutputOffsetScale(output_offset, output_scale);
-
 	mTrainer = trainer;
+	SetupTrainerOutputOffsetScale();
 }
 
 void cScenarioBallRL::InitGround()
 {
 	mGround.Init(mGroundParams);
+}
+
+void cScenarioBallRL::SetupTrainerOutputOffsetScale()
+{
+	Eigen::VectorXd output_offset;
+	Eigen::VectorXd output_scale;
+	BuildOutputOffsetScale(mTrainer, output_offset, output_scale);
+	mTrainer->SetOutputOffsetScale(output_offset, output_scale);
 }
 
 double cScenarioBallRL::GetDiscountNorm() const
