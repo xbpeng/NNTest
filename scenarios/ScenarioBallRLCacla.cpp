@@ -41,8 +41,8 @@ void cScenarioBallRLCacla::BuildController(std::shared_ptr<cBallController>& out
 
 void cScenarioBallRLCacla::InitTrainer()
 {
-	//std::shared_ptr<cCaclaTrainer> trainer = std::shared_ptr<cCaclaTrainer>(new cCaclaTrainer());
-	std::shared_ptr<cCaclaTrainer> trainer = std::shared_ptr<cCaclaTrainer>(new cQCaclaTrainer());
+	std::shared_ptr<cCaclaTrainer> trainer = std::shared_ptr<cCaclaTrainer>(new cCaclaTrainer());
+	//std::shared_ptr<cCaclaTrainer> trainer = std::shared_ptr<cCaclaTrainer>(new cQCaclaTrainer());
 
 	cCaclaTrainer::tParams params;
 	params.mNetFile = mCriticNetFile;
@@ -50,7 +50,7 @@ void cScenarioBallRLCacla::InitTrainer()
 
 	params.mPlaybackMemSize = gTrainerPlaybackMemSize;
 	params.mPoolSize = 1;
-	params.mNumInitSamples = 500;
+	params.mNumInitSamples = 1000;
 	//params.mFreezeTargetIters = 500;
 	trainer->Init(params, mSolverFile, mNetFile);
 
@@ -96,6 +96,29 @@ void cScenarioBallRLCacla::RecordBegFlags(tExpTuple& out_tuple) const
 {
 	bool off_policy = CheckOffPolicy();
 	out_tuple.SetFlag(off_policy, cCaclaTrainer::eFlagOffPolicy);
+}
+
+double cScenarioBallRLCacla::CalcReward(const tExpTuple& tuple) const
+{
+	double reward = 0;
+	tVector ball_pos = mBall.GetPos();
+	int penalty_idx = mGround.CheckPenaltyContact(ball_pos);
+	bool contact = penalty_idx != -1;
+
+	double dist = tuple.mAction[0];
+	dist -= 0.5;
+
+	double dist_reward = 1 / (1 + dist * dist);
+	reward = dist_reward;
+
+	double norm = GetDiscountNorm();
+	reward *= norm;
+
+	if (contact)
+	{
+		reward = 0;
+	}
+	return reward;
 }
 
 bool cScenarioBallRLCacla::CheckOffPolicy() const

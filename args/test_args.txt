@@ -9,10 +9,10 @@
 
 -solver_file= data/balL_rl/balL_rl_actor_solver.prototxt
 -net_file= data/balL_rl/balL_rl_actor_deploy.prototxt
-//-critic_solver_file= data/balL_rl/balL_rl_critic_solver.prototxt
-//-critic_net_file= data/balL_rl/balL_rl_critic_deploy.prototxt
--critic_solver_file= data/balL_rl/balL_rl_critic_q_solver.prototxt
--critic_net_file= data/balL_rl/balL_rl_critic_q_deploy.prototxt
+-critic_solver_file= data/balL_rl/balL_rl_critic_solver.prototxt
+-critic_net_file= data/balL_rl/balL_rl_critic_deploy.prototxt
+//-critic_solver_file= data/balL_rl/balL_rl_critic_q_solver.prototxt
+//-critic_net_file= data/balL_rl/balL_rl_critic_q_deploy.prototxt
 
 //-solver_file= data/arm_rl/arm_solver.prototxt
 //-net_file= data/arm_rl/arm_deploy.prototxt
@@ -49,6 +49,9 @@
 
 -coach_type= qp
 -arm_ctrl_type= nn_pixel
+
+-exp_rate= 0.2
+-num_exp_anneal_iters= 1000
 
 //-coach_type= qp
 //-arm_ctrl_type= nn

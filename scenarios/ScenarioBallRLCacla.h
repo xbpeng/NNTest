@@ -30,5 +30,6 @@ protected:
 											Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const;
 
 	virtual void RecordBegFlags(tExpTuple& out_tuple) const;
+	virtual double CalcReward(const tExpTuple& tuple) const;
 	virtual bool CheckOffPolicy() const;
 };

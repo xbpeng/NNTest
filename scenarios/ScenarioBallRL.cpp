@@ -7,6 +7,7 @@ cScenarioBallRL::cScenarioBallRL()
 {
 	Clear();
 	mEpsilon = 0.1;
+	mNumExpAnnealIters = 500;
 	mCtrlNoise = 0;
 	mEnableTraining = true;
 }
@@ -32,6 +33,9 @@ void cScenarioBallRL::ParseArgs(const cArgParser& parser)
 	parser.ParseString("model_file", mModelFile);
 	parser.ParseDouble("epsilon_greedy_rate", mEpsilon);
 	parser.ParseDouble("ctrl_noise", mCtrlNoise);
+
+	parser.ParseDouble("exp_rate", mEpsilon);
+	parser.ParseInt("num_exp_anneal_iters", mNumExpAnnealIters);
 
 	parser.ParseDouble("ground_height", mGroundParams.mHeight);
 	parser.ParseDouble("ground_min_spacing", mGroundParams.mMinSpacing);
@@ -195,7 +199,8 @@ void cScenarioBallRL::NewCycleUpdate()
 		}
 
 		double rand = cMathUtil::RandDouble(0, 1);
-		if (rand < mEpsilon || mTrainer->GetIter() == 0)
+		double exp_rate = GetExpRate();
+		if (rand < exp_rate)
 		{
 			ApplyRandAction();
 		}
@@ -239,7 +244,7 @@ void cScenarioBallRL::RecordAction(Eigen::VectorXd& out_action) const
 
 double cScenarioBallRL::CalcReward(const tExpTuple& tuple) const
 {
-	double reward = 1;
+	double reward = 0;
 	tVector ball_pos = mBall.GetPos();
 	int penalty_idx = mGround.CheckPenaltyContact(ball_pos);
 	bool contact = penalty_idx != -1;
@@ -252,7 +257,8 @@ double cScenarioBallRL::CalcReward(const tExpTuple& tuple) const
 	double dist = action.mDist;
 	dist -= 0.5;
 
-	reward /= (1 + dist * dist);
+	double dist_reward = 1 / (1 + dist * dist);
+	reward = dist_reward;
 
 	double norm = GetDiscountNorm();
 	reward *= norm;
@@ -341,9 +347,14 @@ void cScenarioBallRL::BuildOutputOffsetScale(const std::shared_ptr<cNeuralNetTra
 	out_scale = 2 * Eigen::VectorXd::Ones(output_size);
 }
 
+int cScenarioBallRL::GetIter() const
+{
+	return mTrainer->GetIter();
+}
+
 void cScenarioBallRL::Train()
 {
-	printf("\nTraining iter: %i\n", mTrainer->GetIter());
+	printf("\nTraining iter: %i\n", GetIter());
 	printf("Num Tuples: %i\n", mTrainer->GetNumTuples());
 
 	const int num_steps = 1;
@@ -355,4 +366,13 @@ void cScenarioBallRL::Train()
 	const auto& trainer_net = mTrainer->GetNet();
 	auto& ctrl = mBall.GetController();
 	ctrl->CopyNet(*trainer_net.get());
+}
+
+double cScenarioBallRL::GetExpRate() const
+{
+	int iters = GetIter();
+	double eps = 1 - static_cast<double>(iters) / mNumExpAnnealIters;
+	eps = cMathUtil::Clamp(eps, 0.0, 1.0);
+	eps = eps * (1 - mEpsilon) + mEpsilon;
+	return eps;
 }

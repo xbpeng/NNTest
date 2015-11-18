@@ -40,6 +40,7 @@ protected:
 	cPenaltyGround::tParams mGroundParams;
 
 	bool mFirstCycle;
+	int mNumExpAnnealIters;
 	double mEpsilon;
 	double mCtrlNoise;
 	bool mEnableTraining;
@@ -82,6 +83,7 @@ protected:
 	virtual double GetDiscountNorm() const;
 	virtual void BuildOutputOffsetScale(const std::shared_ptr<cNeuralNetTrainer>& trainer, 
 										Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const;
-
+	virtual int GetIter() const;
 	virtual void Train();
+	virtual double GetExpRate() const;
 };
