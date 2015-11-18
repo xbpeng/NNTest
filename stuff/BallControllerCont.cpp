@@ -29,6 +29,14 @@ void cBallControllerCont::RecordAction(Eigen::VectorXd& out_action) const
 	out_action[0] = mCurrAction.mDist;
 }
 
+cBallControllerCont::tAction cBallControllerCont::BuildActionFromParams(const Eigen::VectorXd& action_params) const
+{
+	assert(action_params.size() == GetActionSize());
+	tAction action;
+	action.mDist = action_params[0];
+	return action;
+}
+
 void cBallControllerCont::UpdateAction()
 {
 	mOffPolicy = false;

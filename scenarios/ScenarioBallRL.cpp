@@ -249,15 +249,12 @@ double cScenarioBallRL::CalcReward(const tExpTuple& tuple) const
 	int penalty_idx = mGround.CheckPenaltyContact(ball_pos);
 	bool contact = penalty_idx != -1;
 
-	int action_idx = 0;
-	tuple.mAction.maxCoeff(&action_idx);
-	
 	const auto& ctrl = mBall.GetController();
-	const cBallController::tAction& action = ctrl->GetAction(action_idx);
+	const cBallController::tAction& action = ctrl->BuildActionFromParams(tuple.mAction);
 	double dist = action.mDist;
 	dist -= 0.5;
 
-	double dist_reward = 1 / (1 + dist * dist);
+	double dist_reward = std::exp(-0.5 * dist * dist);;
 	reward = dist_reward;
 
 	double norm = GetDiscountNorm();

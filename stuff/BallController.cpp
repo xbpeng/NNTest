@@ -235,6 +235,14 @@ const cBallController::tAction& cBallController::GetAction(int a) const
 	return gActions[a];
 }
 
+cBallController::tAction cBallController::BuildActionFromParams(const Eigen::VectorXd& action_params) const
+{
+	assert(action_params.size() == GetActionSize());
+	int action_idx = 0;
+	action_params.maxCoeff(&action_idx);
+	return GetAction(action_idx);
+}
+
 void cBallController::RecordState(Eigen::VectorXd& out_state) const
 {
 	BuildState(out_state);

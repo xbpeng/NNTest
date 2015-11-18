@@ -13,6 +13,7 @@ public:
 	virtual void ApplyRandAction();
 
 	virtual void RecordAction(Eigen::VectorXd& out_action) const;
+	virtual tAction BuildActionFromParams(const Eigen::VectorXd& action_params) const;
 
 protected:
 
