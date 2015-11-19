@@ -257,9 +257,6 @@ double cScenarioBallRL::CalcReward(const tExpTuple& tuple) const
 	double dist_reward = std::exp(-0.5 * dist * dist);;
 	reward = dist_reward;
 
-	double norm = GetDiscountNorm();
-	reward *= norm;
-
 	if (contact)
 	{
 		reward = 0;
@@ -301,7 +298,7 @@ void cScenarioBallRL::InitTrainer()
 	params.mPoolSize = 2; // double Q learning
 	params.mNumInitSamples = 500;
 	//params.mNumInitSamples = 5;
-	params.mFreezeTargetIters = 500;
+	//params.mFreezeTargetIters = 500;
 	//params.mIntOutputFile = "output/intermediate/ball_int.h5";
 	//params.mIntOutputIters = 10;
 	trainer->Init(params);
@@ -326,14 +323,6 @@ void cScenarioBallRL::SetupTrainerOutputOffsetScale()
 	Eigen::VectorXd output_scale;
 	BuildOutputOffsetScale(mTrainer, output_offset, output_scale);
 	mTrainer->SetOutputOffsetScale(output_offset, output_scale);
-}
-
-double cScenarioBallRL::GetDiscountNorm() const
-{
-	double discount = mTrainer->GetDiscount();
-	double norm = 1 / (1 - discount);
-	norm = 1 / norm;
-	return norm;
 }
 
 void cScenarioBallRL::BuildOutputOffsetScale(const std::shared_ptr<cNeuralNetTrainer>& trainer, 

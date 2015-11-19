@@ -80,7 +80,6 @@ protected:
 
 	virtual void SetupTrainerOutputOffsetScale();
 	
-	virtual double GetDiscountNorm() const;
 	virtual void BuildOutputOffsetScale(const std::shared_ptr<cNeuralNetTrainer>& trainer, 
 										Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const;
 	virtual int GetIter() const;
