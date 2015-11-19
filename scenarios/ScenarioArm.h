@@ -11,6 +11,7 @@
 #include "stuff/ArmNNPixelController.h"
 #include "stuff/ArmPDNNPixelController.h"
 #include "stuff/ArmVelNNPixelController.h"
+#include "stuff/ArmNNPixelNoPoseController.h"
 
 #include "render/TextureDesc.h"
 #include "render/camera.h"
@@ -60,6 +61,7 @@ protected:
 		eCtrlNNPixel,
 		eCtrlPDNNPixel,
 		eCtrlVelNNPixel,
+		eCtrlNNPixelNoPose,
 		eCtrlMax
 	};
 

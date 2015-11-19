@@ -8,7 +8,6 @@
 #include "util/FileUtil.h"
 
 const double gCamSize = 4;
-const int gRTSize = 128;
 const double gTargetRadius = 0.15;
 
 const tVector gLineColor = tVector(0, 0, 0, 1);
@@ -198,7 +197,8 @@ bool cScenarioArm::BuildController(const std::shared_ptr<cSimCharacter>& charact
 	{
 	}
 	else if (ctrl_type == eCtrlNN || ctrl_type == eCtrlPDNN || ctrl_type == eCtrlVelNN 
-		|| ctrl_type == eCtrlNNPixel || ctrl_type == eCtrlPDNNPixel || ctrl_type == eCtrlVelNNPixel)
+		|| ctrl_type == eCtrlNNPixel || ctrl_type == eCtrlPDNNPixel || ctrl_type == eCtrlVelNNPixel
+		|| ctrl_type == eCtrlNNPixelNoPose)
 	{
 		succ = BuildNNController(ctrl_type, ctrl);
 	}
@@ -279,6 +279,12 @@ bool cScenarioArm::BuildNNController(eCtrlType ctrl_type, std::shared_ptr<cArmCo
 	{
 		std::shared_ptr<cArmVelNNPixelController> curr_ctrl = std::shared_ptr<cArmVelNNPixelController>(new cArmVelNNPixelController());
 		curr_ctrl->Init(mChar.get(), mGravity, mCharacterFile);
+		ctrl = curr_ctrl;
+	}
+	else if (ctrl_type == eCtrlNNPixelNoPose)
+	{
+		std::shared_ptr<cArmNNPixelNoPoseController> curr_ctrl = std::shared_ptr<cArmNNPixelNoPoseController>(new cArmNNPixelNoPoseController());
+		curr_ctrl->Init(mChar.get());
 		ctrl = curr_ctrl;
 	}
 	else
@@ -462,7 +468,8 @@ void cScenarioArm::UpdateCharacter(double time_step)
 
 void cScenarioArm::InitViewBuffer()
 {
-	mViewBuffer = Eigen::VectorXd::Zero(gRTSize * gRTSize);
+	int res = cArmNNPixelController::GetViewBufferRes();
+	mViewBuffer = Eigen::VectorXd::Zero(res * res);
 }
 
 void cScenarioArm::InitCam()
@@ -487,7 +494,8 @@ bool cScenarioArm::NeedViewBuffer() const
 	{
 		need = (typeid(*ctrl.get()).hash_code() == typeid(cArmNNPixelController).hash_code())
 			|| (typeid(*ctrl.get()).hash_code() == typeid(cArmPDNNPixelController).hash_code())
-			|| (typeid(*ctrl.get()).hash_code() == typeid(cArmVelNNPixelController).hash_code());
+			|| (typeid(*ctrl.get()).hash_code() == typeid(cArmVelNNPixelController).hash_code())
+			|| (typeid(*ctrl.get()).hash_code() == typeid(cArmNNPixelNoPoseController).hash_code());
 	}
 	
 	return need;
@@ -560,11 +568,17 @@ void cScenarioArm::SetNNViewFeatures()
 		std::shared_ptr<cArmVelNNPixelController> pixel_ctrl = std::static_pointer_cast<cArmVelNNPixelController>(ctrl);
 		pixel_ctrl->SetViewBuffer(mViewBuffer);
 	}
+	else if (typeid(*ctrl.get()).hash_code() == typeid(cArmNNPixelNoPoseController).hash_code())
+	{
+		std::shared_ptr<cArmNNPixelNoPoseController> pixel_ctrl = std::static_pointer_cast<cArmNNPixelNoPoseController>(ctrl);
+		pixel_ctrl->SetViewBuffer(mViewBuffer);
+	}
 }
 
 void cScenarioArm::InitRenderResources()
 {
-	mRenderTarget = std::unique_ptr<cTextureDesc>(new cTextureDesc(gRTSize, gRTSize, GL_RGBA, GL_RGBA, GL_UNSIGNED_BYTE, false));
+	int res = cArmNNPixelController::GetViewBufferRes();
+	mRenderTarget = std::unique_ptr<cTextureDesc>(new cTextureDesc(res, res, GL_RGBA, GL_RGBA, GL_UNSIGNED_BYTE, false));
 }
 
 bool cScenarioArm::NeedCtrlUpdate() const
@@ -620,6 +634,10 @@ void cScenarioArm::ParseCtrlType(const cArgParser& parser, const std::string& ke
 	else if (str == "vel_nn_pixel")
 	{
 		out_ctrl = eCtrlVelNNPixel;
+	}
+	else if (str == "nn_pixel_no_pose")
+	{
+		out_ctrl = eCtrlNNPixelNoPose;
 	}
 	else
 	{

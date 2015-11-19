@@ -5,7 +5,7 @@ const int gViewBufferRes = 128;
 
 cArmNNPixelController::cArmNNPixelController()
 {
-	mViewBuffer = Eigen::VectorXd::Zero(gViewBufferRes * gViewBufferRes);
+	mViewBuffer = Eigen::VectorXd::Zero(GetPixelDim());
 }
 
 cArmNNPixelController::~cArmNNPixelController()
@@ -14,7 +14,7 @@ cArmNNPixelController::~cArmNNPixelController()
 
 int cArmNNPixelController::GetPoliStateSize() const
 {
-	int pixel_size = gViewBufferRes * gViewBufferRes;
+	int pixel_size = GetPixelDim();
 	int num_dof = mChar->GetNumDof();
 	int root_size = mChar->GetParamSize(mChar->GetRootID());
 	int pose_dim = num_dof - root_size;
@@ -26,7 +26,7 @@ void cArmNNPixelController::BuildPoliStateOffsetScale(Eigen::VectorXd& out_mean,
 {
 	const double pixel_mean = 0.5;
 	const double pixel_scale = 0.5;
-	int pixel_size = gViewBufferRes * gViewBufferRes;
+	int pixel_size = GetPixelDim();
 	int state_size = GetPoliStateSize();
 
 	out_mean = Eigen::VectorXd::Zero(state_size);
@@ -40,6 +40,10 @@ void cArmNNPixelController::BuildPoliStateOffsetScale(Eigen::VectorXd& out_mean,
 	out_stdev.segment(pixel_size + pose_size, pose_size) = (1 / (2 * M_PI)) * Eigen::VectorXd::Ones(pose_size);
 }
 
+int cArmNNPixelController::GetViewBufferRes()
+{
+	return gViewBufferRes;
+}
 
 void cArmNNPixelController::SetViewBuffer(const Eigen::VectorXd& view_buff)
 {
@@ -55,11 +59,16 @@ void cArmNNPixelController::UpdatePoliState()
 	mChar->BuildVel(vel);
 
 	int root_size = mChar->GetParamSize(mChar->GetRootID());
-	int idx_beg = root_size;
 	int param_size = static_cast<int>(pose.size()) - root_size;
-	int pixel_size = gViewBufferRes * gViewBufferRes;
+	int pixel_size = GetPixelDim();
 
 	mPoliState.segment(0, pixel_size) = mViewBuffer;
 	mPoliState.segment(pixel_size, param_size) = pose.segment(root_size, param_size);
 	mPoliState.segment(pixel_size + param_size, param_size) = vel.segment(root_size, param_size);
+}
+
+int cArmNNPixelController::GetPixelDim() const
+{
+	int res = GetViewBufferRes();
+	return res * res;
 }

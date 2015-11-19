@@ -1,10 +1,10 @@
--scenario= ball_rl
+-scenario= arm_rl
 -playback_speed= 1
 
 -character_file= data/arm_rl/arm.txt
 
--solver_file= data/balL_rl/balL_rl_solver.prototxt
--net_file= data/balL_rl/balL_rl_test.prototxt
+//-solver_file= data/balL_rl/balL_rl_solver.prototxt
+//-net_file= data/balL_rl/balL_rl_test.prototxt
 //-model_file= data/ball_rl/ball_rl_model_noise.h5
 
 //-solver_file= data/balL_rl/balL_rl_actor_solver.prototxt
@@ -21,6 +21,9 @@
 //-solver_file= data/arm_rl/arm_pixel_solver.prototxt
 //-net_file= data/arm_rl/arm_pixel_deploy.prototxt
 //-model_file= data/arm_rl/arm_torque_pixel_model.h5
+
+-solver_file= data/arm_rl/arm_pixel_no_pose_solver.prototxt
+-net_file= data/arm_rl/arm_pixel_no_pose_deploy.prototxt
 
 //-solver_file= data/reg1D/reg1D_multi_solver.prototxt
 //-net_file= data/reg1D/reg1D_multi_deploy.prototxt
@@ -48,14 +51,10 @@
 //-scale_file= data/arm_rl/arm_pixel_model_scale.txt
 
 -coach_type= qp
--arm_ctrl_type= nn_pixel
+-arm_ctrl_type= nn_pixel_no_pose
 
 -exp_rate= 0.2
 -num_exp_anneal_iters= 5000
-
-//-coach_type= qp
-//-arm_ctrl_type= nn
-//-arm_ctrl_type= nn_pixel
 
 //-trainer_int_iter= 1000
 //-trainer_int_output= output/intermediate/trainer_int_model.h5
