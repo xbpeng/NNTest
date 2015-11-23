@@ -41,8 +41,8 @@ void cScenarioBallRLCacla::BuildController(std::shared_ptr<cBallController>& out
 
 void cScenarioBallRLCacla::InitTrainer()
 {
-	std::shared_ptr<cCaclaTrainer> trainer = std::shared_ptr<cCaclaTrainer>(new cCaclaTrainer());
-	//std::shared_ptr<cCaclaTrainer> trainer = std::shared_ptr<cCaclaTrainer>(new cQCaclaTrainer());
+	//std::shared_ptr<cCaclaTrainer> trainer = std::shared_ptr<cCaclaTrainer>(new cCaclaTrainer());
+	std::shared_ptr<cCaclaTrainer> trainer = std::shared_ptr<cCaclaTrainer>(new cQCaclaTrainer());
 
 	cCaclaTrainer::tParams params;
 	params.mNetFile = mCriticNetFile;
