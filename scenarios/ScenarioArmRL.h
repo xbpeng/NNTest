@@ -37,9 +37,6 @@ public:
 	virtual void SaveNet(const std::string& out_file) const;
 	virtual std::string GetName() const;
 
-	virtual bool EnabledOutputData() const;
-	virtual void EnableOutputData(bool enable);
-
 protected:
 	bool mEnableTraining;
 	bool mPretrain;
@@ -53,10 +50,6 @@ protected:
 	cNeuralNetTrainer::tParams mTrainerParams;
 	std::vector<tExpTuple> mTupleBuffer;
 	int mNumTuples;
-	
-	FILE* mErrFile;
-	FILE* mActionFile;
-	bool mOutputData;
 
 	virtual bool BuildCoachController(std::shared_ptr<cCharController>& out_ctrl);
 	virtual void BuildCoach();
@@ -88,5 +81,4 @@ protected:
 	virtual bool EnableSyncCharacters() const;
 
 	virtual void PrintInfo() const;
-	virtual void OutputData() const;
 };

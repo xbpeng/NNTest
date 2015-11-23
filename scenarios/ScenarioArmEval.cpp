@@ -3,6 +3,8 @@
 #include "util/FileUtil.h"
 
 const unsigned long int gRandSeed = 604;
+const std::string gErrFile = "output/arm_eval_err.txt";
+const std::string gActionFile = "output/arm_eval_action.txt";
 
 cScenarioArmEval::cScenarioArmEval()
 {
@@ -10,6 +12,10 @@ cScenarioArmEval::cScenarioArmEval()
 	mErrSampleCount = 0;
 	mMaxSamples = std::numeric_limits<int>::max();
 	mOutputFile = "";
+
+	mOutputData = false;
+	mErrFile = nullptr;
+	mActionFile = nullptr;
 }
 
 cScenarioArmEval::~cScenarioArmEval()
@@ -22,6 +28,7 @@ void cScenarioArmEval::Init()
 	mAvgErr = 0;
 	mErrSampleCount = 0;
 	mRand.Seed(gRandSeed);
+	ResetTargetCounter();
 }
 
 void cScenarioArmEval::ParseArgs(const cArgParser& parser)
@@ -50,6 +57,11 @@ void cScenarioArmEval::Update(double time_elapsed)
 		{
 			OutputResult(mOutputFile);
 		}
+	}
+
+	if (mOutputData)
+	{
+		OutputData();
 	}
 }
 
@@ -116,5 +128,53 @@ void cScenarioArmEval::OutputResult(const std::string& filename) const
 	else
 	{
 		printf("Failed to output result to %s\n", filename.c_str());
+	}
+}
+
+
+bool cScenarioArmEval::EnabledOutputData() const
+{
+	return mOutputData;
+}
+
+void cScenarioArmEval::EnableOutputData(bool enable)
+{
+	mOutputData = enable;
+
+	if (mOutputData)
+	{
+		mErrFile = cFileUtil::OpenFile(gErrFile, "w");
+		mActionFile = cFileUtil::OpenFile(gActionFile, "w");
+	}
+	else
+	{
+		cFileUtil::CloseFile(mErrFile);
+		cFileUtil::CloseFile(mActionFile);
+	}
+}
+
+void cScenarioArmEval::OutputData() const
+{
+	const auto& ctrl = mChar->GetController();
+	if (ctrl != nullptr)
+	{
+		auto arm_ctrl = std::static_pointer_cast<cArmController>(ctrl);
+
+		int end_id = cSimArm::eJointLinkEnd;
+		tVector end_pos = mChar->CalcJointPos(end_id);
+		
+		tVector err = mTargetPos - end_pos;
+		
+		fprintf(mErrFile, "%.5f\t%.5f\n", err[0], err[1]);
+
+		Eigen::VectorXd action;
+		arm_ctrl->RecordPoliAction(action);
+		
+		for (int i = 0; i < action.size(); ++i)
+		{
+			fprintf(mActionFile, "%.5f\t", action[i]);
+		}
+		
+		fprintf(mActionFile, "\n");
 	}
 }

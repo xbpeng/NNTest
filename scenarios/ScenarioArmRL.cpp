@@ -29,11 +29,6 @@ cScenarioArmRL::cScenarioArmRL()
 
 	mCtrlType = eCtrlNN;
 	mCoachType = eCtrlQP;
-
-	mOutputData = false;
-
-	mErrFile = nullptr;
-	mActionFile = nullptr;
 }
 
 cScenarioArmRL::~cScenarioArmRL()
@@ -72,18 +67,11 @@ void cScenarioArmRL::Clear()
 	cScenarioArm::Clear();
 	mCoach->Clear();
 	mNumTuples = 0;
-
-	EnableOutputData(false);
 }
 
 void cScenarioArmRL::Update(double time_elapsed)
 {
 	cScenarioArm::Update(time_elapsed);
-
-	if (mOutputData)
-	{
-		OutputData();
-	}
 }
 
 void cScenarioArmRL::ToggleTraining()
@@ -410,56 +398,4 @@ void cScenarioArmRL::PrintInfo() const
 	printf("\n");
 
 	printf("\n");
-}
-
-bool cScenarioArmRL::EnabledOutputData() const
-{
-	return mOutputData;
-}
-
-void cScenarioArmRL::EnableOutputData(bool enable)
-{
-	mOutputData = enable;
-
-	if (mOutputData)
-	{
-		mErrFile = cFileUtil::OpenFile(gErrFile, "w");
-		mActionFile = cFileUtil::OpenFile(gActionFile, "w");
-	}
-	else
-	{
-		cFileUtil::CloseFile(mErrFile);
-		cFileUtil::CloseFile(mActionFile);
-	}
-}
-
-void cScenarioArmRL::OutputData() const
-{
-	auto coach = GetCoachController();
-	auto student = GetStudentController();
-
-	int end_id = cSimArm::eJointLinkEnd;
-	tVector coach_end_pos = mCoach->CalcJointPos(end_id);
-	tVector student_end_pos = mChar->CalcJointPos(end_id);
-
-	tVector coach_err = mTargetPos - coach_end_pos;
-	tVector student_err = mTargetPos - student_end_pos;
-
-	fprintf(mErrFile, "%.5f\t%.5f\t%.5f\t%.5f\n", coach_err[0], coach_err[1], 
-			student_err[0], student_err[1]);
-
-	Eigen::VectorXd coach_action;
-	Eigen::VectorXd student_action;
-	coach->RecordPoliAction(coach_action);
-	student->RecordPoliAction(student_action);
-
-	for (int i = 0; i < coach_action.size(); ++i)
-	{
-		fprintf(mActionFile, "%.5f\t", coach_action[i]);
-	}
-	for (int i = 0; i < student_action.size(); ++i)
-	{
-		fprintf(mActionFile, "%.5f\t", student_action[i]);
-	}
-	fprintf(mActionFile, "\n");
 }

@@ -18,10 +18,7 @@ public:
 
 protected:
 	std::string mOutputNetFile;
-	bool mOutputTorques;
-	FILE* mCoachTorqueFile;
-	FILE* mStudentTorqueFile;
-
+	
 	virtual void ToggleTraining();
 	virtual std::shared_ptr<cScenarioArmRL> GetRLScene() const;
 	virtual void BuildScene();
@@ -30,12 +27,4 @@ protected:
 	virtual void SaveNet(const std::string& out_file) const;
 
 	virtual void DrawCharacter();
-
-	virtual void ToggleOutputTorques();
-	virtual void BeginWrite();
-	virtual void EndWrite();
-	virtual void WriteTorques();
-	virtual void WriteTorques(const std::shared_ptr<cSimCharacter>& character, FILE* out_file) const;
-
-	virtual void ToggleOutputData();
 };
