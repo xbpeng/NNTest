@@ -55,6 +55,7 @@
 
 -exp_rate= 0.2
 -num_exp_anneal_iters= 5000
+//-num_exp_anneal_iters= 1
 
 //-trainer_int_iter= 1000
 //-trainer_int_output= output/intermediate/trainer_int_model.h5

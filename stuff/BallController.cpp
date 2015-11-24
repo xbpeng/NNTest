@@ -220,6 +220,12 @@ int cBallController::GetRandomAction() const
 	return a;
 }
 
+cBallController::tAction cBallController::GetRandomActionDiscrete() const
+{
+	int a = GetRandomAction();
+	return gActions[a];
+}
+
 int cBallController::GetStateSize() const
 {
 	return gNumGroundSamples;

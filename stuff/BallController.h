@@ -73,6 +73,7 @@ protected:
 	virtual bool HasNet() const;
 	virtual int CalcActionNet();
 	virtual int GetRandomAction() const;
+	virtual tAction GetRandomActionDiscrete() const;
 
 	virtual void BuildState(Eigen::VectorXd& state) const;
 	virtual void ApplyAction(int a);
