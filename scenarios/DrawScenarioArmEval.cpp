@@ -10,6 +10,20 @@ cDrawScenarioArmEval::~cDrawScenarioArmEval()
 {
 }
 
+void cDrawScenarioArmEval::Keyboard(unsigned char key, int x, int y)
+{
+	cDrawScenarioArm::Keyboard(key, x, y);
+
+	switch (key)
+	{
+	case 'o':
+		ToggleOutputData();
+		break;
+	default:
+		break;
+	}
+}
+
 void cDrawScenarioArmEval::BuildScene()
 {
 	mScene = std::shared_ptr<cScenarioArmEval>(new cScenarioArmEval());
@@ -30,4 +44,21 @@ std::string cDrawScenarioArmEval::BuildTextInfoStr() const
 	str += str_buffer;
 
 	return str;
+}
+
+void cDrawScenarioArmEval::ToggleOutputData()
+{
+	cScenarioArmEval* eval_scene = reinterpret_cast<cScenarioArmEval*>(mScene.get());
+	bool enable = eval_scene->EnabledOutputData();
+	eval_scene->EnableOutputData(!enable);
+
+	enable = eval_scene->EnabledOutputData();
+	if (enable)
+	{
+		printf("Begin writing data\n");
+	}
+	else
+	{
+		printf("End writing data\n");
+	}
 }

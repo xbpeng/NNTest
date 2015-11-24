@@ -79,6 +79,7 @@ cBallController::tAction cBallControllerCont::CalcActionNetCont()
 
 cBallController::tAction cBallControllerCont::GetRandomActionCont()
 {
+	/*
 	const double dist_mean = 0;
 	const double dist_stdev = 0.5;
 
@@ -90,5 +91,7 @@ cBallController::tAction cBallControllerCont::GetRandomActionCont()
 		rand_dist = cMathUtil::RandDoubleNorm(dist_mean, dist_stdev);
 	}
 	action.mDist += rand_dist;
+	*/
+	tAction action = GetRandomActionDiscrete();
 	return action;
 }

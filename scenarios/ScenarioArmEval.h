@@ -20,6 +20,9 @@ public:
 
 	virtual bool IsDone() const;
 
+	virtual bool EnabledOutputData() const;
+	virtual void EnableOutputData(bool enable);
+
 	virtual std::string GetName() const;
 
 protected:
@@ -29,10 +32,15 @@ protected:
 
 	std::string mOutputFile;
 
+	FILE* mErrFile;
+	FILE* mActionFile;
+	bool mOutputData;
+
 	virtual void UpdateTrackError();
 	virtual void GetRandTargetMinMaxTime(double& out_min, double& out_max) const;
 	virtual void GetRandPoseMinMaxTime(double& out_min, double& out_max) const;
 	virtual double GetRandTargetMaxDist() const;
 
 	virtual void OutputResult(const std::string& filename) const;
+	virtual void OutputData() const;
 };

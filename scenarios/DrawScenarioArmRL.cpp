@@ -12,16 +12,10 @@ const tVector gCamPos0 = tVector(0, 0, 1, 0);
 const int gTracerBufferSize = 50;
 const double gTracerSamplePeriod = 0.033;
 
-const std::string gCoachTorqueFilename = "output/coach_torques.txt";
-const std::string gStudentTorqueFilename = "output/student_torques.txt";
-
 cDrawScenarioArmRL::cDrawScenarioArmRL(cCamera& cam)
 	: cDrawScenarioArm(cam)
 {
 	mOutputNetFile = "";
-	mOutputTorques = false;
-	mCoachTorqueFile = nullptr;
-	mStudentTorqueFile = nullptr;
 }
 
 cDrawScenarioArmRL::~cDrawScenarioArmRL()
@@ -46,12 +40,6 @@ void cDrawScenarioArmRL::Keyboard(unsigned char key, int x, int y)
 	case 's':
 		SaveNet(mOutputNetFile);
 		break;
-	case 'w':
-		ToggleOutputTorques();
-		break;
-	case 'o':
-		ToggleOutputData();
-		break;
 	default:
 		break;
 	}
@@ -60,11 +48,6 @@ void cDrawScenarioArmRL::Keyboard(unsigned char key, int x, int y)
 void cDrawScenarioArmRL::Update(double time_elapsed)
 {
 	cDrawScenarioArm::Update(time_elapsed);
-
-	if (mOutputTorques)
-	{
-		WriteTorques();
-	}
 }
 
 void cDrawScenarioArmRL::DrawCharacter()
@@ -117,73 +100,4 @@ void cDrawScenarioArmRL::SaveNet(const std::string& out_file) const
 	auto rl_scene = GetRLScene();
 	rl_scene->SaveNet(out_file);
 	printf("Model saved to %s\n", out_file.c_str());
-}
-
-void cDrawScenarioArmRL::ToggleOutputTorques()
-{
-	if (mOutputTorques)
-	{
-		EndWrite();
-		printf("End Writing Torques.\n");
-	}
-	else
-	{
-		BeginWrite();
-		printf("Begin Writing Torques.\n");
-	}
-	mOutputTorques = !mOutputTorques;
-}
-
-void cDrawScenarioArmRL::BeginWrite()
-{
-	mCoachTorqueFile = cFileUtil::OpenFile(gCoachTorqueFilename, "w");
-	mStudentTorqueFile = cFileUtil::OpenFile(gStudentTorqueFilename, "w");
-}
-
-void cDrawScenarioArmRL::EndWrite()
-{
-	cFileUtil::CloseFile(mCoachTorqueFile);
-	cFileUtil::CloseFile(mStudentTorqueFile);
-}
-
-void cDrawScenarioArmRL::WriteTorques()
-{
-	auto rl_scene = GetRLScene();
-	WriteTorques(rl_scene->GetCoach(), mCoachTorqueFile);
-	WriteTorques(rl_scene->GetCharacter(), mStudentTorqueFile);
-}
-
-void cDrawScenarioArmRL::WriteTorques(const std::shared_ptr<cSimCharacter>& character, FILE* out_file) const
-{
-	int num_joints = character->GetNumJoints();
-	for (int j = 0; j < num_joints; ++j)
-	{
-		const cJoint& joint = character->GetJoint(j);
-		tVector torque = tVector::Zero();
-		
-		if (joint.IsValid())
-		{
-			torque = joint.GetTorque();
-		}
-		
-		fprintf(out_file, "%.5f\t", torque[2]);
-	}
-	fprintf(out_file, "\n");
-}
-
-void cDrawScenarioArmRL::ToggleOutputData()
-{
-	auto rl_scene = GetRLScene();
-	bool enable = rl_scene->EnabledOutputData();
-	rl_scene->EnableOutputData(!enable);
-
-	enable = rl_scene->EnabledOutputData();
-	if (enable)
-	{
-		printf("Begin writing data\n");
-	}
-	else
-	{
-		printf("End writing data\n");
-	}
 }
