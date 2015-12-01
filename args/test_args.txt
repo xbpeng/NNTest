@@ -1,16 +1,16 @@
--scenario= ball_rl_cacla
+-scenario= ball_rl
 -playback_speed= 1
 
 -character_file= data/arm_rl/arm.txt
 
-//-solver_file= data/balL_rl/balL_rl_solver.prototxt
-//-net_file= data/balL_rl/balL_rl_test.prototxt
+-solver_file= data/balL_rl/balL_rl_solver.prototxt
+-net_file= data/balL_rl/balL_rl_test.prototxt
 //-model_file= data/ball_rl/ball_rl_model_noise.h5
 
--solver_file= data/balL_rl/balL_rl_actor_solver.prototxt
--net_file= data/balL_rl/balL_rl_actor_deploy.prototxt
--critic_solver_file= data/balL_rl/balL_rl_critic_solver.prototxt
--critic_net_file= data/balL_rl/balL_rl_critic_deploy.prototxt
+//-solver_file= data/balL_rl/balL_rl_actor_solver.prototxt
+//-net_file= data/balL_rl/balL_rl_actor_deploy.prototxt
+//-critic_solver_file= data/balL_rl/balL_rl_critic_solver.prototxt
+//-critic_net_file= data/balL_rl/balL_rl_critic_deploy.prototxt
 //-critic_solver_file= data/balL_rl/balL_rl_critic_q_solver.prototxt
 //-critic_net_file= data/balL_rl/balL_rl_critic_q_deploy.prototxt
 
@@ -24,6 +24,7 @@
 
 //-solver_file= data/arm_rl/arm_pixel_no_pose_solver.prototxt
 //-net_file= data/arm_rl/arm_pixel_no_pose_deploy.prototxt
+//-model_file= data/arm_rl/arm_pixel_no_pose_model.h5
 
 //-solver_file= data/reg1D/reg1D_multi_solver.prototxt
 //-net_file= data/reg1D/reg1D_multi_deploy.prototxt
@@ -51,10 +52,10 @@
 //-scale_file= data/arm_rl/arm_pixel_model_scale.txt
 
 -coach_type= qp
--arm_ctrl_type= nn
+-arm_ctrl_type= nn_pixel_no_pose
 
 -exp_rate= 0.2
--num_exp_anneal_iters= 5000
+-num_exp_anneal_samples= 160000
 //-num_exp_anneal_iters= 1
 
 //-trainer_int_iter= 1000

@@ -53,7 +53,8 @@ void cScenarioBallRLCacla::InitTrainer()
 	params.mNumInitSamples = 10000;
 	//params.mNumInitSamples = 30;
 	//params.mFreezeTargetIters = 500;
-	trainer->Init(params, mSolverFile, mNetFile);
+	trainer->SetActorFiles(mSolverFile, mNetFile);
+	trainer->Init(params);
 
 	if (mModelFile != "")
 	{

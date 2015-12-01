@@ -7,7 +7,7 @@ cScenarioBallRL::cScenarioBallRL()
 {
 	Clear();
 	mEpsilon = 0.1;
-	mNumExpAnnealIters = 500;
+	mNumExpAnnealSamples = 16000;
 	mCtrlNoise = 0;
 	mEnableTraining = true;
 }
@@ -35,7 +35,7 @@ void cScenarioBallRL::ParseArgs(const cArgParser& parser)
 	parser.ParseDouble("ctrl_noise", mCtrlNoise);
 
 	parser.ParseDouble("exp_rate", mEpsilon);
-	parser.ParseInt("num_exp_anneal_iters", mNumExpAnnealIters);
+	parser.ParseInt("num_exp_anneal_samples", mNumExpAnnealSamples);
 
 	parser.ParseDouble("ground_height", mGroundParams.mHeight);
 	parser.ParseDouble("ground_min_spacing", mGroundParams.mMinSpacing);
@@ -356,8 +356,8 @@ void cScenarioBallRL::Train()
 
 double cScenarioBallRL::GetExpRate() const
 {
-	int iters = GetIter();
-	double eps = 1 - static_cast<double>(iters) / mNumExpAnnealIters;
+	int num_tuples = mTrainer->GetNumTuples();
+	double eps = 1 - static_cast<double>(num_tuples) / mNumExpAnnealSamples;
 	eps = cMathUtil::Clamp(eps, 0.0, 1.0);
 	eps = eps * (1 - mEpsilon) + mEpsilon;
 	return eps;

@@ -40,7 +40,7 @@ protected:
 	cPenaltyGround::tParams mGroundParams;
 
 	bool mFirstCycle;
-	int mNumExpAnnealIters;
+	int mNumExpAnnealSamples;
 	double mEpsilon;
 	double mCtrlNoise;
 	bool mEnableTraining;
