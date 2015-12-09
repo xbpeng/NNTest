@@ -18,6 +18,7 @@ public:
 	virtual void Reset();
 
 	virtual std::string BuildTextInfoStr() const;
+	virtual bool IsDone() const;
 
 	std::string GetName() const;
 

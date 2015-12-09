@@ -1,0 +1,15 @@
+net: "data/ball_rl/ball_rl_critic_train.prototxt"
+
+solver_mode: CPU
+solver_type: ADADELTA
+
+base_lr: 1.0
+lr_policy: "fixed"
+
+momentum: 0.95
+delta: 1e-8
+display: 1
+
+max_iter: 10000000
+weight_decay: 0.0005
+snapshot: 0

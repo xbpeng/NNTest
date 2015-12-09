@@ -2,7 +2,9 @@
 
 #include "scenarios/ScenarioBallRL.h"
 #include "stuff/BallControllerCont.h"
+#include "stuff/BallControllerContAC.h"
 #include "learning/CaclaTrainer.h"
+#include "learning/CaclaACTrainer.h"
 #include "learning/QCaclaTrainer.h"
 
 class cScenarioBallRLCacla : public cScenarioBallRL
@@ -27,6 +29,8 @@ protected:
 	virtual void BuildCriticOutputOffsetScale(const std::shared_ptr<cCaclaTrainer>& trainer,
 											Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const;
 	virtual void BuildActorOutputOffsetScale(const std::shared_ptr<cCaclaTrainer>& trainer,
+											Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const;
+	virtual void BuildACOutputOffseScale(const std::shared_ptr<cCaclaACTrainer>& trainer,
 											Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const;
 
 	virtual void RecordBegFlags(tExpTuple& out_tuple) const;

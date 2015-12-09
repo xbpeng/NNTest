@@ -1,0 +1,21 @@
+-scenario= ball_eval
+-playback_speed= 40
+
+-solver_file= data/balL_rl/ball_rl_actor_solver.prototxt
+-net_file= data/balL_rl/balL_rl_actor_deploy.prototxt
+
+-critic_solver_file= data/balL_rl/balL_rl_critic_solver.prototxt
+-critic_net_file= data/balL_rl/balL_rl_critic_deploy.prototxt
+
+-ball_eval_samples= 100
+
+-output_file= output/ball_int_eval.txt
+
+-ground_height= 0
+
+-ground_min_spacing= 0.2
+-ground_max_spacing= 2.0
+-ground_min_box_size= 0.3
+-ground_max_box_size= 2.0
+-ground_num_boxes= 50
+-ground_spacing_prob1= 0

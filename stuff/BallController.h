@@ -32,6 +32,8 @@ public:
 
 	virtual bool LoadNet(const std::string& net_file);
 	virtual void LoadModel(const std::string& model_file);
+	virtual int GetNetInputSize() const;
+	virtual int GetNetOutputSize() const;
 
 	virtual int GetStateSize() const;
 	virtual int GetActionSize() const;

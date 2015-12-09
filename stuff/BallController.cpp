@@ -96,8 +96,8 @@ bool cBallController::LoadNet(const std::string& net_file)
 	
 	int input_size = mNet.GetInputSize();
 	int output_size = mNet.GetOutputSize();
-	int state_size = GetStateSize();
-	int action_size = GetActionSize();
+	int state_size = GetNetInputSize();
+	int action_size = GetNetOutputSize();
 
 	if (output_size != action_size)
 	{
@@ -123,6 +123,16 @@ bool cBallController::LoadNet(const std::string& net_file)
 void cBallController::LoadModel(const std::string& model_file)
 {
 	mNet.LoadModel(model_file);
+}
+
+int cBallController::GetNetInputSize() const
+{
+	return GetStateSize();
+}
+
+int cBallController::GetNetOutputSize() const
+{
+	return GetActionSize();
 }
 
 void cBallController::UpdateAction()

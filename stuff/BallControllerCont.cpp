@@ -80,7 +80,7 @@ cBallController::tAction cBallControllerCont::CalcActionNetCont()
 cBallController::tAction cBallControllerCont::GetRandomActionCont()
 {
 	const double dist_mean = 0;
-	const double dist_stdev = 0.3;
+	const double dist_stdev = 0.5;
 
 	tAction action = CalcActionNetCont();
 	double rand_dist = cMathUtil::RandDoubleNorm(dist_mean, dist_stdev);

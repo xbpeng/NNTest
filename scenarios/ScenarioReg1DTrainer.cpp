@@ -48,8 +48,7 @@ void cScenarioReg1DTrainer::TrainNet()
 {
 	if (GetNumPts() > 0)
 	{
-		int num_steps = 1;
-		mTrainer.Train(num_steps);
+		mTrainer.Train();
 
 		const auto& trainer_net = mTrainer.GetNet();
 		mNet.CopyModel(*trainer_net.get());
@@ -92,6 +91,6 @@ void cScenarioReg1DTrainer::SetupTrainer()
 	params.mPlaybackMemSize = 1000;
 	params.mPoolSize = 1;
 	params.mNumInitSamples = 0;
-	params.mCalcScale = false;
+	params.mInitInputOffsetScale = false;
 	mTrainer.Init(params);
 }

@@ -31,7 +31,6 @@ void cScenarioBallRL::ParseArgs(const cArgParser& parser)
 	parser.ParseString("solver_file", mSolverFile);
 	parser.ParseString("net_file", mNetFile);
 	parser.ParseString("model_file", mModelFile);
-	parser.ParseDouble("epsilon_greedy_rate", mEpsilon);
 	parser.ParseDouble("ctrl_noise", mCtrlNoise);
 
 	parser.ParseDouble("exp_rate", mEpsilon);
@@ -150,7 +149,7 @@ void cScenarioBallRL::BuildController(std::shared_ptr<cBallController>& out_ctrl
 
 void cScenarioBallRL::UpdateGround()
 {
-	const double margin = 20;
+	const double margin = 10;
 	tVector ball_pos = mBall.GetPos();
 	mGround.Update(ball_pos[0] - margin, ball_pos[0] + margin);
 
@@ -179,7 +178,7 @@ int cScenarioBallRL::GetActionSize() const
 
 void cScenarioBallRL::NewCycleUpdate()
 {
-	if (mEnableTraining)
+	if (EnableTraining())
 	{
 		// finish recording tuple from previous cycle
 		RecordState(mCurrTuple.mStateEnd);
@@ -252,9 +251,20 @@ double cScenarioBallRL::CalcReward(const tExpTuple& tuple) const
 	const auto& ctrl = mBall.GetController();
 	const cBallController::tAction& action = ctrl->BuildActionFromParams(tuple.mAction);
 	double dist = action.mDist;
-	dist -= 0.5;
+	
+	const double tar_dist = 0.5;
+	double dist_err = dist - tar_dist;
+	
+	double min_dist = cBallController::gMinDist;
+	double max_dist = cBallController::gMaxDist;
+	double gamma = (dist_err >= 0) ? (max_dist - tar_dist) : (tar_dist - min_dist);
+	gamma /= 1.5;
 
-	double dist_reward = std::exp(-0.5 * dist * dist);;
+	gamma = 1 / gamma;
+	gamma *= gamma;
+
+	dist_err *= dist_err;
+	double dist_reward = std::exp(-gamma * dist_err);
 	reward = dist_reward;
 
 	if (contact)
@@ -296,9 +306,10 @@ void cScenarioBallRL::InitTrainer()
 	params.mSolverFile = mSolverFile;
 	params.mPlaybackMemSize = gTrainerPlaybackMemSize;
 	params.mPoolSize = 2; // double Q learning
-	params.mNumInitSamples = 500;
+	params.mNumInitSamples = 5000;
+	params.mNumStepsPerIter = 2;
 	//params.mNumInitSamples = 5;
-	//params.mFreezeTargetIters = 500;
+	params.mFreezeTargetIters = 500;
 	//params.mIntOutputFile = "output/intermediate/ball_int.h5";
 	//params.mIntOutputIters = 10;
 	trainer->Init(params);
@@ -343,11 +354,9 @@ void cScenarioBallRL::Train()
 	printf("\nTraining iter: %i\n", GetIter());
 	printf("Num Tuples: %i\n", mTrainer->GetNumTuples());
 
-	const int num_steps = 1;
-
 	mNumTuples = 0;
 	mTrainer->AddTuples(mTupleBuffer);
-	mTrainer->Train(num_steps);
+	mTrainer->Train();
 
 	const auto& trainer_net = mTrainer->GetNet();
 	auto& ctrl = mBall.GetController();

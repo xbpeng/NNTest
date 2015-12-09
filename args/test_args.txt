@@ -1,18 +1,24 @@
--scenario= ball_rl
+-scenario= ball_rl_cacla
 -playback_speed= 1
 
 -character_file= data/arm_rl/arm.txt
 
--solver_file= data/balL_rl/balL_rl_solver.prototxt
--net_file= data/balL_rl/balL_rl_test.prototxt
+//-solver_file= data/balL_rl/balL_rl_solver.prototxt
+//-net_file= data/balL_rl/balL_rl_test.prototxt
 //-model_file= data/ball_rl/ball_rl_model_noise.h5
 
-//-solver_file= data/balL_rl/balL_rl_actor_solver.prototxt
-//-net_file= data/balL_rl/balL_rl_actor_deploy.prototxt
-//-critic_solver_file= data/balL_rl/balL_rl_critic_solver.prototxt
-//-critic_net_file= data/balL_rl/balL_rl_critic_deploy.prototxt
+-solver_file= data/balL_rl/ball_rl_actor_solver.prototxt
+//-solver_file= data/balL_rl/ball_rl_actor_solver_adadelta.prototxt
+-net_file= data/balL_rl/balL_rl_actor_deploy.prototxt
+
+-critic_solver_file= data/balL_rl/balL_rl_critic_solver.prototxt
+//-critic_solver_file= data/balL_rl/balL_rl_critic_solver_adadelta.prototxt
+-critic_net_file= data/balL_rl/balL_rl_critic_deploy.prototxt
 //-critic_solver_file= data/balL_rl/balL_rl_critic_q_solver.prototxt
 //-critic_net_file= data/balL_rl/balL_rl_critic_q_deploy.prototxt
+
+//-solver_file= data/balL_rl/balL_rl_ac_solver.prototxt
+//-net_file= data/balL_rl/balL_rl_ac_deploy.prototxt
 
 //-solver_file= data/arm_rl/arm_solver.prototxt
 //-net_file= data/arm_rl/arm_deploy.prototxt
@@ -52,19 +58,19 @@
 //-scale_file= data/arm_rl/arm_pixel_model_scale.txt
 
 -coach_type= qp
--arm_ctrl_type= nn_pixel_no_pose
+-arm_ctrl_type= nn_pixel
 
 -exp_rate= 0.2
 -num_exp_anneal_samples= 160000
 //-num_exp_anneal_iters= 1
 
-//-trainer_int_iter= 1000
-//-trainer_int_output= output/intermediate/trainer_int_model.h5
+-trainer_int_iter= 1000
+-trainer_int_output= output/intermediate/trainer_int_model.h5
 
--epsilon_greedy_rate= 0.2
 -arm_pretrain= false
 
 -eval_max_samples= 5000
+-ball_eval_samples= 10
 
 -output_net_file= output/ball_rl_model.h5
 -critic_output_net_file= output/ball_rl_critic_model.h5
@@ -77,7 +83,7 @@
 -ground_max_spacing= 2.0
 -ground_min_box_size= 0.3
 -ground_max_box_size= 2.0
--ground_num_boxes= 16
+-ground_num_boxes= 50
 -ground_spacing_prob1= 0
 
 //-ctrl_noise= 0.1

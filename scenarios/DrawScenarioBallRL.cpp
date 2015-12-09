@@ -217,3 +217,8 @@ std::string cDrawScenarioBallRL::BuildTextInfoStr() const
 	std::string info = "Success Rate: " + std::to_string(succ_rate);
 	return info;
 }
+
+bool cDrawScenarioBallRL::IsDone() const
+{
+	return mScene->IsDone();
+}

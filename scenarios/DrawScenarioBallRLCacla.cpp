@@ -26,7 +26,9 @@ void cDrawScenarioBallRLCacla::SaveNet() const
 	std::shared_ptr<cScenarioBallRLCacla> cacla_scene = std::static_pointer_cast<cScenarioBallRLCacla>(mScene);
 	if (mOutputNetFile != "")
 	{
+		// hack
 		cacla_scene->SaveActorNet(mOutputNetFile);
+		//cacla_scene->SaveNet(mOutputNetFile);
 	}
 	
 	if (mCriticOutputNetFile != "")

@@ -242,7 +242,7 @@ void cScenarioArmRL::InitTrainer()
 	mTrainerParams.mPoolSize = 1;
 	mTrainerParams.mNumInitSamples = 10000;
 	//params.mNumInitSamples = 100;
-	mTrainerParams.mCalcScale = false;
+	mTrainerParams.mInitInputOffsetScale = false;
 
 	mTrainer.Init(mTrainerParams);
 
@@ -282,11 +282,10 @@ void cScenarioArmRL::Train()
 	printf("\nTraining Iter: %i\n", iter);
 	printf("Num Tuples: %i\n", num_tuples);
 
-	const int num_steps = 1;
 	mTrainer.AddTuples(mTupleBuffer);
 
 	cNeuralNetTrainer::eStage stage0 = mTrainer.GetStage();
-	mTrainer.Train(num_steps);
+	mTrainer.Train();
 	cNeuralNetTrainer::eStage stage1 = mTrainer.GetStage();
 
 	const auto& trainer_net = mTrainer.GetNet();

@@ -93,7 +93,7 @@ layer {
 	decay_mult: 0
   }
   inner_product_param {
-    num_output: 128
+    num_output: 256
     weight_filler {
       type: "xavier"
     }
@@ -124,6 +124,37 @@ layer {
 	decay_mult: 0
   }
   inner_product_param {
+    num_output: 128
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+layer {
+  name: "relu3"
+  type: "ReLU"
+  bottom: "ip1"
+  top: "relu3"
+}
+
+layer {
+  name: "ip2"
+  type: "InnerProduct"
+  bottom: "relu3"
+  top: "ip2"
+  param {
+    lr_mult: 1
+	decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+	decay_mult: 0
+  }
+  inner_product_param {
     num_output: 1
     weight_filler {
       type: "xavier"
@@ -137,7 +168,7 @@ layer {
 layer {
   name: "loss"
   type: "EuclideanLoss"
-  bottom: "ip1"
+  bottom: "ip2"
   bottom: "label"
   top: "loss"
 }

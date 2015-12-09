@@ -8,11 +8,13 @@ files = {};
 files{1} = 'pixel_nn_torque_eval.txt';
 files{2} = 'pixel_nn_pd_eval.txt';
 files{3} = 'pixel_nn_vel_eval.txt';
-%files{4} = 'pixel_nn_torque_pretrain_eval.txt';
 
 %files{1} = 'pixel_nn_torque_eval.txt';
-%files{2} = 'pixel_nn_torque_no_replay_eval.txt';
+%files{2} = 'pixel_nn_torque_pretrain_eval.txt';
 %files{3} = 'pixel_nn_torque_sync_coach_eval.txt';
+
+%files{1} = 'pixel_nn_torque_eval.txt';
+%files{2} = 'pixel_torque_no_pose.txt';
 
 lines = {'b-', 'r-', 'm-', 'k-'};
 
@@ -45,8 +47,9 @@ xlabel('Iterations (10^3)');
 ylabel('Average Tracking Error (m)');
 title('Performance vs Training Iterations');
 xlim([0, 90]);
-ylim([0.4, 2]);
+ylim([0, 1.8]);
 
-%legend('QP', 'Reduced Torque', 'Reduced Angle', 'Reduced Velocity');
-legend('QP', 'Conv Torque', 'Conv Angle', 'Conv Velocity');
-%legend('QP', 'Replay + Guided', 'Guided', 'Replay');
+%legend('QP', 'Reduced Torque', 'Reduced Angle', 'Reduced Velocity', 'Location', 'southeast');
+legend('QP', 'Conv Torque', 'Conv Angle', 'Conv Velocity', 'Location', 'southeast');
+%legend('QP', 'Guided', 'Guided + Pretraining', 'Unguided', 'Location', 'southeast');
+%legend('QP', 'With Pose', 'No Pose', 'Location', 'southeast');
