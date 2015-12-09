@@ -7,7 +7,7 @@
 -critic_solver_file= data/balL_rl/balL_rl_critic_solver.prototxt
 -critic_net_file= data/balL_rl/balL_rl_critic_deploy.prototxt
 
--ball_eval_samples= 100
+-ball_eval_samples= 500
 
 -output_file= output/ball_int_eval.txt
 

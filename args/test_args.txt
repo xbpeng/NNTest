@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 -scenario= ball_rl_cacla
-=======
--scenario= arm_eval
->>>>>>> 6a8228a9f1ecfd3a3c5d90b267778e751bd89cc1
 -playback_speed= 1
 
 -character_file= data/arm_rl/arm.txt
@@ -32,9 +28,9 @@
 //-net_file= data/arm_rl/arm_pixel_deploy.prototxt
 //-model_file= data/arm_rl/arm_torque_pixel_model.h5
 
--solver_file= data/arm_rl/arm_pixel_no_pose_solver.prototxt
--net_file= data/arm_rl/arm_pixel_no_pose_deploy.prototxt
--model_file= data/arm_rl/arm_pixel_no_pose_model.h5
+//-solver_file= data/arm_rl/arm_pixel_no_pose_solver.prototxt
+//-net_file= data/arm_rl/arm_pixel_no_pose_deploy.prototxt
+//-model_file= data/arm_rl/arm_pixel_no_pose_model.h5
 
 //-solver_file= data/reg1D/reg1D_multi_solver.prototxt
 //-net_file= data/reg1D/reg1D_multi_deploy.prototxt
@@ -68,7 +64,7 @@
 -num_exp_anneal_samples= 160000
 //-num_exp_anneal_iters= 1
 
--trainer_int_iter= 1000
+-trainer_int_iter= 100
 -trainer_int_output= output/intermediate/trainer_int_model.h5
 
 -arm_pretrain= false

@@ -47,6 +47,9 @@ void cScenarioBallRL::ParseArgs(const cArgParser& parser)
 	parser.ParseDouble("ground_max_spacing1", mGroundParams.mMaxSpacing1);
 
 	parser.ParseInt("ground_num_boxes", mGroundParams.mNumBoxes);
+
+	parser.ParseInt("trainer_int_iter", mTrainerParams.mIntOutputIters);
+	parser.ParseString("trainer_int_output", mTrainerParams.mIntOutputFile);
 }
 
 void cScenarioBallRL::Reset()
@@ -301,18 +304,18 @@ void cScenarioBallRL::InitTrainer()
 {
 	std::shared_ptr<cQNetTrainer> trainer = std::shared_ptr<cQNetTrainer>(new cQNetTrainer());
 
-	cQNetTrainer::tParams params;
-	params.mNetFile = mNetFile;
-	params.mSolverFile = mSolverFile;
-	params.mPlaybackMemSize = gTrainerPlaybackMemSize;
-	params.mPoolSize = 2; // double Q learning
-	params.mNumInitSamples = 5000;
-	params.mNumStepsPerIter = 2;
-	//params.mNumInitSamples = 5;
-	params.mFreezeTargetIters = 500;
-	//params.mIntOutputFile = "output/intermediate/ball_int.h5";
-	//params.mIntOutputIters = 10;
-	trainer->Init(params);
+	mTrainerParams.mNetFile = mNetFile;
+	mTrainerParams.mSolverFile = mSolverFile;
+	mTrainerParams.mPlaybackMemSize = gTrainerPlaybackMemSize;
+	mTrainerParams.mPoolSize = 2; // double Q learning
+	mTrainerParams.mNumInitSamples = 5000;
+	mTrainerParams.mNumStepsPerIter = 2;
+	//mTrainerParams.mNumInitSamples = 5;
+	mTrainerParams.mFreezeTargetIters = 500;
+	//mTrainerParams.mIntOutputFile = "output/intermediate/ball_int.h5";
+	//mTrainerParams.mIntOutputIters = 10;
+
+	trainer->Init(mTrainerParams);
 
 	if (mModelFile != "")
 	{

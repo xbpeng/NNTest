@@ -39,6 +39,8 @@ protected:
 	cPenaltyGround mGround;
 	cPenaltyGround::tParams mGroundParams;
 
+	cNeuralNetTrainer::tParams mTrainerParams;
+
 	bool mFirstCycle;
 	int mNumExpAnnealSamples;
 	double mEpsilon;
