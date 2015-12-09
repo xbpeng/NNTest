@@ -46,23 +46,23 @@ void cScenarioBallRLCacla::InitTrainer()
 	//std::shared_ptr<cCaclaACTrainer> trainer = std::shared_ptr<cCaclaACTrainer>(new cCaclaACTrainer());
 	//std::shared_ptr<cCaclaTrainer> trainer = std::shared_ptr<cCaclaTrainer>(new cQCaclaTrainer());
 
-	cCaclaTrainer::tParams params;
-	params.mNetFile = mCriticNetFile;
-	params.mSolverFile = mCriticSolverFile;
-	//params.mNetFile = mNetFile;
-	//params.mSolverFile = mSolverFile;
+	mTrainerParams.mNetFile = mCriticNetFile;
+	mTrainerParams.mSolverFile = mCriticSolverFile;
+	//mTrainerParams.mNetFile = mNetFile;
+	//mTrainerParams.mSolverFile = mSolverFile;
 
-	params.mPlaybackMemSize = gTrainerPlaybackMemSize;
-	params.mPoolSize = 1;
-	params.mNumInitSamples = 10000;
+	mTrainerParams.mPlaybackMemSize = gTrainerPlaybackMemSize;
+	mTrainerParams.mPoolSize = 1;
+	mTrainerParams.mNumInitSamples = 10000;
 	//params.mNumInitSamples = 100;
 	//params.mFreezeTargetIters = 500;
+
 	trainer->SetActorFiles(mSolverFile, mNetFile);
-	trainer->Init(params);
+	trainer->Init(mTrainerParams);
 
 	if (mModelFile != "")
 	{
-		trainer->LoadModel(mModelFile);
+		trainer->LoadActorModel(mModelFile);
 	}
 
 	

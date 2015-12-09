@@ -311,9 +311,7 @@ void cScenarioBallRL::InitTrainer()
 	mTrainerParams.mNumInitSamples = 5000;
 	mTrainerParams.mNumStepsPerIter = 2;
 	//mTrainerParams.mNumInitSamples = 5;
-	mTrainerParams.mFreezeTargetIters = 500;
-	//mTrainerParams.mIntOutputFile = "output/intermediate/ball_int.h5";
-	//mTrainerParams.mIntOutputIters = 10;
+	//mTrainerParams.mFreezeTargetIters = 500;
 
 	trainer->Init(mTrainerParams);
 

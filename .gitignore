@@ -5,6 +5,7 @@
 *.filters
 *.user
 *.suo
+*.exe
 
 .vs/
 x64/

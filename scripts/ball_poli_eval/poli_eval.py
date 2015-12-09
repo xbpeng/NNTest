@@ -1,7 +1,7 @@
 import os
 import subprocess
 
-poli_files_dir = 'C:/Users/Jason/Documents/compsci_stuff/c++_stuff/NNTest/data/intermediate/'
+poli_files_dir = 'C:/Users/Jason/Documents/compsci_stuff/c++_stuff/NNTest/data/intermediate/ball_rl/cacla_multi_sample/'
 root_dir = 'C:/Users/Jason/Documents/compsci_stuff/c++_stuff/NNTest/'
 exe_name = exe_path = 'NNTest.exe'
 
