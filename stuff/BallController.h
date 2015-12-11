@@ -12,6 +12,7 @@ public:
 
 	struct tAction
 	{
+		int mID;
 		double mDist;
 	};
 

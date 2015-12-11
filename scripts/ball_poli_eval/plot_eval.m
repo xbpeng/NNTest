@@ -5,8 +5,9 @@ files{3} = 'cacla_exp_buffer.txt';
 files{4} = 'cacla_exp_buffer_target.txt';
 files{5} = 'cacla_exp_buffer_weighted.txt';
 files{6} = 'cacla_big_net.txt';
+files{7} = 'cacla_on_buffer.txt';
 
-lines = {'b-', 'r-', 'm-', 'k-', 'g-', 'c-', 'y-'};
+lines = {'b-', 'r-', 'm-', 'k-', 'g-', 'c-', 'k--'};
 iter_step = 500 / 1000;
 
 data = {};
@@ -41,4 +42,4 @@ title('Performance vs Training Iterations');
 
 legend('Q-Learning',  'Cacla', 'Cacla Exp Buffer', ...
     'Cacla Exp Buffer + Target', 'Cacla Exp Buffer + Weighted',...
-    'Cacla Big Net', 'Location', 'southeast');
+    'Cacla Big Net', 'Cacla On Buffer', 'Location', 'southeast');

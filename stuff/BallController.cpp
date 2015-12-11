@@ -4,14 +4,14 @@
 const double gDuration = 0.65;
 const cBallController::tAction gActions[] =
 {
-	{ 0.4 },
-	{ 0.6 },
-	{ 0.8 },
-	{ 1.1 },
-	{ 1.4 },
-	{ 1.7 },
-	{ 2.0 },
-	{ 2.3 },
+	{ 0, 0.4 },
+	{ 1, 0.6 },
+	{ 2, 0.8 },
+	{ 3, 1.1 },
+	{ 4, 1.4 },
+	{ 5, 1.7 },
+	{ 6, 2.0 },
+	{ 7, 2.3 },
 };
 const int gNumActions = sizeof(gActions) / sizeof(gActions[0]);
 const int gNumGroundSamples = 100;

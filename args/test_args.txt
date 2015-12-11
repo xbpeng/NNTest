@@ -1,4 +1,4 @@
--scenario= ball_rl_cacla
+-scenario= ball_rl_qac
 -playback_speed= 40
 
 -character_file= data/arm_rl/arm.txt
@@ -7,19 +7,23 @@
 //-net_file= data/balL_rl/balL_rl_test.prototxt
 //-model_file= data/ball_rl/ball_rl_model_noise.h5
 
--solver_file= data/balL_rl/ball_rl_actor_solver.prototxt
+//-solver_file= data/balL_rl/ball_rl_actor_solver.prototxt
 //-solver_file= data/balL_rl/ball_rl_actor_solver_adadelta.prototxt
--net_file= data/balL_rl/balL_rl_actor_deploy.prototxt
--model_file= data/ball_rl/ball_rl_actor_init.h5
+//-net_file= data/balL_rl/balL_rl_actor_deploy.prototxt
+//-model_file= data/ball_rl/ball_rl_actor_init.h5
 
--critic_solver_file= data/balL_rl/balL_rl_critic_solver.prototxt
+//-critic_solver_file= data/balL_rl/balL_rl_critic_solver.prototxt
 //-critic_solver_file= data/balL_rl/balL_rl_critic_solver_adadelta.prototxt
--critic_net_file= data/balL_rl/balL_rl_critic_deploy.prototxt
+//-critic_net_file= data/balL_rl/balL_rl_critic_deploy.prototxt
 //-critic_solver_file= data/balL_rl/balL_rl_critic_q_solver.prototxt
 //-critic_net_file= data/balL_rl/balL_rl_critic_q_deploy.prototxt
 
 //-solver_file= data/balL_rl/balL_rl_ac_solver.prototxt
 //-net_file= data/balL_rl/balL_rl_ac_deploy.prototxt
+
+-solver_file= data/balL_rl/balL_rl_qac_solver.prototxt
+-net_file= data/balL_rl/balL_rl_qac_deploy.prototxt
+
 
 //-solver_file= data/arm_rl/arm_solver.prototxt
 //-net_file= data/arm_rl/arm_deploy.prototxt
@@ -65,8 +69,8 @@
 -num_exp_anneal_iters= 5000
 //-num_exp_anneal_iters= 1
 
--trainer_int_iter= 500
--trainer_int_output= output/intermediate/trainer_int_model.h5
+//-trainer_int_iter= 500
+//-trainer_int_output= output/intermediate/trainer_int_model.h5
 
 -arm_pretrain= false
 

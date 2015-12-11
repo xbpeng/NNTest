@@ -2,7 +2,7 @@
 
 const int gTupleBufferSize = 32;
 const int gTrainerPlaybackMemSize = 50000;
-const double gInitExpRate = 0.95;
+const double gInitExpRate = 1;
 
 cScenarioBallRL::cScenarioBallRL()
 {
