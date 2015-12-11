@@ -1,5 +1,8 @@
 -scenario= ball_eval
--playback_speed= 40
+-playback_speed= 34
+
+//-solver_file= data/balL_rl/balL_rl_solver.prototxt
+//-net_file= data/balL_rl/balL_rl_test.prototxt
 
 -solver_file= data/balL_rl/ball_rl_actor_solver.prototxt
 -net_file= data/balL_rl/balL_rl_actor_deploy.prototxt
@@ -7,7 +10,7 @@
 -critic_solver_file= data/balL_rl/balL_rl_critic_solver.prototxt
 -critic_net_file= data/balL_rl/balL_rl_critic_deploy.prototxt
 
--ball_eval_samples= 500
+-ball_eval_samples= 1000
 
 -output_file= output/ball_int_eval.txt
 

@@ -10,6 +10,7 @@
 -solver_file= data/balL_rl/ball_rl_actor_solver.prototxt
 //-solver_file= data/balL_rl/ball_rl_actor_solver_adadelta.prototxt
 -net_file= data/balL_rl/balL_rl_actor_deploy.prototxt
+-model_file= data/ball_rl/ball_rl_actor_init.h5
 
 -critic_solver_file= data/balL_rl/balL_rl_critic_solver.prototxt
 //-critic_solver_file= data/balL_rl/balL_rl_critic_solver_adadelta.prototxt
@@ -61,7 +62,7 @@
 -arm_ctrl_type= nn_pixel
 
 -exp_rate= 0.2
--num_exp_anneal_samples= 160000
+-num_exp_anneal_iters= 5000
 //-num_exp_anneal_iters= 1
 
 -trainer_int_iter= 500

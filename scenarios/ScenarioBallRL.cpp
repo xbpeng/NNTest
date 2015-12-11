@@ -2,12 +2,13 @@
 
 const int gTupleBufferSize = 32;
 const int gTrainerPlaybackMemSize = 50000;
+const double gInitExpRate = 0.95;
 
 cScenarioBallRL::cScenarioBallRL()
 {
 	Clear();
 	mEpsilon = 0.1;
-	mNumExpAnnealSamples = 16000;
+	mNumExpAnnealIters = 5000;
 	mCtrlNoise = 0;
 	mEnableTraining = true;
 }
@@ -34,7 +35,7 @@ void cScenarioBallRL::ParseArgs(const cArgParser& parser)
 	parser.ParseDouble("ctrl_noise", mCtrlNoise);
 
 	parser.ParseDouble("exp_rate", mEpsilon);
-	parser.ParseInt("num_exp_anneal_samples", mNumExpAnnealSamples);
+	parser.ParseInt("num_exp_anneal_iters", mNumExpAnnealIters);
 
 	parser.ParseDouble("ground_height", mGroundParams.mHeight);
 	parser.ParseDouble("ground_min_spacing", mGroundParams.mMinSpacing);
@@ -308,8 +309,8 @@ void cScenarioBallRL::InitTrainer()
 	mTrainerParams.mSolverFile = mSolverFile;
 	mTrainerParams.mPlaybackMemSize = gTrainerPlaybackMemSize;
 	mTrainerParams.mPoolSize = 2; // double Q learning
-	mTrainerParams.mNumInitSamples = 5000;
-	mTrainerParams.mNumStepsPerIter = 2;
+	mTrainerParams.mNumInitSamples = 10000;
+	mTrainerParams.mNumStepsPerIter = 1;
 	//mTrainerParams.mNumInitSamples = 5;
 	//mTrainerParams.mFreezeTargetIters = 500;
 
@@ -366,9 +367,9 @@ void cScenarioBallRL::Train()
 
 double cScenarioBallRL::GetExpRate() const
 {
-	int num_tuples = mTrainer->GetNumTuples();
-	double eps = 1 - static_cast<double>(num_tuples) / mNumExpAnnealSamples;
+	int iter = GetIter();
+	double eps = 1 - static_cast<double>(iter) / mNumExpAnnealIters;
 	eps = cMathUtil::Clamp(eps, 0.0, 1.0);
-	eps = eps * (1 - mEpsilon) + mEpsilon;
+	eps = eps * (gInitExpRate - mEpsilon) + mEpsilon;
 	return eps;
 }

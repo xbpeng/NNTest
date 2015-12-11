@@ -54,8 +54,8 @@ void cScenarioBallRLCacla::InitTrainer()
 	mTrainerParams.mPlaybackMemSize = gTrainerPlaybackMemSize;
 	mTrainerParams.mPoolSize = 1;
 	mTrainerParams.mNumInitSamples = 10000;
-	//params.mNumInitSamples = 100;
-	//params.mFreezeTargetIters = 500;
+	//mTrainerParams.mNumInitSamples = 10;
+	//mTrainerParams.mFreezeTargetIters = 100;
 
 	trainer->SetActorFiles(mSolverFile, mNetFile);
 	trainer->Init(mTrainerParams);
@@ -64,7 +64,6 @@ void cScenarioBallRLCacla::InitTrainer()
 	{
 		trainer->LoadActorModel(mModelFile);
 	}
-
 	
 	Eigen::VectorXd critic_output_offset;
 	Eigen::VectorXd critic_output_scale;

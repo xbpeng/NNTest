@@ -42,7 +42,7 @@ protected:
 	cNeuralNetTrainer::tParams mTrainerParams;
 
 	bool mFirstCycle;
-	int mNumExpAnnealSamples;
+	int mNumExpAnnealIters;
 	double mEpsilon;
 	double mCtrlNoise;
 	bool mEnableTraining;
