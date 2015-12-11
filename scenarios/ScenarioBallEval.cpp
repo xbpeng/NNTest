@@ -14,29 +14,29 @@ cScenarioBallEval::~cScenarioBallEval()
 
 void cScenarioBallEval::Init()
 {
-	cScenarioBallRLCacla::Init();
+	BALL_EVAL_BASE::Init();
 }
 
 void cScenarioBallEval::ParseArgs(const cArgParser& parser)
 {
-	cScenarioBallRLCacla::ParseArgs(parser);
+	BALL_EVAL_BASE::ParseArgs(parser);
 	parser.ParseInt("ball_eval_samples", mMaxSamples);
 	parser.ParseString("output_file", mOutputFile);
 }
 
 void cScenarioBallEval::Reset()
 {
-	cScenarioBallRLCacla::Reset();
+	BALL_EVAL_BASE::Reset();
 }
 
 void cScenarioBallEval::Clear()
 {
-	cScenarioBallRLCacla::Clear();
+	BALL_EVAL_BASE::Clear();
 }
 
 void cScenarioBallEval::Update(double time_elapsed)
 {
-	cScenarioBallRLCacla::Update(time_elapsed);
+	BALL_EVAL_BASE::Update(time_elapsed);
 
 	if (IsDone())
 	{

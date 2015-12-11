@@ -1,8 +1,11 @@
 #pragma once
 
 #include "scenarios/ScenarioBallRLCacla.h"
+#include "scenarios/ScenarioBallRLEAC.h"
 
-class cScenarioBallEval : public cScenarioBallRLCacla
+#define BALL_EVAL_BASE cScenarioBallRLEAC
+
+class cScenarioBallEval : public BALL_EVAL_BASE
 {
 public:
 	cScenarioBallEval();

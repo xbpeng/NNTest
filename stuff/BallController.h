@@ -39,6 +39,7 @@ public:
 	virtual int GetStateSize() const;
 	virtual int GetActionSize() const;
 	virtual const tAction& GetAction(int a) const;
+	virtual const tAction& GetCurrAction() const;
 	virtual tAction BuildActionFromParams(const Eigen::VectorXd& action_params) const;
 
 	virtual void RecordState(Eigen::VectorXd& out_state) const;

@@ -251,6 +251,11 @@ const cBallController::tAction& cBallController::GetAction(int a) const
 	return gActions[a];
 }
 
+const cBallController::tAction& cBallController::GetCurrAction() const
+{
+	return mCurrAction;
+}
+
 cBallController::tAction cBallController::BuildActionFromParams(const Eigen::VectorXd& action_params) const
 {
 	assert(action_params.size() == GetActionSize());
