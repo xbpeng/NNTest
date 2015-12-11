@@ -33,6 +33,7 @@ protected:
 
 	virtual void UpdateAction();
 	virtual tAction CalcActionNetCont();
-	virtual tAction GetRandomActionCont();
-	virtual tAction GetRandomActionExplore();
+	virtual tAction GetRandomActionFrag();
+	virtual tAction GetRandomActionNoise();
+	virtual void AddExpNoise(tAction& out_action);
 };

@@ -48,22 +48,21 @@ int cBallControllerEAC::GetActionSize() const
 
 void cBallControllerEAC::ApplyRandAction()
 {
-	tAction action;
-	
-	double explore_prob = 0.5;
+	const double noise_prob = 0.5;
+
+	mOffPolicy = true;
+	mExploring = false;
+
+	tAction action = GetRandomActionFrag();
+
 	double rand = cMathUtil::RandDouble();
-	if (rand < explore_prob)
+	if (rand < noise_prob)
 	{
 		mExploring = true;
-		action = GetRandomActionExplore();
-	}
-	else
-	{
-		action = GetRandomActionCont();
+		AddExpNoise(action);
 	}
 	
 	ApplyAction(action);
-	mOffPolicy = true;
 
 	printf("rand action: %i, %.3f\n", action.mID, action.mDist);
 }
@@ -123,7 +122,7 @@ void cBallControllerEAC::UpdateAction()
 	}
 	else
 	{
-		action = GetRandomActionCont();
+		action = GetRandomActionFrag();
 		mOffPolicy = true;
 	}
 
@@ -150,7 +149,7 @@ cBallController::tAction cBallControllerEAC::CalcActionNetCont()
 	return ball_action;
 }
 
-cBallController::tAction cBallControllerEAC::GetRandomActionCont()
+cBallController::tAction cBallControllerEAC::GetRandomActionFrag()
 {
 	Eigen::VectorXd state;
 	BuildState(state);
@@ -169,16 +168,20 @@ cBallController::tAction cBallControllerEAC::GetRandomActionCont()
 	return ball_action;
 }
 
-cBallController::tAction cBallControllerEAC::GetRandomActionExplore()
+cBallController::tAction cBallControllerEAC::GetRandomActionNoise()
+{
+	tAction action = CalcActionNetCont();
+	AddExpNoise(action);
+	return action;
+}
+
+void cBallControllerEAC::AddExpNoise(tAction& out_action)
 {
 	const double dist_mean = 0;
 	const double dist_stdev = 0.5;
 
-	tAction action = CalcActionNetCont();
 	double rand_dist = cMathUtil::RandDoubleNorm(dist_mean, dist_stdev);
-	
-	action.mDist += rand_dist;
-	action.mDist = cMathUtil::Clamp(action.mDist, gMinDist, gMaxDist);
 
-	return action;
+	out_action.mDist += rand_dist;
+	out_action.mDist = cMathUtil::Clamp(out_action.mDist, gMinDist, gMaxDist);
 }
