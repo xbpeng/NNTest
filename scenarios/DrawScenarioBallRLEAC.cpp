@@ -5,6 +5,7 @@ const tVector gActionCols[] = {
 	tVector(0, 0, 1, 0.2),
 	tVector(1, 0, 0, 0.2),
 	tVector(0, 1, 0, 0.2),
+	tVector(0, 0, 0, 0.2),
 };
 const int gNumActionCols = sizeof(gActionCols) / sizeof(gActionCols[0]);
 

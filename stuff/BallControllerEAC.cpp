@@ -1,7 +1,7 @@
 #include "BallControllerEAC.h"
 #include "Ball.h"
 
-const int gNumActionFrags = 2;
+const int gNumActionFrags = 4;
 const int gActionFragSize = 1;
 
 int cBallControllerEAC::GetMaxFragIdx(const Eigen::VectorXd& params)
