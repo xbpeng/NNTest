@@ -1,6 +1,6 @@
 #include "ScenarioBallRLQAC.h"
 
-const int gTrainerPlaybackMemSize = 20000;
+const int gTrainerPlaybackMemSize = 50000;
 
 cScenarioBallRLQAC::cScenarioBallRLQAC()
 {

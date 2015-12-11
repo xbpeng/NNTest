@@ -36,6 +36,7 @@ cBallControllerQAC::~cBallControllerQAC()
 
 void cBallControllerQAC::Reset()
 {
+	cBallController::Reset();
 	mExploring = false;
 }
 
@@ -64,7 +65,7 @@ void cBallControllerQAC::ApplyRandAction()
 	ApplyAction(action);
 	mOffPolicy = true;
 
-	printf("rand action: %.3f\n", action.mDist);
+	printf("rand action: %i, %.3f\n", action.mID, action.mDist);
 }
 
 int cBallControllerQAC::GetNumActionFrags() const
