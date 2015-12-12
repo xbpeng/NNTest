@@ -48,6 +48,7 @@ void cBallController::Update(double time_step)
 
 	if (IsNewCycle())
 	{
+		UpdateDistTravelled();
 		UpdateAction();
 	}
 }
@@ -57,6 +58,7 @@ void cBallController::Reset()
 	mPhase = 0;
 	mPosBeg = mBall.GetPos();
 	mPosEnd = mBall.GetPos();
+	UpdateDistTravelled();
 	mCurrAction = gActions[0];
 	mGroundSamples = Eigen::VectorXd::Zero(gNumGroundSamples);
 	mCurrActionIdx = 0;
@@ -298,6 +300,11 @@ void cBallController::SaveNet(const std::string& out_file) const
 	mNet.OutputModel(out_file);
 }
 
+double cBallController::GetDistTravelled() const
+{
+	return mDistTravelled;
+}
+
 void cBallController::BuildState(Eigen::VectorXd& state) const
 {
 	state = mGroundSamples;
@@ -323,4 +330,9 @@ void cBallController::ApplyAction(const tAction& action)
 
 	mPosEnd[0] += dist;
 	mCurrAction = action;
+}
+
+void cBallController::UpdateDistTravelled()
+{
+	mDistTravelled = mPosEnd[0] - mPosBeg[0];
 }

@@ -80,7 +80,7 @@ void cScenarioBallRLMACE::InitTrainer()
 	mTrainerParams.mNetFile = mCriticNetFile;
 	mTrainerParams.mSolverFile = mCriticSolverFile;
 	mTrainerParams.mPlaybackMemSize = gTrainerPlaybackMemSize;
-	mTrainerParams.mPoolSize = 1; // double q learning
+	mTrainerParams.mPoolSize = 2; // double q learning
 	mTrainerParams.mNumInitSamples = 10000;
 	
 	auto ctrl = GetACECtrl();

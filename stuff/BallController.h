@@ -52,6 +52,8 @@ public:
 	virtual void CopyNet(const cNeuralNet& net);
 	virtual void SaveNet(const std::string& out_file) const;
 
+	virtual double GetDistTravelled() const;
+
 protected:
 	cBall& mBall;
 	cPenaltyGround* mGround;
@@ -63,6 +65,7 @@ protected:
 	double mPhase;
 	tVector mPosBeg;
 	tVector mPosEnd;
+	double mDistTravelled;
 
 	int mCurrActionIdx;
 	tAction mCurrAction;
@@ -82,4 +85,6 @@ protected:
 	virtual void BuildState(Eigen::VectorXd& state) const;
 	virtual void ApplyAction(int a);
 	virtual void ApplyAction(const tAction& action);
+
+	virtual void UpdateDistTravelled();
 };
