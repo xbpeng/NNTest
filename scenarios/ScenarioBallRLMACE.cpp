@@ -50,7 +50,6 @@ void cScenarioBallRLMACE::SetupController()
 		mace_ctrl->LoadCriticNet(mCriticNetFile);
 	}
 
-
 	mBall.SetController(ctrl);
 }
 
@@ -67,7 +66,7 @@ void cScenarioBallRLMACE::InitTrainer()
 	mTrainerParams.mSolverFile = mCriticSolverFile;
 	mTrainerParams.mPlaybackMemSize = gTrainerPlaybackMemSize;
 	mTrainerParams.mPoolSize = 1;
-	mTrainerParams.mNumInitSamples = 10000;
+	mTrainerParams.mNumInitSamples = 100;
 	
 	auto ctrl = GetACECtrl();
 	trainer->SetNumActionFrags(ctrl->GetNumActionFrags());
@@ -130,4 +129,14 @@ void cScenarioBallRLMACE::BuildActorOutputOffsetScale(Eigen::VectorXd& out_offse
 
 	out_offset = dist_offset * Eigen::VectorXd::Ones(actor_size);
 	out_scale = dist_scale * Eigen::VectorXd::Ones(actor_size);
+}
+
+void cScenarioBallRLMACE::Train()
+{
+	cScenarioBallRLACE::Train();
+	auto mace_ctrl = GetMACECtrl();
+	auto mace_train = GetMACETrainer();
+
+	const auto& critic = mace_train->GetCritic();
+	mace_ctrl->CopyCriticNet(*critic.get());
 }

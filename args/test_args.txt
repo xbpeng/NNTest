@@ -1,5 +1,5 @@
--scenario= ball_rl_ace
--playback_speed= 40
+-scenario= ball_rl_mace
+-playback_speed= 1
 
 -character_file= data/arm_rl/arm.txt
 
@@ -21,12 +21,12 @@
 //-solver_file= data/balL_rl/balL_rl_ac_solver.prototxt
 //-net_file= data/balL_rl/balL_rl_ac_deploy.prototxt
 
--solver_file= data/balL_rl/balL_rl_ace4_solver.prototxt
--net_file= data/balL_rl/balL_rl_ace4_deploy.prototxt
+//-solver_file= data/balL_rl/balL_rl_ace4_solver.prototxt
+//-net_file= data/balL_rl/balL_rl_ace4_deploy.prototxt
 //-model_file= data/ball_rl/ball_rl_ace4_model.h5
 
-//-solver_file= data/balL_rl/balL_rl_ace_actor_solver.prototxt
-//-net_file= data/balL_rl/balL_rl_ace_actor_deploy.prototxt
+-solver_file= data/balL_rl/balL_rl_ace_actor_solver.prototxt
+-net_file= data/balL_rl/balL_rl_ace_actor_deploy.prototxt
 
 -critic_solver_file= data/balL_rl/balL_rl_ace_critic_solver.prototxt
 -critic_net_file= data/balL_rl/balL_rl_ace_critic_deploy.prototxt
@@ -75,8 +75,8 @@
 -num_exp_anneal_iters= 5000
 //-num_exp_anneal_iters= 1
 
--trainer_int_iter= 500
--trainer_int_output= output/intermediate/trainer_int_model.h5
+//-trainer_int_iter= 500
+//-trainer_int_output= output/intermediate/trainer_int_model.h5
 
 -arm_pretrain= false
 
