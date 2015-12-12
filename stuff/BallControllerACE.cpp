@@ -107,7 +107,7 @@ void cBallControllerACE::RecordAction(Eigen::VectorXd& out_action) const
 
 	Eigen::VectorXd frag = Eigen::VectorXd::Zero(gActionFragSize);
 	frag[0] = mCurrAction.mDist;
-	SetFrag(frag, a, out_action);
+	SetACFrag(frag, a, out_action);
 }
 
 cBallControllerACE::tAction cBallControllerACE::BuildActionFromParams(const Eigen::VectorXd& action_params) const
@@ -231,6 +231,13 @@ void cBallControllerACE::GetFrag(const Eigen::VectorXd& params, int a_idx, Eigen
 
 void cBallControllerACE::SetFrag(const Eigen::VectorXd& frag, int a_idx, Eigen::VectorXd& out_params) const
 {
+	cACETrainer::SetFrag(frag, a_idx, mNumActionFrags, gActionFragSize, out_params);
+}
+
+void cBallControllerACE::SetACFrag(const Eigen::VectorXd& frag, int a_idx, Eigen::VectorXd& out_params) const
+{
+	// for when both critic and actor outputs are packed into out_params
+	// this makes a difference for MAC
 	cACETrainer::SetFrag(frag, a_idx, mNumActionFrags, gActionFragSize, out_params);
 }
 
