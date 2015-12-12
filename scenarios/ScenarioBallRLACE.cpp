@@ -27,13 +27,13 @@ void cScenarioBallRLACE::BuildController(std::shared_ptr<cBallController>& out_c
 
 void cScenarioBallRLACE::InitTrainer()
 {
-	std::shared_ptr<cEACTrainer> trainer = std::shared_ptr<cEACTrainer>(new cEACTrainer());
+	std::shared_ptr<cACETrainer> trainer = std::shared_ptr<cACETrainer>(new cACETrainer());
 	
 	mTrainerParams.mNetFile = mNetFile;
 	mTrainerParams.mSolverFile = mSolverFile;
 	mTrainerParams.mPlaybackMemSize = gTrainerPlaybackMemSize;
 	mTrainerParams.mPoolSize = 1;
-	mTrainerParams.mNumInitSamples = 10000;
+	mTrainerParams.mNumInitSamples = 100;
 	
 	auto ctrl = GetEACCtrl();
 	trainer->SetNumActionFrags(ctrl->GetNumActionFrags());
@@ -74,22 +74,22 @@ void cScenarioBallRLACE::BuildOutputOffsetScale(const std::shared_ptr<cNeuralNet
 
 void cScenarioBallRLACE::RecordBegFlags(tExpTuple& out_tuple) const
 {
-	bool off_policy = CheckOffPolicy();
-	bool explore = CheckExplore();
-	out_tuple.SetFlag(off_policy, cEACTrainer::eFlagOffPolicy);
-	out_tuple.SetFlag(explore, cEACTrainer::eFlagExplore);
+	bool exp_critic = CheckExpCritic();
+	bool exp_actor = CheckExpActor();
+	out_tuple.SetFlag(exp_critic, cACETrainer::eFlagExpCritic);
+	out_tuple.SetFlag(exp_actor, cACETrainer::eFlagExpActor);
 }
 
-bool cScenarioBallRLACE::CheckOffPolicy() const
-{
-	const auto& ctrl = mBall.GetController();
-	return ctrl->IsOffPolicy();
-}
-
-bool cScenarioBallRLACE::CheckExplore() const
+bool cScenarioBallRLACE::CheckExpCritic() const
 {
 	auto ctrl = GetEACCtrl();
-	return ctrl->IsExploring();
+	return ctrl->IsExpCritic();
+}
+
+bool cScenarioBallRLACE::CheckExpActor() const
+{
+	auto ctrl = GetEACCtrl();
+	return ctrl->IsExpActor();
 }
 
 int cScenarioBallRLACE::GetNumActionFrags() const

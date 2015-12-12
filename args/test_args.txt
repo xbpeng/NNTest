@@ -1,4 +1,4 @@
--scenario= arm_rl
+-scenario= ball_rl_ace
 -playback_speed= 40
 
 -character_file= data/arm_rl/arm.txt
@@ -21,8 +21,8 @@
 //-solver_file= data/balL_rl/balL_rl_ac_solver.prototxt
 //-net_file= data/balL_rl/balL_rl_ac_deploy.prototxt
 
-//-solver_file= data/balL_rl/balL_rl_ace4_solver.prototxt
-//-net_file= data/balL_rl/balL_rl_ace4_deploy.prototxt
+-solver_file= data/balL_rl/balL_rl_ace_solver.prototxt
+-net_file= data/balL_rl/balL_rl_ace_deploy.prototxt
 //-model_file= data/ball_rl/ball_rl_ace_init_model.h5
 
 
@@ -41,9 +41,9 @@
 //-solver_file= data/reg1D/reg1D_multi_solver.prototxt
 //-net_file= data/reg1D/reg1D_multi_deploy.prototxt
 
--solver_file= data/arm_rl/arm_reduced_solver.prototxt
--net_file= data/arm_rl/arm_reduced_deploy.prototxt
--model_file= data/arm_rl/arm_torque_model.h5
+//-solver_file= data/arm_rl/arm_reduced_solver.prototxt
+//-net_file= data/arm_rl/arm_reduced_deploy.prototxt
+//-model_file= data/arm_rl/arm_torque_model.h5
 //-model_file= data/arm_rl/arm_pd_model.h5
 //-model_file= data/arm_rl/arm_vel_model.h5
 
@@ -64,7 +64,7 @@
 //-scale_file= data/arm_rl/arm_pixel_model_scale.txt
 
 -coach_type= qp
--arm_ctrl_type= nn
+-arm_ctrl_type= nn_pixel
 
 -exp_rate= 0.2
 -num_exp_anneal_iters= 5000

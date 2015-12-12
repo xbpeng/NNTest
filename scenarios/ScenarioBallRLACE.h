@@ -2,7 +2,7 @@
 
 #include "scenarios/ScenarioBallRL.h"
 #include "stuff/BallControllerACE.h"
-#include "learning/EACTrainer.h"
+#include "learning/ACETrainer.h"
 
 class cScenarioBallRLACE : public cScenarioBallRL
 {
@@ -22,8 +22,8 @@ protected:
 										Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const;
 
 	virtual void RecordBegFlags(tExpTuple& out_tuple) const;
-	virtual bool CheckOffPolicy() const;
-	virtual bool CheckExplore() const;
+	virtual bool CheckExpCritic() const;
+	virtual bool CheckExpActor() const;
 
 	virtual int GetNumActionFrags() const;
 	virtual int GetActionFragSize() const;

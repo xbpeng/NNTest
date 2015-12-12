@@ -1,33 +1,14 @@
 #include "BallControllerACE.h"
 #include "Ball.h"
 
-const int gNumActionFrags = 4;
-const int gActionFragSize = 1;
-
-int cBallControllerACE::GetMaxFragIdx(const Eigen::VectorXd& params)
-{
-	return cEACTrainer::GetMaxFragIdx(params, gNumActionFrags, gActionFragSize);
-}
-
-double cBallControllerACE::GetMaxFragVal(const Eigen::VectorXd& params)
-{
-	return cEACTrainer::GetMaxFragVal(params, gNumActionFrags, gActionFragSize);
-}
-
-void cBallControllerACE::GetFrag(const Eigen::VectorXd& params, int a_idx, Eigen::VectorXd& out_action)
-{
-	cEACTrainer::GetFrag(params, gNumActionFrags, gActionFragSize, a_idx, out_action);
-}
-
-void cBallControllerACE::SetFrag(const Eigen::VectorXd& frag, int a_idx, Eigen::VectorXd& out_params)
-{
-	cEACTrainer::SetFrag(frag, a_idx, gNumActionFrags, gActionFragSize, out_params);
-}
-
 cBallControllerACE::cBallControllerACE(cBall& ball) :
 	cBallController(ball)
 {
-	mExploring = false;
+	mNumActionFrags = 0;
+	mActionFragSize = 1;
+
+	mExpCritic = false;
+	mExpActor = false;
 }
 
 cBallControllerACE::~cBallControllerACE()
@@ -37,12 +18,50 @@ cBallControllerACE::~cBallControllerACE()
 void cBallControllerACE::Reset()
 {
 	cBallController::Reset();
-	mExploring = false;
+	mExpCritic = false;
+	mExpActor = false;
+}
+
+bool cBallControllerACE::LoadNet(const std::string& net_file)
+{
+	bool succ = true;
+	mNet.Clear();
+	mNet.LoadNet(net_file);
+
+	if (succ)
+	{
+		UpdateFragParams();
+	}
+
+	int input_size = mNet.GetInputSize();
+	int output_size = mNet.GetOutputSize();
+	int state_size = GetNetInputSize();
+	int action_size = GetNetOutputSize();
+
+	if (output_size != action_size)
+	{
+		printf("Network output dimension does not match number of actions (%i vs %i).\n", output_size, state_size);
+		succ = false;
+	}
+
+	if (input_size != state_size)
+	{
+		printf("Network input dimension does not match state size (%i vs %i).\n", input_size, state_size);
+		succ = false;
+	}
+
+	if (!succ)
+	{
+		mNet.Clear();
+		assert(false);
+	}
+
+	return succ;
 }
 
 int cBallControllerACE::GetActionSize() const
 {
-	return gNumActionFrags + gNumActionFrags * gActionFragSize;
+	return mNumActionFrags + mNumActionFrags * mActionFragSize;
 }
 
 
@@ -51,14 +70,15 @@ void cBallControllerACE::ApplyRandAction()
 	const double noise_prob = 0.5;
 
 	mOffPolicy = true;
-	mExploring = false;
+	mExpCritic = true;
+	mExpActor = false;
 
 	tAction action = GetRandomActionFrag();
 
 	double rand = cMathUtil::RandDouble();
 	if (rand < noise_prob)
 	{
-		mExploring = true;
+		mExpActor = true;
 		AddExpNoise(action);
 	}
 	
@@ -69,12 +89,12 @@ void cBallControllerACE::ApplyRandAction()
 
 int cBallControllerACE::GetNumActionFrags() const
 {
-	return gNumActionFrags;
+	return mNumActionFrags;
 }
 
 int cBallControllerACE::GetActionFragSize() const
 {
-	return gActionFragSize;
+	return mActionFragSize;
 }
 
 void cBallControllerACE::RecordAction(Eigen::VectorXd& out_action) const
@@ -84,7 +104,7 @@ void cBallControllerACE::RecordAction(Eigen::VectorXd& out_action) const
 	int a = mCurrAction.mID;
 	out_action[a] = 1;
 
-	Eigen::VectorXd frag = Eigen::VectorXd::Zero(gActionFragSize);
+	Eigen::VectorXd frag = Eigen::VectorXd::Zero(mActionFragSize);
 	frag[0] = mCurrAction.mDist;
 	SetFrag(frag, a, out_action);
 }
@@ -97,15 +117,21 @@ cBallControllerACE::tAction cBallControllerACE::BuildActionFromParams(const Eige
 	return action;
 }
 
-bool cBallControllerACE::IsExploring() const
+bool cBallControllerACE::IsExpCritic() const
 {
-	return mExploring;
+	return mExpCritic;
+}
+
+bool cBallControllerACE::IsExpActor() const
+{
+	return mExpActor;
 }
 
 void cBallControllerACE::UpdateAction()
 {
 	mOffPolicy = false;
-	mExploring = false;
+	mExpCritic = false;
+	mExpActor = false;
 
 	mPosBeg = mBall.GetPos();
 
@@ -184,4 +210,30 @@ void cBallControllerACE::AddExpNoise(tAction& out_action)
 
 	out_action.mDist += rand_dist;
 	out_action.mDist = cMathUtil::Clamp(out_action.mDist, gMinDist, gMaxDist);
+}
+
+void cBallControllerACE::UpdateFragParams()
+{
+	int num_outputs = mNet.GetOutputSize();
+	mNumActionFrags = cACETrainer::CalcNumFrags(num_outputs, mActionFragSize);
+}
+
+int cBallControllerACE::GetMaxFragIdx(const Eigen::VectorXd& params) const
+{
+	return cACETrainer::GetMaxFragIdx(params, mNumActionFrags, mActionFragSize);
+}
+
+double cBallControllerACE::GetMaxFragVal(const Eigen::VectorXd& params) const
+{
+	return cACETrainer::GetMaxFragVal(params, mNumActionFrags, mActionFragSize);
+}
+
+void cBallControllerACE::GetFrag(const Eigen::VectorXd& params, int a_idx, Eigen::VectorXd& out_action) const
+{
+	cACETrainer::GetFrag(params, mNumActionFrags, mActionFragSize, a_idx, out_action);
+}
+
+void cBallControllerACE::SetFrag(const Eigen::VectorXd& frag, int a_idx, Eigen::VectorXd& out_params) const
+{
+	cACETrainer::SetFrag(frag, a_idx, mNumActionFrags, mActionFragSize, out_params);
 }
