@@ -5,7 +5,7 @@
 		[
 			{
 				"Name": "root",
-				"Type": 2,
+				"Type": 3,
 				"Parent": -1,
 				"AttachX": 0,
 				"AttachY": 0,
