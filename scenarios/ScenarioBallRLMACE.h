@@ -17,6 +17,7 @@ public:
 protected:
 	std::string mCriticNetFile;
 	std::string mCriticSolverFile;
+	std::string mCriticModelFile;
 
 	virtual void SetupController();
 	virtual void BuildController(std::shared_ptr<cBallController>& out_ctrl);

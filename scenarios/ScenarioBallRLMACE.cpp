@@ -16,6 +16,7 @@ void cScenarioBallRLMACE::ParseArgs(const cArgParser& parser)
 
 	parser.ParseString("critic_net_file", mCriticNetFile);
 	parser.ParseString("critic_solver_file", mCriticSolverFile);
+	parser.ParseString("critic_model_file", mCriticModelFile);
 }
 
 std::string cScenarioBallRLMACE::GetName() const
@@ -37,17 +38,31 @@ void cScenarioBallRLMACE::SetupController()
 		{
 			printf("Failed to load network from %s\n", mNetFile.c_str());
 		}
-	}
-
-	if (mModelFile != "")
-	{
-		ctrl->LoadModel(mModelFile);
+		else
+		{
+			if (mModelFile != "")
+			{
+				ctrl->LoadModel(mModelFile);
+			}
+		}
 	}
 
 	std::shared_ptr<cBallControllerMACE> mace_ctrl = std::static_pointer_cast<cBallControllerMACE>(ctrl);
 	if (mCriticNetFile != "")
 	{
-		mace_ctrl->LoadCriticNet(mCriticNetFile);
+		bool succ = mace_ctrl->LoadCriticNet(mCriticNetFile);
+
+		if (!succ)
+		{
+			printf("Failed to load network from %s\n", mCriticModelFile.c_str());
+		}
+		else
+		{
+			if (mCriticModelFile != "")
+			{
+				mace_ctrl->LoadCriticModel(mCriticModelFile);
+			}
+		}
 	}
 
 	mBall.SetController(ctrl);
@@ -65,8 +80,8 @@ void cScenarioBallRLMACE::InitTrainer()
 	mTrainerParams.mNetFile = mCriticNetFile;
 	mTrainerParams.mSolverFile = mCriticSolverFile;
 	mTrainerParams.mPlaybackMemSize = gTrainerPlaybackMemSize;
-	mTrainerParams.mPoolSize = 1;
-	mTrainerParams.mNumInitSamples = 100;
+	mTrainerParams.mPoolSize = 1; // double q learning
+	mTrainerParams.mNumInitSamples = 10000;
 	
 	auto ctrl = GetACECtrl();
 	trainer->SetNumActionFrags(ctrl->GetNumActionFrags());
@@ -77,7 +92,12 @@ void cScenarioBallRLMACE::InitTrainer()
 
 	if (mModelFile != "")
 	{
-		trainer->LoadCriticModel(mModelFile);
+		trainer->LoadActorModel(mModelFile);
+	}
+
+	if (mCriticModelFile != "")
+	{
+		trainer->LoadCriticModel(mCriticModelFile);
 	}
 
 	mTrainer = trainer;

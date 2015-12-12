@@ -13,6 +13,9 @@
 -solver_file= data/balL_rl/balL_rl_ace4_solver.prototxt
 -net_file= data/balL_rl/balL_rl_ace4_deploy.prototxt
 
+-critic_solver_file= data/balL_rl/balL_rl_ace_critic_solver.prototxt
+-critic_net_file= data/balL_rl/balL_rl_ace_critic_deploy.prototxt
+
 -ball_eval_samples= 1000
 
 -output_file= output/ball_int_eval.txt
