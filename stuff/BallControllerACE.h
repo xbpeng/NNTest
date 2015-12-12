@@ -27,7 +27,6 @@ public:
 
 protected:
 	int mNumActionFrags;
-	int mActionFragSize;
 
 	bool mExpCritic;
 	bool mExpActor;
@@ -35,7 +34,6 @@ protected:
 	virtual void UpdateAction();
 	virtual tAction CalcActionNetCont();
 	virtual tAction GetRandomActionFrag();
-	virtual tAction GetRandomActionNoise();
 	virtual void AddExpNoise(tAction& out_action);
 
 	virtual void UpdateFragParams();

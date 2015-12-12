@@ -28,5 +28,5 @@ protected:
 	virtual int GetNumActionFrags() const;
 	virtual int GetActionFragSize() const;
 
-	virtual std::shared_ptr<cBallControllerACE> GetEACCtrl() const;
+	virtual std::shared_ptr<cBallControllerACE> GetACECtrl() const;
 };

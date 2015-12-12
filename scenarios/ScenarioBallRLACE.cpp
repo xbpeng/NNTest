@@ -33,9 +33,9 @@ void cScenarioBallRLACE::InitTrainer()
 	mTrainerParams.mSolverFile = mSolverFile;
 	mTrainerParams.mPlaybackMemSize = gTrainerPlaybackMemSize;
 	mTrainerParams.mPoolSize = 1;
-	mTrainerParams.mNumInitSamples = 100;
+	mTrainerParams.mNumInitSamples = 10000;
 	
-	auto ctrl = GetEACCtrl();
+	auto ctrl = GetACECtrl();
 	trainer->SetNumActionFrags(ctrl->GetNumActionFrags());
 	trainer->SetActionFragSize(ctrl->GetActionFragSize());
 	trainer->Init(mTrainerParams);
@@ -82,29 +82,29 @@ void cScenarioBallRLACE::RecordBegFlags(tExpTuple& out_tuple) const
 
 bool cScenarioBallRLACE::CheckExpCritic() const
 {
-	auto ctrl = GetEACCtrl();
+	auto ctrl = GetACECtrl();
 	return ctrl->IsExpCritic();
 }
 
 bool cScenarioBallRLACE::CheckExpActor() const
 {
-	auto ctrl = GetEACCtrl();
+	auto ctrl = GetACECtrl();
 	return ctrl->IsExpActor();
 }
 
 int cScenarioBallRLACE::GetNumActionFrags() const
 {
-	auto ctrl = GetEACCtrl();
+	auto ctrl = GetACECtrl();
 	return ctrl->GetNumActionFrags();
 }
 
 int cScenarioBallRLACE::GetActionFragSize() const
 {
-	auto ctrl = GetEACCtrl();
+	auto ctrl = GetACECtrl();
 	return ctrl->GetActionFragSize();
 }
 
-std::shared_ptr<cBallControllerACE> cScenarioBallRLACE::GetEACCtrl() const
+std::shared_ptr<cBallControllerACE> cScenarioBallRLACE::GetACECtrl() const
 {
 	return std::static_pointer_cast<cBallControllerACE>(mBall.GetController());
 }
