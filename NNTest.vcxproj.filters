@@ -1,0 +1,890 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\caffe">
+      <UniqueIdentifier>{0f69900b-f0ff-4272-8ee1-820cd64fee02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\caffe\layers">
+      <UniqueIdentifier>{ccf6b468-59f6-4ef8-8d0f-25a7d890ed84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\caffe\util">
+      <UniqueIdentifier>{4060d711-ec7e-4873-b786-eea65d385942}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\caffe\proto">
+      <UniqueIdentifier>{4ffd8576-2527-4c60-9668-ae4c54623d30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\util">
+      <UniqueIdentifier>{43e3773c-e06b-4d69-bbb5-d09b89f7e17d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\scenarios">
+      <UniqueIdentifier>{ada44ed9-8cfc-423c-b06d-9d0f755e5330}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\stuff">
+      <UniqueIdentifier>{d23a5663-7ac7-43f7-ae75-4aaea60390f0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\blob.cpp">
+      <Filter>Source Files\caffe</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\net.cpp">
+      <Filter>Source Files\caffe</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\parallel.cpp">
+      <Filter>Source Files\caffe</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\solver.cpp">
+      <Filter>Source Files\caffe</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\syncedmem.cpp">
+      <Filter>Source Files\caffe</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\common.cpp">
+      <Filter>Source Files\caffe</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\data_reader.cpp">
+      <Filter>Source Files\caffe</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\data_transformer.cpp">
+      <Filter>Source Files\caffe</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\internal_thread.cpp">
+      <Filter>Source Files\caffe</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layer.cpp">
+      <Filter>Source Files\caffe</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layer_factory.cpp">
+      <Filter>Source Files\caffe</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\tile_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\window_data_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\absval_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\accuracy_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\argmax_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\base_conv_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\base_data_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\bnll_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\concat_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\contrastive_loss_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\conv_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\cudnn_conv_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\cudnn_pooling_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\cudnn_relu_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\cudnn_sigmoid_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\cudnn_softmax_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\cudnn_tanh_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\data_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\deconv_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\dropout_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\dummy_data_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\eltwise_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\embed_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\euclidean_loss_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\exp_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\filter_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\flatten_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\hdf5_data_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\hdf5_output_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\hinge_loss_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\im2col_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\image_data_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\infogain_loss_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\inner_product_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\log_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\loss_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\lrn_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\memory_data_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\multinomial_logistic_loss_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\mvn_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\neuron_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\pooling_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\power_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\prelu_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\reduction_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\relu_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\reshape_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\sigmoid_cross_entropy_loss_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\sigmoid_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\silence_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\slice_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\softmax_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\softmax_loss_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\split_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\spp_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\tanh_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\threshold_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\proto\caffe.pb.cc">
+      <Filter>Source Files\caffe\proto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\util\math_functions.cpp">
+      <Filter>Source Files\caffe\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\util\upgrade_proto.cpp">
+      <Filter>Source Files\caffe\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\util\benchmark.cpp">
+      <Filter>Source Files\caffe\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\util\blocking_queue.cpp">
+      <Filter>Source Files\caffe\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\util\cudnn.cpp">
+      <Filter>Source Files\caffe\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\util\db.cpp">
+      <Filter>Source Files\caffe\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\util\db_leveldb.cpp">
+      <Filter>Source Files\caffe\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\util\db_lmdb.cpp">
+      <Filter>Source Files\caffe\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\util\hdf5.cpp">
+      <Filter>Source Files\caffe\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\util\im2col.cpp">
+      <Filter>Source Files\caffe\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\util\insert_splits.cpp">
+      <Filter>Source Files\caffe\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\util\io.cpp">
+      <Filter>Source Files\caffe\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\util\Rand.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\util\MathUtil.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\util\FileUtil.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\util\ArgParser.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\render\Camera.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\render\DrawUtil.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\scenarios\Scenario.cpp">
+      <Filter>Source Files\scenarios</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\scenarios\DrawScenario.cpp">
+      <Filter>Source Files\scenarios</Filter>
+    </ClCompile>
+    <ClCompile Include="scenarios\ScenarioReg1D.cpp">
+      <Filter>Source Files\scenarios</Filter>
+    </ClCompile>
+    <ClCompile Include="scenarios\DrawScenarioReg1D.cpp">
+      <Filter>Source Files\scenarios</Filter>
+    </ClCompile>
+    <ClCompile Include="scenarios\ScenarioBallRL.cpp">
+      <Filter>Source Files\scenarios</Filter>
+    </ClCompile>
+    <ClCompile Include="scenarios\DrawScenarioBallRL.cpp">
+      <Filter>Source Files\scenarios</Filter>
+    </ClCompile>
+    <ClCompile Include="stuff\PenaltyGround.cpp">
+      <Filter>Source Files\stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="stuff\Ball.cpp">
+      <Filter>Source Files\stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="stuff\BallController.cpp">
+      <Filter>Source Files\stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\learning\ExpTuple.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\learning\QNetTrainer.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\learning\NeuralNet.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\util\JsonUtil.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="scenarios\ScenarioArmRL.cpp">
+      <Filter>Source Files\scenarios</Filter>
+    </ClCompile>
+    <ClCompile Include="scenarios\DrawScenarioArmRL.cpp">
+      <Filter>Source Files\scenarios</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\scenarios\ScenarioSimChar.cpp">
+      <Filter>Source Files\scenarios</Filter>
+    </ClCompile>
+    <ClCompile Include="stuff\SimArm.cpp">
+      <Filter>Source Files\stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\anim\Character.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\sim\CharController.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\sim\ContactManager.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\sim\Controller.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\sim\DogController.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="stuff\DrawBall.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\render\DrawObj.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="stuff\DrawPenaltyGround.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\render\DrawPerturb.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\render\DrawSimCharacter.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\sim\Ground.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\sim\GroundVar2D.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\sim\ImpPDController.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\sim\Joint.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\anim\KinTree.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\sim\NNController.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\sim\PDController.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\sim\Perturb.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\sim\PerturbManager.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\optimizer\opt\QL.c">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\optimizer\opt\QuadProg.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\sim\RBDModel.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\sim\RBDUtil.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\sim\SimBox.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\sim\SimCapsule.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\sim\SimCharacter.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\sim\SimCharSoftFall.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\sim\SimDog.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\sim\SimObj.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\sim\SpAlg.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\sim\TerrainGen2D.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\sim\World.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="stuff\ArmQPController.cpp">
+      <Filter>Source Files\stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\scenarios\DrawScenarioSimInteractive.cpp">
+      <Filter>Source Files\scenarios</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\render\TextureUtil.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\render\TextureDesc.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="stuff\ArmController.cpp">
+      <Filter>Source Files\stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="stuff\ArmNNController.cpp">
+      <Filter>Source Files\stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\learning\NeuralNetTrainer.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="scenarios\ScenarioReg1DTrainer.cpp">
+      <Filter>Source Files\scenarios</Filter>
+    </ClCompile>
+    <ClCompile Include="scenarios\DrawScenarioReg1DTrainer.cpp">
+      <Filter>Source Files\scenarios</Filter>
+    </ClCompile>
+    <ClCompile Include="stuff\ArmPDQPController.cpp">
+      <Filter>Source Files\stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="stuff\ArmPDNNController.cpp">
+      <Filter>Source Files\stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="stuff\ArmNNPixelController.cpp">
+      <Filter>Source Files\stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="scenarios\ScenarioArmRLPretrain.cpp">
+      <Filter>Source Files\scenarios</Filter>
+    </ClCompile>
+    <ClCompile Include="scenarios\DrawScenarioArmRLPretrain.cpp">
+      <Filter>Source Files\scenarios</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\sim\CharTracer.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\render\DrawWorld.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="scenarios\ScenarioArm.cpp">
+      <Filter>Source Files\scenarios</Filter>
+    </ClCompile>
+    <ClCompile Include="scenarios\DrawScenarioArm.cpp">
+      <Filter>Source Files\scenarios</Filter>
+    </ClCompile>
+    <ClCompile Include="scenarios\DrawScenarioArmEval.cpp">
+      <Filter>Source Files\scenarios</Filter>
+    </ClCompile>
+    <ClCompile Include="scenarios\ScenarioArmEval.cpp">
+      <Filter>Source Files\scenarios</Filter>
+    </ClCompile>
+    <ClCompile Include="stuff\ArmVelQPController.cpp">
+      <Filter>Source Files\stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="stuff\ArmVelNNController.cpp">
+      <Filter>Source Files\stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="stuff\ArmPDNNPixelController.cpp">
+      <Filter>Source Files\stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="stuff\ArmVelNNPixelController.cpp">
+      <Filter>Source Files\stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="scenarios\ScenarioBallRLCacla.cpp">
+      <Filter>Source Files\scenarios</Filter>
+    </ClCompile>
+    <ClCompile Include="scenarios\DrawScenarioBallRLCacla.cpp">
+      <Filter>Source Files\scenarios</Filter>
+    </ClCompile>
+    <ClCompile Include="stuff\BallControllerCont.cpp">
+      <Filter>Source Files\stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\learning\CaclaTrainer.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\learning\QCaclaTrainer.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="stuff\ArmNNPixelNoPoseController.cpp">
+      <Filter>Source Files\stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\sim\DogControllerCont.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="stuff\BallControllerContAC.cpp">
+      <Filter>Source Files\stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\learning\CaclaACTrainer.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="scenarios\ScenarioBallEval.cpp">
+      <Filter>Source Files\scenarios</Filter>
+    </ClCompile>
+    <ClCompile Include="scenarios\DrawScenarioBallEval.cpp">
+      <Filter>Source Files\scenarios</Filter>
+    </ClCompile>
+    <ClCompile Include="scenarios\ScenarioBallRLACE.cpp">
+      <Filter>Source Files\scenarios</Filter>
+    </ClCompile>
+    <ClCompile Include="scenarios\DrawScenarioBallRLACE.cpp">
+      <Filter>Source Files\scenarios</Filter>
+    </ClCompile>
+    <ClCompile Include="stuff\BallControllerACE.cpp">
+      <Filter>Source Files\stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\sim\MonopedHopperControllerCont.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\sim\MonopedHopperController.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\sim\SimMonopedHopper.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="stuff\BallControllerMACE.cpp">
+      <Filter>Source Files\stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="scenarios\ScenarioBallRLMACE.cpp">
+      <Filter>Source Files\scenarios</Filter>
+    </ClCompile>
+    <ClCompile Include="scenarios\DrawScenarioBallRLMACE.cpp">
+      <Filter>Source Files\scenarios</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\learning\MACETrainer.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\learning\ACETrainer.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\TerrainRL\util\Rand.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\util\MathUtil.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\util\ArgParser.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\util\FileUtil.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\render\Camera.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\render\DrawUtil.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\scenarios\Scenario.h">
+      <Filter>Source Files\scenarios</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\scenarios\DrawScenario.h">
+      <Filter>Source Files\scenarios</Filter>
+    </ClInclude>
+    <ClInclude Include="scenarios\ScenarioReg1D.h">
+      <Filter>Source Files\scenarios</Filter>
+    </ClInclude>
+    <ClInclude Include="scenarios\DrawScenarioReg1D.h">
+      <Filter>Source Files\scenarios</Filter>
+    </ClInclude>
+    <ClInclude Include="scenarios\ScenarioBallRL.h">
+      <Filter>Source Files\scenarios</Filter>
+    </ClInclude>
+    <ClInclude Include="scenarios\DrawScenarioBallRL.h">
+      <Filter>Source Files\scenarios</Filter>
+    </ClInclude>
+    <ClInclude Include="stuff\PenaltyGround.h">
+      <Filter>Source Files\stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="stuff\Ball.h">
+      <Filter>Source Files\stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="stuff\BallController.h">
+      <Filter>Source Files\stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\learning\ExpTuple.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\learning\QNetTrainer.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\learning\NeuralNet.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\util\CircularBuffer.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\util\JsonUtil.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="scenarios\ScenarioArmRL.h">
+      <Filter>Source Files\scenarios</Filter>
+    </ClInclude>
+    <ClInclude Include="scenarios\DrawScenarioArmRL.h">
+      <Filter>Source Files\scenarios</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\scenarios\ScenarioSimChar.h">
+      <Filter>Source Files\scenarios</Filter>
+    </ClInclude>
+    <ClInclude Include="stuff\SimArm.h">
+      <Filter>Source Files\stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\anim\Character.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\sim\CharController.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\sim\ContactManager.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\sim\Controller.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\sim\DogController.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="stuff\DrawBall.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\render\DrawObj.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="stuff\DrawPenaltyGround.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\render\DrawPerturb.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\render\DrawSimCharacter.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\sim\Ground.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\sim\GroundVar2D.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\sim\ImpPDController.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\sim\Joint.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\anim\KinTree.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\sim\NNController.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\sim\PDController.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\sim\Perturb.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\sim\PerturbManager.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\optimizer\opt\QuadProg.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\sim\RBDModel.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\sim\RBDUtil.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\sim\SimBox.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\sim\SimCapsule.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\sim\SimCharacter.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\sim\SimCharSoftFall.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\sim\SimDog.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\sim\SimObj.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\sim\SpAlg.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\sim\TerrainGen2D.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\sim\World.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="stuff\ArmQPController.h">
+      <Filter>Source Files\stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\scenarios\DrawScenarioSimInteractive.h">
+      <Filter>Source Files\scenarios</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\render\TextureUtil.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\render\TextureDesc.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="stuff\ArmController.h">
+      <Filter>Source Files\stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="stuff\ArmNNController.h">
+      <Filter>Source Files\stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\learning\NeuralNetTrainer.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="scenarios\ScenarioReg1DTrainer.h">
+      <Filter>Source Files\scenarios</Filter>
+    </ClInclude>
+    <ClInclude Include="scenarios\DrawScenarioReg1DTrainer.h">
+      <Filter>Source Files\scenarios</Filter>
+    </ClInclude>
+    <ClInclude Include="stuff\ArmPDQPController.h">
+      <Filter>Source Files\stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="stuff\ArmPDNNController.h">
+      <Filter>Source Files\stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="stuff\ArmNNPixelController.h">
+      <Filter>Source Files\stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="scenarios\ScenarioArmRLPretrain.h">
+      <Filter>Source Files\scenarios</Filter>
+    </ClInclude>
+    <ClInclude Include="scenarios\DrawScenarioArmRLPretrain.h">
+      <Filter>Source Files\scenarios</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\sim\CharTracer.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\render\DrawWorld.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="scenarios\ScenarioArm.h">
+      <Filter>Source Files\scenarios</Filter>
+    </ClInclude>
+    <ClInclude Include="scenarios\DrawScenarioArm.h">
+      <Filter>Source Files\scenarios</Filter>
+    </ClInclude>
+    <ClInclude Include="scenarios\DrawScenarioArmEval.h">
+      <Filter>Source Files\scenarios</Filter>
+    </ClInclude>
+    <ClInclude Include="scenarios\ScenarioArmEval.h">
+      <Filter>Source Files\scenarios</Filter>
+    </ClInclude>
+    <ClInclude Include="stuff\ArmVelQPController.h">
+      <Filter>Source Files\stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="stuff\ArmVelNNController.h">
+      <Filter>Source Files\stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="stuff\ArmPDNNPixelController.h">
+      <Filter>Source Files\stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="stuff\ArmVelNNPixelController.h">
+      <Filter>Source Files\stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="scenarios\ScenarioBallRLCacla.h">
+      <Filter>Source Files\scenarios</Filter>
+    </ClInclude>
+    <ClInclude Include="scenarios\DrawScenarioBallRLCacla.h">
+      <Filter>Source Files\scenarios</Filter>
+    </ClInclude>
+    <ClInclude Include="stuff\BallControllerCont.h">
+      <Filter>Source Files\stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\learning\CaclaTrainer.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\learning\QCaclaTrainer.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="stuff\ArmNNPixelNoPoseController.h">
+      <Filter>Source Files\stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\sim\DogControllerCont.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="stuff\BallControllerContAC.h">
+      <Filter>Source Files\stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\learning\CaclaACTrainer.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="scenarios\ScenarioBallEval.h">
+      <Filter>Source Files\scenarios</Filter>
+    </ClInclude>
+    <ClInclude Include="scenarios\DrawScenarioBallEval.h">
+      <Filter>Source Files\scenarios</Filter>
+    </ClInclude>
+    <ClInclude Include="scenarios\ScenarioBallRLACE.h">
+      <Filter>Source Files\scenarios</Filter>
+    </ClInclude>
+    <ClInclude Include="scenarios\DrawScenarioBallRLACE.h">
+      <Filter>Source Files\scenarios</Filter>
+    </ClInclude>
+    <ClInclude Include="stuff\BallControllerACE.h">
+      <Filter>Source Files\stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\sim\MonopedHopperControllerCont.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\sim\MonopedHopperController.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\sim\SimMonopedHopper.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="stuff\BallControllerMACE.h">
+      <Filter>Source Files\stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="scenarios\ScenarioBallRLMACE.h">
+      <Filter>Source Files\scenarios</Filter>
+    </ClInclude>
+    <ClInclude Include="scenarios\DrawScenarioBallRLMACE.h">
+      <Filter>Source Files\scenarios</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\learning\MACETrainer.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\learning\ACETrainer.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
