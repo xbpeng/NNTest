@@ -103,19 +103,19 @@ void cBallControllerACE::RecordAction(Eigen::VectorXd& out_action) const
 	out_action = Eigen::VectorXd::Zero(GetActionSize());
 
 	int a = mCurrAction.mID;
-	SetVal(1, a, out_action);
+	SetTupleVal(1, a, out_action);
 
 	Eigen::VectorXd frag = Eigen::VectorXd::Zero(gActionFragSize);
 	frag[0] = mCurrAction.mDist;
-	SetACFrag(frag, a, out_action);
+	SetTupleFrag(frag, a, out_action);
 }
 
 cBallControllerACE::tAction cBallControllerACE::BuildActionFromParams(const Eigen::VectorXd& action_params) const
 {
 	assert(action_params.size() == GetActionSize());
-	int a = GetMaxFragIdx(action_params);
+	int a = GetTupleMaxFragIdx(action_params);
 	Eigen::VectorXd action_frag;
-	GetFrag(action_params, a, action_frag);
+	GetTupleFrag(action_params, a, action_frag);
 
 	assert(action_frag.size() == 1);
 
@@ -234,14 +234,27 @@ void cBallControllerACE::SetFrag(const Eigen::VectorXd& frag, int a_idx, Eigen::
 	cACETrainer::SetFrag(frag, a_idx, mNumActionFrags, gActionFragSize, out_params);
 }
 
-void cBallControllerACE::SetACFrag(const Eigen::VectorXd& frag, int a_idx, Eigen::VectorXd& out_params) const
+void cBallControllerACE::SetVal(double val, int a_idx, Eigen::VectorXd& out_params) const
 {
-	// for when both critic and actor outputs are packed into out_params
-	// this makes a difference for MAC
+	cACETrainer::SetVal(val, a_idx, out_params);
+}
+
+int cBallControllerACE::GetTupleMaxFragIdx(const Eigen::VectorXd& params) const
+{
+	return cACETrainer::GetMaxFragIdx(params, mNumActionFrags);
+}
+
+void cBallControllerACE::GetTupleFrag(const Eigen::VectorXd& params, int a_idx, Eigen::VectorXd& out_action) const
+{
+	cACETrainer::GetFrag(params, mNumActionFrags, gActionFragSize, a_idx, out_action);
+}
+
+void cBallControllerACE::SetTupleFrag(const Eigen::VectorXd& frag, int a_idx, Eigen::VectorXd& out_params) const
+{
 	cACETrainer::SetFrag(frag, a_idx, mNumActionFrags, gActionFragSize, out_params);
 }
 
-void cBallControllerACE::SetVal(double val, int a_idx, Eigen::VectorXd& out_params) const
+void cBallControllerACE::SetTupleVal(double val, int a_idx, Eigen::VectorXd& out_params) const
 {
 	cACETrainer::SetVal(val, a_idx, out_params);
 }
