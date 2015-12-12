@@ -4,7 +4,8 @@ files{end + 1} = 'cacla.txt';
 files{end + 1} = 'cacla_exp_buffer.txt';
 %files{end + 1} = 'cacla_exp_buffer_target.txt';
 %files{end + 1} = 'cacla_exp_buffer_weighted.txt';
-files{end + 1} = 'eac.txt';
+files{end + 1} = 'ace.txt';
+files{end + 1} = 'ace4.txt';
 
 lines = {'b-', 'r-', 'm-', 'k-', 'g-', 'c-', 'k--'};
 iter_step = 500 / 1000;
@@ -40,4 +41,4 @@ ylabel('Success Rate');
 title('Performance vs Training Iterations');
 
 legend('Q-Learning',  'Cacla', 'Cacla Exp Buffer', ...
-    'EAC', 'Location', 'southeast');
+    'ACE', 'ACE4', 'Location', 'southeast');

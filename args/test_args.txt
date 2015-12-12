@@ -1,4 +1,4 @@
--scenario= ball_rl_eac
+-scenario= ball_rl_ace
 -playback_speed= 40
 
 -character_file= data/arm_rl/arm.txt
@@ -21,9 +21,9 @@
 //-solver_file= data/balL_rl/balL_rl_ac_solver.prototxt
 //-net_file= data/balL_rl/balL_rl_ac_deploy.prototxt
 
--solver_file= data/balL_rl/balL_rl_eac4_solver.prototxt
--net_file= data/balL_rl/balL_rl_eac4_deploy.prototxt
-//-model_file= data/ball_rl/ball_rl_eac_init_model.h5
+-solver_file= data/balL_rl/balL_rl_ace4_solver.prototxt
+-net_file= data/balL_rl/balL_rl_ace4_deploy.prototxt
+//-model_file= data/ball_rl/ball_rl_ace_init_model.h5
 
 
 //-solver_file= data/arm_rl/arm_solver.prototxt

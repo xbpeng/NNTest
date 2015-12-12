@@ -14,7 +14,7 @@
 #include "scenarios/DrawScenarioReg1DTrainer.h"
 #include "scenarios/DrawScenarioBallRL.h"
 #include "scenarios/DrawScenarioBallRLCacla.h"
-#include "scenarios/DrawScenarioBallRLEAC.h"
+#include "scenarios/DrawScenarioBallRLACE.h"
 #include "scenarios/DrawScenarioBallEval.h"
 #include "scenarios/DrawScenarioArmRL.h"
 #include "scenarios/DrawScenarioArmRLPretrain.h"
@@ -107,9 +107,9 @@ void SetupScenario()
 	{
 		gScenario = std::shared_ptr<cDrawScenarioBallRLCacla>(new cDrawScenarioBallRLCacla(gCamera));
 	}
-	else if (scenario_name == "ball_rl_eac")
+	else if (scenario_name == "ball_rl_ace")
 	{
-		gScenario = std::shared_ptr<cDrawScenarioBallRLEAC>(new cDrawScenarioBallRLEAC(gCamera));
+		gScenario = std::shared_ptr<cDrawScenarioBallRLACE>(new cDrawScenarioBallRLACE(gCamera));
 	}
 	else if (scenario_name == "ball_eval")
 	{
