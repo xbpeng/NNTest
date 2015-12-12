@@ -62,7 +62,7 @@ bool cBallControllerACE::LoadNet(const std::string& net_file)
 
 int cBallControllerACE::GetActionSize() const
 {
-	return mNumActionFrags + mNumActionFrags * gActionFragSize;
+	return 1 + gActionFragSize;
 }
 
 
@@ -98,24 +98,29 @@ int cBallControllerACE::GetActionFragSize() const
 	return gActionFragSize;
 }
 
+int cBallControllerACE::GetNetOutputSize() const
+{
+	return mNumActionFrags + mNumActionFrags * gActionFragSize;
+}
+
 void cBallControllerACE::RecordAction(Eigen::VectorXd& out_action) const
 {
 	out_action = Eigen::VectorXd::Zero(GetActionSize());
 
 	int a = mCurrAction.mID;
-	SetTupleVal(1, a, out_action);
+	cACETrainer::SetActionFragIdx(a, out_action);
 
 	Eigen::VectorXd frag = Eigen::VectorXd::Zero(gActionFragSize);
 	frag[0] = mCurrAction.mDist;
-	SetTupleFrag(frag, a, out_action);
+	cACETrainer::SetActionFrag(frag, out_action);
 }
 
 cBallControllerACE::tAction cBallControllerACE::BuildActionFromParams(const Eigen::VectorXd& action_params) const
 {
 	assert(action_params.size() == GetActionSize());
-	int a = GetTupleMaxFragIdx(action_params);
+	int a = cACETrainer::GetActionFragIdx(action_params);
 	Eigen::VectorXd action_frag;
-	GetTupleFrag(action_params, a, action_frag);
+	cACETrainer::GetActionFrag(action_params, action_frag);
 
 	assert(action_frag.size() == 1);
 
@@ -172,7 +177,13 @@ cBallController::tAction cBallControllerACE::CalcActionNetCont()
 	Eigen::VectorXd y;
 	mNet.Eval(state, y);
 
-	tAction ball_action = BuildActionFromParams(y);
+	int a = GetMaxFragIdx(y);
+	Eigen::VectorXd action_frag;
+	GetFrag(y, a, action_frag);
+
+	tAction ball_action;
+	ball_action.mID = a;
+	ball_action.mDist = action_frag[0];
 	printf("action: %i, %.5f\n", ball_action.mID, ball_action.mDist);
 
 	return ball_action;
@@ -183,12 +194,12 @@ cBallController::tAction cBallControllerACE::GetRandomActionFrag()
 	Eigen::VectorXd state;
 	BuildState(state);
 
-	Eigen::VectorXd action;
-	mNet.Eval(state, action);
+	Eigen::VectorXd y;
+	mNet.Eval(state, y);
 
 	int a = cMathUtil::RandInt(0, GetNumActionFrags());
 	Eigen::VectorXd action_frag;
-	GetFrag(action, a, action_frag);
+	GetFrag(y, a, action_frag);
 
 	tAction ball_action;
 	ball_action.mID = a;
@@ -235,26 +246,6 @@ void cBallControllerACE::SetFrag(const Eigen::VectorXd& frag, int a_idx, Eigen::
 }
 
 void cBallControllerACE::SetVal(double val, int a_idx, Eigen::VectorXd& out_params) const
-{
-	cACETrainer::SetVal(val, a_idx, out_params);
-}
-
-int cBallControllerACE::GetTupleMaxFragIdx(const Eigen::VectorXd& params) const
-{
-	return cACETrainer::GetMaxFragIdx(params, mNumActionFrags);
-}
-
-void cBallControllerACE::GetTupleFrag(const Eigen::VectorXd& params, int a_idx, Eigen::VectorXd& out_action) const
-{
-	cACETrainer::GetFrag(params, mNumActionFrags, gActionFragSize, a_idx, out_action);
-}
-
-void cBallControllerACE::SetTupleFrag(const Eigen::VectorXd& frag, int a_idx, Eigen::VectorXd& out_params) const
-{
-	cACETrainer::SetFrag(frag, a_idx, mNumActionFrags, gActionFragSize, out_params);
-}
-
-void cBallControllerACE::SetTupleVal(double val, int a_idx, Eigen::VectorXd& out_params) const
 {
 	cACETrainer::SetVal(val, a_idx, out_params);
 }

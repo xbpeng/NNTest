@@ -26,7 +26,6 @@ protected:
 	virtual void UpdateFragParams();
 
 	virtual tAction CalcActionNetCont();
-	virtual tAction GetRandomActionFrag();
 
 	virtual int GetMaxFragIdx(const Eigen::VectorXd& params) const;
 	virtual double GetMaxFragVal(const Eigen::VectorXd& params) const;

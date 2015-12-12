@@ -18,6 +18,7 @@ public:
 
 	virtual int GetNumActionFrags() const;
 	virtual int GetActionFragSize() const;
+	virtual int GetNetOutputSize() const;
 
 	virtual void RecordAction(Eigen::VectorXd& out_action) const;
 	virtual tAction BuildActionFromParams(const Eigen::VectorXd& action_params) const;
@@ -43,9 +44,4 @@ protected:
 	virtual void GetFrag(const Eigen::VectorXd& params, int a_idx, Eigen::VectorXd& out_action) const;
 	virtual void SetFrag(const Eigen::VectorXd& frag, int a_idx, Eigen::VectorXd& out_params) const;
 	virtual void SetVal(double val, int a_idx, Eigen::VectorXd& out_params) const;
-
-	virtual int GetTupleMaxFragIdx(const Eigen::VectorXd& params) const;
-	virtual void GetTupleFrag(const Eigen::VectorXd& params, int a_idx, Eigen::VectorXd& out_action) const;
-	virtual void SetTupleFrag(const Eigen::VectorXd& frag, int a_idx, Eigen::VectorXd& out_params) const;
-	virtual void SetTupleVal(double val, int a_idx, Eigen::VectorXd& out_params) const;
 };

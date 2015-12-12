@@ -107,25 +107,6 @@ cBallController::tAction cBallControllerMACE::CalcActionNetCont()
 	return ball_action;
 }
 
-cBallController::tAction cBallControllerMACE::GetRandomActionFrag()
-{
-	Eigen::VectorXd state;
-	BuildState(state);
-
-	Eigen::VectorXd actor_y;
-	mNet.Eval(state, actor_y);
-
-	int a = cMathUtil::RandInt(0, GetNumActionFrags());
-	Eigen::VectorXd action_frag;
-	GetFrag(actor_y, a, action_frag);
-
-	tAction ball_action;
-	ball_action.mID = a;
-	ball_action.mDist = action_frag[0];
-
-	return ball_action;
-}
-
 int cBallControllerMACE::GetMaxFragIdx(const Eigen::VectorXd& params) const
 {
 	return cMACETrainer::GetMaxFragIdx(params);
