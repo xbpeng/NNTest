@@ -253,7 +253,7 @@ double cScenarioBallRL::CalcReward(const tExpTuple& tuple) const
 	bool contact = penalty_idx != -1;
 
 	const auto& ctrl = mBall.GetController();
-	const cBallController::tAction& action = ctrl->BuildActionFromParams(tuple.mAction);
+	cBallController::tAction action = ctrl->BuildActionFromParams(tuple.mAction);
 	double dist = action.mDist;
 	
 	const double tar_dist = 0.5;

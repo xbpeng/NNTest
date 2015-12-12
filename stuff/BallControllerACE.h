@@ -42,4 +42,5 @@ protected:
 	virtual double GetMaxFragVal(const Eigen::VectorXd& params) const;
 	virtual void GetFrag(const Eigen::VectorXd& params, int a_idx, Eigen::VectorXd& out_action) const;
 	virtual void SetFrag(const Eigen::VectorXd& frag, int a_idx, Eigen::VectorXd& out_params) const;
+	virtual void SetVal(double val, int a_idx, Eigen::VectorXd& out_params) const;
 };

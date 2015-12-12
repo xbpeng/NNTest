@@ -31,7 +31,7 @@ void cBallControllerCont::RecordAction(Eigen::VectorXd& out_action) const
 
 cBallControllerCont::tAction cBallControllerCont::BuildActionFromParams(const Eigen::VectorXd& action_params) const
 {
-	assert(action_params.size() == GetActionSize());
+	assert(action_params.size() == 1);
 	tAction action;
 	action.mDist = action_params[0];
 	return action;

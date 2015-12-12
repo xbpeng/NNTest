@@ -103,7 +103,7 @@ void cBallControllerACE::RecordAction(Eigen::VectorXd& out_action) const
 	out_action = Eigen::VectorXd::Zero(GetActionSize());
 
 	int a = mCurrAction.mID;
-	out_action[a] = 1;
+	SetVal(1, a, out_action);
 
 	Eigen::VectorXd frag = Eigen::VectorXd::Zero(gActionFragSize);
 	frag[0] = mCurrAction.mDist;
@@ -113,8 +113,16 @@ void cBallControllerACE::RecordAction(Eigen::VectorXd& out_action) const
 cBallControllerACE::tAction cBallControllerACE::BuildActionFromParams(const Eigen::VectorXd& action_params) const
 {
 	assert(action_params.size() == GetActionSize());
+	int a = GetMaxFragIdx(action_params);
+	Eigen::VectorXd action_frag;
+	GetFrag(action_params, a, action_frag);
+
+	assert(action_frag.size() == 1);
+
 	tAction action;
-	action.mDist = action_params[0];
+	action.mID = a;
+	action.mDist = action_frag[0];
+
 	return action;
 }
 
@@ -161,17 +169,11 @@ cBallController::tAction cBallControllerACE::CalcActionNetCont()
 	Eigen::VectorXd state;
 	BuildState(state);
 
-	Eigen::VectorXd action;
-	mNet.Eval(state, action);
+	Eigen::VectorXd y;
+	mNet.Eval(state, y);
 
-	int a = GetMaxFragIdx(action);
-	Eigen::VectorXd action_frag;
-	GetFrag(action, a, action_frag);
-
-	tAction ball_action;
-	ball_action.mID = a;
-	ball_action.mDist = action_frag[0];
-	printf("action: %i, %.5f\n", a, ball_action.mDist);
+	tAction ball_action = BuildActionFromParams(y);
+	printf("action: %i, %.5f\n", ball_action.mID, ball_action.mDist);
 
 	return ball_action;
 }
@@ -230,4 +232,9 @@ void cBallControllerACE::GetFrag(const Eigen::VectorXd& params, int a_idx, Eigen
 void cBallControllerACE::SetFrag(const Eigen::VectorXd& frag, int a_idx, Eigen::VectorXd& out_params) const
 {
 	cACETrainer::SetFrag(frag, a_idx, mNumActionFrags, gActionFragSize, out_params);
+}
+
+void cBallControllerACE::SetVal(double val, int a_idx, Eigen::VectorXd& out_params) const
+{
+	cACETrainer::SetVal(val, a_idx, out_params);
 }

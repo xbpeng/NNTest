@@ -258,7 +258,7 @@ const cBallController::tAction& cBallController::GetCurrAction() const
 
 cBallController::tAction cBallController::BuildActionFromParams(const Eigen::VectorXd& action_params) const
 {
-	assert(action_params.size() == GetActionSize());
+	assert(action_params.size() == gNumActions);
 	int action_idx = 0;
 	action_params.maxCoeff(&action_idx);
 	return GetAction(action_idx);
