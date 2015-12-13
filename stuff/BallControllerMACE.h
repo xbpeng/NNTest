@@ -20,6 +20,8 @@ public:
 	virtual int GetNetOutputSize() const;
 	virtual int GetCriticNetOutputSize() const;
 
+	virtual void SaveNet(const std::string& out_file) const;
+	
 protected:
 	cNeuralNet mCriticNet;
 

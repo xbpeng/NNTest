@@ -581,6 +581,9 @@
     <ClCompile Include="..\TerrainRL\learning\ACETrainer.cpp">
       <Filter>Source Files\util</Filter>
     </ClCompile>
+    <ClCompile Include="..\TerrainRL\sim\DogControllerACE.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\TerrainRL\util\Rand.h">
@@ -884,6 +887,9 @@
       <Filter>Source Files\util</Filter>
     </ClInclude>
     <ClInclude Include="..\TerrainRL\learning\ACETrainer.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\sim\DogControllerACE.h">
       <Filter>Source Files\util</Filter>
     </ClInclude>
   </ItemGroup>

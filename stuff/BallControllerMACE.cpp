@@ -78,9 +78,16 @@ int cBallControllerMACE::GetCriticNetOutputSize() const
 	return mNumActionFrags;
 }
 
+void cBallControllerMACE::SaveNet(const std::string& out_file) const
+{
+	std::string critic_filename = cMACETrainer::GetCriticFilename(out_file);
+	mNet.OutputModel(critic_filename);
+	mCriticNet.OutputModel(critic_filename);
+}
+
 void cBallControllerMACE::UpdateFragParams()
 {
-	int num_outputs = mNet.GetOutputSize();
+	int num_outputs = mNet.GetOutputSize() / GetActionFragSize();
 	mNumActionFrags = num_outputs;
 }
 

@@ -1,12 +1,13 @@
 files = {};
 files{end + 1} = 'q_learning.txt';
-files{end + 1} = 'cacla.txt';
+%files{end + 1} = 'cacla.txt';
 files{end + 1} = 'cacla_exp_buffer.txt';
 %files{end + 1} = 'cacla_exp_buffer_target.txt';
 %files{end + 1} = 'cacla_exp_buffer_weighted.txt';
 files{end + 1} = 'ace.txt';
-%files{end + 1} = 'ace4.txt';
-files{end + 1} = 'ace4_b.txt';
+files{end + 1} = 'ace4.txt';
+files{end + 1} = 'mace.txt';
+files{end + 1} = 'mace_double.txt';
 
 lines = {'b-', 'r-', 'm-', 'k-', 'g-', 'c-', 'k--'};
 iter_step = 500 / 1000;
@@ -41,5 +42,5 @@ xlabel('Iterations (10^3)');
 ylabel('Success Rate');
 title('Performance vs Training Iterations');
 
-legend('Q-Learning',  'Cacla', 'Cacla Exp Buffer', ...
-    'ACE', 'ACE4b', 'Location', 'southeast');
+legend('Q-Learning',  'Cacla Exp Buffer', ...
+    'ACE', 'ACE4', 'MACE', 'MACE Double', 'Location', 'southeast');

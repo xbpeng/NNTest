@@ -7,7 +7,6 @@ cBallControllerACE::cBallControllerACE(cBall& ball) :
 	cBallController(ball)
 {
 	mNumActionFrags = 0;
-
 	mExpCritic = false;
 	mExpActor = false;
 }

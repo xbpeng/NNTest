@@ -271,6 +271,7 @@
     <ClCompile Include="..\TerrainRL\sim\ContactManager.cpp" />
     <ClCompile Include="..\TerrainRL\sim\Controller.cpp" />
     <ClCompile Include="..\TerrainRL\sim\DogController.cpp" />
+    <ClCompile Include="..\TerrainRL\sim\DogControllerACE.cpp" />
     <ClCompile Include="..\TerrainRL\sim\DogControllerCont.cpp" />
     <ClCompile Include="..\TerrainRL\sim\Ground.cpp" />
     <ClCompile Include="..\TerrainRL\sim\GroundVar2D.cpp" />
@@ -374,6 +375,7 @@
     <ClInclude Include="..\TerrainRL\sim\ContactManager.h" />
     <ClInclude Include="..\TerrainRL\sim\Controller.h" />
     <ClInclude Include="..\TerrainRL\sim\DogController.h" />
+    <ClInclude Include="..\TerrainRL\sim\DogControllerACE.h" />
     <ClInclude Include="..\TerrainRL\sim\DogControllerCont.h" />
     <ClInclude Include="..\TerrainRL\sim\Ground.h" />
     <ClInclude Include="..\TerrainRL\sim\GroundVar2D.h" />
