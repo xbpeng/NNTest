@@ -57,19 +57,23 @@ void cScenarioBallRLACE::BuildOutputOffsetScale(const std::shared_ptr<cNeuralNet
 	out_offset = Eigen::VectorXd::Ones(output_size);
 	out_scale = Eigen::VectorXd::Ones(output_size);
 
-	int num_action = GetNumActionFrags();
+	int num_actions = GetNumActionFrags();
 	int action_size = GetActionFragSize();
 
-	out_offset.segment(0, num_action) *= -0.5;
-	out_scale.segment(0, num_action) *= 2;
+	out_offset.segment(0, num_actions) *= -0.5;
+	out_scale.segment(0, num_actions) *= 2;
 
 	double min_dist = cBallController::gMinDist;
 	double max_dist = cBallController::gMaxDist;
-	double dist_offset = -0.5 * (max_dist + min_dist);
 	double dist_scale = 2 / (max_dist - min_dist);
 
-	out_offset.segment(num_action, num_action * action_size) *= dist_offset;
-	out_scale.segment(num_action, num_action * action_size) *= dist_scale;
+	double dist_steps = (max_dist - min_dist) / (num_actions + 1);
+	for (int a = 0; a < num_actions; ++a)
+	{
+		double dist_offset = -(a + 1) * dist_steps;
+		out_offset.segment(num_actions + a * action_size, action_size) *= dist_offset;
+		out_scale.segment(num_actions + a * action_size, action_size) *= dist_scale;
+	}
 }
 
 void cScenarioBallRLACE::RecordBegFlags(tExpTuple& out_tuple) const

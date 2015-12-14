@@ -1,4 +1,4 @@
--scenario= ball_rl_mace
+-scenario= ball_rl_ace
 -playback_speed= 34
 
 -character_file= data/arm_rl/arm.txt
@@ -21,16 +21,17 @@
 //-solver_file= data/balL_rl/balL_rl_ac_solver.prototxt
 //-net_file= data/balL_rl/balL_rl_ac_deploy.prototxt
 
-//-solver_file= data/balL_rl/balL_rl_ace4_solver.prototxt
-//-net_file= data/balL_rl/balL_rl_ace4_deploy.prototxt
-//-model_file= data/ball_rl/ball_rl_ace4_model.h5
+-solver_file= data/balL_rl/balL_rl_ace_solver.prototxt
+-net_file= data/balL_rl/balL_rl_ace_deploy.prototxt
+-model_file= data/ball_rl/ball_rl_ace_init_model.h5
+//-model_file= data/ball_rl/ball_rl_ace_model.h5
 
--solver_file= data/balL_rl/balL_rl_ace4_actor_solver.prototxt
--net_file= data/balL_rl/balL_rl_ace4_actor_deploy.prototxt
+//-solver_file= data/balL_rl/balL_rl_ace4_actor_solver.prototxt
+//-net_file= data/balL_rl/balL_rl_ace4_actor_deploy.prototxt
 //-model_file= data/ball_rl/ball_rl_ace_actor_init_model.h5
 
--critic_solver_file= data/balL_rl/ball_rl_ace4_critic_solver.prototxt
--critic_net_file= data/balL_rl/balL_rl_ace4_critic_deploy.prototxt
+//-critic_solver_file= data/balL_rl/ball_rl_ace4_critic_solver.prototxt
+//-critic_net_file= data/balL_rl/balL_rl_ace4_critic_deploy.prototxt
 //-critic_model_file= data/ball_rl/ball_rl_ace_critic_init_model.h5
 
 //-solver_file= data/arm_rl/arm_solver.prototxt

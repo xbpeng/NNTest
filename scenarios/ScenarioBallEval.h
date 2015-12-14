@@ -4,7 +4,7 @@
 #include "scenarios/ScenarioBallRLACE.h"
 #include "scenarios/ScenarioBallRLMACE.h"
 
-#define BALL_EVAL_BASE cScenarioBallRLMACE
+#define BALL_EVAL_BASE cScenarioBallRLACE
 
 class cScenarioBallEval : public BALL_EVAL_BASE
 {

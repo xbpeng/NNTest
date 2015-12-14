@@ -1,21 +1,27 @@
 files = {};
-files{end + 1} = 'q_learning.txt';
-%files{end + 1} = 'cacla.txt';
-files{end + 1} = 'cacla_exp_buffer.txt';
-%files{end + 1} = 'cacla_exp_buffer_target.txt';
-%files{end + 1} = 'cacla_exp_buffer_weighted.txt';
-files{end + 1} = 'ace.txt';
-files{end + 1} = 'ace4.txt';
-files{end + 1} = 'mace.txt';
-files{end + 1} = 'mace_double.txt';
+files{end + 1} = {'q_learning.txt', 'Q-Learning'};
+%files{end + 1} = {'cacla.txt', 'Cacla'};
+files{end + 1} = {'cacla_exp_buffer.txt', 'Cacla + Exp Buffer'};
+%files{end + 1} = {'cacla_exp_buffer1.txt', 'Cacla + Exp Buffer1'};
+%files{end + 1} = {'cacla_exp_buffer_target.txt', 'Cacla + Exp Buffer Target'};
+%files{end + 1} = {'cacla_exp_buffer_weighted.txt', 'Cacla + Exp Buffer Weighted'};
+files{end + 1} = {'ace.txt', 'ACE'};
+files{end + 1} = {'ace_b.txt', 'ACE b'};
+%files{end + 1} = {'ace4.txt', 'ACE4'};
+files{end + 1} = {'ace_init.txt', 'ACE Init'};
+%files{end + 1} = {'mace.txt', 'MACE'};
+%files{end + 1} = {'mace_double.txt', 'MACE Double'};
+%files{end + 1} = {'mace4_double.txt', 'MACE4 Double'};
 
-lines = {'b-', 'r-', 'm-', 'k-', 'g-', 'c-', 'k--'};
+lines = {'b-', 'r-', 'm-', 'k-', 'g-', 'c-', 'k--', 'r--'};
 iter_step = 500 / 1000;
 
 data = {};
+names = {};
 for i = 1:length(files)
-   curr_data = load(files{i});
+   curr_data = load(files{i}{1});
    data{i} = curr_data; 
+   names{i} = files{i}{2};
 end
 
 clf;
@@ -42,5 +48,4 @@ xlabel('Iterations (10^3)');
 ylabel('Success Rate');
 title('Performance vs Training Iterations');
 
-legend('Q-Learning',  'Cacla Exp Buffer', ...
-    'ACE', 'ACE4', 'MACE', 'MACE Double', 'Location', 'southeast');
+legend(names, 'Location', 'southeast');

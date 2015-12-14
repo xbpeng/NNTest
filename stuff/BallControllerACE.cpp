@@ -67,6 +67,10 @@ int cBallControllerACE::GetActionSize() const
 
 void cBallControllerACE::ApplyRandAction()
 {
+	mOffPolicy = true;
+	tAction action;
+
+	/*
 	const double noise_prob = 0.5;
 
 	mOffPolicy = true;
@@ -78,10 +82,36 @@ void cBallControllerACE::ApplyRandAction()
 	double rand = cMathUtil::RandDouble();
 	if (rand < noise_prob)
 	{
-		mExpActor = true;
-		AddExpNoise(action);
+	mExpActor = true;
+	AddExpNoise(action);
 	}
-	
+	*/
+
+	const double critic_exp_val = 0.6;
+	const double actor_exp_val = 0.8;
+
+	double rand = cMathUtil::RandDouble();
+	if (rand < critic_exp_val)
+	{
+		action = GetRandomActionFrag();
+		mExpCritic = true;
+		mExpActor = false;
+	}
+	else if (rand < actor_exp_val)
+	{
+		action = CalcActionNetCont();
+		AddExpNoise(action);
+		mExpCritic = false;
+		mExpActor = true;
+	}
+	else
+	{
+		action = GetRandomActionFrag();
+		AddExpNoise(action);
+		mExpCritic = true;
+		mExpActor = true;
+	}
+
 	ApplyAction(action);
 
 	printf("rand action: %i, %.3f\n", action.mID, action.mDist);
@@ -161,7 +191,7 @@ void cBallControllerACE::UpdateAction()
 	}
 	else
 	{
-		action = GetRandomActionFrag();
+		action = GetRandomActionDiscrete();
 		mOffPolicy = true;
 	}
 
@@ -177,13 +207,25 @@ cBallController::tAction cBallControllerACE::CalcActionNetCont()
 	mNet.Eval(state, y);
 
 	int a = GetMaxFragIdx(y);
+	double val = GetMaxFragVal(y);
 	Eigen::VectorXd action_frag;
 	GetFrag(y, a, action_frag);
 
 	tAction ball_action;
 	ball_action.mID = a;
 	ball_action.mDist = action_frag[0];
-	printf("action: %i, %.5f\n", ball_action.mID, ball_action.mDist);
+	printf("Value: %.3f\n", val);
+	printf("Action %i (%.3f):\t", ball_action.mID, ball_action.mDist);
+	
+	for (int i = 0; i < static_cast<int>(y.size()); ++i)
+	{
+		if (i != 0)
+		{
+			printf(",\t");
+		}
+		printf("%.3f", y[i]);
+	}
+	printf("\n\n");
 
 	return ball_action;
 }
@@ -196,7 +238,8 @@ cBallController::tAction cBallControllerACE::GetRandomActionFrag()
 	Eigen::VectorXd y;
 	mNet.Eval(state, y);
 
-	int a = cMathUtil::RandInt(0, GetNumActionFrags());
+	int max_a = GetMaxFragIdx(y);
+	int a = cMathUtil::RandIntExclude(0, GetNumActionFrags(), max_a);
 	Eigen::VectorXd action_frag;
 	GetFrag(y, a, action_frag);
 
