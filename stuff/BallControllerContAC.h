@@ -16,5 +16,5 @@ public:
 
 protected:
 
-	virtual tAction CalcActionNetCont();
+	virtual void CalcActionNetCont(tAction& out_action);
 };

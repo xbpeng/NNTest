@@ -17,7 +17,8 @@ int cBallControllerCont::GetActionSize() const
 
 void cBallControllerCont::ApplyRandAction()
 {
-	tAction action = GetRandomActionCont();
+	tAction action;
+	GetRandomActionCont(action);
 	ApplyAction(action);
 	mOffPolicy = true;
 	printf("rand action: %.3f\n", action.mDist);
@@ -37,32 +38,7 @@ cBallControllerCont::tAction cBallControllerCont::BuildActionFromParams(const Ei
 	return action;
 }
 
-void cBallControllerCont::UpdateAction()
-{
-	mOffPolicy = false;
-	mPosBeg = mBall.GetPos();
-
-	if (HasGround())
-	{
-		SampleGround(mGroundSamples);
-	}
-
-	tAction action;
-	action.mDist = 0;
-	if (HasNet())
-	{
-		action = CalcActionNetCont();
-	}
-	else
-	{
-		action = GetRandomActionCont();
-		mOffPolicy = true;
-	}
-
-	ApplyAction(action);
-}
-
-cBallController::tAction cBallControllerCont::CalcActionNetCont()
+void cBallControllerCont::CalcActionNetCont(tAction& out_action)
 {
 	Eigen::VectorXd state;
 	BuildState(state);
@@ -74,15 +50,21 @@ cBallController::tAction cBallControllerCont::CalcActionNetCont()
 	ball_action.mDist = action[0];
 	printf("action: %.5f , %.5f\n", action[0], ball_action.mDist);
 
-	return ball_action;
+	out_action = ball_action;
 }
 
-cBallController::tAction cBallControllerCont::GetRandomActionCont()
+void cBallControllerCont::GetRandomAction(tAction& out_action)
+{
+	GetRandomActionCont(out_action);
+}
+
+void cBallControllerCont::GetRandomActionCont(tAction& out_action)
 {
 	const double dist_mean = 0;
 	const double dist_stdev = 0.5;
 
-	tAction action = CalcActionNetCont();
+	tAction action;
+	CalcActionNetCont(action);
 	double rand_dist = cMathUtil::RandDoubleNorm(dist_mean, dist_stdev);
 	/*
 	while (action.mDist + rand_dist <= gMinDist
@@ -95,5 +77,5 @@ cBallController::tAction cBallControllerCont::GetRandomActionCont()
 	action.mDist = cMathUtil::Clamp(action.mDist, gMinDist, gMaxDist);
 
 	//tAction action = GetRandomActionDiscrete();
-	return action;
+	out_action = action;
 }

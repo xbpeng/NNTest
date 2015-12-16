@@ -91,7 +91,7 @@ void cBallControllerMACE::UpdateFragParams()
 	mNumActionFrags = num_outputs;
 }
 
-cBallController::tAction cBallControllerMACE::CalcActionNetCont()
+void cBallControllerMACE::CalcActionNetCont(tAction& out_action)
 {
 	Eigen::VectorXd state;
 	BuildState(state);
@@ -111,7 +111,7 @@ cBallController::tAction cBallControllerMACE::CalcActionNetCont()
 	ball_action.mDist = action_frag[0];
 	printf("action: %i, %.5f\n", a, ball_action.mDist);
 
-	return ball_action;
+	out_action = ball_action;
 }
 
 int cBallControllerMACE::GetMaxFragIdx(const Eigen::VectorXd& params) const

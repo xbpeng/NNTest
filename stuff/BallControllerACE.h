@@ -14,7 +14,6 @@ public:
 	virtual bool LoadNet(const std::string& net_file);
 
 	virtual int GetActionSize() const;
-	virtual void ApplyRandAction();
 
 	virtual int GetNumActionFrags() const;
 	virtual int GetActionFragSize() const;
@@ -32,10 +31,13 @@ protected:
 	bool mExpCritic;
 	bool mExpActor;
 
-	virtual void UpdateAction();
-	virtual tAction CalcActionNetCont();
-	virtual tAction GetRandomActionFrag();
+	virtual void CalcActionNetCont(tAction& out_action);
+	virtual void GetRandomActionFrag(tAction& out_action);
 	virtual void AddExpNoise(tAction& out_action);
+
+	virtual void UpdateAction();
+	virtual void ExploitPolicy(tAction& out_action);
+	virtual void ExploreAction(tAction& out_action);
 
 	virtual void UpdateFragParams();
 

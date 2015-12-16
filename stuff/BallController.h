@@ -54,10 +54,18 @@ public:
 
 	virtual double GetDistTravelled() const;
 
+	virtual void SetExpRate(double rate);
+	virtual void SetExpTemp(double temp);
+	virtual void EnableExp(bool enable);
+
 protected:
 	cBall& mBall;
 	cPenaltyGround* mGround;
 	double mCtrlNoise;
+
+	bool mEnableExp;
+	double mExpRate;
+	double mExpTemp;
 
 	Eigen::VectorXd mGroundSamples;
 	cNeuralNet mNet;
@@ -67,7 +75,6 @@ protected:
 	tVector mPosEnd;
 	double mDistTravelled;
 
-	int mCurrActionIdx;
 	tAction mCurrAction;
 	bool mOffPolicy;
 
@@ -78,9 +85,14 @@ protected:
 	virtual bool HasGround() const;
 
 	virtual bool HasNet() const;
-	virtual int CalcActionNet();
-	virtual int GetRandomAction() const;
-	virtual tAction GetRandomActionDiscrete() const;
+	virtual bool ShouldExplore() const;
+	virtual void ExploitPolicy(tAction& out_action);
+	virtual void ExploreAction(tAction& out_action);
+
+	virtual void DecideAction(tAction& out_action);
+	virtual void CalcActionNet(tAction& out_action);
+	virtual void GetRandomAction(tAction& out_action);
+	virtual void GetRandomActionDiscrete(tAction& out_action) const;
 
 	virtual void BuildState(Eigen::VectorXd& state) const;
 	virtual void ApplyAction(int a);

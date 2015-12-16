@@ -93,6 +93,8 @@ const tVector& cScenarioBallRL::GetBallPos() const
 void cScenarioBallRL::ToggleTraining()
 {
 	mEnableTraining = !mEnableTraining;
+	auto ctrl = mBall.GetController();
+	ctrl->EnableExp(mEnableTraining);
 }
 
 bool cScenarioBallRL::EnableTraining() const
@@ -144,6 +146,7 @@ void cScenarioBallRL::SetupController()
 	}
 
 	mBall.SetController(ctrl);
+	ctrl->EnableExp(true);
 }
 
 void cScenarioBallRL::BuildController(std::shared_ptr<cBallController>& out_ctrl)
@@ -203,11 +206,9 @@ void cScenarioBallRL::NewCycleUpdate()
 
 		double rand = cMathUtil::RandDouble(0, 1);
 		double exp_rate = GetExpRate();
-		if (rand < exp_rate)
-		{
-			ApplyRandAction();
-		}
-
+		auto& ctrl = mBall.GetController();
+		ctrl->SetExpRate(exp_rate);
+		
 		// start recording new tuple
 		mCurrTuple.mStateBeg = mCurrTuple.mStateEnd;
 		RecordAction(mCurrTuple.mAction);

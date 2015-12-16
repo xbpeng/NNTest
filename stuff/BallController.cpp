@@ -26,6 +26,11 @@ cBallController::cBallController(cBall& ball) :
 	mOffPolicy = false;
 	mGround = nullptr;
 	mCtrlNoise = 0;
+
+	mEnableExp = false;
+	mExpRate = 0.2;
+	mExpTemp = 0.5;
+	
 	Reset();
 }
 
@@ -61,7 +66,6 @@ void cBallController::Reset()
 	UpdateDistTravelled();
 	mCurrAction = gActions[0];
 	mGroundSamples = Eigen::VectorXd::Zero(gNumGroundSamples);
-	mCurrActionIdx = 0;
 }
 
 bool cBallController::IsNewCycle() const
@@ -139,7 +143,7 @@ int cBallController::GetNetOutputSize() const
 
 void cBallController::UpdateAction()
 {
-	mOffPolicy = false;
+	mOffPolicy = true;
 	mPosBeg = mBall.GetPos();
 
 	if (HasGround())
@@ -147,18 +151,17 @@ void cBallController::UpdateAction()
 		SampleGround(mGroundSamples);
 	}
 
-	int a = 0;
+	tAction action;
 	if (HasNet())
 	{
-		a = CalcActionNet();
+		DecideAction(action);
 	}
 	else
 	{
-		a = GetRandomAction();
-		mOffPolicy = true;
+		GetRandomActionDiscrete(action);
 	}
 	
-	ApplyAction(a);
+	ApplyAction(action);
 }
 
 double cBallController::CalcDeltaPhase() const
@@ -205,7 +208,43 @@ bool cBallController::HasNet() const
 	return mNet.HasNet();
 }
 
-int cBallController::CalcActionNet()
+bool cBallController::ShouldExplore() const
+{
+	bool explore = false;
+	if (mEnableExp)
+	{
+		double exp_rand = cMathUtil::RandDouble();
+		explore = (exp_rand < mExpRate);
+	}
+	return explore;
+}
+
+void cBallController::DecideAction(tAction& out_action)
+{
+	bool explore = ShouldExplore();
+	if (explore)
+	{
+		ExploreAction(out_action);
+		mOffPolicy = true;
+	}
+	else
+	{
+		ExploitPolicy(out_action);
+		mOffPolicy = false;
+	}
+}
+
+void cBallController::ExploitPolicy(tAction& out_action)
+{
+	CalcActionNet(out_action);
+}
+
+void cBallController::ExploreAction(tAction& out_action)
+{
+	GetRandomAction(out_action);
+}
+
+void cBallController::CalcActionNet(tAction& out_action)
 {
 	Eigen::VectorXd state;
 	BuildState(state);
@@ -223,19 +262,18 @@ int cBallController::CalcActionNet()
 	}
 	printf("\n");
 
-	return a;
+	out_action = gActions[a];
 }
 
-int cBallController::GetRandomAction() const
+void cBallController::GetRandomAction(tAction& out_action)
+{
+	GetRandomActionDiscrete(out_action);
+}
+
+void cBallController::GetRandomActionDiscrete(tAction& out_action) const
 {
 	int a = cMathUtil::RandInt(0, gNumActions);
-	return a;
-}
-
-cBallController::tAction cBallController::GetRandomActionDiscrete() const
-{
-	int a = GetRandomAction();
-	return gActions[a];
+	out_action = gActions[a];
 }
 
 int cBallController::GetStateSize() const
@@ -274,7 +312,7 @@ void cBallController::RecordState(Eigen::VectorXd& out_state) const
 void cBallController::RecordAction(Eigen::VectorXd& out_action) const
 {
 	out_action = Eigen::VectorXd::Zero(GetActionSize());
-	out_action[mCurrActionIdx] = 1;
+	out_action[mCurrAction.mID] = 1;
 }
 
 bool cBallController::IsOffPolicy() const
@@ -284,10 +322,11 @@ bool cBallController::IsOffPolicy() const
 
 void cBallController::ApplyRandAction()
 {
-	int a = GetRandomAction();
-	ApplyAction(a);
+	tAction action;
+	GetRandomActionDiscrete(action);
+	ApplyAction(action);
 	mOffPolicy = true;
-	printf("rand action: %i\n", a);
+	printf("rand action: %i\n", action.mID);
 }
 
 void cBallController::CopyNet(const cNeuralNet& net)
@@ -305,6 +344,21 @@ double cBallController::GetDistTravelled() const
 	return mDistTravelled;
 }
 
+void cBallController::SetExpRate(double rate)
+{
+	mExpRate = rate;
+}
+
+void cBallController::SetExpTemp(double temp)
+{
+	mExpTemp = temp;
+}
+
+void cBallController::EnableExp(bool enable)
+{
+	mEnableExp = enable;
+}
+
 void cBallController::BuildState(Eigen::VectorXd& state) const
 {
 	state = mGroundSamples;
@@ -312,7 +366,6 @@ void cBallController::BuildState(Eigen::VectorXd& state) const
 
 void cBallController::ApplyAction(int a)
 {
-	mCurrActionIdx = a;
 	ApplyAction(gActions[a]);
 }
 

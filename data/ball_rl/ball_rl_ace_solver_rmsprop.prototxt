@@ -1,0 +1,22 @@
+net: "data/ball_rl/ball_rl_ace_train.prototxt"
+
+base_lr: 0.001
+momentum: 0.0
+weight_decay: 0.0005
+
+# The learning rate policy
+lr_policy: "step"
+gamma: 0.1
+power: 0.75
+stepsize: 100000000
+
+display: 1
+max_iter: 100000000
+
+# snapshot intermediate results
+snapshot: 0
+
+# solver mode: CPU or GPU
+solver_mode: CPU
+solver_type: RMSPROP
+rms_decay: 0.98

@@ -10,8 +10,8 @@
 //-critic_solver_file= data/balL_rl/balL_rl_critic_solver.prototxt
 //-critic_net_file= data/balL_rl/balL_rl_critic_deploy.prototxt
 
--solver_file= data/balL_rl/balL_rl_ace4_solver.prototxt
--net_file= data/balL_rl/balL_rl_ace4_deploy.prototxt
+-solver_file= data/balL_rl/balL_rl_ace_solver.prototxt
+-net_file= data/balL_rl/balL_rl_ace_deploy.prototxt
 
 //-solver_file= data/balL_rl/balL_rl_ace4_actor_solver.prototxt
 //-net_file= data/balL_rl/balL_rl_ace4_actor_deploy.prototxt

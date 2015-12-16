@@ -17,7 +17,7 @@ public:
 
 protected:
 
-	virtual void UpdateAction();
-	virtual tAction CalcActionNetCont();
-	virtual tAction GetRandomActionCont();
+	virtual void CalcActionNetCont(tAction& out_action);
+	virtual void GetRandomAction(tAction& out_action);
+	virtual void GetRandomActionCont(tAction& out_action);
 };

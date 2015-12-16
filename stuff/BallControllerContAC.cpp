@@ -32,7 +32,7 @@ cBallControllerContAC::tAction cBallControllerContAC::BuildActionFromParams(cons
 	return action;
 }
 
-cBallController::tAction cBallControllerContAC::CalcActionNetCont()
+void cBallControllerContAC::CalcActionNetCont(tAction& out_action)
 {
 	Eigen::VectorXd state;
 	BuildState(state);
@@ -44,5 +44,5 @@ cBallController::tAction cBallControllerContAC::CalcActionNetCont()
 	ball_action.mDist = y[gParamActionIdx];
 	printf("action: %.5f , value %.5f\n", y[gParamActionIdx], y[gParamValIdx]);
 
-	return ball_action;
+	out_action = ball_action;
 }

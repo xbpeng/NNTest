@@ -1,8 +1,8 @@
 import os
 import subprocess
 
-poli_files_dir = 'C:/Users/Jason/Desktop/progs/NNTest/output/intermediate/test/'
-root_dir = 'C:/Users/Jason/Desktop/progs/NNTest/'
+poli_files_dir = 'C:/Users/Jason/Documents/compsci_stuff/c++_stuff/NNTest/output/intermediate/test/'
+root_dir = 'C:/Users/Jason/Documents/compsci_stuff/c++_stuff/NNTest/'
 exe_name = exe_path = 'NNTest.exe'
 
 args = '-arg_file= args/ball_int_poli_eval.txt'
