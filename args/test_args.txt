@@ -75,7 +75,8 @@
 -arm_ctrl_type= nn_pixel
 
 -exp_rate= 0.2
--num_exp_anneal_iters= 5000
+-exp_temp= 0.025
+-num_exp_anneal_iters= 5
 //-num_exp_anneal_iters= 1
 
 -trainer_int_iter= 500

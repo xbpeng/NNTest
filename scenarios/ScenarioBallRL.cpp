@@ -2,12 +2,14 @@
 
 const int gTupleBufferSize = 32;
 const int gTrainerPlaybackMemSize = 50000;
-const double gInitExpRate = 1;
 
 cScenarioBallRL::cScenarioBallRL()
 {
 	Clear();
-	mEpsilon = 0.1;
+	mInitExpRate = 1;
+	mInitExpTemp = 20;
+	mExpRate = 0.1;
+	mExpTemp = 0.025;
 	mNumExpAnnealIters = 5000;
 	mCtrlNoise = 0;
 	mEnableTraining = true;
@@ -34,7 +36,8 @@ void cScenarioBallRL::ParseArgs(const cArgParser& parser)
 	parser.ParseString("model_file", mModelFile);
 	parser.ParseDouble("ctrl_noise", mCtrlNoise);
 
-	parser.ParseDouble("exp_rate", mEpsilon);
+	parser.ParseDouble("exp_rate", mExpRate);
+	parser.ParseDouble("exp_temp", mExpTemp);
 	parser.ParseInt("num_exp_anneal_iters", mNumExpAnnealIters);
 
 	parser.ParseDouble("ground_height", mGroundParams.mHeight);
@@ -201,13 +204,18 @@ void cScenarioBallRL::NewCycleUpdate()
 			if (mNumTuples == static_cast<int>(mTupleBuffer.size()))
 			{
 				Train();
+
+				double exp_rate = GetExpRate();
+				double exp_temp = GetExpTemp();
+				auto& ctrl = mBall.GetController();
+				ctrl->SetExpRate(exp_rate);
+				ctrl->SetExpTemp(exp_temp);
+
+				printf("\n");
+				printf("Exp Rate: %.3f\n", exp_rate);
+				printf("Exp Temp: %.3f\n", exp_temp);
 			}
 		}
-
-		double rand = cMathUtil::RandDouble(0, 1);
-		double exp_rate = GetExpRate();
-		auto& ctrl = mBall.GetController();
-		ctrl->SetExpRate(exp_rate);
 		
 		// start recording new tuple
 		mCurrTuple.mStateBeg = mCurrTuple.mStateEnd;
@@ -370,6 +378,15 @@ double cScenarioBallRL::GetExpRate() const
 	int iter = GetIter();
 	double eps = 1 - static_cast<double>(iter) / mNumExpAnnealIters;
 	eps = cMathUtil::Clamp(eps, 0.0, 1.0);
-	eps = eps * (gInitExpRate - mEpsilon) + mEpsilon;
+	eps = eps * (mInitExpRate - mExpRate) + mExpRate;
 	return eps;
+}
+
+double cScenarioBallRL::GetExpTemp() const
+{
+	int iter = GetIter();
+	double temp = 1 - static_cast<double>(iter) / mNumExpAnnealIters;
+	temp = cMathUtil::Clamp(temp, 0.0, 1.0);
+	temp = temp * (mInitExpTemp - mExpTemp) + mExpTemp;
+	return temp;
 }

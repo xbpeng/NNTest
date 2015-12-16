@@ -43,7 +43,11 @@ protected:
 
 	bool mFirstCycle;
 	int mNumExpAnnealIters;
-	double mEpsilon;
+
+	double mInitExpRate;
+	double mInitExpTemp;
+	double mExpRate;
+	double mExpTemp;
 	double mCtrlNoise;
 	bool mEnableTraining;
 
@@ -87,4 +91,5 @@ protected:
 	virtual int GetIter() const;
 	virtual void Train();
 	virtual double GetExpRate() const;
+	virtual double GetExpTemp() const;
 };

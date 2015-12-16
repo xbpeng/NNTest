@@ -27,7 +27,7 @@ public:
 
 protected:
 	int mNumActionFrags;
-
+	std::vector<double> mBoltzmannBuffer;
 	bool mExpCritic;
 	bool mExpActor;
 
@@ -36,14 +36,19 @@ protected:
 	virtual void AddExpNoise(tAction& out_action);
 
 	virtual void UpdateAction();
+	virtual void DecideAction(tAction& out_action);
+	virtual void DecideActionBoltzmann(tAction& out_action);
 	virtual void ExploitPolicy(tAction& out_action);
 	virtual void ExploreAction(tAction& out_action);
 
 	virtual void UpdateFragParams();
+	virtual void BuildActorAction(const Eigen::VectorXd& params, int a_id, tAction& out_action) const;
+	virtual void DebugPrintAction(const tAction& action, const Eigen::VectorXd& params) const;
 
 	virtual int GetMaxFragIdx(const Eigen::VectorXd& params) const;
 	virtual double GetMaxFragVal(const Eigen::VectorXd& params) const;
 	virtual void GetFrag(const Eigen::VectorXd& params, int a_idx, Eigen::VectorXd& out_action) const;
 	virtual void SetFrag(const Eigen::VectorXd& frag, int a_idx, Eigen::VectorXd& out_params) const;
+	virtual double GetVal(const Eigen::VectorXd& params, int a_idx) const;
 	virtual void SetVal(double val, int a_idx, Eigen::VectorXd& out_params) const;
 };

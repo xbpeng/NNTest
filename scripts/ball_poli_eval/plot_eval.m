@@ -15,6 +15,7 @@ files{end + 1} = {'ace_target.txt', 'ACE Target'};
 %files{end + 1} = {'mace.txt', 'MACE'};
 %files{end + 1} = {'mace_double.txt', 'MACE Double'};
 %files{end + 1} = {'mace4_double.txt', 'MACE4 Double'};
+files{end + 1} = {'ace4_15.txt', 'ACE4 15'};
 
 lines = {'b-', 'r-', 'm-', 'k-', 'g-', 'c-', 'k--', 'r--'};
 iter_step = 500 / 1000;

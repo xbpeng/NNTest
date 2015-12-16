@@ -1,6 +1,8 @@
 #include "BallControllerACE.h"
 #include "Ball.h"
 
+#define ENABLE_BOLTZMANN_EXP
+
 const int gActionFragSize = 1;
 
 cBallControllerACE::cBallControllerACE(cBall& ball) :
@@ -159,6 +161,81 @@ void cBallControllerACE::UpdateAction()
 	cBallController::UpdateAction();
 }
 
+void cBallControllerACE::DecideAction(tAction& out_action)
+{
+#if defined(ENABLE_BOLTZMANN_EXP)
+	DecideActionBoltzmann(out_action);
+#else
+	cBallController::DecideAction(out_action);
+#endif
+}
+
+void cBallControllerACE::DecideActionBoltzmann(tAction& out_action)
+{
+	Eigen::VectorXd state;
+	BuildState(state);
+
+	Eigen::VectorXd y;
+	mNet.Eval(state, y);
+
+	int a_max = GetMaxFragIdx(y);
+	int num_actors = GetNumActionFrags();
+	double max_val = GetVal(y, a_max);
+
+	double sum = 0;
+	for (int i = 0; i < num_actors; ++i)
+	{
+		double curr_val = GetVal(y, i);
+		curr_val = std::exp((curr_val - max_val) / mExpTemp);
+
+		mBoltzmannBuffer[i] = curr_val;
+		sum += curr_val;
+	}
+
+	double rand = cMathUtil::RandDouble(0, sum);
+	int a = 0;
+	for (int i = 0; i < num_actors; ++i)
+	{
+		double curr_val = mBoltzmannBuffer[i];
+		rand -= curr_val;
+
+		if (rand <= 0)
+		{
+			a = i;
+			break;
+		}
+	}
+
+	BuildActorAction(y, a, out_action);
+
+	double rand_noise = cMathUtil::RandDouble();
+	if (rand_noise < mExpRate)
+	{
+		AddExpNoise(out_action);
+		mExpActor = true;
+	}
+
+	if (a != a_max)
+	{
+		mExpCritic = true;
+	}
+	
+	if (mExpCritic || mExpActor)
+	{
+		if (mExpActor)
+		{
+			printf("Actor ");
+		}
+		if (mExpCritic)
+		{
+			printf("Critic ");
+		}
+		printf("Exploration\n");
+	}
+
+	DebugPrintAction(out_action, y);
+}
+
 void cBallControllerACE::ExploitPolicy(tAction& out_action)
 {
 	CalcActionNetCont(out_action);
@@ -173,27 +250,9 @@ void cBallControllerACE::CalcActionNetCont(tAction& out_action)
 	mNet.Eval(state, y);
 
 	int a = GetMaxFragIdx(y);
-	double val = GetMaxFragVal(y);
-	Eigen::VectorXd action_frag;
-	GetFrag(y, a, action_frag);
+	BuildActorAction(y, a, out_action);
 
-	tAction ball_action;
-	ball_action.mID = a;
-	ball_action.mDist = action_frag[0];
-	printf("Value: %.3f\n", val);
-	printf("Action %i (%.3f):\t", ball_action.mID, ball_action.mDist);
-	
-	for (int i = 0; i < static_cast<int>(y.size()); ++i)
-	{
-		if (i != 0)
-		{
-			printf(",\t");
-		}
-		printf("%.3f", y[i]);
-	}
-	printf("\n\n");
-
-	out_action = ball_action;
+	DebugPrintAction(out_action, y);
 }
 
 void cBallControllerACE::GetRandomActionFrag(tAction& out_action)
@@ -209,11 +268,8 @@ void cBallControllerACE::GetRandomActionFrag(tAction& out_action)
 	Eigen::VectorXd action_frag;
 	GetFrag(y, a, action_frag);
 
-	tAction ball_action;
-	ball_action.mID = a;
-	ball_action.mDist = action_frag[0];
-
-	out_action = ball_action;
+	out_action.mID = a;
+	out_action.mDist = action_frag[0];
 }
 
 void cBallControllerACE::AddExpNoise(tAction& out_action)
@@ -231,6 +287,36 @@ void cBallControllerACE::UpdateFragParams()
 {
 	int num_outputs = mNet.GetOutputSize();
 	mNumActionFrags = cACETrainer::CalcNumFrags(num_outputs, gActionFragSize);
+
+#if defined(ENABLE_BOLTZMANN_EXP)
+	mBoltzmannBuffer.resize(mNumActionFrags);
+#endif
+}
+
+void cBallControllerACE::BuildActorAction(const Eigen::VectorXd& params, int a_id, tAction& out_action) const
+{
+	Eigen::VectorXd action_frag;
+	GetFrag(params, a_id, action_frag);
+	out_action.mID = a_id;
+	out_action.mDist = action_frag[0];
+}
+
+void cBallControllerACE::DebugPrintAction(const tAction& action, const Eigen::VectorXd& params) const
+{
+	double val = GetVal(params, action.mID);
+
+	printf("Value: %.3f\n", val);
+	printf("Action %i (%.3f):\t", action.mID, action.mDist);
+
+	for (int i = 0; i < static_cast<int>(params.size()); ++i)
+	{
+		if (i != 0)
+		{
+			printf(",\t");
+		}
+		printf("%.3f", params[i]);
+	}
+	printf("\n\n");
 }
 
 int cBallControllerACE::GetMaxFragIdx(const Eigen::VectorXd& params) const
@@ -251,6 +337,11 @@ void cBallControllerACE::GetFrag(const Eigen::VectorXd& params, int a_idx, Eigen
 void cBallControllerACE::SetFrag(const Eigen::VectorXd& frag, int a_idx, Eigen::VectorXd& out_params) const
 {
 	cACETrainer::SetFrag(frag, a_idx, mNumActionFrags, gActionFragSize, out_params);
+}
+
+double cBallControllerACE::GetVal(const Eigen::VectorXd& params, int a_idx) const
+{
+	return cACETrainer::GetVal(params, a_idx);
 }
 
 void cBallControllerACE::SetVal(double val, int a_idx, Eigen::VectorXd& out_params) const
