@@ -33,7 +33,7 @@ void cScenarioBallRLACE::InitTrainer()
 	mTrainerParams.mSolverFile = mSolverFile;
 	mTrainerParams.mPlaybackMemSize = gTrainerPlaybackMemSize;
 	mTrainerParams.mPoolSize = 1;
-	mTrainerParams.mNumInitSamples = 100;
+	mTrainerParams.mNumInitSamples = 10000;
 	mTrainerParams.mFreezeTargetIters = 500;
 
 	auto ctrl = GetACECtrl();
