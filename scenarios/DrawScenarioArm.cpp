@@ -178,7 +178,7 @@ void cDrawScenarioArm::AddCharTrace(const std::shared_ptr<cSimCharacter>& charac
 {
 	cCharTracer::tParams params;
 	params.mChar = character;
-	params.mColor = col;
+	params.mColors.push_back(col);
 	params.mType = cCharTracer::eTraceJoint;
 	params.mTraceID = cSimArm::eJointLinkEnd;
 	mTracer.AddTrace(params);
