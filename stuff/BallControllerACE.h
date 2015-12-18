@@ -33,7 +33,9 @@ protected:
 
 	virtual void CalcActionNetCont(tAction& out_action);
 	virtual void GetRandomActionFrag(tAction& out_action);
-	virtual void AddExpNoise(tAction& out_action);
+	virtual void ApplyExpNoise(tAction& out_action);
+	virtual void AddExpActionNoise(tAction& out_action);
+	virtual void AddExpStateNoise(tAction& out_action);
 
 	virtual void UpdateAction();
 	virtual void DecideAction(tAction& out_action);

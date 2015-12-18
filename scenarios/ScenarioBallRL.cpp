@@ -62,6 +62,13 @@ void cScenarioBallRL::Reset()
 	mGround.Reset();
 	mFirstCycle = true;
 	mNumTuples = 0;
+
+	auto ctrl = mBall.GetController();
+	double exp_rate = GetExpRate();
+	double exp_temp = GetExpTemp();
+	ctrl->SetExpRate(exp_rate);
+	ctrl->SetExpTemp(exp_temp);
+
 }
 
 void cScenarioBallRL::Clear()
@@ -148,8 +155,8 @@ void cScenarioBallRL::SetupController()
 		ctrl->LoadModel(mModelFile);
 	}
 
-	mBall.SetController(ctrl);
 	ctrl->EnableExp(true);
+	mBall.SetController(ctrl);
 }
 
 void cScenarioBallRL::BuildController(std::shared_ptr<cBallController>& out_ctrl)

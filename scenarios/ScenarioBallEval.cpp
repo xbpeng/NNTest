@@ -15,6 +15,7 @@ cScenarioBallEval::~cScenarioBallEval()
 void cScenarioBallEval::Init()
 {
 	BALL_EVAL_BASE::Init();
+	mBall.GetController()->EnableExp(false);
 }
 
 void cScenarioBallEval::ParseArgs(const cArgParser& parser)

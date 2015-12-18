@@ -85,14 +85,14 @@ void cBallControllerACE::ExploreAction(tAction& out_action)
 	else if (rand < actor_exp_val)
 	{
 		CalcActionNetCont(action);
-		AddExpNoise(action);
+		ApplyExpNoise(action);
 		mExpCritic = false;
 		mExpActor = true;
 	}
 	else
 	{
 		GetRandomActionFrag(action);
-		AddExpNoise(action);
+		ApplyExpNoise(action);
 		mExpCritic = true;
 		mExpActor = true;
 	}
@@ -172,6 +172,8 @@ void cBallControllerACE::DecideAction(tAction& out_action)
 
 void cBallControllerACE::DecideActionBoltzmann(tAction& out_action)
 {
+	mOffPolicy = false;
+
 	Eigen::VectorXd state;
 	BuildState(state);
 
@@ -179,49 +181,55 @@ void cBallControllerACE::DecideActionBoltzmann(tAction& out_action)
 	mNet.Eval(state, y);
 
 	int a_max = GetMaxFragIdx(y);
-	int num_actors = GetNumActionFrags();
-	double max_val = GetVal(y, a_max);
+	int a = a_max;
 
-	double sum = 0;
-	for (int i = 0; i < num_actors; ++i)
+	if (mEnableExp && mExpTemp != 0)
 	{
-		double curr_val = GetVal(y, i);
-		curr_val = std::exp((curr_val - max_val) / mExpTemp);
+		int num_actors = GetNumActionFrags();
+		double max_val = GetVal(y, a_max);
 
-		mBoltzmannBuffer[i] = curr_val;
-		sum += curr_val;
-	}
-
-	double rand = cMathUtil::RandDouble(0, sum);
-	int a = 0;
-	for (int i = 0; i < num_actors; ++i)
-	{
-		double curr_val = mBoltzmannBuffer[i];
-		rand -= curr_val;
-
-		if (rand <= 0)
+		double sum = 0;
+		for (int i = 0; i < num_actors; ++i)
 		{
-			a = i;
-			break;
+			double curr_val = GetVal(y, i);
+			curr_val = std::exp((curr_val - max_val) / mExpTemp);
+
+			mBoltzmannBuffer[i] = curr_val;
+			sum += curr_val;
+		}
+
+		double rand = cMathUtil::RandDouble(0, sum);
+
+		for (int i = 0; i < num_actors; ++i)
+		{
+			double curr_val = mBoltzmannBuffer[i];
+			rand -= curr_val;
+
+			if (rand <= 0)
+			{
+				a = i;
+				break;
+			}
 		}
 	}
 
 	BuildActorAction(y, a, out_action);
 
-	double rand_noise = cMathUtil::RandDouble();
-	if (rand_noise < mExpRate)
+	if (mEnableExp)
 	{
-		AddExpNoise(out_action);
-		mExpActor = true;
-	}
+		double rand_noise = cMathUtil::RandDouble();
+		if (rand_noise < mExpRate)
+		{
+			ApplyExpNoise(out_action);
+			mExpActor = true;
+		}
 
-	if (a != a_max)
-	{
-		mExpCritic = true;
+		mExpCritic = (a != a_max);
 	}
 	
 	if (mExpCritic || mExpActor)
 	{
+		mOffPolicy = true;
 		if (mExpActor)
 		{
 			printf("Actor ");
@@ -272,7 +280,20 @@ void cBallControllerACE::GetRandomActionFrag(tAction& out_action)
 	out_action.mDist = action_frag[0];
 }
 
-void cBallControllerACE::AddExpNoise(tAction& out_action)
+void cBallControllerACE::ApplyExpNoise(tAction& out_action)
+{
+	int rand = cMathUtil::RandInt(0, 2);
+	if (rand == 0)
+	{
+		AddExpActionNoise(out_action);
+	}
+	else
+	{
+		AddExpStateNoise(out_action);
+	}
+}
+
+void cBallControllerACE::AddExpActionNoise(tAction& out_action)
 {
 	const double dist_mean = 0;
 	const double dist_stdev = 0.5;
@@ -281,6 +302,17 @@ void cBallControllerACE::AddExpNoise(tAction& out_action)
 
 	out_action.mDist += rand_dist;
 	out_action.mDist = cMathUtil::Clamp(out_action.mDist, gMinDist, gMaxDist);
+}
+
+void cBallControllerACE::AddExpStateNoise(tAction& out_action)
+{
+	const double noise_mean = 0;
+	const double noise_stdev = 1;
+
+	const std::string& noise_layer = "ip0";
+	Eigen::VectorXd y;
+	mNet.ForwardInjectNoisePrefilled(noise_mean, noise_stdev, noise_layer, y);
+	BuildActorAction(y, out_action.mID, out_action);
 }
 
 void cBallControllerACE::UpdateFragParams()
