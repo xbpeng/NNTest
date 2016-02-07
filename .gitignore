@@ -3,6 +3,7 @@
 *.user
 *.suo
 *.exe
+*.VC.opendb
 
 .vs/
 x64/
