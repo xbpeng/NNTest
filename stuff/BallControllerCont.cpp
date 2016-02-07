@@ -66,16 +66,9 @@ void cBallControllerCont::GetRandomActionCont(tAction& out_action)
 	tAction action;
 	CalcActionNetCont(action);
 	double rand_dist = cMathUtil::RandDoubleNorm(dist_mean, dist_stdev);
-	/*
-	while (action.mDist + rand_dist <= gMinDist
-		|| action.mDist + rand_dist >= gMaxDist)
-	{
-		rand_dist = cMathUtil::RandDoubleNorm(dist_mean, dist_stdev);
-	}
-	*/
+	
 	action.mDist += rand_dist;
 	action.mDist = cMathUtil::Clamp(action.mDist, gMinDist, gMaxDist);
 
-	//tAction action = GetRandomActionDiscrete();
 	out_action = action;
 }

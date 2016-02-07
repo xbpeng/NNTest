@@ -1,4 +1,4 @@
-net: "data/ball_rl/ball_rl_actor_train.prototxt"
+net: "data/ball_rl/nets/linear_test_train.prototxt"
 
 # The base learning rate, momentum and the weight decay of the network.
 base_lr: 0.001

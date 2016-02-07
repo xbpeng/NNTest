@@ -322,6 +322,7 @@
     <ClCompile Include="scenarios\DrawScenarioBallEval.cpp" />
     <ClCompile Include="scenarios\DrawScenarioBallRL.cpp" />
     <ClCompile Include="scenarios\DrawScenarioBallRLCacla.cpp" />
+    <ClCompile Include="scenarios\DrawScenarioBallRLDPG.cpp" />
     <ClCompile Include="scenarios\DrawScenarioBallRLMACE.cpp" />
     <ClCompile Include="scenarios\DrawScenarioReg1D.cpp" />
     <ClCompile Include="scenarios\DrawScenarioReg1DTrainer.cpp" />
@@ -332,6 +333,7 @@
     <ClCompile Include="scenarios\ScenarioBallEval.cpp" />
     <ClCompile Include="scenarios\ScenarioBallRL.cpp" />
     <ClCompile Include="scenarios\ScenarioBallRLCacla.cpp" />
+    <ClCompile Include="scenarios\ScenarioBallRLDPG.cpp" />
     <ClCompile Include="scenarios\ScenarioBallRLMACE.cpp" />
     <ClCompile Include="scenarios\ScenarioReg1D.cpp" />
     <ClCompile Include="scenarios\ScenarioReg1DTrainer.cpp" />
@@ -436,6 +438,7 @@
     <ClInclude Include="scenarios\DrawScenarioBallEval.h" />
     <ClInclude Include="scenarios\DrawScenarioBallRL.h" />
     <ClInclude Include="scenarios\DrawScenarioBallRLCacla.h" />
+    <ClInclude Include="scenarios\DrawScenarioBallRLDPG.h" />
     <ClInclude Include="scenarios\DrawScenarioBallRLMACE.h" />
     <ClInclude Include="scenarios\DrawScenarioReg1D.h" />
     <ClInclude Include="scenarios\DrawScenarioReg1DTrainer.h" />
@@ -446,6 +449,7 @@
     <ClInclude Include="scenarios\ScenarioBallEval.h" />
     <ClInclude Include="scenarios\ScenarioBallRL.h" />
     <ClInclude Include="scenarios\ScenarioBallRLCacla.h" />
+    <ClInclude Include="scenarios\ScenarioBallRLDPG.h" />
     <ClInclude Include="scenarios\ScenarioBallRLMACE.h" />
     <ClInclude Include="scenarios\ScenarioReg1D.h" />
     <ClInclude Include="scenarios\ScenarioReg1DTrainer.h" />

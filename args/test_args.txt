@@ -1,38 +1,39 @@
--scenario= ball_rl_mace
+-scenario= ball_rl_dpg
 -playback_speed= 1
 
 -character_file= data/arm_rl/arm.txt
 
-//-solver_file= data/balL_rl/balL_rl_solver.prototxt
-//-net_file= data/balL_rl/balL_rl_test.prototxt
-//-model_file= data/ball_rl/ball_rl_model_noise.h5
+//-solver_file= data/ball_rl/nets/balL_rl_solver.prototxt
+//-net_file= data/ball_rl/nets/balL_rl_test.prototxt
+//-model_file= data/ball_rl/nets/ball_rl_model_noise.h5
 
-//-solver_file= data/balL_rl/ball_rl_actor_solver.prototxt
-//-solver_file= data/balL_rl/ball_rl_actor_solver_adadelta.prototxt
-//-net_file= data/balL_rl/balL_rl_actor_deploy.prototxt
-//-model_file= data/ball_rl/ball_rl_actor_init.h5
+-solver_file= data/ball_rl/nets/ball_rl_actor_solver.prototxt
+-net_file= data/ball_rl/nets/balL_rl_actor_deploy.prototxt
+//-model_file= data/ball_rl/nets/ball_rl_actor_init.h5
 
-//-critic_solver_file= data/balL_rl/balL_rl_critic_solver.prototxt
-//-critic_solver_file= data/balL_rl/balL_rl_critic_solver_adadelta.prototxt
-//-critic_net_file= data/balL_rl/balL_rl_critic_deploy.prototxt
-//-critic_solver_file= data/balL_rl/balL_rl_critic_q_solver.prototxt
-//-critic_net_file= data/balL_rl/balL_rl_critic_q_deploy.prototxt
+//-critic_solver_file= data/ball_rl/nets/balL_rl_critic_solver.prototxt
+//-critic_net_file= data/ball_rl/nets/balL_rl_critic_deploy.prototxt
+//-critic_solver_file= data/ball_rl/nets/balL_rl_critic_q_solver.prototxt
+//-critic_net_file= data/ball_rl/nets/balL_rl_critic_q_deploy.prototxt
 
-//-solver_file= data/balL_rl/balL_rl_ac_solver.prototxt
-//-net_file= data/balL_rl/balL_rl_ac_deploy.prototxt
+-critic_solver_file= data/ball_rl/nets/balL_rl_dpg_critic_solver.prototxt
+-critic_net_file= data/ball_rl/nets/balL_rl_dpg_critic_deploy.prototxt
 
--solver_file= data/balL_rl/balL_rl_ace_solver.prototxt
--net_file= data/balL_rl/balL_rl_ace_deploy.prototxt
-//-model_file= data/ball_rl/ball_rl_ace_init_model.h5
-//-model_file= data/ball_rl/ball_rl_ace_model.h5
+//-solver_file= data/ball_rl/nets/balL_rl_ac_solver.prototxt
+//-net_file= data/ball_rl/nets/balL_rl_ac_deploy.prototxt
 
-//-solver_file= data/balL_rl/balL_rl_ace4_actor_solver.prototxt
-//-net_file= data/balL_rl/balL_rl_ace4_actor_deploy.prototxt
-//-model_file= data/ball_rl/ball_rl_ace_actor_init_model.h5
+//-solver_file= data/ball_rl/nets/balL_rl_ace_solver.prototxt
+//-net_file= data/ball_rl/nets/balL_rl_ace_deploy.prototxt
+//-model_file= data/ball_rl/nets/models/ball_rl_ace_init_model.h5
+//-model_file= data/ball_rl/nets/models/ball_rl_ace_model.h5
 
-//-critic_solver_file= data/balL_rl/ball_rl_ace4_critic_solver.prototxt
-//-critic_net_file= data/balL_rl/balL_rl_ace4_critic_deploy.prototxt
-//-critic_model_file= data/ball_rl/ball_rl_ace_critic_init_model.h5
+//-solver_file= data/ball_rl/nets/balL_rl_ace4_actor_solver.prototxt
+//-net_file= data/ball_rl/nets/balL_rl_ace4_actor_deploy.prototxt
+//-model_file= data/ball_rl/nets/ball_rl_ace_actor_init_model.h5
+
+//-critic_solver_file= data/ball_rl/nets/ball_rl_ace4_critic_solver.prototxt
+//-critic_net_file= data/ball_rl/nets/balL_rl_ace4_critic_deploy.prototxt
+//-critic_model_file= data/ball_rl/nets/ball_rl_ace_critic_init_model.h5
 
 //-solver_file= data/arm_rl/arm_solver.prototxt
 //-net_file= data/arm_rl/arm_deploy.prototxt

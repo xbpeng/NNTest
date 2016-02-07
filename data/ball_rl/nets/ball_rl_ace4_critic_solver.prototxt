@@ -1,4 +1,4 @@
-net: "data/ball_rl/ball_rl_ace4_train.prototxt"
+net: "data/ball_rl/nets/ball_rl_ace4_critic_train.prototxt"
 
 # The base learning rate, momentum and the weight decay of the network.
 base_lr: 0.001

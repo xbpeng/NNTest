@@ -614,6 +614,12 @@
     <ClCompile Include="stuff\BallControllerMACE.cpp">
       <Filter>Source Files\stuff</Filter>
     </ClCompile>
+    <ClCompile Include="scenarios\ScenarioBallRLDPG.cpp">
+      <Filter>Source Files\scenarios</Filter>
+    </ClCompile>
+    <ClCompile Include="scenarios\DrawScenarioBallRLDPG.cpp">
+      <Filter>Source Files\scenarios</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\TerrainRL\util\Rand.h">
@@ -951,6 +957,12 @@
     </ClInclude>
     <ClInclude Include="stuff\BallControllerMACE.h">
       <Filter>Source Files\stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="scenarios\ScenarioBallRLDPG.h">
+      <Filter>Source Files\scenarios</Filter>
+    </ClInclude>
+    <ClInclude Include="scenarios\DrawScenarioBallRLDPG.h">
+      <Filter>Source Files\scenarios</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

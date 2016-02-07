@@ -1,9 +1,10 @@
-net: "data/ball_rl/ball_rl_train.prototxt"
+net: "data/ball_rl/nets/ball_rl_critic_q_train.prototxt"
 
 # The base learning rate, momentum and the weight decay of the network.
-base_lr: 0.01
+base_lr: 0.001
 momentum: 0.9
 weight_decay: 0.0005
+
 
 # The learning rate policy
 lr_policy: "step"
@@ -11,12 +12,12 @@ gamma: 0.1
 power: 0.75
 
 # Display every 100 iterations
-display: 100
+display: 1
 
-stepsize: 10000
+stepsize: 100000000
 
 # The maximum number of iterations
-max_iter: 100000
+max_iter: 100000000
 
 # solver mode: CPU or GPU
 solver_mode: CPU
