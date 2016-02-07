@@ -1,5 +1,5 @@
--scenario= ball_rl_ace
--playback_speed= 34
+-scenario= ball_rl_mace
+-playback_speed= 1
 
 -character_file= data/arm_rl/arm.txt
 

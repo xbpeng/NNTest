@@ -533,9 +533,6 @@
     <ClCompile Include="stuff\ArmNNPixelNoPoseController.cpp">
       <Filter>Source Files\stuff</Filter>
     </ClCompile>
-    <ClCompile Include="..\TerrainRL\sim\DogControllerCont.cpp">
-      <Filter>Source Files\util</Filter>
-    </ClCompile>
     <ClCompile Include="stuff\BallControllerContAC.cpp">
       <Filter>Source Files\stuff</Filter>
     </ClCompile>
@@ -548,41 +545,74 @@
     <ClCompile Include="scenarios\DrawScenarioBallEval.cpp">
       <Filter>Source Files\scenarios</Filter>
     </ClCompile>
-    <ClCompile Include="scenarios\ScenarioBallRLACE.cpp">
-      <Filter>Source Files\scenarios</Filter>
+    <ClCompile Include="..\TerrainRL\sim\SimMonopedHopper.cpp">
+      <Filter>Source Files\util</Filter>
     </ClCompile>
-    <ClCompile Include="scenarios\DrawScenarioBallRLACE.cpp">
-      <Filter>Source Files\scenarios</Filter>
+    <ClCompile Include="..\TerrainRL\learning\MACETrainer.cpp">
+      <Filter>Source Files\util</Filter>
     </ClCompile>
-    <ClCompile Include="stuff\BallControllerACE.cpp">
-      <Filter>Source Files\stuff</Filter>
+    <ClCompile Include="..\TerrainRL\sim\DogControllerMACE.cpp">
+      <Filter>Source Files\util</Filter>
     </ClCompile>
-    <ClCompile Include="..\TerrainRL\sim\MonopedHopperControllerCont.cpp">
+    <ClCompile Include="..\TerrainRL\sim\DogControllerQ.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\sim\DogControllerCacla.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\sim\BaseControllerQ.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\sim\BaseControllerCacla.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\sim\BaseControllerMACE.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\render\GraphUtil.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\sim\GoatControllerMACE.cpp">
       <Filter>Source Files\util</Filter>
     </ClCompile>
     <ClCompile Include="..\TerrainRL\sim\MonopedHopperController.cpp">
       <Filter>Source Files\util</Filter>
     </ClCompile>
-    <ClCompile Include="..\TerrainRL\sim\SimMonopedHopper.cpp">
+    <ClCompile Include="..\TerrainRL\sim\MonopedHopperControllerCacla.cpp">
       <Filter>Source Files\util</Filter>
     </ClCompile>
-    <ClCompile Include="stuff\BallControllerMACE.cpp">
-      <Filter>Source Files\stuff</Filter>
+    <ClCompile Include="..\TerrainRL\sim\MonopedHopperControllerMACE.cpp">
+      <Filter>Source Files\util</Filter>
     </ClCompile>
-    <ClCompile Include="scenarios\ScenarioBallRLMACE.cpp">
-      <Filter>Source Files\scenarios</Filter>
+    <ClCompile Include="..\TerrainRL\sim\MonopedHopperControllerQ.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\sim\RaptorController.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\sim\RaptorControllerCacla.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\sim\RaptorControllerMACE.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\sim\RaptorControllerQ.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\sim\TerrainRLCharController.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\sim\SimRaptor.cpp">
+      <Filter>Source Files\util</Filter>
     </ClCompile>
     <ClCompile Include="scenarios\DrawScenarioBallRLMACE.cpp">
       <Filter>Source Files\scenarios</Filter>
     </ClCompile>
-    <ClCompile Include="..\TerrainRL\learning\MACETrainer.cpp">
-      <Filter>Source Files\util</Filter>
+    <ClCompile Include="scenarios\ScenarioBallRLMACE.cpp">
+      <Filter>Source Files\scenarios</Filter>
     </ClCompile>
-    <ClCompile Include="..\TerrainRL\learning\ACETrainer.cpp">
-      <Filter>Source Files\util</Filter>
-    </ClCompile>
-    <ClCompile Include="..\TerrainRL\sim\DogControllerACE.cpp">
-      <Filter>Source Files\util</Filter>
+    <ClCompile Include="stuff\BallControllerMACE.cpp">
+      <Filter>Source Files\stuff</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -841,9 +871,6 @@
     <ClInclude Include="stuff\ArmNNPixelNoPoseController.h">
       <Filter>Source Files\stuff</Filter>
     </ClInclude>
-    <ClInclude Include="..\TerrainRL\sim\DogControllerCont.h">
-      <Filter>Source Files\util</Filter>
-    </ClInclude>
     <ClInclude Include="stuff\BallControllerContAC.h">
       <Filter>Source Files\stuff</Filter>
     </ClInclude>
@@ -856,41 +883,74 @@
     <ClInclude Include="scenarios\DrawScenarioBallEval.h">
       <Filter>Source Files\scenarios</Filter>
     </ClInclude>
-    <ClInclude Include="scenarios\ScenarioBallRLACE.h">
-      <Filter>Source Files\scenarios</Filter>
+    <ClInclude Include="..\TerrainRL\sim\SimMonopedHopper.h">
+      <Filter>Source Files\util</Filter>
     </ClInclude>
-    <ClInclude Include="scenarios\DrawScenarioBallRLACE.h">
-      <Filter>Source Files\scenarios</Filter>
+    <ClInclude Include="..\TerrainRL\learning\MACETrainer.h">
+      <Filter>Source Files\util</Filter>
     </ClInclude>
-    <ClInclude Include="stuff\BallControllerACE.h">
-      <Filter>Source Files\stuff</Filter>
+    <ClInclude Include="..\TerrainRL\sim\DogControllerMACE.h">
+      <Filter>Source Files\util</Filter>
     </ClInclude>
-    <ClInclude Include="..\TerrainRL\sim\MonopedHopperControllerCont.h">
+    <ClInclude Include="..\TerrainRL\sim\DogControllerQ.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\sim\DogControllerCacla.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\sim\BaseControllerMACE.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\sim\BaseControllerQ.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\sim\BaseControllerCacla.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\render\GraphUtil.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\sim\GoatControllerMACE.h">
       <Filter>Source Files\util</Filter>
     </ClInclude>
     <ClInclude Include="..\TerrainRL\sim\MonopedHopperController.h">
       <Filter>Source Files\util</Filter>
     </ClInclude>
-    <ClInclude Include="..\TerrainRL\sim\SimMonopedHopper.h">
+    <ClInclude Include="..\TerrainRL\sim\MonopedHopperControllerCacla.h">
       <Filter>Source Files\util</Filter>
     </ClInclude>
-    <ClInclude Include="stuff\BallControllerMACE.h">
-      <Filter>Source Files\stuff</Filter>
+    <ClInclude Include="..\TerrainRL\sim\MonopedHopperControllerMACE.h">
+      <Filter>Source Files\util</Filter>
     </ClInclude>
-    <ClInclude Include="scenarios\ScenarioBallRLMACE.h">
-      <Filter>Source Files\scenarios</Filter>
+    <ClInclude Include="..\TerrainRL\sim\MonopedHopperControllerQ.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\sim\RaptorController.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\sim\RaptorControllerCacla.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\sim\RaptorControllerMACE.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\sim\RaptorControllerQ.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\sim\TerrainRLCharController.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\sim\SimRaptor.h">
+      <Filter>Source Files\util</Filter>
     </ClInclude>
     <ClInclude Include="scenarios\DrawScenarioBallRLMACE.h">
       <Filter>Source Files\scenarios</Filter>
     </ClInclude>
-    <ClInclude Include="..\TerrainRL\learning\MACETrainer.h">
-      <Filter>Source Files\util</Filter>
+    <ClInclude Include="scenarios\ScenarioBallRLMACE.h">
+      <Filter>Source Files\scenarios</Filter>
     </ClInclude>
-    <ClInclude Include="..\TerrainRL\learning\ACETrainer.h">
-      <Filter>Source Files\util</Filter>
-    </ClInclude>
-    <ClInclude Include="..\TerrainRL\sim\DogControllerACE.h">
-      <Filter>Source Files\util</Filter>
+    <ClInclude Include="stuff\BallControllerMACE.h">
+      <Filter>Source Files\stuff</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

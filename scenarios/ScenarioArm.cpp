@@ -22,7 +22,7 @@ cScenarioArm::cScenarioArm()
 {
 	mEnableAutoTarget = true;
 	mEnableRandPose = true;
-	mSimStepsPerUpdate = 5;
+	mNumUpdateSteps = 5;
 	mTargetPos = tVector(1, 1, 0, 0);
 	ResetTargetCounter();
 	ResetPoseCounter();

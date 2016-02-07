@@ -1,10 +1,10 @@
 #pragma once
 
-#include "scenarios/ScenarioBallRLACE.h"
+#include "scenarios/ScenarioBallRL.h"
 #include "stuff/BallControllerMACE.h"
 #include "learning/MACETrainer.h"
 
-class cScenarioBallRLMACE : public cScenarioBallRLACE
+class cScenarioBallRLMACE : public cScenarioBallRL
 {
 public:
 	cScenarioBallRLMACE();
@@ -15,20 +15,18 @@ public:
 	virtual std::string GetName() const;
 	
 protected:
-	std::string mCriticNetFile;
-	std::string mCriticSolverFile;
-	std::string mCriticModelFile;
 
-	virtual void SetupController();
 	virtual void BuildController(std::shared_ptr<cBallController>& out_ctrl);
 	virtual void InitTrainer();
-	virtual void SetupTrainerOutputOffsetScale();
+	virtual void BuildOutputOffsetScale(const std::shared_ptr<cNeuralNetTrainer>& trainer,
+										Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const;
 
-	virtual std::shared_ptr<cBallControllerMACE> GetMACECtrl() const;
-	virtual std::shared_ptr<cMACETrainer> GetMACETrainer() const;
+	virtual void RecordBegFlags(tExpTuple& out_tuple) const;
+	virtual bool CheckExpCritic() const;
+	virtual bool CheckExpActor() const;
 
-	virtual void BuildCriticOutputOffsetScale(Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const;
-	virtual void BuildActorOutputOffsetScale(Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const;
+	virtual int GetNumActionFrags() const;
+	virtual int GetActionFragSize() const;
 
-	virtual void Train();
+	virtual std::shared_ptr<cBallControllerMACE> GetACECtrl() const;
 };

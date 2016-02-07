@@ -1,10 +1,10 @@
 #pragma once
 #include <memory>
 
-#include "scenarios/DrawScenarioBallRLACE.h"
+#include "scenarios/DrawScenarioBallRL.h"
 #include "scenarios/ScenarioBallRLMACE.h"
 
-class cDrawScenarioBallRLMACE : public cDrawScenarioBallRLACE
+class cDrawScenarioBallRLMACE : public cDrawScenarioBallRL
 {
 public:
 	cDrawScenarioBallRLMACE(cCamera& cam);
@@ -13,4 +13,8 @@ public:
 protected:
 
 	virtual void BuildScene();
+	virtual void UpdateTrace();
+	virtual void DrawTrace() const;
+
+	virtual const tVector& GetActionCol(int a_id) const;
 };

@@ -14,7 +14,6 @@
 #include "scenarios/DrawScenarioReg1DTrainer.h"
 #include "scenarios/DrawScenarioBallRL.h"
 #include "scenarios/DrawScenarioBallRLCacla.h"
-#include "scenarios/DrawScenarioBallRLACE.h"
 #include "scenarios/DrawScenarioBallRLMACE.h"
 #include "scenarios/DrawScenarioBallEval.h"
 #include "scenarios/DrawScenarioArmRL.h"
@@ -107,10 +106,6 @@ void SetupScenario()
 	else if (scenario_name == "ball_rl_cacla")
 	{
 		gScenario = std::shared_ptr<cDrawScenarioBallRLCacla>(new cDrawScenarioBallRLCacla(gCamera));
-	}
-	else if (scenario_name == "ball_rl_ace")
-	{
-		gScenario = std::shared_ptr<cDrawScenarioBallRLACE>(new cDrawScenarioBallRLACE(gCamera));
 	}
 	else if (scenario_name == "ball_rl_mace")
 	{
@@ -275,18 +270,42 @@ void Shutdown()
 	exit(0);
 }
 
+int GetNumTimeSteps()
+{
+	int num_steps = static_cast<int>(gPlaybackSpeed);
+	if (num_steps == 0)
+	{
+		num_steps = 1;
+	}
+	num_steps = std::abs(num_steps);
+	return num_steps;
+}
+
+int CalcDisplayAnimTime()
+{
+	int anim_time = static_cast<int>(gDisplayAnimTime * GetNumTimeSteps() / gPlaybackSpeed);
+	anim_time = std::abs(anim_time);
+	return anim_time;
+}
+
 void Animate(int callback_val)
 {
 	if (gAnimate)
 	{
-		unsigned int timer_step = static_cast<unsigned int>(gDisplayAnimTime / gPlaybackSpeed);
-		timer_step = (std::abs(gPlaybackSpeed) < 0.000001) ? 1000000 : timer_step;
-		timer_step = std::abs(static_cast<int>(timer_step));
+		int num_steps = GetNumTimeSteps();
+		int timer_step = CalcDisplayAnimTime();
 
 		glutTimerFunc(timer_step, Animate, 0);
 
-		double time_step = (gPlaybackSpeed < 0) ? -gAnimStep : gAnimStep;
-		Update(time_step);
+		int current_time = glutGet(GLUT_ELAPSED_TIME);
+		int elapsedTime = current_time - gPrevTime;
+		gPrevTime = current_time;
+
+		double timestep = (gPlaybackSpeed < 0) ? -gAnimStep : gAnimStep;
+		for (int i = 0; i < num_steps; ++i)
+		{
+			Update(timestep);
+		}
 
 		glutPostRedisplay();
 	}
