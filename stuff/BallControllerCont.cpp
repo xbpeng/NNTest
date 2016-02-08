@@ -4,6 +4,8 @@
 cBallControllerCont::cBallControllerCont(cBall& ball) :
 	cBallController(ball)
 {
+	mExpNoiseMean = 0;
+	mExpNoiseStd = 0.5;
 }
 
 cBallControllerCont::~cBallControllerCont()
@@ -38,7 +40,7 @@ cBallControllerCont::tAction cBallControllerCont::BuildActionFromParams(const Ei
 	return action;
 }
 
-void cBallControllerCont::CalcActionNetCont(tAction& out_action)
+void cBallControllerCont::CalcActionNet(tAction& out_action)
 {
 	Eigen::VectorXd state;
 	BuildState(state);
@@ -60,12 +62,9 @@ void cBallControllerCont::GetRandomAction(tAction& out_action)
 
 void cBallControllerCont::GetRandomActionCont(tAction& out_action)
 {
-	const double dist_mean = 0;
-	const double dist_stdev = 0.5;
-
 	tAction action;
-	CalcActionNetCont(action);
-	double rand_dist = cMathUtil::RandDoubleNorm(dist_mean, dist_stdev);
+	CalcActionNet(action);
+	double rand_dist = cMathUtil::RandDoubleNorm(mExpNoiseMean, mExpNoiseStd);
 	
 	action.mDist += rand_dist;
 	action.mDist = cMathUtil::Clamp(action.mDist, gMinDist, gMaxDist);

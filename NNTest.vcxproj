@@ -352,6 +352,7 @@
     <ClCompile Include="stuff\BallController.cpp" />
     <ClCompile Include="stuff\BallControllerCont.cpp" />
     <ClCompile Include="stuff\BallControllerContAC.cpp" />
+    <ClCompile Include="stuff\BallControllerDPG.cpp" />
     <ClCompile Include="stuff\BallControllerMACE.cpp" />
     <ClCompile Include="stuff\DrawBall.cpp" />
     <ClCompile Include="stuff\DrawPenaltyGround.cpp" />
@@ -468,6 +469,7 @@
     <ClInclude Include="stuff\BallController.h" />
     <ClInclude Include="stuff\BallControllerCont.h" />
     <ClInclude Include="stuff\BallControllerContAC.h" />
+    <ClInclude Include="stuff\BallControllerDPG.h" />
     <ClInclude Include="stuff\BallControllerMACE.h" />
     <ClInclude Include="stuff\DrawBall.h" />
     <ClInclude Include="stuff\DrawPenaltyGround.h" />

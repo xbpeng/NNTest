@@ -13,4 +13,5 @@ public:
 	
 protected:
 	virtual void InitTrainer();
+	virtual void BuildController(std::shared_ptr<cBallController>& out_ctrl);
 };

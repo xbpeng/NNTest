@@ -1,5 +1,6 @@
 #include "ScenarioBallRLDPG.h"
 #include "learning/DPGTrainer.h"
+#include "stuff/BallControllerDPG.h"
 
 const int gTrainerPlaybackMemSize = 20000;
 
@@ -30,7 +31,7 @@ void cScenarioBallRLDPG::InitTrainer()
 	
 	mTrainerParams.mPlaybackMemSize = gTrainerPlaybackMemSize;
 	mTrainerParams.mPoolSize = 1;
-	mTrainerParams.mNumInitSamples = 10000;
+	mTrainerParams.mNumInitSamples = 1000;
 	
 	trainer->SetActorFiles(mSolverFile, mNetFile);
 	trainer->Init(mTrainerParams);
@@ -51,4 +52,9 @@ void cScenarioBallRLDPG::InitTrainer()
 	trainer->SetActorOutputOffsetScale(actor_output_offset, actor_output_scale);
 	
 	mTrainer = trainer;
+}
+
+void cScenarioBallRLDPG::BuildController(std::shared_ptr<cBallController>& out_ctrl)
+{
+	out_ctrl = std::shared_ptr<cBallController>(new cBallControllerDPG(mBall));
 }

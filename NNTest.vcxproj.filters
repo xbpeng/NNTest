@@ -620,6 +620,9 @@
     <ClCompile Include="..\TerrainRL\learning\CaclaTrainer.cpp">
       <Filter>Source Files\util</Filter>
     </ClCompile>
+    <ClCompile Include="stuff\BallControllerDPG.cpp">
+      <Filter>Source Files\stuff</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\TerrainRL\util\Rand.h">
@@ -963,6 +966,9 @@
     </ClInclude>
     <ClInclude Include="..\TerrainRL\learning\DPGTrainer.h">
       <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="stuff\BallControllerDPG.h">
+      <Filter>Source Files\stuff</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

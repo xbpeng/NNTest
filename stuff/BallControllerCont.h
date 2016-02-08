@@ -16,8 +16,10 @@ public:
 	virtual tAction BuildActionFromParams(const Eigen::VectorXd& action_params) const;
 
 protected:
+	double mExpNoiseMean;
+	double mExpNoiseStd;
 
-	virtual void CalcActionNetCont(tAction& out_action);
+	virtual void CalcActionNet(tAction& out_action);
 	virtual void GetRandomAction(tAction& out_action);
 	virtual void GetRandomActionCont(tAction& out_action);
 };
