@@ -1,10 +1,11 @@
 name: "Ball_RL_DPG_Critic"
 
 input: "data"
-input_dim:1
-input_dim:1
-input_dim:1
-input_dim:101
+input_dim: 1
+input_dim: 1
+input_dim: 1
+input_dim: 101
+force_backward: true
 
 layer {
 	name: "slice0"

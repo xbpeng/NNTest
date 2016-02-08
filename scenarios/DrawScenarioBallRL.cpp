@@ -146,6 +146,24 @@ void cDrawScenarioBallRL::UpdateTrace()
 	mTraceBuffer.Add(pos);
 }
 
+tVector cDrawScenarioBallRL::GetDefaultCamPos() const
+{
+	return gCamPos0;
+}
+
+tVector cDrawScenarioBallRL::GetCamTrackPos() const
+{
+	tVector pos = GetDefaultCamPos();
+	tVector ball_pos = mScene->GetBallPos();
+	pos[0] = ball_pos[0];
+	return pos;
+}
+
+tVector cDrawScenarioBallRL::GetCamStillPos() const
+{
+	return GetCamTrackPos();
+}
+
 void cDrawScenarioBallRL::SaveNet() const
 {
 	SaveNet(mOutputNetFile);

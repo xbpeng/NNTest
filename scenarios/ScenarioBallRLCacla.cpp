@@ -105,25 +105,6 @@ void cScenarioBallRLCacla::BuildActorOutputOffsetScale(const std::shared_ptr<cCa
 	out_scale = scale * Eigen::VectorXd::Ones(output_size);
 }
 
-void cScenarioBallRLCacla::BuildACOutputOffseScale(const std::shared_ptr<cCaclaACTrainer>& trainer,
-													Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const
-{
-	// hack so much hack
-	int output_size = trainer->GetOutputSize();
-	out_offset = Eigen::VectorXd::Zero(output_size);
-	out_scale = Eigen::VectorXd::Ones(output_size);
-
-	out_offset[0] = -0.5;
-	out_scale[0] = 2;
-
-	double min_dist = cBallControllerCont::gMinDist;
-	double max_dist = cBallControllerCont::gMaxDist;
-	double dist_offset = -0.5 * (max_dist + min_dist);
-	double dist_scale = 2 / (max_dist - min_dist);
-	out_offset.segment(1, output_size - 1) = dist_offset * Eigen::VectorXd::Ones(output_size - 1);
-	out_scale.segment(1, output_size - 1) = dist_scale * Eigen::VectorXd::Ones(output_size - 1);
-}
-
 void cScenarioBallRLCacla::RecordBegFlags(tExpTuple& out_tuple) const
 {
 	bool off_policy = CheckOffPolicy();

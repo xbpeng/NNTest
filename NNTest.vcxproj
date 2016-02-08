@@ -244,10 +244,10 @@
     <ClCompile Include="..\library\caffe\src\caffe\util\upgrade_proto.cpp" />
     <ClCompile Include="..\TerrainRL\anim\Character.cpp" />
     <ClCompile Include="..\TerrainRL\anim\KinTree.cpp" />
-    <ClCompile Include="..\TerrainRL\learning\CaclaACTrainer.cpp" />
+    <ClCompile Include="..\TerrainRL\learning\CaclaTrainer.cpp" />
+    <ClCompile Include="..\TerrainRL\learning\DPGTrainer.cpp" />
     <ClCompile Include="..\TerrainRL\learning\MACETrainer.cpp" />
     <ClCompile Include="..\TerrainRL\learning\QCaclaTrainer.cpp" />
-    <ClCompile Include="..\TerrainRL\learning\CaclaTrainer.cpp" />
     <ClCompile Include="..\TerrainRL\learning\ExpTuple.cpp" />
     <ClCompile Include="..\TerrainRL\learning\NeuralNet.cpp" />
     <ClCompile Include="..\TerrainRL\learning\NeuralNetTrainer.cpp" />
@@ -361,7 +361,7 @@
   <ItemGroup>
     <ClInclude Include="..\TerrainRL\anim\Character.h" />
     <ClInclude Include="..\TerrainRL\anim\KinTree.h" />
-    <ClInclude Include="..\TerrainRL\learning\CaclaACTrainer.h" />
+    <ClInclude Include="..\TerrainRL\learning\DPGTrainer.h" />
     <ClInclude Include="..\TerrainRL\learning\MACETrainer.h" />
     <ClInclude Include="..\TerrainRL\learning\QCaclaTrainer.h" />
     <ClInclude Include="..\TerrainRL\learning\CaclaTrainer.h" />

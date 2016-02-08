@@ -1,4 +1,5 @@
 #include "ScenarioBallRLDPG.h"
+#include "learning/DPGTrainer.h"
 
 const int gTrainerPlaybackMemSize = 20000;
 
@@ -22,7 +23,7 @@ std::string cScenarioBallRLDPG::GetName() const
 
 void cScenarioBallRLDPG::InitTrainer()
 {
-	std::shared_ptr<cCaclaTrainer> trainer = std::shared_ptr<cCaclaTrainer>(new cCaclaTrainer());
+	std::shared_ptr<cDPGTrainer> trainer = std::shared_ptr<cDPGTrainer>(new cDPGTrainer());
 	
 	mTrainerParams.mNetFile = mCriticNetFile;
 	mTrainerParams.mSolverFile = mCriticSolverFile;

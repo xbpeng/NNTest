@@ -524,9 +524,6 @@
     <ClCompile Include="stuff\BallControllerCont.cpp">
       <Filter>Source Files\stuff</Filter>
     </ClCompile>
-    <ClCompile Include="..\TerrainRL\learning\CaclaTrainer.cpp">
-      <Filter>Source Files\util</Filter>
-    </ClCompile>
     <ClCompile Include="..\TerrainRL\learning\QCaclaTrainer.cpp">
       <Filter>Source Files\util</Filter>
     </ClCompile>
@@ -535,9 +532,6 @@
     </ClCompile>
     <ClCompile Include="stuff\BallControllerContAC.cpp">
       <Filter>Source Files\stuff</Filter>
-    </ClCompile>
-    <ClCompile Include="..\TerrainRL\learning\CaclaACTrainer.cpp">
-      <Filter>Source Files\util</Filter>
     </ClCompile>
     <ClCompile Include="scenarios\ScenarioBallEval.cpp">
       <Filter>Source Files\scenarios</Filter>
@@ -619,6 +613,12 @@
     </ClCompile>
     <ClCompile Include="scenarios\DrawScenarioBallRLDPG.cpp">
       <Filter>Source Files\scenarios</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\learning\DPGTrainer.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\learning\CaclaTrainer.cpp">
+      <Filter>Source Files\util</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -880,9 +880,6 @@
     <ClInclude Include="stuff\BallControllerContAC.h">
       <Filter>Source Files\stuff</Filter>
     </ClInclude>
-    <ClInclude Include="..\TerrainRL\learning\CaclaACTrainer.h">
-      <Filter>Source Files\util</Filter>
-    </ClInclude>
     <ClInclude Include="scenarios\ScenarioBallEval.h">
       <Filter>Source Files\scenarios</Filter>
     </ClInclude>
@@ -963,6 +960,9 @@
     </ClInclude>
     <ClInclude Include="scenarios\DrawScenarioBallRLDPG.h">
       <Filter>Source Files\scenarios</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\learning\DPGTrainer.h">
+      <Filter>Source Files\util</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

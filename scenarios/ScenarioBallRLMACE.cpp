@@ -51,6 +51,7 @@ void cScenarioBallRLMACE::InitTrainer()
 	SetupTrainerOutputOffsetScale();
 
 	// hack hack hack
+	/*
 	auto test_net = std::unique_ptr<cNeuralNet>(new cNeuralNet());
 	test_net->LoadNet("data/ball_rl/nets/linear_test_deploy.prototxt");
 	test_net->LoadSolver("data/ball_rl/nets/linear_test_solver.prototxt");
@@ -75,6 +76,7 @@ void cScenarioBallRLMACE::InitTrainer()
 
 	int xx = 0;
 	++xx;
+	*/
 }
 
 

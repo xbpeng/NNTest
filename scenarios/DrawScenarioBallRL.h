@@ -37,6 +37,10 @@ protected:
 	virtual void ToggleTrace();
 	virtual void UpdateTrace();
 
+	virtual tVector GetDefaultCamPos() const;
+	virtual tVector GetCamTrackPos() const;
+	virtual tVector GetCamStillPos() const;
+
 	virtual void SaveNet() const;
 	virtual void SaveNet(const std::string& out_file) const;
 
