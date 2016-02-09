@@ -67,7 +67,5 @@ void cBallControllerCont::GetRandomActionCont(tAction& out_action)
 	double rand_dist = cMathUtil::RandDoubleNorm(mExpNoiseMean, mExpNoiseStd);
 	
 	action.mDist += rand_dist;
-	action.mDist = cMathUtil::Clamp(action.mDist, gMinDist, gMaxDist);
-
 	out_action = action;
 }

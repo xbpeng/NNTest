@@ -32,7 +32,8 @@ void cScenarioBallRLDPG::InitTrainer()
 	mTrainerParams.mPlaybackMemSize = gTrainerPlaybackMemSize;
 	mTrainerParams.mPoolSize = 1;
 	mTrainerParams.mNumInitSamples = 1000;
-	
+	mTrainerParams.mFreezeTargetIters = 200;
+
 	trainer->SetActorFiles(mSolverFile, mNetFile);
 	trainer->Init(mTrainerParams);
 
@@ -52,6 +53,34 @@ void cScenarioBallRLDPG::InitTrainer()
 	trainer->SetActorOutputOffsetScale(actor_output_offset, actor_output_scale);
 	
 	mTrainer = trainer;
+
+	/*
+	// hack hack hack
+	auto test_net = std::unique_ptr<cNeuralNet>(new cNeuralNet());
+	test_net->LoadNet("data/ball_rl/nets/linear_test_deploy.prototxt");
+	test_net->LoadSolver("data/ball_rl/nets/linear_test_solver.prototxt");
+
+	const auto& params = test_net->GetParams();
+	cNeuralNet::tNNData blob0_data[] = { 1 };
+	cNeuralNet::tNNData blob1_data[] = { 0 };
+	cNeuralNet::tNNData blob2_data[] = { 0.2 };
+	cNeuralNet::tNNData blob3_data[] = { 0 };
+	params[0]->set_cpu_data(blob0_data);
+	params[1]->set_cpu_data(blob1_data);
+	params[2]->set_cpu_data(blob2_data);
+	params[3]->set_cpu_data(blob3_data);
+
+	test_net->PrintParams();
+	Eigen::VectorXd test_x = 0.1 * Eigen::VectorXd::Ones(1);
+	Eigen::VectorXd test_y = 0.0 * Eigen::VectorXd::Ones(1);
+	Eigen::VectorXd out_x;
+	Eigen::VectorXd out_y;
+	test_net->Eval(test_x, out_y);
+	test_net->Backward(test_y, out_x);
+
+	int xx = 0;
+	++xx;
+	*/
 }
 
 void cScenarioBallRLDPG::BuildController(std::shared_ptr<cBallController>& out_ctrl)

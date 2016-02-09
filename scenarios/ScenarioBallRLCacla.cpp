@@ -37,7 +37,6 @@ std::string cScenarioBallRLCacla::GetName() const
 void cScenarioBallRLCacla::BuildController(std::shared_ptr<cBallController>& out_ctrl)
 {
 	out_ctrl = std::shared_ptr<cBallController>(new cBallControllerCont(mBall));
-	//out_ctrl = std::shared_ptr<cBallController>(new cBallControllerContAC(mBall));
 }
 
 void cScenarioBallRLCacla::InitTrainer()

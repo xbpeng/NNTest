@@ -142,10 +142,10 @@ layer {
 }
 
 layer {
-  name: "ip2"
+  name: "output"
   type: "InnerProduct"
   bottom: "relu3"
-  top: "ip2"
+  top: "output"
   param {
     lr_mult: 1
 	decay_mult: 1
@@ -168,7 +168,7 @@ layer {
 layer {
   name: "loss"
   type: "EuclideanLoss"
-  bottom: "ip2"
+  bottom: "output"
   bottom: "label"
   top: "loss"
 }

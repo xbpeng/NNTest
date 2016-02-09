@@ -299,9 +299,7 @@ void cBallControllerMACE::AddExpActionNoise(tAction& out_action)
 	const double dist_stdev = 0.5;
 
 	double rand_dist = cMathUtil::RandDoubleNorm(dist_mean, dist_stdev);
-
 	out_action.mDist += rand_dist;
-	out_action.mDist = cMathUtil::Clamp(out_action.mDist, gMinDist, gMaxDist);
 }
 
 void cBallControllerMACE::AddExpStateNoise(tAction& out_action)
