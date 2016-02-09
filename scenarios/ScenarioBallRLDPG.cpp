@@ -32,7 +32,7 @@ void cScenarioBallRLDPG::InitTrainer()
 	mTrainerParams.mPlaybackMemSize = gTrainerPlaybackMemSize;
 	mTrainerParams.mPoolSize = 1;
 	mTrainerParams.mNumInitSamples = 1000;
-	mTrainerParams.mFreezeTargetIters = 200;
+	mTrainerParams.mFreezeTargetIters = 100;
 
 	trainer->SetActorFiles(mSolverFile, mNetFile);
 	trainer->Init(mTrainerParams);

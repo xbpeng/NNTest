@@ -213,11 +213,11 @@ layer {
 }
 
 layer {
-	name: "concat0"
+	name: "output"
 	type: "Concat"
 	bottom: "value"
 	bottom: "action"
-	top: "concat0"
+	top: "output"
 	concat_param {
 		axis: 1
 	}

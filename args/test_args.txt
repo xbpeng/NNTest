@@ -1,5 +1,5 @@
 -scenario= ball_rl_dpg
--playback_speed= 30
+-playback_speed= 60
 
 -character_file= data/arm_rl/arm.txt
 
