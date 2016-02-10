@@ -11,13 +11,16 @@ files{end + 1} = {'cacla_exp_buffer.txt', 'Cacla + Exp Buffer'};
 %files{end + 1} = {'ace_init.txt', 'ACE Init'};
 %files{end + 1} = {'ace4_init.txt', 'ACE4 Init'};
 %files{end + 1} = {'ace_all.txt', 'ACE All'};
-files{end + 1} = {'ace_target.txt', 'ACE Target'};
+%files{end + 1} = {'ace_target.txt', 'ACE Target'};
 %files{end + 1} = {'mace.txt', 'MACE'};
 %files{end + 1} = {'mace_double.txt', 'MACE Double'};
 %files{end + 1} = {'mace4_double.txt', 'MACE4 Double'};
 %files{end + 1} = {'ace_boltzmann.txt', 'ACE Boltzmann'};
 %files{end + 1} = {'ace_exp20k.txt', 'ACE Exp 20k'};
-files{end + 1} = {'ace_boltz_local.txt', 'ACE Boltz Local'};
+%files{end + 1} = {'ace_boltz_local.txt', 'ACE Boltz Local'};
+
+files{end + 1} = {'dpg.txt', 'DPG'};
+files{end + 1} = {'dpg_no_target.txt', 'DPG No Target'};
 
 lines = {'b-', 'r-', 'm-', 'k-', 'g-', 'c-', 'k--', 'r--'};
 iter_step = 500 / 1000;

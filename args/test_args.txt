@@ -9,7 +9,9 @@
 
 -solver_file= data/ball_rl/nets/ball_rl_actor_solver.prototxt
 -net_file= data/ball_rl/nets/balL_rl_actor_deploy.prototxt
+-model_file= data/ball_rl/models/ball_rl_dpg_actor_init_model.h5
 //-model_file= data/ball_rl/nets/ball_rl_actor_init.h5
+//-model_file= data/ball_rl/models/ball_rl_model.h5
 
 //-critic_solver_file= data/ball_rl/nets/balL_rl_critic_solver.prototxt
 //-critic_net_file= data/ball_rl/nets/balL_rl_critic_deploy.prototxt
@@ -18,6 +20,8 @@
 
 -critic_solver_file= data/ball_rl/nets/balL_rl_dpg_critic_solver.prototxt
 -critic_net_file= data/ball_rl/nets/balL_rl_dpg_critic_deploy.prototxt
+-critic_model_file= data/ball_rl/models/ball_rl_dpg_critic_init_model.h5
+//-critic_model_file= data/ball_rl/models/ball_rl_critic_model.h5
 
 //-solver_file= data/ball_rl/nets/balL_rl_ac_solver.prototxt
 //-net_file= data/ball_rl/nets/balL_rl_ac_deploy.prototxt

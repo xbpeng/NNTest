@@ -31,7 +31,7 @@ void cScenarioBallRLDPG::InitTrainer()
 	
 	mTrainerParams.mPlaybackMemSize = gTrainerPlaybackMemSize;
 	mTrainerParams.mPoolSize = 1;
-	mTrainerParams.mNumInitSamples = 1000;
+	mTrainerParams.mNumInitSamples = 10000;
 	mTrainerParams.mFreezeTargetIters = 100;
 
 	trainer->SetActorFiles(mSolverFile, mNetFile);
@@ -40,6 +40,11 @@ void cScenarioBallRLDPG::InitTrainer()
 	if (mModelFile != "")
 	{
 		trainer->LoadActorModel(mModelFile);
+	}
+
+	if (mCriticModelFile != "")
+	{
+		trainer->LoadCriticModel(mCriticModelFile);
 	}
 	
 	Eigen::VectorXd critic_output_offset;
@@ -86,4 +91,42 @@ void cScenarioBallRLDPG::InitTrainer()
 void cScenarioBallRLDPG::BuildController(std::shared_ptr<cBallController>& out_ctrl)
 {
 	out_ctrl = std::shared_ptr<cBallController>(new cBallControllerDPG(mBall));
+}
+
+void cScenarioBallRLDPG::NewCycleUpdate()
+{
+	cScenarioBallRL::NewCycleUpdate();
+
+	if (!mEnableTraining)
+	{
+		// hack huge hack
+		const auto& ctrl = mBall.GetController();
+
+		Eigen::VectorXd state;
+		Eigen::VectorXd action;
+		ctrl->RecordState(state);
+		ctrl->RecordAction(action);
+
+		Eigen::VectorXd x;
+		Eigen::VectorXd y;
+
+		x.resize(state.size() + action.size());
+		x.segment(0, state.size()) = state;
+		x.segment(state.size(), action.size()) = action;
+
+		std::shared_ptr<cDPGTrainer> trainer = std::static_pointer_cast<cDPGTrainer>(mTrainer);
+		const auto& critic = trainer->GetCritic();
+		critic->Eval(x, y);
+
+		y = 1 * Eigen::VectorXd::Ones(y.size());
+		critic->Backward(y, x);
+
+		Eigen::VectorXd dpg = x.segment(state.size(), action.size());
+		printf("DPG: ");
+		for (int i = 0; i < dpg.size(); ++i)
+		{
+			printf("%.3f\t", dpg[i]);
+		}
+		printf("\n");
+	}
 }

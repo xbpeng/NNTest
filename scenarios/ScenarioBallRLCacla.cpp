@@ -15,6 +15,7 @@ void cScenarioBallRLCacla::ParseArgs(const cArgParser& parser)
 	cScenarioBallRL::ParseArgs(parser);
 	parser.ParseString("critic_solver_file", mCriticSolverFile);
 	parser.ParseString("critic_net_file", mCriticNetFile);
+	parser.ParseString("critic_model_file", mCriticModelFile);
 }
 
 void cScenarioBallRLCacla::SaveCriticNet(const std::string& filename) const
@@ -62,6 +63,11 @@ void cScenarioBallRLCacla::InitTrainer()
 	if (mModelFile != "")
 	{
 		trainer->LoadActorModel(mModelFile);
+	}
+
+	if (mCriticModelFile != "")
+	{
+		trainer->LoadCriticModel(mCriticModelFile);
 	}
 	
 	Eigen::VectorXd critic_output_offset;

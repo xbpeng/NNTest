@@ -68,7 +68,6 @@ void cScenarioBallRL::Reset()
 	double exp_temp = GetExpTemp();
 	ctrl->SetExpRate(exp_rate);
 	ctrl->SetExpTemp(exp_temp);
-
 }
 
 void cScenarioBallRL::Clear()

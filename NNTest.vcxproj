@@ -314,6 +314,7 @@
     <ClCompile Include="..\TerrainRL\util\JsonUtil.cpp" />
     <ClCompile Include="..\TerrainRL\util\MathUtil.cpp" />
     <ClCompile Include="..\TerrainRL\util\Rand.cpp" />
+    <ClCompile Include="..\TerrainRL\util\Util.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="scenarios\DrawScenarioArm.cpp" />
     <ClCompile Include="scenarios\DrawScenarioArmEval.cpp" />
@@ -432,6 +433,7 @@
     <ClInclude Include="..\TerrainRL\util\JsonUtil.h" />
     <ClInclude Include="..\TerrainRL\util\MathUtil.h" />
     <ClInclude Include="..\TerrainRL\util\Rand.h" />
+    <ClInclude Include="..\TerrainRL\util\Util.h" />
     <ClInclude Include="scenarios\DrawScenarioArm.h" />
     <ClInclude Include="scenarios\DrawScenarioArmEval.h" />
     <ClInclude Include="scenarios\DrawScenarioArmRL.h" />
