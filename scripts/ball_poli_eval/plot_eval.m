@@ -1,7 +1,7 @@
 files = {};
 files{end + 1} = {'q_learning.txt', 'Q-Learning'};
 %files{end + 1} = {'cacla.txt', 'Cacla'};
-files{end + 1} = {'cacla_exp_buffer.txt', 'Cacla + Exp Buffer'};
+%files{end + 1} = {'cacla_exp_buffer.txt', 'Cacla + Exp Buffer'};
 %files{end + 1} = {'cacla_exp_buffer1.txt', 'Cacla + Exp Buffer1'};
 %files{end + 1} = {'cacla_exp_buffer_target.txt', 'Cacla + Exp Buffer Target'};
 %files{end + 1} = {'cacla_exp_buffer_weighted.txt', 'Cacla + Exp Buffer Weighted'};
@@ -19,8 +19,11 @@ files{end + 1} = {'cacla_exp_buffer.txt', 'Cacla + Exp Buffer'};
 %files{end + 1} = {'ace_exp20k.txt', 'ACE Exp 20k'};
 %files{end + 1} = {'ace_boltz_local.txt', 'ACE Boltz Local'};
 
-files{end + 1} = {'dpg.txt', 'DPG'};
-files{end + 1} = {'dpg_no_target.txt', 'DPG No Target'};
+files{end + 1} = {'cacla1.txt', 'Cacla'};
+%files{end + 1} = {'dpg.txt', 'DPG'};
+files{end + 1} = {'dpg_no_target.txt', 'DPG Vanilla'};
+%files{end + 1} = {'dpg_target.txt', 'DPG Target'};
+files{end + 1} = {'dpg_lerp_target.txt', 'DPG Lerp Target'};
 
 lines = {'b-', 'r-', 'm-', 'k-', 'g-', 'c-', 'k--', 'r--'};
 iter_step = 500 / 1000;
