@@ -24,43 +24,6 @@ void cBallControllerMACE::Reset()
 	mExpActor = false;
 }
 
-bool cBallControllerMACE::LoadNet(const std::string& net_file)
-{
-	bool succ = true;
-	mNet.Clear();
-	mNet.LoadNet(net_file);
-
-	if (succ)
-	{
-		UpdateFragParams();
-	}
-
-	int input_size = mNet.GetInputSize();
-	int output_size = mNet.GetOutputSize();
-	int state_size = GetNetInputSize();
-	int action_size = GetNetOutputSize();
-
-	if (output_size != action_size)
-	{
-		printf("Network output dimension does not match number of actions (%i vs %i).\n", output_size, state_size);
-		succ = false;
-	}
-
-	if (input_size != state_size)
-	{
-		printf("Network input dimension does not match state size (%i vs %i).\n", input_size, state_size);
-		succ = false;
-	}
-
-	if (!succ)
-	{
-		mNet.Clear();
-		assert(false);
-	}
-
-	return succ;
-}
-
 int cBallControllerMACE::GetActionSize() const
 {
 	return 1 + gActionFragSize;
@@ -261,6 +224,12 @@ void cBallControllerMACE::CalcActionNetCont(tAction& out_action)
 	BuildActorAction(y, a, out_action);
 
 	DebugPrintAction(out_action, y);
+}
+
+void cBallControllerMACE::LoadNetIntern(const std::string& net_file)
+{
+	cBallController::LoadNetIntern(net_file);
+	UpdateFragParams();
 }
 
 void cBallControllerMACE::GetRandomActionFrag(tAction& out_action)

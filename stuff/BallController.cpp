@@ -97,8 +97,7 @@ tVector cBallController::GetGroundSamplePos(int s) const
 bool cBallController::LoadNet(const std::string& net_file)
 {
 	bool succ = true;
-	mNet.Clear();
-	mNet.LoadNet(net_file);
+	LoadNetIntern(net_file);
 	
 	int input_size = mNet.GetInputSize();
 	int output_size = mNet.GetOutputSize();
@@ -139,6 +138,12 @@ int cBallController::GetNetInputSize() const
 int cBallController::GetNetOutputSize() const
 {
 	return GetActionSize();
+}
+
+void cBallController::LoadNetIntern(const std::string& net_file)
+{
+	mNet.Clear();
+	mNet.LoadNet(net_file);
 }
 
 void cBallController::UpdateAction()

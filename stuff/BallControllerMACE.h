@@ -11,7 +11,6 @@ public:
 	virtual ~cBallControllerMACE();
 
 	virtual void Reset();
-	virtual bool LoadNet(const std::string& net_file);
 
 	virtual int GetActionSize() const;
 
@@ -30,6 +29,8 @@ protected:
 	std::vector<double> mBoltzmannBuffer;
 	bool mExpCritic;
 	bool mExpActor;
+
+	virtual void LoadNetIntern(const std::string& net_file);
 
 	virtual void CalcActionNetCont(tAction& out_action);
 	virtual void GetRandomActionFrag(tAction& out_action);

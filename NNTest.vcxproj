@@ -325,6 +325,7 @@
     <ClCompile Include="scenarios\DrawScenarioBallRLCacla.cpp" />
     <ClCompile Include="scenarios\DrawScenarioBallRLDPG.cpp" />
     <ClCompile Include="scenarios\DrawScenarioBallRLMACE.cpp" />
+    <ClCompile Include="scenarios\DrawScenarioBallRLMACEDPG.cpp" />
     <ClCompile Include="scenarios\DrawScenarioReg1D.cpp" />
     <ClCompile Include="scenarios\DrawScenarioReg1DTrainer.cpp" />
     <ClCompile Include="scenarios\ScenarioArm.cpp" />
@@ -336,6 +337,7 @@
     <ClCompile Include="scenarios\ScenarioBallRLCacla.cpp" />
     <ClCompile Include="scenarios\ScenarioBallRLDPG.cpp" />
     <ClCompile Include="scenarios\ScenarioBallRLMACE.cpp" />
+    <ClCompile Include="scenarios\ScenarioBallRLMACEDPG.cpp" />
     <ClCompile Include="scenarios\ScenarioReg1D.cpp" />
     <ClCompile Include="scenarios\ScenarioReg1DTrainer.cpp" />
     <ClCompile Include="stuff\ArmController.cpp" />
@@ -355,6 +357,7 @@
     <ClCompile Include="stuff\BallControllerContAC.cpp" />
     <ClCompile Include="stuff\BallControllerDPG.cpp" />
     <ClCompile Include="stuff\BallControllerMACE.cpp" />
+    <ClCompile Include="stuff\BallControllerMACEDPG.cpp" />
     <ClCompile Include="stuff\DrawBall.cpp" />
     <ClCompile Include="stuff\DrawPenaltyGround.cpp" />
     <ClCompile Include="stuff\PenaltyGround.cpp" />
@@ -443,6 +446,7 @@
     <ClInclude Include="scenarios\DrawScenarioBallRLCacla.h" />
     <ClInclude Include="scenarios\DrawScenarioBallRLDPG.h" />
     <ClInclude Include="scenarios\DrawScenarioBallRLMACE.h" />
+    <ClInclude Include="scenarios\DrawScenarioBallRLMACEDPG.h" />
     <ClInclude Include="scenarios\DrawScenarioReg1D.h" />
     <ClInclude Include="scenarios\DrawScenarioReg1DTrainer.h" />
     <ClInclude Include="scenarios\ScenarioArm.h" />
@@ -454,6 +458,7 @@
     <ClInclude Include="scenarios\ScenarioBallRLCacla.h" />
     <ClInclude Include="scenarios\ScenarioBallRLDPG.h" />
     <ClInclude Include="scenarios\ScenarioBallRLMACE.h" />
+    <ClInclude Include="scenarios\ScenarioBallRLMACEDPG.h" />
     <ClInclude Include="scenarios\ScenarioReg1D.h" />
     <ClInclude Include="scenarios\ScenarioReg1DTrainer.h" />
     <ClInclude Include="stuff\ArmController.h" />
@@ -473,6 +478,7 @@
     <ClInclude Include="stuff\BallControllerContAC.h" />
     <ClInclude Include="stuff\BallControllerDPG.h" />
     <ClInclude Include="stuff\BallControllerMACE.h" />
+    <ClInclude Include="stuff\BallControllerMACEDPG.h" />
     <ClInclude Include="stuff\DrawBall.h" />
     <ClInclude Include="stuff\DrawPenaltyGround.h" />
     <ClInclude Include="stuff\PenaltyGround.h" />

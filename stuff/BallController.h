@@ -78,6 +78,8 @@ protected:
 	tAction mCurrAction;
 	bool mOffPolicy;
 
+	virtual void LoadNetIntern(const std::string& net_file);
+
 	virtual void UpdateAction();
 	virtual double CalcDeltaPhase() const;
 	virtual tVector CalcBallPos() const;

@@ -24,6 +24,9 @@ files{end + 1} = {'cacla1.txt', 'Cacla'};
 files{end + 1} = {'dpg_no_target.txt', 'DPG Vanilla'};
 %files{end + 1} = {'dpg_target.txt', 'DPG Target'};
 files{end + 1} = {'dpg_lerp_target.txt', 'DPG Lerp Target'};
+files{end + 1} = {'dpg_clamp.txt', 'DPG Clamp'};
+files{end + 1} = {'dpg_clamp_no_pretrain.txt', 'DPG Clamp no Pretrain'};
+files{end + 1} = {'dpg_invert.txt', 'DPG Invert'};
 
 lines = {'b-', 'r-', 'm-', 'k-', 'g-', 'c-', 'k--', 'r--'};
 iter_step = 500 / 1000;
