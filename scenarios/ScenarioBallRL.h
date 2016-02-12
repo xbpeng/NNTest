@@ -92,4 +92,6 @@ protected:
 	virtual void Train();
 	virtual double GetExpRate() const;
 	virtual double GetExpTemp() const;
+
+	virtual void CopyTrainerNets();
 };

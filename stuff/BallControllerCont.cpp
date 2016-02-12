@@ -50,7 +50,7 @@ void cBallControllerCont::CalcActionNet(tAction& out_action)
 
 	tAction ball_action;
 	ball_action.mDist = action[0];
-	printf("action: %.5f , %.5f\n", action[0], ball_action.mDist);
+	printf("action: %.5f\n", action[0], ball_action.mDist);
 
 	out_action = ball_action;
 }

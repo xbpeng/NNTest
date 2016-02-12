@@ -26,6 +26,7 @@ void cScenarioBallRL::Init()
 	InitTupleBuffer();
 	InitTrainer();
 	InitGround();
+	CopyTrainerNets();
 	Reset();
 }
 
@@ -374,9 +375,7 @@ void cScenarioBallRL::Train()
 	mTrainer->AddTuples(mTupleBuffer);
 	mTrainer->Train();
 
-	const auto& trainer_net = mTrainer->GetNet();
-	auto& ctrl = mBall.GetController();
-	ctrl->CopyNet(*trainer_net.get());
+	CopyTrainerNets();
 }
 
 double cScenarioBallRL::GetExpRate() const
@@ -395,4 +394,11 @@ double cScenarioBallRL::GetExpTemp() const
 	temp = cMathUtil::Clamp(temp, 0.0, 1.0);
 	temp = temp * (mInitExpTemp - mExpTemp) + mExpTemp;
 	return temp;
+}
+
+void cScenarioBallRL::CopyTrainerNets()
+{
+	const auto& trainer_net = mTrainer->GetNet();
+	auto& ctrl = mBall.GetController();
+	ctrl->CopyNet(*trainer_net.get());
 }

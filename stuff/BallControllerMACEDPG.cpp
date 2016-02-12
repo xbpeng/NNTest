@@ -1,7 +1,6 @@
 #include "BallControllerMACEDPG.h"
 #include "Ball.h"
-
-const int gActionFragSize = 1;
+#include "learning/MACEDPGTrainer.h"
 
 cBallControllerMACEDPG::cBallControllerMACEDPG(cBall& ball) :
 	cBallControllerDPG(ball)
@@ -20,7 +19,7 @@ int cBallControllerMACEDPG::GetNumActionFrags() const
 
 int cBallControllerMACEDPG::GetActionFragSize() const
 {
-	return gActionFragSize;
+	return GetActionSize();
 }
 
 int cBallControllerMACEDPG::GetNetOutputSize() const
@@ -90,6 +89,16 @@ cNeuralNet& cBallControllerMACEDPG::GetCritic()
 	return mCriticNet;
 }
 
+void cBallControllerMACEDPG::CopyActorNet(const cNeuralNet& net)
+{
+	mNet.CopyModel(net);
+}
+
+void cBallControllerMACEDPG::CopyCriticNet(const cNeuralNet& net)
+{
+	mCriticNet.CopyModel(net);
+}
+
 int cBallControllerMACEDPG::GetActorInputSize() const
 {
 	return GetStateSize();
@@ -97,7 +106,7 @@ int cBallControllerMACEDPG::GetActorInputSize() const
 
 int cBallControllerMACEDPG::GetActorOutputSize() const
 {
-	return mNumActionFrags * gActionFragSize;
+	return GetNumActionFrags() * GetActionFragSize();
 }
 
 int cBallControllerMACEDPG::GetCriticInputSize() const
@@ -139,7 +148,7 @@ void cBallControllerMACEDPG::BuildActorOutputOffsetScale(Eigen::VectorXd& out_of
 
 void cBallControllerMACEDPG::BuildCriticOutputOffsetScale(Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const
 {
-	int output_size = GetNumActionFrags();
+	int output_size = 1;
 	out_offset = -0.5 * Eigen::VectorXd::Ones(output_size);
 	out_scale = 2 * Eigen::VectorXd::Ones(output_size);
 }
@@ -153,6 +162,50 @@ void cBallControllerMACEDPG::LoadNetIntern(const std::string& net_file)
 void cBallControllerMACEDPG::UpdateFragParams()
 {
 	int num_outputs = mNet.GetOutputSize();
-	mNumActionFrags = num_outputs / gActionFragSize;
+	mNumActionFrags = cMACEDPGTrainer::CalcNumFrags(num_outputs, GetActionFragSize());
 	mBoltzmannBuffer.resize(mNumActionFrags);
+}
+
+void cBallControllerMACEDPG::CalcActionNet(tAction& out_action)
+{
+	Eigen::VectorXd state;
+	BuildState(state);
+
+	Eigen::VectorXd actions;
+	mNet.Eval(state, actions);
+
+	CalcCriticVals(state, actions, mBoltzmannBuffer);
+	int a_idx = cMACEDPGTrainer::GetMaxFragValIdx(mBoltzmannBuffer);
+
+	BuildActorAction(actions, a_idx, out_action);
+	printf("action: %i, %.5f\n", out_action.mID, out_action.mDist);
+}
+
+void cBallControllerMACEDPG::CalcCriticVals(const Eigen::VectorXd& state, const Eigen::VectorXd& actions, Eigen::VectorXd& out_vals)
+{
+	int state_size = GetStateSize();
+	int action_size = GetActionSize();
+	Eigen::VectorXd state_action = Eigen::VectorXd(state_size + action_size);
+	state_action.segment(0, state_size) = state;
+
+	const auto& critic = GetCritic();
+	assert(state_action.size() == critic.GetInputSize());
+
+	int num_actions = static_cast<int>(actions.size()) / action_size;
+	Eigen::VectorXd critic_output;
+	for (int a = 0; a < num_actions; ++a)
+	{
+		state_action.segment(state_size, action_size) = actions.segment(a * action_size, action_size);
+		critic.Eval(state_action, critic_output);
+		double val = critic_output[0];
+		out_vals[a] = val;
+	}
+}
+
+void cBallControllerMACEDPG::BuildActorAction(const Eigen::VectorXd& actions, int a_id, tAction& out_action) const
+{
+	Eigen::VectorXd action_frag;
+	cMACEDPGTrainer::GetFrag(actions, GetActionFragSize(), a_id, action_frag);
+	out_action.mID = a_id;
+	out_action.mDist = action_frag[0];
 }

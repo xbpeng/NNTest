@@ -1,9 +1,9 @@
 #pragma once
 #include <memory>
 
-#include "scenarios/DrawScenarioBallRLDPG.h"
+#include "scenarios/DrawScenarioBallRLMACE.h"
 
-class cDrawScenarioBallRLMACEDPG : public cDrawScenarioBallRLDPG
+class cDrawScenarioBallRLMACEDPG : public cDrawScenarioBallRLMACE
 {
 public:
 	cDrawScenarioBallRLMACEDPG(cCamera& cam);

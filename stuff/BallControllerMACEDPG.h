@@ -22,6 +22,9 @@ public:
 	virtual const cNeuralNet& GetCritic() const;
 	virtual cNeuralNet& GetCritic();
 
+	virtual void CopyActorNet(const cNeuralNet& net);
+	virtual void CopyCriticNet(const cNeuralNet& net);
+	
 	virtual int GetActorInputSize() const;
 	virtual int GetActorOutputSize() const;
 	virtual int GetCriticInputSize() const;
@@ -38,4 +41,8 @@ protected:
 
 	virtual void LoadNetIntern(const std::string& net_file);
 	virtual void UpdateFragParams();
+
+	virtual void CalcActionNet(tAction& out_action);
+	virtual void CalcCriticVals(const Eigen::VectorXd& state, const Eigen::VectorXd& actions, Eigen::VectorXd& out_vals);
+	virtual void BuildActorAction(const Eigen::VectorXd& actions, int a_id, tAction& out_action) const;
 };

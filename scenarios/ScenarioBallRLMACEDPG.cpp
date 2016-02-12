@@ -1,5 +1,5 @@
 #include "ScenarioBallRLMACEDPG.h"
-#include "learning/DPGTrainer.h"
+#include "learning/MACEDPGTrainer.h"
 #include "stuff/BallControllerMACEDPG.h"
 
 const int gTrainerPlaybackMemSize = 20000;
@@ -24,7 +24,7 @@ std::string cScenarioBallRLMACEDPG::GetName() const
 
 void cScenarioBallRLMACEDPG::InitTrainer()
 {
-	std::shared_ptr<cDPGTrainer> trainer = std::shared_ptr<cDPGTrainer>(new cDPGTrainer());
+	std::shared_ptr<cMACEDPGTrainer> trainer = std::shared_ptr<cMACEDPGTrainer>(new cMACEDPGTrainer());
 	
 	mTrainerParams.mNetFile = mCriticNetFile;
 	mTrainerParams.mSolverFile = mCriticSolverFile;
@@ -33,6 +33,10 @@ void cScenarioBallRLMACEDPG::InitTrainer()
 	mTrainerParams.mPoolSize = 1;
 	mTrainerParams.mNumInitSamples = 10000;
 	mTrainerParams.mFreezeTargetIters = 200;
+
+	auto ctrl = std::static_pointer_cast<cBallControllerMACEDPG>(mBall.GetController());
+	trainer->SetNumActionFrags(ctrl->GetNumActionFrags());
+	trainer->SetActionFragSize(ctrl->GetActionFragSize());
 
 	trainer->SetActorFiles(mSolverFile, mNetFile);
 	trainer->Init(mTrainerParams);
@@ -57,7 +61,6 @@ void cScenarioBallRLMACEDPG::InitTrainer()
 	BuildActorOutputOffsetScale(trainer, actor_output_offset, actor_output_scale);
 	trainer->SetActorOutputOffsetScale(actor_output_offset, actor_output_scale);
 	
-	const auto& ctrl = mBall.GetController();
 	int action_size = ctrl->GetActionSize();
 	Eigen::VectorXd action_min = ctrl->gMinDist * Eigen::VectorXd::Ones(action_size);
 	Eigen::VectorXd action_max = ctrl->gMaxDist * Eigen::VectorXd::Ones(action_size);
@@ -89,4 +92,29 @@ void cScenarioBallRLMACEDPG::SetupController()
 void cScenarioBallRLMACEDPG::BuildController(std::shared_ptr<cBallController>& out_ctrl)
 {
 	out_ctrl = std::shared_ptr<cBallController>(new cBallControllerMACEDPG(mBall));
+}
+
+void cScenarioBallRLMACEDPG::BuildCriticOutputOffsetScale(const std::shared_ptr<cNeuralNetTrainer>& trainer,
+									Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const
+{
+	auto ctrl = std::static_pointer_cast<cBallControllerMACEDPG>(mBall.GetController());
+	ctrl->BuildCriticOutputOffsetScale(out_offset, out_scale);
+}
+
+void cScenarioBallRLMACEDPG::BuildActorOutputOffsetScale(const std::shared_ptr<cNeuralNetTrainer>& trainer,
+									Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const
+{
+	auto ctrl = std::static_pointer_cast<cBallControllerMACEDPG>(mBall.GetController());
+	ctrl->BuildActorOutputOffsetScale(out_offset, out_scale);
+}
+
+void cScenarioBallRLMACEDPG::CopyTrainerNets()
+{
+	auto ctrl = std::static_pointer_cast<cBallControllerMACEDPG>(mBall.GetController());
+	auto trainer = std::static_pointer_cast<cMACEDPGTrainer>(mTrainer);
+	const auto& actor_net = trainer->GetActor();
+	const auto& critic_net = trainer->GetCritic();
+
+	ctrl->CopyActorNet(*actor_net.get());
+	ctrl->CopyCriticNet(*critic_net.get());
 }

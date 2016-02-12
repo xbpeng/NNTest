@@ -635,6 +635,9 @@
     <ClCompile Include="scenarios\DrawScenarioBallRLMACEDPG.cpp">
       <Filter>Source Files\scenarios</Filter>
     </ClCompile>
+    <ClCompile Include="..\TerrainRL\learning\MACEDPGTrainer.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\TerrainRL\util\Rand.h">
@@ -993,6 +996,9 @@
     </ClInclude>
     <ClInclude Include="scenarios\DrawScenarioBallRLMACEDPG.h">
       <Filter>Source Files\scenarios</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\learning\MACEDPGTrainer.h">
+      <Filter>Source Files\util</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
