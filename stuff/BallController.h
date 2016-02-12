@@ -58,6 +58,8 @@ public:
 	virtual void SetExpTemp(double temp);
 	virtual void EnableExp(bool enable);
 
+	virtual void BuildNNOutputOffsetScale(Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const;
+
 protected:
 	cBall& mBall;
 	cPenaltyGround* mGround;

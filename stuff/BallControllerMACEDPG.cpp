@@ -6,10 +6,19 @@ cBallControllerMACEDPG::cBallControllerMACEDPG(cBall& ball) :
 	cBallControllerDPG(ball)
 {
 	mNumActionFrags = 0;
+	mExpCritic = false;
+	mExpActor = false;
 }
 
 cBallControllerMACEDPG::~cBallControllerMACEDPG()
 {
+}
+
+void cBallControllerMACEDPG::Reset()
+{
+	cBallControllerDPG::Reset();
+	mExpCritic = false;
+	mExpActor = false;
 }
 
 int cBallControllerMACEDPG::GetNumActionFrags() const
@@ -166,21 +175,6 @@ void cBallControllerMACEDPG::UpdateFragParams()
 	mBoltzmannBuffer.resize(mNumActionFrags);
 }
 
-void cBallControllerMACEDPG::CalcActionNet(tAction& out_action)
-{
-	Eigen::VectorXd state;
-	BuildState(state);
-
-	Eigen::VectorXd actions;
-	mNet.Eval(state, actions);
-
-	CalcCriticVals(state, actions, mBoltzmannBuffer);
-	int a_idx = cMACEDPGTrainer::GetMaxFragValIdx(mBoltzmannBuffer);
-
-	BuildActorAction(actions, a_idx, out_action);
-	printf("action: %i, %.5f\n", out_action.mID, out_action.mDist);
-}
-
 void cBallControllerMACEDPG::CalcCriticVals(const Eigen::VectorXd& state, const Eigen::VectorXd& actions, Eigen::VectorXd& out_vals)
 {
 	int state_size = GetStateSize();
@@ -208,4 +202,92 @@ void cBallControllerMACEDPG::BuildActorAction(const Eigen::VectorXd& actions, in
 	cMACEDPGTrainer::GetFrag(actions, GetActionFragSize(), a_id, action_frag);
 	out_action.mID = a_id;
 	out_action.mDist = action_frag[0];
+}
+
+void cBallControllerMACEDPG::UpdateAction()
+{
+	mExpCritic = false;
+	mExpActor = false;
+	cBallControllerDPG::UpdateAction();
+}
+
+void cBallControllerMACEDPG::DecideAction(tAction& out_action)
+{
+	DecideActionBoltzmann(out_action);
+}
+
+void cBallControllerMACEDPG::DecideActionBoltzmann(tAction& out_action)
+{
+	mOffPolicy = false;
+	const auto& actor = GetActor();
+
+	Eigen::VectorXd state;
+	BuildState(state);
+
+	Eigen::VectorXd actions;
+	actor.Eval(state, actions);
+	CalcCriticVals(state, actions, mBoltzmannBuffer);
+
+	int a_max = cMACEDPGTrainer::GetMaxFragValIdx(mBoltzmannBuffer);
+	int a = a_max;
+
+	if (mEnableExp && mExpTemp != 0)
+	{
+		int num_actors = GetNumActionFrags();
+		double max_val = cMACEDPGTrainer::GetVal(mBoltzmannBuffer, a_max);
+
+		double sum = 0;
+		for (int i = 0; i < num_actors; ++i)
+		{
+			double curr_val = cMACEDPGTrainer::GetVal(mBoltzmannBuffer, i);
+			curr_val = std::exp((curr_val - max_val) / mExpTemp);
+
+			mBoltzmannBuffer[i] = curr_val;
+			sum += curr_val;
+		}
+
+		double rand = cMathUtil::RandDouble(0, sum);
+
+		for (int i = 0; i < num_actors; ++i)
+		{
+			double curr_val = mBoltzmannBuffer[i];
+			rand -= curr_val;
+
+			if (rand <= 0)
+			{
+				a = i;
+				break;
+			}
+		}
+	}
+
+	BuildActorAction(actions, a, out_action);
+
+	if (mEnableExp)
+	{
+		double rand_noise = cMathUtil::RandDouble();
+		if (rand_noise < mExpRate)
+		{
+			ApplyExpNoise(out_action);
+			mExpActor = true;
+		}
+
+		mExpCritic = (a != a_max);
+	}
+
+	if (mExpCritic || mExpActor)
+	{
+		mOffPolicy = true;
+		if (mExpActor)
+		{
+			printf("Actor ");
+		}
+		if (mExpCritic)
+		{
+			printf("Critic ");
+		}
+		printf("Exploration\n");
+	}
+
+	printf("action: %i, %.5f\n", out_action.mID, out_action.mDist);
 }

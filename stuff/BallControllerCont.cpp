@@ -64,8 +64,14 @@ void cBallControllerCont::GetRandomActionCont(tAction& out_action)
 {
 	tAction action;
 	CalcActionNet(action);
-	double rand_dist = cMathUtil::RandDoubleNorm(mExpNoiseMean, mExpNoiseStd);
-	
-	action.mDist += rand_dist;
-	out_action = action;
+	ApplyExpNoise(action);
+}
+
+void cBallControllerCont::ApplyExpNoise(tAction& out_action)
+{
+	const double dist_mean = mExpNoiseMean;
+	const double dist_stdev = mExpNoiseStd;
+
+	double rand_dist = cMathUtil::RandDoubleNorm(dist_mean, dist_stdev);
+	out_action.mDist += rand_dist;
 }

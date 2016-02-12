@@ -364,6 +364,13 @@ void cBallController::EnableExp(bool enable)
 	mEnableExp = enable;
 }
 
+void cBallController::BuildNNOutputOffsetScale(Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const
+{
+	int output_size = GetActionSize();
+	out_offset = -0.5 * Eigen::VectorXd::Ones(output_size);
+	out_scale = 2 * Eigen::VectorXd::Ones(output_size);
+}
+
 void cBallController::BuildState(Eigen::VectorXd& state) const
 {
 	state = mGroundSamples;

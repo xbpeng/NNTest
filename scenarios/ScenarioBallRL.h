@@ -86,8 +86,6 @@ protected:
 
 	virtual void SetupTrainerOutputOffsetScale();
 	
-	virtual void BuildOutputOffsetScale(const std::shared_ptr<cNeuralNetTrainer>& trainer, 
-										Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const;
 	virtual int GetIter() const;
 	virtual void Train();
 	virtual double GetExpRate() const;

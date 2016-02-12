@@ -22,4 +22,5 @@ protected:
 	virtual void CalcActionNet(tAction& out_action);
 	virtual void GetRandomAction(tAction& out_action);
 	virtual void GetRandomActionCont(tAction& out_action);
+	virtual void ApplyExpNoise(tAction& out_action);
 };

@@ -251,6 +251,8 @@ void cBallControllerMACE::GetRandomActionFrag(tAction& out_action)
 
 void cBallControllerMACE::ApplyExpNoise(tAction& out_action)
 {
+	AddExpActionNoise(out_action);
+	/*
 	int rand = cMathUtil::RandInt(0, 2);
 	if (rand == 0)
 	{
@@ -260,6 +262,7 @@ void cBallControllerMACE::ApplyExpNoise(tAction& out_action)
 	{
 		AddExpStateNoise(out_action);
 	}
+	*/
 }
 
 void cBallControllerMACE::AddExpActionNoise(tAction& out_action)
