@@ -25,7 +25,8 @@ std::string cScenarioBallRLMACEDPG::GetName() const
 void cScenarioBallRLMACEDPG::InitTrainer()
 {
 	std::shared_ptr<cMACEDPGTrainer> trainer = std::shared_ptr<cMACEDPGTrainer>(new cMACEDPGTrainer());
-	
+	mTrainer = trainer;
+
 	mTrainerParams.mNetFile = mCriticNetFile;
 	mTrainerParams.mSolverFile = mCriticSolverFile;
 	
@@ -66,7 +67,8 @@ void cScenarioBallRLMACEDPG::InitTrainer()
 	Eigen::VectorXd action_max = ctrl->gMaxDist * Eigen::VectorXd::Ones(action_size);
 	trainer->SetActionBounds(action_min, action_max);
 
-	mTrainer = trainer;
+	double temp = GetExpTemp();
+	trainer->SetBoltzTemp(temp);
 }
 
 void cScenarioBallRLMACEDPG::SetupController()
@@ -117,4 +119,13 @@ void cScenarioBallRLMACEDPG::CopyTrainerNets()
 
 	ctrl->CopyActorNet(*actor_net.get());
 	ctrl->CopyCriticNet(*critic_net.get());
+}
+
+void cScenarioBallRLMACEDPG::Train()
+{
+	cScenarioBallRLDPG::Train();
+
+	double temp = GetExpTemp();
+	auto trainer = std::static_pointer_cast<cMACEDPGTrainer>(mTrainer);
+	trainer->SetBoltzTemp(temp);
 }

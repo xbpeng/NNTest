@@ -83,23 +83,7 @@ void cBallControllerMACEDPG::UpdateFragParams()
 
 void cBallControllerMACEDPG::CalcCriticVals(const Eigen::VectorXd& state, const Eigen::VectorXd& actions, Eigen::VectorXd& out_vals)
 {
-	int state_size = GetStateSize();
-	int action_size = GetActionSize();
-	Eigen::VectorXd state_action = Eigen::VectorXd(state_size + action_size);
-	state_action.segment(0, state_size) = state;
-
-	const auto& critic = GetCritic();
-	assert(state_action.size() == critic.GetInputSize());
-
-	int num_actions = static_cast<int>(actions.size()) / action_size;
-	Eigen::VectorXd critic_output;
-	for (int a = 0; a < num_actions; ++a)
-	{
-		state_action.segment(state_size, action_size) = actions.segment(a * action_size, action_size);
-		critic.Eval(state_action, critic_output);
-		double val = critic_output[0];
-		out_vals[a] = val;
-	}
+	cMACEDPGTrainer::CalcCriticVals(GetCritic(), state, actions, out_vals);
 }
 
 void cBallControllerMACEDPG::BuildActorAction(const Eigen::VectorXd& actions, int a_id, tAction& out_action) const

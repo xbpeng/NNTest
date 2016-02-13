@@ -22,4 +22,5 @@ protected:
 											Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const;
 
 	virtual void CopyTrainerNets();
+	virtual void Train();
 };
