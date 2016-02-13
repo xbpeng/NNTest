@@ -1,8 +1,7 @@
 #pragma once
 
 #include "scenarios/ScenarioBallRL.h"
-#include "stuff/BallControllerCont.h"
-#include "stuff/BallControllerContAC.h"
+#include "stuff/BallControllerCacla.h"
 #include "learning/CaclaTrainer.h"
 #include "learning/QCaclaTrainer.h"
 

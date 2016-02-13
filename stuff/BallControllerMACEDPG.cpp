@@ -36,83 +36,6 @@ int cBallControllerMACEDPG::GetNetOutputSize() const
 	return GetActorOutputSize();
 }
 
-bool cBallControllerMACEDPG::ValidCritic() const
-{
-	return mCriticNet.HasNet();
-}
-
-bool cBallControllerMACEDPG::LoadCriticNet(const std::string& net_file)
-{
-	bool succ = true;
-	mCriticNet.Clear();
-	mCriticNet.LoadNet(net_file);
-
-	int input_size = mCriticNet.GetInputSize();
-	int output_size = mCriticNet.GetOutputSize();
-	int critic_input_size = GetCriticInputSize();
-	int critic_output_size = GetCriticOutputSize();
-
-	if (input_size != critic_input_size)
-	{
-		printf("Network input dimension does not match expected size (%i vs %i).\n", input_size, critic_input_size);
-		succ = false;
-	}
-
-	if (output_size != critic_output_size)
-	{
-		printf("Network output dimension does not match expected size (%i vs %i).\n", output_size, critic_output_size);
-		succ = false;
-	}
-
-	if (!succ)
-	{
-		mCriticNet.Clear();
-		assert(false);
-	}
-
-	return succ;
-}
-
-void cBallControllerMACEDPG::LoadCriticModel(const std::string& model_file)
-{
-	mCriticNet.LoadModel(model_file);
-}
-
-const cNeuralNet& cBallControllerMACEDPG::GetActor() const
-{
-	return mNet;
-}
-
-cNeuralNet& cBallControllerMACEDPG::GetActor()
-{
-	return mNet;
-}
-
-const cNeuralNet& cBallControllerMACEDPG::GetCritic() const
-{
-	return mCriticNet;
-}
-
-cNeuralNet& cBallControllerMACEDPG::GetCritic()
-{
-	return mCriticNet;
-}
-
-void cBallControllerMACEDPG::CopyActorNet(const cNeuralNet& net)
-{
-	mNet.CopyModel(net);
-}
-
-void cBallControllerMACEDPG::CopyCriticNet(const cNeuralNet& net)
-{
-	mCriticNet.CopyModel(net);
-}
-
-int cBallControllerMACEDPG::GetActorInputSize() const
-{
-	return GetStateSize();
-}
-
 int cBallControllerMACEDPG::GetActorOutputSize() const
 {
 	return GetNumActionFrags() * GetActionFragSize();
@@ -121,16 +44,6 @@ int cBallControllerMACEDPG::GetActorOutputSize() const
 int cBallControllerMACEDPG::GetCriticInputSize() const
 {
 	return GetStateSize() + GetActionSize();
-}
-
-int cBallControllerMACEDPG::GetCriticOutputSize() const
-{
-	return 1;
-}
-
-void cBallControllerMACEDPG::BuildNNOutputOffsetScale(Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const
-{
-	BuildActorOutputOffsetScale(out_offset, out_scale);
 }
 
 void cBallControllerMACEDPG::BuildActorOutputOffsetScale(Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const
@@ -153,13 +66,6 @@ void cBallControllerMACEDPG::BuildActorOutputOffsetScale(Eigen::VectorXd& out_of
 		out_offset.segment(a * action_size, action_size) *= dist_offset;
 		out_scale.segment(a * action_size, action_size) *= dist_scale;
 	}
-}
-
-void cBallControllerMACEDPG::BuildCriticOutputOffsetScale(Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const
-{
-	int output_size = 1;
-	out_offset = -0.5 * Eigen::VectorXd::Ones(output_size);
-	out_scale = 2 * Eigen::VectorXd::Ones(output_size);
 }
 
 void cBallControllerMACEDPG::LoadNetIntern(const std::string& net_file)

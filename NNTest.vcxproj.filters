@@ -521,16 +521,10 @@
     <ClCompile Include="scenarios\DrawScenarioBallRLCacla.cpp">
       <Filter>Source Files\scenarios</Filter>
     </ClCompile>
-    <ClCompile Include="stuff\BallControllerCont.cpp">
-      <Filter>Source Files\stuff</Filter>
-    </ClCompile>
     <ClCompile Include="..\TerrainRL\learning\QCaclaTrainer.cpp">
       <Filter>Source Files\util</Filter>
     </ClCompile>
     <ClCompile Include="stuff\ArmNNPixelNoPoseController.cpp">
-      <Filter>Source Files\stuff</Filter>
-    </ClCompile>
-    <ClCompile Include="stuff\BallControllerContAC.cpp">
       <Filter>Source Files\stuff</Filter>
     </ClCompile>
     <ClCompile Include="scenarios\ScenarioBallEval.cpp">
@@ -637,6 +631,9 @@
     </ClCompile>
     <ClCompile Include="..\TerrainRL\learning\MACEDPGTrainer.cpp">
       <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="stuff\BallControllerCacla.cpp">
+      <Filter>Source Files\stuff</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -883,9 +880,6 @@
     <ClInclude Include="scenarios\DrawScenarioBallRLCacla.h">
       <Filter>Source Files\scenarios</Filter>
     </ClInclude>
-    <ClInclude Include="stuff\BallControllerCont.h">
-      <Filter>Source Files\stuff</Filter>
-    </ClInclude>
     <ClInclude Include="..\TerrainRL\learning\CaclaTrainer.h">
       <Filter>Source Files\util</Filter>
     </ClInclude>
@@ -893,9 +887,6 @@
       <Filter>Source Files\util</Filter>
     </ClInclude>
     <ClInclude Include="stuff\ArmNNPixelNoPoseController.h">
-      <Filter>Source Files\stuff</Filter>
-    </ClInclude>
-    <ClInclude Include="stuff\BallControllerContAC.h">
       <Filter>Source Files\stuff</Filter>
     </ClInclude>
     <ClInclude Include="scenarios\ScenarioBallEval.h">
@@ -999,6 +990,9 @@
     </ClInclude>
     <ClInclude Include="..\TerrainRL\learning\MACEDPGTrainer.h">
       <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="stuff\BallControllerCacla.h">
+      <Filter>Source Files\stuff</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

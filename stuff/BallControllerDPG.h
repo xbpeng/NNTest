@@ -1,7 +1,7 @@
 #pragma once
-#include "BallControllerCont.h"
+#include "BallControllerCacla.h"
 
-class cBallControllerDPG : public cBallControllerCont
+class cBallControllerDPG : public cBallControllerCacla
 {
 public:
 	EIGEN_MAKE_ALIGNED_OPERATOR_NEW

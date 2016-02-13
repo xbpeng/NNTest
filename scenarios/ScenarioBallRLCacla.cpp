@@ -37,7 +37,7 @@ std::string cScenarioBallRLCacla::GetName() const
 
 void cScenarioBallRLCacla::BuildController(std::shared_ptr<cBallController>& out_ctrl)
 {
-	out_ctrl = std::shared_ptr<cBallController>(new cBallControllerCont(mBall));
+	out_ctrl = std::shared_ptr<cBallController>(new cBallControllerCacla(mBall));
 }
 
 void cScenarioBallRLCacla::InitTrainer()
@@ -80,34 +80,21 @@ void cScenarioBallRLCacla::InitTrainer()
 	BuildActorOutputOffsetScale(trainer, actor_output_offset, actor_output_scale);
 	trainer->SetActorOutputOffsetScale(actor_output_offset, actor_output_scale);
 	
-	/*
-	Eigen::VectorXd output_offset;
-	Eigen::VectorXd output_scale;
-	BuildACOutputOffseScale(trainer, output_offset, output_scale);
-	trainer->SetOutputOffsetScale(output_offset, output_scale);
-	*/
-
 	mTrainer = trainer;
 }
 
 void cScenarioBallRLCacla::BuildCriticOutputOffsetScale(const std::shared_ptr<cCaclaTrainer>& trainer,
 														Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const
 {
-	int output_size = trainer->GetCriticOutputSize();
-	out_offset = -0.5 * Eigen::VectorXd::Ones(output_size);
-	out_scale = 2 * Eigen::VectorXd::Ones(output_size);
+	auto ctrl = std::static_pointer_cast<cBallControllerCacla>(mBall.GetController());
+	ctrl->BuildCriticOutputOffsetScale(out_offset, out_scale);
 }
 
 void cScenarioBallRLCacla::BuildActorOutputOffsetScale(const std::shared_ptr<cCaclaTrainer>& trainer,
 														Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const
 {
-	int output_size = trainer->GetActorOutputSize();
-	double min_dist = cBallControllerCont::gMinDist;
-	double max_dist = cBallControllerCont::gMaxDist;
-	double offset = -0.5 * (max_dist + min_dist);
-	double scale = 2 / (max_dist - min_dist);
-	out_offset = offset * Eigen::VectorXd::Ones(output_size);
-	out_scale = scale * Eigen::VectorXd::Ones(output_size);
+	auto ctrl = std::static_pointer_cast<cBallControllerCacla>(mBall.GetController());
+	ctrl->BuildActorOutputOffsetScale(out_offset, out_scale);
 }
 
 void cScenarioBallRLCacla::RecordBegFlags(tExpTuple& out_tuple) const

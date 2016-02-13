@@ -2,7 +2,7 @@
 #include "Ball.h"
 
 cBallControllerDPG::cBallControllerDPG(cBall& ball) :
-	cBallControllerCont(ball)
+	cBallControllerCacla(ball)
 {
 	mExpNoiseMean = 0;
 	mExpNoiseStd = 0.5;
