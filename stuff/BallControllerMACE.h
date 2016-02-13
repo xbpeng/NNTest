@@ -24,6 +24,8 @@ public:
 	virtual bool IsExpCritic() const;
 	virtual bool IsExpActor() const;
 
+	virtual void BuildNNOutputOffsetScale(Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const;
+
 protected:
 	int mNumActionFrags;
 	std::vector<double> mBoltzmannBuffer;
