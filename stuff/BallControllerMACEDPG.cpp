@@ -6,6 +6,7 @@ cBallControllerMACEDPG::cBallControllerMACEDPG(cBall& ball) :
 	cBallControllerDPG(ball)
 {
 	mNumActionFrags = 0;
+	mExpNoiseStd = 0.5;
 	mExpCritic = false;
 	mExpActor = false;
 }
@@ -179,5 +180,13 @@ void cBallControllerMACEDPG::DecideActionBoltzmann(tAction& out_action)
 		printf("Exploration\n");
 	}
 
-	printf("action: %i, %.5f\n", out_action.mID, out_action.mDist);
+	printf("Action: %i, %.5f\n", out_action.mID, out_action.mDist);
+	printf("Actors: ");
+	for (int a = 0; a < GetNumActionFrags(); ++a)
+	{
+		double val = mBoltzmannBuffer[a];
+		double curr_action = actions[a];
+		printf("(%.3f) %.3f\t", val, curr_action);
+	}
+	printf("\n");
 }
