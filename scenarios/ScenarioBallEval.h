@@ -3,8 +3,9 @@
 #include "scenarios/ScenarioBallRLCacla.h"
 #include "scenarios/ScenarioBallRLMACE.h"
 #include "scenarios/ScenarioBallRLDPG.h"
+#include "scenarios/ScenarioBallRLMACEDPG.h"
 
-#define BALL_EVAL_BASE cScenarioBallRLDPG
+#define BALL_EVAL_BASE cScenarioBallRLMACEDPG
 
 class cScenarioBallEval : public BALL_EVAL_BASE
 {

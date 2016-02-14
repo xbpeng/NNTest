@@ -126,6 +126,7 @@ void cScenarioBallRLMACEDPG::Train()
 	cScenarioBallRLDPG::Train();
 
 	double temp = GetExpTemp();
+	double temp_scale = 1;
 	auto trainer = std::static_pointer_cast<cMACEDPGTrainer>(mTrainer);
-	trainer->SetBoltzTemp(temp);
+	trainer->SetBoltzTemp(temp * temp_scale);
 }

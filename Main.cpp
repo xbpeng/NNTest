@@ -51,7 +51,7 @@ int gNextTime = 0;
 int gDispalyPrevTime = 0;
 
 double gPlaybackSpeed = 1;
-const double gPlaybackDelta = 0.1;
+const double gPlaybackDelta = 1;
 
 // arg parser
 cArgParser gArgParser;

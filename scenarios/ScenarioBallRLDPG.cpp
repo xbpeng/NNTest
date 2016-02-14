@@ -34,6 +34,7 @@ void cScenarioBallRLDPG::InitTrainer()
 	mTrainerParams.mNumInitSamples = 10000;
 	mTrainerParams.mFreezeTargetIters = 200;
 
+	trainer->SetPretrainIters(5000);
 	trainer->SetActorFiles(mSolverFile, mNetFile);
 	trainer->Init(mTrainerParams);
 
