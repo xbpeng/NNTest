@@ -1,4 +1,4 @@
--scenario= ball_rl_dpg
+-scenario= arm_rl
 -playback_speed= 60
 
 -character_file= data/arm_rl/arm.txt
@@ -7,9 +7,9 @@
 //-net_file= data/ball_rl/nets/balL_rl_test.prototxt
 //-model_file= data/ball_rl/nets/ball_rl_model_noise.h5
 
--solver_file= data/ball_rl/nets/ball_rl_actor_solver.prototxt
--net_file= data/ball_rl/nets/balL_rl_actor_deploy.prototxt
--model_file= data/ball_rl/models/ball_rl_dpg_actor_init_model.h5
+//-solver_file= data/ball_rl/nets/ball_rl_actor_solver.prototxt
+//-net_file= data/ball_rl/nets/balL_rl_actor_deploy.prototxt
+//-model_file= data/ball_rl/models/ball_rl_dpg_actor_init_model.h5
 //-model_file= data/ball_rl/models/ball_rl_dpg_actor_model.h5
 
 //-model_file= data/ball_rl/nets/ball_rl_actor_init.h5
@@ -25,9 +25,9 @@
 //-critic_solver_file= data/ball_rl/nets/balL_rl_critic_q_solver.prototxt
 //-critic_net_file= data/ball_rl/nets/balL_rl_critic_q_deploy.prototxt
 
--critic_solver_file= data/ball_rl/nets/balL_rl_dpg_critic_solver.prototxt
--critic_net_file= data/ball_rl/nets/balL_rl_dpg_critic_deploy.prototxt
--critic_model_file= data/ball_rl/models/ball_rl_dpg_critic_init_model.h5
+//-critic_solver_file= data/ball_rl/nets/balL_rl_dpg_critic_solver.prototxt
+//-critic_net_file= data/ball_rl/nets/balL_rl_dpg_critic_deploy.prototxt
+//-critic_model_file= data/ball_rl/models/ball_rl_dpg_critic_init_model.h5
 //-critic_model_file= data/ball_rl/models/ball_rl_dpg_critic_model.h5
 //-critic_model_file= data/ball_rl/models/balL_rl_mace2_dpg_critic_model.h5
 
@@ -62,8 +62,8 @@
 //-solver_file= data/reg1D/reg1D_multi_solver.prototxt
 //-net_file= data/reg1D/reg1D_multi_deploy.prototxt
 
-//-solver_file= data/arm_rl/arm_reduced_solver.prototxt
-//-net_file= data/arm_rl/arm_reduced_deploy.prototxt
+-solver_file= data/arm_rl/arm_reduced_solver.prototxt
+-net_file= data/arm_rl/arm_reduced_deploy.prototxt
 //-model_file= data/arm_rl/arm_torque_model.h5
 //-model_file= data/arm_rl/arm_pd_model.h5
 //-model_file= data/arm_rl/arm_vel_model.h5
@@ -85,7 +85,7 @@
 //-scale_file= data/arm_rl/arm_pixel_model_scale.txt
 
 -coach_type= qp
--arm_ctrl_type= nn_pixel
+-arm_ctrl_type= nn
 
 -exp_rate= 0.2
 -exp_temp= 0.025

@@ -73,7 +73,11 @@
 				"Theta": 0,
 				"Param0": 0.2,
 				"Param1": 0.2,
-				"Param2": 0.14
+				"Param2": 0.14,
+				"ColorR": 0.6,
+				"ColorG": 0.65,
+				"ColorB": 0.675,
+				"ColorA": 1
 			},
 			{
 				"Name": "link0",
@@ -85,7 +89,11 @@
 				"Theta": 0,
 				"Param0": 0.55,
 				"Param1": 0.1,
-				"Param2": 0.13
+				"Param2": 0.13,
+				"ColorR": 0.6,
+				"ColorG": 0.65,
+				"ColorB": 0.675,
+				"ColorA": 1
 			},
 			{
 				"Name": "link1",
@@ -97,7 +105,11 @@
 				"Theta": 0,
 				"Param0": 0.55,
 				"Param1": 0.08,
-				"Param2": 0.12
+				"Param2": 0.12,
+				"ColorR": 0.6,
+				"ColorG": 0.65,
+				"ColorB": 0.675,
+				"ColorA": 1
 			},
 			{
 				"Name": "link2",
@@ -109,7 +121,11 @@
 				"Theta": 0,
 				"Param0": 0.55,
 				"Param1": 0.06,
-				"Param2": 0.11
+				"Param2": 0.11,
+				"ColorR": 0.6,
+				"ColorG": 0.65,
+				"ColorB": 0.675,
+				"ColorA": 1
 			},
 			{
 				"Name": "end",
@@ -121,7 +137,11 @@
 				"Theta": 0,
 				"Param0": 0.1,
 				"Param1": 0.1,
-				"Param2": 0.12
+				"Param2": 0.12,
+				"ColorR": 0.6,
+				"ColorG": 0.65,
+				"ColorB": 0.675,
+				"ColorA": 1
 			}
 		],
 

@@ -83,7 +83,7 @@ int cArmController::GetPoliActionSize() const
 {
 	int num_dof = mChar->GetNumDof();
 	int root_size = mChar->GetParamSize(mChar->GetRootID());
-	int action_dim = num_dof - root_size;
+	int action_dim = num_dof - root_size - 1; // -1 for end effector
 	return action_dim;
 }
 
@@ -160,17 +160,20 @@ void cArmController::UpdatePoliAction()
 
 void cArmController::ApplyPoliAction(double time_step, const Eigen::VectorXd& action)
 {
-	int num_joints = mChar->GetNumJoints();
-	assert(static_cast<int>(action.size()) == num_joints - 1);
+	assert(static_cast<int>(action.size()) == GetPoliActionSize());
 
-	for (int j = 1; j < num_joints; ++j)
+	int joint_offset = 1;
+	for (int j = 0; j < action.size(); ++j)
 	{
-		cJoint& joint = mChar->GetJoint(j);
-		double t = action[j - 1];
-		t /= gTorqueScale;
-		t = cMathUtil::Clamp(t, -mTorqueLim, mTorqueLim);
-		tVector torque = tVector(0, 0, t, 0);
-		joint.AddTorque(torque);
+		cJoint& joint = mChar->GetJoint(j + joint_offset);
+		if (joint.IsValid())
+		{
+			double t = action[j];
+			t /= gTorqueScale;
+			t = cMathUtil::Clamp(t, -mTorqueLim, mTorqueLim);
+			tVector torque = tVector(0, 0, t, 0);
+			joint.AddTorque(torque);
+		}
 	}
 }
 

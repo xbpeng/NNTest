@@ -11,7 +11,7 @@ layer {
 	channels: 1
 	height: 1
 	width: 10
-	label_size: 4
+	label_size: 3
   }
 }
 
@@ -91,7 +91,7 @@ layer {
 	decay_mult: 0
   }
   inner_product_param {
-    num_output: 4
+    num_output: 3
     weight_filler {
       type: "xavier"
     }

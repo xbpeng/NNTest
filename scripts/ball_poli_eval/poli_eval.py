@@ -12,21 +12,29 @@ args = '-arg_file= args/ball_int_poli_eval.txt'
 os.chdir(root_dir)
 files = os.listdir(poli_files_dir)
 
-model_files = []
+actor_files = []
+critic_files = []
 for f in files:
     filename, ext = os.path.splitext(f)
     if (ext == '.h5'):
-        model_files.append(f)
+        if '_critic' in filename:
+            critic_files.append(f)
+        else:
+            actor_files.append(f)
+
+num_files = len(actor_files)
 
 print('model files:')
-for f in model_files:
-    print(f)
+for f in range(0, num_files):
+    print(actor_files[f] + ' ' + critic_files[f])
 print('\n')
 
 os.chdir(root_dir)
 
-for f in model_files:
-    command = exe_path + ' ' + args
-    command += ' ' + '-model_file=' + ' ' + poli_files_dir + f
+
+for f in range(0, num_files):
+    command = root_dir + exe_name + ' ' + args
+    command += ' ' + '-model_file=' + ' ' + poli_files_dir + actor_files[f] \
+               + ' ' + '-critic_model_file=' + ' ' + poli_files_dir + critic_files[f]
     print(command + '\n')
     subprocess.call(command)

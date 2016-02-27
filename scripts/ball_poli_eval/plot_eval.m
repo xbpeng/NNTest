@@ -28,13 +28,10 @@ files{end + 1} = {'cacla1.txt', 'Cacla'};
 %files{end + 1} = {'dpg_clamp.txt', 'DPG Clamp'};
 %files{end + 1} = {'dpg_clamp_no_pretrain.txt', 'DPG Clamp no Pretrain'};
 %files{end + 1} = {'dpg_invert.txt', 'DPG Invert'};
-files{end + 1} = {'dpg0.txt', 'DPG'};
-%files{end + 1} = {'dpg1.txt', 'DPG1'};
-%files{end + 1} = {'dpg2.txt', 'DPG2'};
-%files{end + 1} = {'mace2_dpg.txt', 'MACE2 DPG'};
-files{end + 1} = {'mace2_dpg_1.txt', 'MACE2 DPG'};
-%files{end + 1} = {'mace2_dpg_01.txt', 'MACE2 DPG 0.1'};
-%files{end + 1} = {'mace2_dpg_001.txt', 'MACE2 DPG 0.01'};
+files{end + 1} = {'dpg.txt', 'DPG'};
+files{end + 1} = {'dpg_l2.txt', 'DPG + L2'};
+files{end + 1} = {'mace2_dpg.txt', 'MACE2 DPG'};
+files{end + 1} = {'mace2_dpg_l2.txt', 'MACE2 DPG + L2'};
 
 lines = {'b-', 'r-', 'm-', 'k-', 'g-', 'c-', 'k--', 'r--'};
 iter_step = 500 / 1000;

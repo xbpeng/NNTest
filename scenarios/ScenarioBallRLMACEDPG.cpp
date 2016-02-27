@@ -3,6 +3,7 @@
 #include "stuff/BallControllerMACEDPG.h"
 
 const int gTrainerPlaybackMemSize = 20000;
+const double gTrainerTempScale = 1;
 
 cScenarioBallRLMACEDPG::cScenarioBallRLMACEDPG()
 {
@@ -39,6 +40,9 @@ void cScenarioBallRLMACEDPG::InitTrainer()
 	trainer->SetNumActionFrags(ctrl->GetNumActionFrags());
 	trainer->SetActionFragSize(ctrl->GetActionFragSize());
 
+	trainer->SetPretrainIters(5000);
+	trainer->SetDPGReg(0.1);
+	trainer->SetQDiff(0.1);
 	trainer->SetActorFiles(mSolverFile, mNetFile);
 	trainer->Init(mTrainerParams);
 
@@ -62,13 +66,8 @@ void cScenarioBallRLMACEDPG::InitTrainer()
 	BuildActorOutputOffsetScale(trainer, actor_output_offset, actor_output_scale);
 	trainer->SetActorOutputOffsetScale(actor_output_offset, actor_output_scale);
 	
-	int action_size = ctrl->GetActionSize();
-	Eigen::VectorXd action_min = ctrl->gMinDist * Eigen::VectorXd::Ones(action_size);
-	Eigen::VectorXd action_max = ctrl->gMaxDist * Eigen::VectorXd::Ones(action_size);
-	trainer->SetActionBounds(action_min, action_max);
-
 	double temp = GetExpTemp();
-	trainer->SetBoltzTemp(temp);
+	trainer->SetBoltzTemp(gTrainerTempScale * temp);
 }
 
 void cScenarioBallRLMACEDPG::SetupController()
@@ -126,7 +125,6 @@ void cScenarioBallRLMACEDPG::Train()
 	cScenarioBallRLDPG::Train();
 
 	double temp = GetExpTemp();
-	double temp_scale = 1;
 	auto trainer = std::static_pointer_cast<cMACEDPGTrainer>(mTrainer);
-	trainer->SetBoltzTemp(temp * temp_scale);
+	trainer->SetBoltzTemp(gTrainerTempScale * temp);
 }
