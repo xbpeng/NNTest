@@ -52,7 +52,7 @@ void cArmPDQPController::TorquesToTheta(const Eigen::VectorXd& torques, Eigen::V
 		const cPDController& pd_ctrl = mImpPDCtrl.GetPDCtrl(j);
 		if (pd_ctrl.IsValid())
 		{
-			double t = torques[idx] / gTorqueScale;
+			double t = torques[idx];
 			double tar_theta = pd_ctrl.CalcTargetTheta(t);
 			out_theta[idx] = tar_theta;
 			++idx;

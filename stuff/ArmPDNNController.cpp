@@ -34,11 +34,17 @@ void cArmPDNNController::Clear()
 	mImpPDCtrl.Clear();
 }
 
+void cArmPDNNController::BuildNNOutputOffsetScale(Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const
+{
+	const double theta_scale = 1;
+	int output_size = GetPoliActionSize();
+	out_offset = Eigen::VectorXd::Zero(output_size);
+	out_scale = theta_scale * Eigen::VectorXd::Ones(output_size);
+}
+
 void cArmPDNNController::UpdatePoliAction()
 {
 	cArmNNController::UpdatePoliAction();
-	// hack
-	mPoliAction(mPoliAction.size() - 1) = 0;
 }
 
 void cArmPDNNController::ApplyPoliAction(double time_step, const Eigen::VectorXd& action)

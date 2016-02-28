@@ -1,4 +1,4 @@
--scenario= arm_rl
+-scenario= arm_train
 -playback_speed= 60
 
 -character_file= data/arm_rl/arm.txt

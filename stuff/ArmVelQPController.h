@@ -7,9 +7,7 @@ class cArmVelQPController : public cArmQPController
 {
 public:
 	EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-
-	static const double gVelScale;
-
+	
 	cArmVelQPController();
 	virtual ~cArmVelQPController();
 

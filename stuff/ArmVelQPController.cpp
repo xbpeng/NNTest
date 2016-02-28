@@ -1,8 +1,6 @@
 #include "ArmVelQPController.h"
 #include "SimArm.h"
 
-const double cArmVelQPController::gVelScale = 0.1;
-
 cArmVelQPController::cArmVelQPController()
 {
 }
@@ -50,7 +48,6 @@ void cArmVelQPController::UpdatePoliAction()
 	cArmQPController::UpdatePoliAction();
 	Eigen::VectorXd torques = mPoliAction;
 	TorquesToVel(torques, mPoliAction);
-	mPoliAction *= gVelScale;
 }
 
 void cArmVelQPController::TorquesToVel(const Eigen::VectorXd& torques, Eigen::VectorXd& out_vel) const
@@ -64,7 +61,7 @@ void cArmVelQPController::TorquesToVel(const Eigen::VectorXd& torques, Eigen::Ve
 		const cPDController& pd_ctrl = mImpPDCtrl.GetPDCtrl(j);
 		if (pd_ctrl.IsValid())
 		{
-			double t = torques[idx] / gTorqueScale;
+			double t = torques[idx];
 			double tar_vel = pd_ctrl.CalcTargetVel(t);
 			out_vel[idx] = tar_vel;
 			++idx;
@@ -83,7 +80,6 @@ void cArmVelQPController::ApplyPoliAction(double time_step, const Eigen::VectorX
 		if (mImpPDCtrl.IsValidPDCtrl(j))
 		{
 			double vel = action[idx];
-			vel /= gVelScale;
 			mImpPDCtrl.SetTargetVel(j, vel);
 			++idx;
 		}

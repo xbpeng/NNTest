@@ -49,6 +49,7 @@ protected:
 	virtual void SetTarget(const tVector& target);
 
 	virtual void ApplyRandForce();
+	virtual tVector GetDefaultCamPos() const;
 
 	virtual void DrawScene();
 	virtual void DrawCharacter();

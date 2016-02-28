@@ -44,11 +44,17 @@ void cArmVelNNPixelController::Clear()
 	mImpPDCtrl.Clear();
 }
 
+void cArmVelNNPixelController::BuildNNOutputOffsetScale(Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const
+{
+	const double vel_scale = 0.1;
+	int output_size = GetPoliActionSize();
+	out_offset = Eigen::VectorXd::Zero(output_size);
+	out_scale = vel_scale * Eigen::VectorXd::Ones(output_size);
+}
+
 void cArmVelNNPixelController::UpdatePoliAction()
 {
 	cArmNNPixelController::UpdatePoliAction();
-	// hack
-	mPoliAction(mPoliAction.size() - 1) = 0;
 }
 
 void cArmVelNNPixelController::ApplyPoliAction(double time_step, const Eigen::VectorXd& action)
@@ -62,7 +68,6 @@ void cArmVelNNPixelController::ApplyPoliAction(double time_step, const Eigen::Ve
 		if (mImpPDCtrl.IsValidPDCtrl(j))
 		{
 			double vel = action[idx];
-			vel /= cArmVelQPController::gVelScale;
 			mImpPDCtrl.SetTargetVel(j, vel);
 			++idx;
 		}

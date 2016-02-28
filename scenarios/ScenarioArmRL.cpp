@@ -265,13 +265,19 @@ void cScenarioArmRL::InitTrainer()
 void cScenarioArmRL::SetupScale()
 {
 	int state_size = mTrainer.GetStateSize();
+	int action_size = mTrainer.GetActionSize();
 	if (state_size > 0)
 	{
 		auto ctrl = GetStudentController();
 		Eigen::VectorXd offset = Eigen::VectorXd::Zero(state_size);
 		Eigen::VectorXd scale = Eigen::VectorXd::Ones(state_size);
-		ctrl->BuildPoliStateOffsetScale(offset, scale);
+		ctrl->BuildNNInputOffsetScale(offset, scale);
 		mTrainer.SetInputOffsetScale(offset, scale);
+
+		Eigen::VectorXd output_offset = Eigen::VectorXd::Zero(action_size);
+		Eigen::VectorXd output_scale = Eigen::VectorXd::Ones(action_size);
+		ctrl->BuildNNOutputOffsetScale(output_offset, output_scale);
+		mTrainer.SetOutputOffsetScale(output_offset, output_scale);
 	}
 }
 

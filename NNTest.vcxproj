@@ -325,6 +325,7 @@
     <ClCompile Include="scenarios\DrawScenarioArmEval.cpp" />
     <ClCompile Include="scenarios\DrawScenarioArmRL.cpp" />
     <ClCompile Include="scenarios\DrawScenarioArmRLPretrain.cpp" />
+    <ClCompile Include="scenarios\DrawScenarioArmTrain.cpp" />
     <ClCompile Include="scenarios\DrawScenarioBallEval.cpp" />
     <ClCompile Include="scenarios\DrawScenarioBallRL.cpp" />
     <ClCompile Include="scenarios\DrawScenarioBallRLCacla.cpp" />
@@ -337,6 +338,7 @@
     <ClCompile Include="scenarios\ScenarioArmEval.cpp" />
     <ClCompile Include="scenarios\ScenarioArmRL.cpp" />
     <ClCompile Include="scenarios\ScenarioArmRLPretrain.cpp" />
+    <ClCompile Include="scenarios\ScenarioArmTrain.cpp" />
     <ClCompile Include="scenarios\ScenarioBallEval.cpp" />
     <ClCompile Include="scenarios\ScenarioBallRL.cpp" />
     <ClCompile Include="scenarios\ScenarioBallRLCacla.cpp" />
@@ -450,6 +452,7 @@
     <ClInclude Include="scenarios\DrawScenarioArmEval.h" />
     <ClInclude Include="scenarios\DrawScenarioArmRL.h" />
     <ClInclude Include="scenarios\DrawScenarioArmRLPretrain.h" />
+    <ClInclude Include="scenarios\DrawScenarioArmTrain.h" />
     <ClInclude Include="scenarios\DrawScenarioBallEval.h" />
     <ClInclude Include="scenarios\DrawScenarioBallRL.h" />
     <ClInclude Include="scenarios\DrawScenarioBallRLCacla.h" />
@@ -462,6 +465,7 @@
     <ClInclude Include="scenarios\ScenarioArmEval.h" />
     <ClInclude Include="scenarios\ScenarioArmRL.h" />
     <ClInclude Include="scenarios\ScenarioArmRLPretrain.h" />
+    <ClInclude Include="scenarios\ScenarioArmTrain.h" />
     <ClInclude Include="scenarios\ScenarioBallEval.h" />
     <ClInclude Include="scenarios\ScenarioBallRL.h" />
     <ClInclude Include="scenarios\ScenarioBallRLCacla.h" />

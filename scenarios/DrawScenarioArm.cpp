@@ -209,6 +209,11 @@ void cDrawScenarioArm::ApplyRandForce()
 	mScene->ApplyRandForce();
 }
 
+tVector cDrawScenarioArm::GetDefaultCamPos() const
+{
+	return gCamPos0;
+}
+
 std::string cDrawScenarioArm::GetName() const
 {
 	return mScene->GetName();

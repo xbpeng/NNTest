@@ -21,6 +21,7 @@
 #include "scenarios/DrawScenarioArmRL.h"
 #include "scenarios/DrawScenarioArmRLPretrain.h"
 #include "scenarios/DrawScenarioArmEval.h"
+#include "scenarios/DrawScenarioArmTrain.h"
 
 // Dimensions of the window we are drawing into.
 int winWidth = 800;
@@ -136,6 +137,10 @@ void SetupScenario()
 	else if (scenario_name == "arm_eval")
 	{
 		gScenario = std::shared_ptr<cDrawScenarioArmEval>(new cDrawScenarioArmEval(gCamera));
+	}
+	else if (scenario_name == "arm_train")
+	{
+		gScenario = std::shared_ptr<cDrawScenarioArmTrain>(new cDrawScenarioArmTrain(gCamera));
 	}
 
 	if (gScenario != NULL)

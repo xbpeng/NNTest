@@ -51,7 +51,6 @@ void cArmQPController::UpdatePoliAction()
 
 	int root_size = mChar->GetParamSize(mChar->GetRootID());
 	mPoliAction = tau.segment(root_size, GetPoliActionSize());
-	mPoliAction *= gTorqueScale;
 }
 
 void cArmQPController::ComputeQPTau()

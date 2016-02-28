@@ -19,7 +19,7 @@ int cArmNNPixelNoPoseController::GetPoliStateSize() const
 	return state_size;
 }
 
-void cArmNNPixelNoPoseController::BuildPoliStateOffsetScale(Eigen::VectorXd& out_mean, Eigen::VectorXd& out_stdev) const
+void cArmNNPixelNoPoseController::BuildNNInputOffsetScale(Eigen::VectorXd& out_mean, Eigen::VectorXd& out_stdev) const
 {
 	const double pixel_mean = 0.5;
 	const double pixel_scale = 0.5;

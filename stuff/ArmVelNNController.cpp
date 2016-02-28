@@ -1,8 +1,6 @@
 #include "ArmVelNNController.h"
 #include "SimArm.h"
 
-const double gVelScale = 0.1;
-
 cArmVelNNController::cArmVelNNController()
 {
 }
@@ -45,11 +43,17 @@ void cArmVelNNController::Clear()
 	mImpPDCtrl.Clear();
 }
 
+void cArmVelNNController::BuildNNOutputOffsetScale(Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const
+{
+	const double vel_scale = 0.1;
+	int output_size = GetPoliActionSize();
+	out_offset = Eigen::VectorXd::Zero(output_size);
+	out_scale = vel_scale * Eigen::VectorXd::Ones(output_size);
+}
+
 void cArmVelNNController::UpdatePoliAction()
 {
 	cArmNNController::UpdatePoliAction();
-	// hack
-	mPoliAction(mPoliAction.size() - 1) = 0;
 }
 
 void cArmVelNNController::ApplyPoliAction(double time_step, const Eigen::VectorXd& action)
@@ -63,7 +67,6 @@ void cArmVelNNController::ApplyPoliAction(double time_step, const Eigen::VectorX
 		if (mImpPDCtrl.IsValidPDCtrl(j))
 		{
 			double vel = action[idx];
-			vel /= gVelScale;
 			mImpPDCtrl.SetTargetVel(j, vel);
 			++idx;
 		}

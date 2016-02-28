@@ -11,7 +11,7 @@ public:
 	virtual ~cArmNNPixelNoPoseController();
 
 	virtual int GetPoliStateSize() const;
-	virtual void BuildPoliStateOffsetScale(Eigen::VectorXd& out_mean, Eigen::VectorXd& out_stdev) const;
+	virtual void BuildNNInputOffsetScale(Eigen::VectorXd& out_mean, Eigen::VectorXd& out_stdev) const;
 
 protected:
 	virtual void UpdatePoliState();

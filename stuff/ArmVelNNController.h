@@ -15,6 +15,8 @@ public:
 	virtual void Reset();
 	virtual void Clear();
 
+	virtual void BuildNNOutputOffsetScale(Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const;
+	
 protected:
 	cImpPDController mImpPDCtrl;
 

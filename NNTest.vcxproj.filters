@@ -647,6 +647,12 @@
     <ClCompile Include="..\TerrainRL\sim\DogControllerMACEDPG.cpp">
       <Filter>Source Files\util</Filter>
     </ClCompile>
+    <ClCompile Include="scenarios\ScenarioArmTrain.cpp">
+      <Filter>Source Files\scenarios</Filter>
+    </ClCompile>
+    <ClCompile Include="scenarios\DrawScenarioArmTrain.cpp">
+      <Filter>Source Files\scenarios</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\TerrainRL\util\Rand.h">
@@ -1017,6 +1023,12 @@
     </ClInclude>
     <ClInclude Include="..\TerrainRL\sim\DogControllerMACEDPG.h">
       <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="scenarios\ScenarioArmTrain.h">
+      <Filter>Source Files\scenarios</Filter>
+    </ClInclude>
+    <ClInclude Include="scenarios\DrawScenarioArmTrain.h">
+      <Filter>Source Files\scenarios</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

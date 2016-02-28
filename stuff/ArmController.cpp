@@ -1,8 +1,6 @@
 #include "ArmController.h"
 #include "SimArm.h"
 
-const double cArmController::gTorqueScale = 0.01;
-
 cArmController::cArmController()
 {
 	mTorqueLim = 300;
@@ -102,7 +100,7 @@ int cArmController::GetTargetPosSize() const
 	return 2;
 }
 
-void cArmController::BuildPoliStateOffsetScale(Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const
+void cArmController::BuildNNInputOffsetScale(Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const
 {
 	const double pos_scale = 2;
 	int state_size = GetPoliStateSize();
@@ -115,6 +113,21 @@ void cArmController::BuildPoliStateOffsetScale(Eigen::VectorXd& out_offset, Eige
 	out_scale.segment(0, target_size) = (1 / pos_scale) * Eigen::VectorXd::Ones(target_size);
 	out_scale.segment(target_size, pose_size) = (1 / M_PI) * Eigen::VectorXd::Ones(pose_size);
 	out_scale.segment(target_size + pose_size, pose_size) = (1 / (2 * M_PI)) * Eigen::VectorXd::Ones(pose_size);
+}
+
+void cArmController::BuildNNOutputOffsetScale(Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const
+{
+	const double torque_scale = 0.01;
+	int output_size = GetPoliActionSize();
+	out_offset = Eigen::VectorXd::Zero(output_size);
+	out_scale = torque_scale * Eigen::VectorXd::Ones(output_size);
+}
+
+void cArmController::BuildActionBounds(Eigen::VectorXd& out_min, Eigen::VectorXd& out_max) const
+{
+	int output_size = GetPoliActionSize();
+	out_min = -mTorqueLim * Eigen::VectorXd::Ones(output_size);
+	out_max = mTorqueLim * Eigen::VectorXd::Ones(output_size);
 }
 
 void cArmController::SetTargetPos(const tVector& target)
@@ -169,7 +182,6 @@ void cArmController::ApplyPoliAction(double time_step, const Eigen::VectorXd& ac
 		if (joint.IsValid())
 		{
 			double t = action[j];
-			t /= gTorqueScale;
 			t = cMathUtil::Clamp(t, -mTorqueLim, mTorqueLim);
 			tVector torque = tVector(0, 0, t, 0);
 			joint.AddTorque(torque);

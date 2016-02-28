@@ -10,8 +10,8 @@ layer {
     batch_size: 32
 	channels: 1
 	height: 1
-	width: 10
-	label_size: 3
+	width: 13
+	label_size: 1
   }
 }
 
@@ -78,10 +78,10 @@ layer {
 }
 
 layer {
-  name: "ip2"
+  name: "output"
   type: "InnerProduct"
   bottom: "relu1"
-  top: "ip2"
+  top: "output"
   param {
     lr_mult: 1
 	decay_mult: 1
@@ -91,7 +91,7 @@ layer {
 	decay_mult: 0
   }
   inner_product_param {
-    num_output: 3
+    num_output: 1
     weight_filler {
       type: "xavier"
     }
@@ -104,7 +104,7 @@ layer {
 layer {
   name: "loss"
   type: "EuclideanLoss"
-  bottom: "ip2"
+  bottom: "output"
   bottom: "label"
   top: "loss"
 }

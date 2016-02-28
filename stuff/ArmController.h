@@ -25,13 +25,12 @@ public:
 	virtual void RecordPoliAction(Eigen::VectorXd& out_action) const;
 	virtual int GetTargetPosSize() const;
 
-	virtual void BuildPoliStateOffsetScale(Eigen::VectorXd& out_mean, Eigen::VectorXd& out_stdev) const;
-
+	virtual void BuildNNInputOffsetScale(Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const;
+	virtual void BuildNNOutputOffsetScale(Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const;
+	virtual void BuildActionBounds(Eigen::VectorXd& out_min, Eigen::VectorXd& out_max) const;
 	virtual void SetTargetPos(const tVector& target);
 
 protected:
-	static const double gTorqueScale;
-
 	double mTorqueLim;
 	double mUpdatePeriod;
 	double mUpdateCounter;
