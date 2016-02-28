@@ -26,7 +26,12 @@ public:
 
 protected:
 	cNeuralNet mNet;
+	double mExpNoise;
 
 	virtual void UpdatePoliAction();
+	virtual void DecideAction();
+	virtual void ApplyExpNoise(Eigen::VectorXd& out_action) const;
+	virtual void FetchExpNoiseScale(Eigen::VectorXd& out_noise) const;
+
 	virtual void ApplyPoliAction(double time_step, const Eigen::VectorXd& action);
 };

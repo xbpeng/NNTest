@@ -43,7 +43,7 @@ void cArmController::Update(double time_step)
 	if (NeedUpdate())
 	{
 		UpdatePoliState();
-		UpdatePoliAction();
+		DecideAction();
 		mUpdateCounter = 0;
 	}
 
@@ -169,6 +169,11 @@ void cArmController::UpdatePoliState()
 
 void cArmController::UpdatePoliAction()
 {
+}
+
+void cArmController::DecideAction()
+{
+	UpdatePoliAction();
 }
 
 void cArmController::ApplyPoliAction(double time_step, const Eigen::VectorXd& action)

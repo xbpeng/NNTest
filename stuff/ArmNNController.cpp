@@ -3,6 +3,9 @@
 
 cArmNNController::cArmNNController()
 {
+	mExpRate = 0.2;
+	mExpNoise = 0.2;
+	mEnableExp = false;
 }
 
 cArmNNController::~cArmNNController()
@@ -88,6 +91,40 @@ void cArmNNController::UpdatePoliAction()
 	{
 		mNet.Eval(mPoliState, mPoliAction);
 	}
+}
+
+void cArmNNController::DecideAction()
+{
+	UpdatePoliAction();
+
+	if (mEnableExp)
+	{
+		bool exp = cMathUtil::FlipCoin(mExpRate);
+		if (exp)
+		{
+			ApplyExpNoise(mPoliAction);
+		}
+	}
+}
+
+void cArmNNController::ApplyExpNoise(Eigen::VectorXd& out_action) const
+{
+	Eigen::VectorXd noise_scale;
+	FetchExpNoiseScale(noise_scale);
+
+	for (int i = 0; i < out_action.size(); ++i)
+	{
+		double noise = cMathUtil::RandDoubleNorm(0, mExpNoise);
+		double scale = noise_scale[i];
+		noise *= scale;
+		out_action[i] += noise;
+	}
+}
+
+void cArmNNController::FetchExpNoiseScale(Eigen::VectorXd& out_noise) const
+{
+	const Eigen::VectorXd& nn_output_scale = mNet.GetOutputScale();
+	out_noise = nn_output_scale.cwiseInverse();
 }
 
 void cArmNNController::ApplyPoliAction(double time_step, const Eigen::VectorXd& action)

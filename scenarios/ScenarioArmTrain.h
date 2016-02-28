@@ -37,6 +37,10 @@ protected:
 	bool mPretrain;
 	bool mValidSample;
 
+	double mExpRate;
+	double mInitExpRate;
+	int mNumAnnealIters;
+
 	std::string mActorSolverFile;
 	std::string mActorNetFile;
 	std::string mActorModelFile;
@@ -83,6 +87,7 @@ protected:
 
 	virtual void Train();
 	virtual int GetIter() const;
+	virtual double CalcExpRate() const;
 
 	virtual std::shared_ptr<cArmNNController> GetController() const;
 	virtual void PrintInfo() const;

@@ -44,7 +44,8 @@ protected:
 	virtual void InitPoliAction();
 	virtual void UpdatePoliState();
 	virtual void UpdatePoliAction();
-	
+	virtual void DecideAction();
+
 	virtual void ApplyPoliAction(double time_step, const Eigen::VectorXd& action);
 	virtual void ApplyTorqueLimit(double lim);
 };

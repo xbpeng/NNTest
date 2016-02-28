@@ -28,6 +28,10 @@ cScenarioArmTrain::cScenarioArmTrain()
 	mPretrain = false;
 	mValidSample = false;
 
+	mExpRate = 0.2;
+	mInitExpRate = 1;
+	mNumAnnealIters = 1000;
+
 	mCtrlType = eCtrlNN;
 }
 
@@ -44,6 +48,9 @@ void cScenarioArmTrain::Init()
 	InitTupleBuffer();
 	UpdatePolicy();
 	mValidSample = false;
+
+	auto controller = GetController();
+	controller->EnableExp(true);
 }
 
 void cScenarioArmTrain::ParseArgs(const cArgParser& parser)
@@ -52,7 +59,10 @@ void cScenarioArmTrain::ParseArgs(const cArgParser& parser)
 	parser.ParseBool("arm_pretrain", mPretrain);
 	parser.ParseInt("trainer_int_iter", mTrainerParams.mIntOutputIters);
 	parser.ParseString("trainer_int_output", mTrainerParams.mIntOutputFile);
-
+	parser.ParseDouble("exp_rate", mExpRate);
+	parser.ParseDouble("init_exp_rate", mInitExpRate);
+	parser.ParseInt("num_exp_anneal_iters", mNumAnnealIters);
+	
 	parser.ParseString("critic_solver_file", mCriticSolverFile);
 	parser.ParseString("critic_net_file", mCriticNetFile);
 	parser.ParseString("critic_model_file", mCriticModelFile);
@@ -88,6 +98,9 @@ void cScenarioArmTrain::Update(double time_elapsed)
 void cScenarioArmTrain::ToggleTraining()
 {
 	mEnableTraining = !mEnableTraining;
+
+	auto ctrl = GetController();
+	ctrl->EnableExp(mEnableTraining);
 }
 
 bool cScenarioArmTrain::EnableTraining() const
@@ -347,6 +360,9 @@ void cScenarioArmTrain::UpdatePolicy()
 	{
 		ctrl->CopyNet(*trainer_net.get());
 	}
+
+	double exp_rate = CalcExpRate();
+	ctrl->SetExpRate(exp_rate);
 }
 
 void cScenarioArmTrain::BuildDPGBounds(Eigen::VectorXd& out_min, Eigen::VectorXd& out_max) const
@@ -361,6 +377,7 @@ void cScenarioArmTrain::Train()
 	int num_tuples = mTrainer->GetNumTuples();
 	printf("\nTraining Iter: %i\n", iter);
 	printf("Num Tuples: %i\n", num_tuples);
+	printf("Exp Rate: %.3f\n", CalcExpRate());
 
 	mTrainer->AddTuples(mTupleBuffer);
 
@@ -372,6 +389,15 @@ void cScenarioArmTrain::Train()
 int cScenarioArmTrain::GetIter() const
 {
 	return mTrainer->GetIter();
+}
+
+double cScenarioArmTrain::CalcExpRate() const
+{
+	int iters = GetIter();
+	double lerp = static_cast<double>(iters) / mNumAnnealIters;
+	lerp = cMathUtil::Clamp(lerp, 0.0, 1.0);
+	double exp_rate = (1 - lerp) * mInitExpRate + lerp * mExpRate;
+	return exp_rate;
 }
 
 std::shared_ptr<cArmNNController> cScenarioArmTrain::GetController() const
