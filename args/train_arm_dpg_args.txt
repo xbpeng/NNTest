@@ -1,14 +1,14 @@
 -scenario= arm_train
--playback_speed= 1
+-playback_speed= 60
 
 -character_file= data/arm_rl/arm.txt
 
--solver_file= data/arm_rl/nets/arm_reduced_solver.prototxt
--net_file= data/arm_rl/nets/arm_reduced_deploy.prototxt
+-solver_file= data/arm_rl/nets/arm_reduced_dpg_actor_solver.prototxt
+-net_file= data/arm_rl/nets/arm_reduced_dpg_actor_deploy.prototxt
 //-model_file= data/arm_rl/models/arm_torque_model.h5
 
--critic_solver_file= data/arm_rl/nets/arm_reduced_critic_solver.prototxt
--critic_net_file= data/arm_rl/nets/arm_reduced_critic_deploy.prototxt
+-critic_solver_file= data/arm_rl/nets/arm_reduced_dpg_critic_solver.prototxt
+-critic_net_file= data/arm_rl/nets/arm_reduced_dpg_critic_deploy.prototxt
 //-critic_model_file= data/arm_rl/models/arm_reduced_critic_init_model.h5
 
 -arm_ctrl_type= nn
@@ -16,10 +16,10 @@
 -exp_rate= 0.2
 -exp_temp= 0.025
 -init_exp_rate= 1
--num_exp_anneal_iters= 100000
+-num_exp_anneal_iters= 20000
 
--trainer_int_iter= 500
--trainer_int_output= output/intermediate/trainer_int_model.h5
+//-trainer_int_iter= 500
+//-trainer_int_output= output/intermediate/trainer_int_model.h5
 
 -arm_pretrain= false
 

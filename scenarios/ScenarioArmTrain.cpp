@@ -7,21 +7,6 @@
 const int gTupleBufferSize = 32;
 const int gTrainerPlaybackMemSize = 25000;
 
-const double gCamSize = 4;
-const int gRTSize = 128;
-const double gTargetRadius = 0.15;
-
-const tVector gLineColor = tVector(0, 0, 0, 1);
-const tVector gFillTint = tVector(1, 1, 1, 1);
-const double gTorqueLim = 300;
-const double gCtrlUpdatePeriod = 1 / 120.0;
-
-const double gLinearDamping = 0;
-const double gAngularDamping = 0;
-
-const std::string gErrFile = "output/arm_rl_err.txt";
-const std::string gActionFile = "output/arm_rl_action.txt";
-
 cScenarioArmTrain::cScenarioArmTrain()
 {
 	mEnableTraining = true;
@@ -31,6 +16,7 @@ cScenarioArmTrain::cScenarioArmTrain()
 	mExpRate = 0.2;
 	mInitExpRate = 1;
 	mNumAnnealIters = 1000;
+	//mEnableRandPose = false;
 
 	mCtrlType = eCtrlNN;
 }
@@ -151,13 +137,14 @@ int cScenarioArmTrain::GetActionSize() const
 
 void cScenarioArmTrain::RecordTuple(const tExpTuple& tuple)
 {
-	int buffer_size = static_cast<int>(mTupleBuffer.size());
-	if (mNumTuples == buffer_size)
+	double record_rate = 0.1;
+	if (cMathUtil::FlipCoin(record_rate))
 	{
-		mNumTuples = 0;
+		int buffer_size = static_cast<int>(mTupleBuffer.size());
+		int idx = mNumTuples % buffer_size;
+		mTupleBuffer[idx] = tuple;
+		++mNumTuples;
 	}
-	mTupleBuffer[mNumTuples] = tuple;
-	mNumTuples = (mNumTuples + 1) % (buffer_size + 1);
 }
 
 void cScenarioArmTrain::RecordState(Eigen::VectorXd& out_state) const
@@ -174,7 +161,40 @@ void cScenarioArmTrain::RecordAction(Eigen::VectorXd& out_action) const
 
 double cScenarioArmTrain::CalcReward() const
 {
-	double reward = 0;
+	double tar_w = 0.8;
+	double pose_w = 0.1;
+	double vel_w = 0.1;
+
+	int end_id = mChar->GetNumJoints() - 1;
+	const tVector& tar_pos = GetTargetPos();
+	tVector end_pos = mChar->CalcJointPos(end_id);
+
+	tVector delta = mTargetPos - end_pos;
+	double gamma = 1;
+	double tar_reward = exp(-gamma * delta.squaredNorm());
+	//double tar_reward = 1 / (1 + delta.squaredNorm());
+
+	Eigen::VectorXd pose;
+	Eigen::VectorXd vel;
+	mChar->BuildPose(pose);
+	mChar->BuildVel(vel);
+
+	double pose_reward = 1 / (1 + 0.1 * pose.squaredNorm());
+	double vel_reward = 1 / (1 + 0.02 * vel.squaredNorm());
+
+	Eigen::VectorXd action;
+	RecordAction(action);
+	//reward = 1 / (1 + 0.0001 * action.squaredNorm());
+
+	double reward = tar_w * tar_reward
+					+ pose_w * pose_reward
+					+ vel_w * vel_reward;
+
+	if (CheckFail())
+	{
+		reward = 0;
+	}
+
 	return reward;
 }
 
@@ -214,7 +234,7 @@ void cScenarioArmTrain::UpdateCharacter(double time_step)
 			RecordTuple(mCurrTuple);
 		}
 
-		if (mNumTuples >= static_cast<int>(mTupleBuffer.size()))
+		if (mEnableTraining && (mNumTuples >= static_cast<int>(mTupleBuffer.size())))
 		{
 			Train();
 		}
@@ -232,12 +252,21 @@ void cScenarioArmTrain::UpdateCharacter(double time_step)
 		ClearFlags(mCurrTuple);
 		RecordFlagsBeg(mCurrTuple);
 		mValidSample = true;
-	}
 
-	if (new_update)
-	{
 		PrintInfo();
 	}
+}
+
+void cScenarioArmTrain::GetRandTargetMinMaxTime(double& out_min, double& out_max) const
+{
+	out_min = 20;
+	out_max = 40;
+}
+
+void cScenarioArmTrain::GetRandPoseMinMaxTime(double& out_min, double& out_max) const
+{
+	out_min = 40;
+	out_max = 80;
 }
 
 void cScenarioArmTrain::InitTupleBuffer()
@@ -253,8 +282,9 @@ void cScenarioArmTrain::BuildTrainer(std::shared_ptr<cNeuralNetTrainer>& out_tra
 {
 	auto trainer = std::shared_ptr<cDPGTrainer>(new cDPGTrainer());
 	trainer->SetActorFiles(mActorSolverFile, mActorNetFile);
-	trainer->SetDPGReg(0.001);
-	trainer->SetPretrainIters(10000);
+	trainer->SetDPGReg(0.0001);
+	trainer->SetPretrainIters(1000);
+	trainer->SetQDiff(0.1);
 	out_trainer = trainer;
 }
 
@@ -264,8 +294,9 @@ void cScenarioArmTrain::InitTrainer()
 	mTrainerParams.mNetFile = mCriticNetFile;
 	mTrainerParams.mPlaybackMemSize = gTrainerPlaybackMemSize;
 	mTrainerParams.mPoolSize = 1;
-	mTrainerParams.mNumInitSamples = 10000;
+	mTrainerParams.mNumInitSamples = 20000;
 	mTrainerParams.mInitInputOffsetScale = false;
+	//mTrainerParams.mDiscount = 0.9;
 
 	mTrainer->Init(mTrainerParams);
 	SetupScale();
@@ -402,12 +433,12 @@ double cScenarioArmTrain::CalcExpRate() const
 
 std::shared_ptr<cArmNNController> cScenarioArmTrain::GetController() const
 {
-	const auto& student = mChar->GetController();
-	if (student == nullptr)
+	const auto& ctrl = mChar->GetController();
+	if (ctrl == nullptr)
 	{
 		return nullptr;
 	}
-	return std::static_pointer_cast<cArmNNController>(student);
+	return std::static_pointer_cast<cArmNNController>(ctrl);
 }
 
 void cScenarioArmTrain::PrintInfo() const
@@ -441,6 +472,29 @@ void cScenarioArmTrain::PrintInfo() const
 		printf("%.3f\t", vel[i]);
 	}
 	printf("\n");
+
+
+	if (!mEnableTraining)
+	{
+		Eigen::VectorXd state;
+		Eigen::VectorXd action;
+		RecordState(state);
+		RecordAction(action);
+		tExpTuple tuple;
+		tuple.mStateBeg = state;
+		tuple.mAction = action;
+
+		auto trainer = std::static_pointer_cast<cDPGTrainer>(mTrainer);
+		Eigen::VectorXd dpg;
+		trainer->CalcDPG(tuple, dpg);
+
+		printf("DPG:\n");
+		for (int i = 0; i < dpg.size(); ++i)
+		{
+			printf("%.5f\t", dpg[i]);
+		}
+		printf("\n");
+	}
 
 	printf("\n");
 }

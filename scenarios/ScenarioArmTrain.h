@@ -73,6 +73,8 @@ protected:
 	virtual void RecordFlagsEnd(tExpTuple& out_tuple) const;
 
 	virtual void UpdateCharacter(double time_step);
+	virtual void GetRandTargetMinMaxTime(double& out_min, double& out_max) const;
+	virtual void GetRandPoseMinMaxTime(double& out_min, double& out_max) const;
 
 	virtual void InitTupleBuffer();
 	virtual void BuildTrainer(std::shared_ptr<cNeuralNetTrainer>& out_trainer) const;

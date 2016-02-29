@@ -67,6 +67,10 @@ void cDrawScenarioArm::Init()
 {
 	cDrawScenario::Init();
 	BuildScene();
+
+	tCallbackFunc func = std::bind(&cDrawScenarioArm::ResetCallback, this);
+	mScene->SetResetCallback(func);
+
 	mScene->ParseArgs(mArgParser);
 	mScene->Init();
 	InitTracer();
@@ -297,4 +301,9 @@ void cDrawScenarioArm::MouseMove(double x, double y)
 		target_pos[2] = 0;
 		SetTarget(target_pos);
 	}
+}
+
+void cDrawScenarioArm::ResetCallback()
+{
+	mTracer.Reset();
 }

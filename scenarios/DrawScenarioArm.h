@@ -57,4 +57,6 @@ protected:
 	virtual void DrawTarget() const;
 	virtual void DrawGrid() const;
 	virtual void DrawViewRT() const;
+
+	virtual void ResetCallback();
 };

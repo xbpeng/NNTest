@@ -378,7 +378,11 @@ void cScenarioArm::RandReset()
 {
 	cScenarioSimChar::Reset();
 	
-	ApplyRandPose();
+	if (mEnableRandPose)
+	{
+		ApplyRandPose();
+	}
+
 	if (mEnableAutoTarget)
 	{
 		SetRandTarget();

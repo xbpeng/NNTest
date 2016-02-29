@@ -36,7 +36,7 @@ void cScenarioBallRLDPG::InitTrainer()
 
 	trainer->SetPretrainIters(5000);
 	trainer->SetDPGReg(0.1);
-	trainer->SetQDiff(0.1);
+	trainer->SetQDiff(4);
 	trainer->SetActorFiles(mSolverFile, mNetFile);
 	trainer->Init(mTrainerParams);
 
@@ -60,6 +60,12 @@ void cScenarioBallRLDPG::InitTrainer()
 	BuildActorOutputOffsetScale(trainer, actor_output_offset, actor_output_scale);
 	trainer->SetActorOutputOffsetScale(actor_output_offset, actor_output_scale);
 	
+	const auto& ctrl = mBall.GetController();
+	int action_size = ctrl->GetActionSize();
+	Eigen::VectorXd action_min = ctrl->gMinDist * Eigen::VectorXd::Ones(action_size);
+	Eigen::VectorXd action_max = ctrl->gMaxDist * Eigen::VectorXd::Ones(action_size);
+	trainer->SetActionBounds(action_min, action_max);
+
 	mTrainer = trainer;
 
 	/*
@@ -104,27 +110,19 @@ void cScenarioBallRLDPG::NewCycleUpdate()
 	{
 		// hack huge hack
 		const auto& ctrl = mBall.GetController();
+		auto trainer = std::static_pointer_cast<cDPGTrainer>(mTrainer);
 
 		Eigen::VectorXd state;
 		Eigen::VectorXd action;
-		ctrl->RecordState(state);
-		ctrl->RecordAction(action);
+		RecordState(state);
+		RecordAction(action);
+		tExpTuple tuple;
+		tuple.mStateBeg = state;
+		tuple.mAction = action;
 
-		Eigen::VectorXd x;
-		Eigen::VectorXd y;
+		Eigen::VectorXd dpg;
+		trainer->CalcDPG(tuple, dpg);
 
-		x.resize(state.size() + action.size());
-		x.segment(0, state.size()) = state;
-		x.segment(state.size(), action.size()) = action;
-
-		std::shared_ptr<cDPGTrainer> trainer = std::static_pointer_cast<cDPGTrainer>(mTrainer);
-		const auto& critic = trainer->GetCritic();
-		critic->Eval(x, y);
-
-		y = 1 * Eigen::VectorXd::Ones(y.size());
-		critic->Backward(y, x);
-
-		Eigen::VectorXd dpg = x.segment(state.size(), action.size());
 		printf("DPG: ");
 		for (int i = 0; i < dpg.size(); ++i)
 		{

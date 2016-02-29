@@ -7,21 +7,6 @@
 const int gTupleBufferSize = 32;
 const int gTrainerPlaybackMemSize = 25000;
 
-const double gCamSize = 4;
-const int gRTSize = 128;
-const double gTargetRadius = 0.15;
-
-const tVector gLineColor = tVector(0, 0, 0, 1);
-const tVector gFillTint = tVector(1, 1, 1, 1);
-const double gTorqueLim = 300;
-const double gCtrlUpdatePeriod = 1 / 120.0;
-
-const double gLinearDamping = 0;
-const double gAngularDamping = 0;
-
-const std::string gErrFile = "output/arm_rl_err.txt";
-const std::string gActionFile = "output/arm_rl_action.txt";
-
 cScenarioArmRL::cScenarioArmRL()
 {
 	mEnableTraining = true;
