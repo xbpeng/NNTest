@@ -317,8 +317,8 @@ void cScenarioArmTrain::GetRandTargetMinMaxTime(double& out_min, double& out_max
 
 void cScenarioArmTrain::GetRandPoseMinMaxTime(double& out_min, double& out_max) const
 {
-	out_min = 40;
-	out_max = 80;
+	out_min = 20;
+	out_max = 40;
 }
 
 void cScenarioArmTrain::InitTupleBuffer()
