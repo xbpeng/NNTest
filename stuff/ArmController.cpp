@@ -1,6 +1,10 @@
 #include "ArmController.h"
 #include "SimArm.h"
 
+#define ENABLE_MAX_COORD
+
+const int gPosDim = 2;
+
 cArmController::cArmController()
 {
 	mTorqueLim = 300;
@@ -70,10 +74,16 @@ bool cArmController::NeedUpdate() const
 int cArmController::GetPoliStateSize() const
 {
 	int target_size = GetTargetPosSize();
+#if defined(ENABLE_MAX_COORD)
+	int num_joints = mChar->GetNumJoints();
+	int pose_dim = (num_joints - 1) * gPosDim;
+	int state_size = target_size + 2 * pose_dim;
+#else
 	int num_dof = mChar->GetNumDof();
 	int root_size = mChar->GetParamSize(mChar->GetRootID());
 	int pose_dim = num_dof - root_size;
 	int state_size = target_size + 2 * pose_dim;
+#endif
 	return state_size;
 }
 
@@ -97,7 +107,7 @@ void cArmController::RecordPoliAction(Eigen::VectorXd& out_action) const
 
 int cArmController::GetTargetPosSize() const
 {
-	return 2;
+	return gPosDim;
 }
 
 void cArmController::BuildNNInputOffsetScale(Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const
@@ -109,10 +119,27 @@ void cArmController::BuildNNInputOffsetScale(Eigen::VectorXd& out_offset, Eigen:
 	out_scale = Eigen::VectorXd::Ones(state_size);
 	int target_size = GetTargetPosSize();
 	int pose_size = (state_size - target_size) / 2;
-
+	
 	out_scale.segment(0, target_size) = (1 / pos_scale) * Eigen::VectorXd::Ones(target_size);
-	out_scale.segment(target_size, pose_size) = (1 / M_PI) * Eigen::VectorXd::Ones(pose_size);
-	out_scale.segment(target_size + pose_size, pose_size) = (1 / (2 * M_PI)) * Eigen::VectorXd::Ones(pose_size);
+	
+#if defined(ENABLE_MAX_COORD)
+	for (int j = 1; j < mChar->GetNumJoints(); ++j)
+	{
+		double chain_len = mChar->CalcJointChainLength(j);
+		chain_len = std::max(chain_len, 0.01);
+		double pose_scale = 1 / chain_len;
+		double vel_scale = 1 / (10 * chain_len);
+
+		int offset = target_size + (j - 1) * gPosDim;
+		out_scale.segment(offset, gPosDim) *= pose_scale;
+		out_scale.segment(offset + pose_size, gPosDim) *= vel_scale;
+	}
+#else
+	double pose_scale = (1 / M_PI);
+	double vel_scale = (1 / (2 * M_PI));
+	out_scale.segment(target_size, pose_size) = pose_scale * Eigen::VectorXd::Ones(pose_size);
+	out_scale.segment(target_size + pose_size, pose_size) = vel_scale * Eigen::VectorXd::Ones(pose_size);
+#endif
 }
 
 void cArmController::BuildNNOutputOffsetScale(Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const
@@ -137,7 +164,7 @@ void cArmController::SetTargetPos(const tVector& target)
 
 int cArmController::GetEndEffectorID() const
 {
-	return static_cast<int>(cSimArm::eJointLinkEnd);
+	return static_cast<int>(mChar->GetNumJoints() - 1);
 }
 
 void cArmController::InitPoliState()
@@ -157,14 +184,29 @@ void cArmController::UpdatePoliState()
 	mChar->BuildPose(pose);
 	mChar->BuildVel(vel);
 
+	int poli_state_size = static_cast<int>(mPoliState.size());
 	int root_size = mChar->GetParamSize(mChar->GetRootID());
 	int idx_beg = root_size;
-	int param_size = static_cast<int>(pose.size()) - root_size;
 	int target_size = GetTargetPosSize();
+	int param_size = (poli_state_size - target_size) / 2;
+	int num_joints = mChar->GetNumJoints();
 
-	mPoliState.segment(0, target_size) = mTargetPos.segment(0, target_size);
+	tVector root_pos = mChar->GetRootPos();
+	mPoliState.segment(0, target_size) = (mTargetPos - root_pos).segment(0, target_size) * 0; // hack huge hack
+
+#if defined(ENABLE_MAX_COORD)
+	for (int j = 1; j < num_joints; ++j)
+	{
+		tVector joint_pos = mChar->CalcJointPos(j);
+		tVector joint_vel = mChar->CalcJointVel(j);
+		int offset = target_size + (j - 1) * gPosDim;
+		mPoliState.segment(offset, gPosDim) = joint_pos.segment(0, gPosDim);
+		mPoliState.segment(offset + param_size, gPosDim) = joint_vel.segment(0, gPosDim);
+	}
+#else
 	mPoliState.segment(target_size, param_size) = pose.segment(root_size, param_size);
 	mPoliState.segment(target_size + param_size, param_size) = vel.segment(root_size, param_size);
+#endif
 }
 
 void cArmController::UpdatePoliAction()

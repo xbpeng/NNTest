@@ -45,6 +45,7 @@ public:
 	virtual void DrawArm(const std::shared_ptr<cSimCharacter>& arm, const tVector& fill_tint, const tVector& line_col) const;
 	
 	virtual const std::unique_ptr<cTextureDesc>& GetViewRT() const;
+	virtual int GetEndEffectorID() const;
 
 	virtual std::string GetName() const;
 
@@ -126,4 +127,5 @@ protected:
 	virtual void GetRandTargetMinMaxTime(double& out_min, double& out_max) const;
 	virtual void GetRandPoseMinMaxTime(double& out_min, double& out_max) const;
 	virtual double GetRandTargetMaxDist() const;
+
 };

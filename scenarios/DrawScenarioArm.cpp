@@ -184,7 +184,7 @@ void cDrawScenarioArm::AddCharTrace(const std::shared_ptr<cSimCharacter>& charac
 	params.mChar = character;
 	params.mColors.push_back(col);
 	params.mType = cCharTracer::eTraceJoint;
-	params.mTraceID = cSimArm::eJointLinkEnd;
+	params.mTraceID = GetEndEffectorID();
 	mTracer.AddTrace(params);
 }
 
@@ -216,6 +216,12 @@ void cDrawScenarioArm::ApplyRandForce()
 tVector cDrawScenarioArm::GetDefaultCamPos() const
 {
 	return gCamPos0;
+}
+
+int cDrawScenarioArm::GetEndEffectorID() const
+{
+	auto scene = std::static_pointer_cast<cScenarioArm>(mScene);
+	return scene->GetEndEffectorID();
 }
 
 std::string cDrawScenarioArm::GetName() const

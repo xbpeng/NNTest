@@ -50,6 +50,7 @@ protected:
 
 	virtual void ApplyRandForce();
 	virtual tVector GetDefaultCamPos() const;
+	virtual int GetEndEffectorID() const;
 
 	virtual void DrawScene();
 	virtual void DrawCharacter();

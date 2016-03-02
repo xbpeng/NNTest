@@ -1,16 +1,7 @@
 #include "SimArm.h"
 #include <iostream>
 
-const short gColFlag = cContactManager::gFlagNone; // tail is too small, so to prevent tunnelling disable all collisions
-
-const short gBodyColFlags[cSimArm::eJointMax] =
-{
-	gColFlag,
-	gColFlag,
-	gColFlag,
-	gColFlag,
-	gColFlag
-};
+const short gColFlag = cContactManager::gFlagNone;
 
 cSimArm::cSimArm()
 {
@@ -22,15 +13,15 @@ cSimArm::~cSimArm()
 
 short cSimArm::GetPartColGroup(int part_id) const
 {
-	return gBodyColFlags[part_id];
+	return gColFlag;
 }
 
 short cSimArm::GetPartColMask(int part_id) const
 {
-	return gBodyColFlags[part_id];
+	return gColFlag;
 }
 
 bool cSimArm::IsEndEffector(int idx) const
 {
-	return (idx == eJointLinkEnd);
+	return (idx == GetNumJoints() - 1);
 }

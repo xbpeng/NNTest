@@ -87,7 +87,8 @@ std::string cScenarioArmEval::GetName() const
 
 void cScenarioArmEval::UpdateTrackError()
 {
-	int end_id = cSimArm::eJointLinkEnd;
+	auto arm_ctrl = GetArmController();
+	int end_id = arm_ctrl->GetEndEffectorID();
 	tVector end_pos = mChar->CalcJointPos(end_id);
 
 	tVector delta = mTargetPos - end_pos;
@@ -160,7 +161,7 @@ void cScenarioArmEval::OutputData() const
 	{
 		auto arm_ctrl = std::static_pointer_cast<cArmController>(ctrl);
 
-		int end_id = cSimArm::eJointLinkEnd;
+		int end_id = arm_ctrl->GetEndEffectorID();
 		tVector end_pos = mChar->CalcJointPos(end_id);
 		
 		tVector err = mTargetPos - end_pos;

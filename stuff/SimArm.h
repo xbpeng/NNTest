@@ -7,17 +7,6 @@ class cSimArm : public cSimCharacter
 {
 public:
 	EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-
-	enum eJoint
-	{
-		eJointRoot,
-		eJointLink0,
-		eJointLink1,
-		eJointLink2,
-		eJointLinkEnd,
-		eJointMax,
-		eJointInvalid
-	};
 	
 	cSimArm();
 	virtual ~cSimArm();

@@ -30,6 +30,8 @@ public:
 	virtual void BuildActionBounds(Eigen::VectorXd& out_min, Eigen::VectorXd& out_max) const;
 	virtual void SetTargetPos(const tVector& target);
 
+	virtual int GetEndEffectorID() const;
+
 protected:
 	double mTorqueLim;
 	double mUpdatePeriod;
@@ -39,7 +41,6 @@ protected:
 	Eigen::VectorXd mPoliAction;
 	tVector mTargetPos;
 	
-	virtual int GetEndEffectorID() const;
 	virtual void InitPoliState();
 	virtual void InitPoliAction();
 	virtual void UpdatePoliState();

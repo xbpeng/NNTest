@@ -5,7 +5,7 @@
 #include "util/FileUtil.h"
 
 const int gTupleBufferSize = 32;
-const int gTrainerPlaybackMemSize = 25000;
+const int gTrainerPlaybackMemSize = 500000; // 25000;
 
 cScenarioArmTrain::cScenarioArmTrain()
 {
@@ -37,6 +37,58 @@ void cScenarioArmTrain::Init()
 
 	auto controller = GetController();
 	controller->EnableExp(true);
+	/*
+	// hack
+	auto trainer = std::static_pointer_cast<cDPGTrainer>(mTrainer);
+	int num_samples = 200;
+	double min_theta = -M_PI;
+	double max_theta = M_PI;
+	int state_size = trainer->GetStateSize();
+	int action_size = trainer->GetActionSize();
+	
+	tExpTuple tuple;
+	tuple.mStateBeg = Eigen::VectorXd::Zero(state_size);
+	tuple.mAction = Eigen::VectorXd::Zero(action_size);
+
+	FILE* critic_f = cFileUtil::OpenFile("scripts/dpg_arm_plot/critic_vals.txt", "w");
+	FILE* actor_f = cFileUtil::OpenFile("scripts/dpg_arm_plot/actor_data.txt", "w");
+	FILE* dpg_f = cFileUtil::OpenFile("scripts/dpg_arm_plot/dpg_data.txt", "w");
+
+	for (int i = 0; i < num_samples; ++i)
+	{
+		double curr_theta = (max_theta - min_theta) * i / (num_samples - 1.0) + min_theta;
+		tuple.mStateBeg[2] = curr_theta;
+
+		Eigen::VectorXd actor_y;
+		trainer->EvalActor(tuple, actor_y);
+		tuple.mAction = actor_y;
+
+		Eigen::VectorXd critic_y;
+		trainer->EvalCritic(tuple, critic_y);
+		
+		Eigen::VectorXd dpg_y;
+		trainer->CalcDPG(tuple, dpg_y);
+
+		fprintf(critic_f, "%.5f, %.5f\n", curr_theta, critic_y[0]);
+
+		fprintf(actor_f, "%.5f", curr_theta);
+		for (int j = 0; j < actor_y.size(); ++j)
+		{
+			fprintf(actor_f, ", %.5f", actor_y[j]);
+		}
+		fprintf(actor_f, "\n");
+
+		fprintf(dpg_f, "%.5f", curr_theta);
+		for (int j = 0; j < dpg_y.size(); ++j)
+		{
+			fprintf(dpg_f, ", %.5f", dpg_y[j]);
+		}
+		fprintf(dpg_f, "\n");
+	}
+	cFileUtil::CloseFile(actor_f);
+	cFileUtil::CloseFile(dpg_f);
+	cFileUtil::CloseFile(critic_f);
+	*/
 }
 
 void cScenarioArmTrain::ParseArgs(const cArgParser& parser)
@@ -161,11 +213,11 @@ void cScenarioArmTrain::RecordAction(Eigen::VectorXd& out_action) const
 
 double cScenarioArmTrain::CalcReward() const
 {
-	double tar_w = 0.8;
-	double pose_w = 0.1;
-	double vel_w = 0.1;
+	double tar_w = 0;// 0.8;
+	double pose_w = 0.8; // 0.1
+	double vel_w = 0.2; // 0.1
 
-	int end_id = mChar->GetNumJoints() - 1;
+	int end_id = GetEndEffectorID();
 	const tVector& tar_pos = GetTargetPos();
 	tVector end_pos = mChar->CalcJointPos(end_id);
 
@@ -178,13 +230,8 @@ double cScenarioArmTrain::CalcReward() const
 	Eigen::VectorXd vel;
 	mChar->BuildPose(pose);
 	mChar->BuildVel(vel);
-
-	double pose_reward = 1 / (1 + 0.1 * pose.squaredNorm());
+	double pose_reward = 1 / (1 + pose.squaredNorm());
 	double vel_reward = 1 / (1 + 0.02 * vel.squaredNorm());
-
-	Eigen::VectorXd action;
-	RecordAction(action);
-	//reward = 1 / (1 + 0.0001 * action.squaredNorm());
 
 	double reward = tar_w * tar_reward
 					+ pose_w * pose_reward
@@ -284,7 +331,7 @@ void cScenarioArmTrain::BuildTrainer(std::shared_ptr<cNeuralNetTrainer>& out_tra
 	trainer->SetActorFiles(mActorSolverFile, mActorNetFile);
 	trainer->SetDPGReg(0.0001);
 	trainer->SetPretrainIters(1000);
-	trainer->SetQDiff(0.1);
+	trainer->SetQDiff(4);
 	out_trainer = trainer;
 }
 
@@ -302,18 +349,21 @@ void cScenarioArmTrain::InitTrainer()
 	SetupScale();
 	SetupActionBounds();
 
-	if (mModelFiles.size() > 0)
+	auto trainer = std::static_pointer_cast<cDPGTrainer>(mTrainer);
+	if (mCriticModelFile != "")
 	{
-		for (size_t i = 0; i < mModelFiles.size(); ++i)
-		{
-			mTrainer->LoadModel(mModelFiles[i]);
-		}
+		trainer->LoadCriticModel(mCriticModelFile);
 	}
 
-	if (mScaleFile != "")
+	if (mActorModelFile != "")
 	{
-		mTrainer->LoadScale(mScaleFile);
+		trainer->LoadActorModel(mActorModelFile);
 	}
+
+	//if (mScaleFile != "")
+	//{
+		//mTrainer->LoadScale(mScaleFile);
+	//}
 }
 
 void cScenarioArmTrain::SetupScale()

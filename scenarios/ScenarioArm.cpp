@@ -147,7 +147,8 @@ void cScenarioArm::DrawArm(const std::shared_ptr<cSimCharacter>& arm, const tVec
 	cDrawSimCharacter::Draw(*(arm.get()), fill_tint, line_col);
 
 	// draw end effector
-	int end_id = cSimArm::eJointLinkEnd;
+	auto arm_ctrl = GetArmController();
+	int end_id = arm_ctrl->GetEndEffectorID();
 	tVector end_pos = arm->CalcJointPos(end_id);
 	tVector axis;
 	double theta;
@@ -665,4 +666,10 @@ void cScenarioArm::GetRandPoseMinMaxTime(double& out_min, double& out_max) const
 double cScenarioArm::GetRandTargetMaxDist() const
 {
 	return 0.5 * gCamSize;
+}
+
+int cScenarioArm::GetEndEffectorID() const
+{
+	auto ctrl = GetArmController();
+	return ctrl->GetEndEffectorID();
 }
