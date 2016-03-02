@@ -14,12 +14,12 @@
 -solver_file= data/arm_rl/nets/arm_reduced_dpg_actor_small_solver.prototxt
 -net_file= data/arm_rl/nets/arm_reduced_dpg_actor_small_deploy.prototxt
 //-model_file= data/arm_rl/models/arm_dpg_actor_small_model.h5
-//-model_file= data/arm_rl/models/arm_dpg_actor_small_init_model.h5
+-model_file= data/arm_rl/models/arm_dpg_actor_small_init_model.h5
 
 -critic_solver_file= data/arm_rl/nets/arm_reduced_dpg_critic_small_solver.prototxt
 -critic_net_file= data/arm_rl/nets/arm_reduced_dpg_critic_small_deploy.prototxt
 //-critic_model_file= data/arm_rl/models/arm_dpg_actor_small_model_critic.h5
-//-critic_model_file= data/arm_rl/models/arm_dpg_critic_small_init_model.h5
+-critic_model_file= data/arm_rl/models/arm_dpg_critic_small_init_model.h5
 
 -arm_ctrl_type= nn
 

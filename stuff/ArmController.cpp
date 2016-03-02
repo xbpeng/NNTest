@@ -199,6 +199,7 @@ void cArmController::UpdatePoliState()
 	{
 		tVector joint_pos = mChar->CalcJointPos(j);
 		tVector joint_vel = mChar->CalcJointVel(j);
+		joint_pos -= root_pos;
 		int offset = target_size + (j - 1) * gPosDim;
 		mPoliState.segment(offset, gPosDim) = joint_pos.segment(0, gPosDim);
 		mPoliState.segment(offset + param_size, gPosDim) = joint_vel.segment(0, gPosDim);

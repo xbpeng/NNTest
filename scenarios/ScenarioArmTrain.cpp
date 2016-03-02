@@ -37,7 +37,7 @@ void cScenarioArmTrain::Init()
 
 	auto controller = GetController();
 	controller->EnableExp(true);
-	/*
+	
 	// hack
 	auto trainer = std::static_pointer_cast<cDPGTrainer>(mTrainer);
 	int num_samples = 200;
@@ -57,7 +57,13 @@ void cScenarioArmTrain::Init()
 	for (int i = 0; i < num_samples; ++i)
 	{
 		double curr_theta = (max_theta - min_theta) * i / (num_samples - 1.0) + min_theta;
-		tuple.mStateBeg[2] = curr_theta;
+		double chain_len = mChar->CalcJointChainLength(mChar->GetNumJoints() - 1);
+		tMatrix rot_mat = cMathUtil::RotateMat(tVector(0, 0, 1, 0), curr_theta);
+		tVector delta = rot_mat * tVector(chain_len, 0, 0, 0);
+
+		//tuple.mStateBeg[2] = curr_theta;
+		tuple.mStateBeg[4] = delta[0];
+		tuple.mStateBeg[5] = delta[1];
 
 		Eigen::VectorXd actor_y;
 		trainer->EvalActor(tuple, actor_y);
@@ -88,7 +94,6 @@ void cScenarioArmTrain::Init()
 	cFileUtil::CloseFile(actor_f);
 	cFileUtil::CloseFile(dpg_f);
 	cFileUtil::CloseFile(critic_f);
-	*/
 }
 
 void cScenarioArmTrain::ParseArgs(const cArgParser& parser)
