@@ -4,8 +4,8 @@ input: "data"
 input_dim:1
 input_dim:1
 input_dim:1
-input_dim:11
-force_backward: true
+input_dim:10
+
 
 layer {
   name: "ip0"

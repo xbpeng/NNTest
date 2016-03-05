@@ -23,10 +23,12 @@ public:
 	virtual void SaveNet(const std::string& out_file) const;
 
 	virtual bool HasNet() const;
+	virtual bool IsOffPolicy() const;
 
 protected:
 	cNeuralNet mNet;
 	double mExpNoise;
+	bool mOffPolicy;
 
 	virtual void UpdatePoliAction();
 	virtual void DecideAction();

@@ -6,6 +6,7 @@ cArmNNController::cArmNNController()
 	mExpRate = 0.2;
 	mExpNoise = 0.25;
 	mEnableExp = false;
+	mOffPolicy = false;
 }
 
 cArmNNController::~cArmNNController()
@@ -85,6 +86,11 @@ bool cArmNNController::HasNet() const
 	return mNet.HasNet();
 }
 
+bool cArmNNController::IsOffPolicy() const
+{
+	return mOffPolicy;
+}
+
 void cArmNNController::UpdatePoliAction()
 {
 	if (HasNet())
@@ -95,6 +101,7 @@ void cArmNNController::UpdatePoliAction()
 
 void cArmNNController::DecideAction()
 {
+	mOffPolicy = false;
 	UpdatePoliAction();
 
 	if (mEnableExp)
@@ -103,6 +110,7 @@ void cArmNNController::DecideAction()
 		if (exp)
 		{
 			ApplyExpNoise(mPoliAction);
+			mOffPolicy = true;
 		}
 	}
 }

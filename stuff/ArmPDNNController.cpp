@@ -36,7 +36,7 @@ void cArmPDNNController::Clear()
 
 void cArmPDNNController::BuildNNOutputOffsetScale(Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const
 {
-	const double theta_scale = 1;
+	const double theta_scale = 1 / (2 * M_PI);
 	int output_size = GetPoliActionSize();
 	out_offset = Eigen::VectorXd::Zero(output_size);
 	out_scale = theta_scale * Eigen::VectorXd::Ones(output_size);
@@ -50,7 +50,7 @@ void cArmPDNNController::UpdatePoliAction()
 void cArmPDNNController::ApplyPoliAction(double time_step, const Eigen::VectorXd& action)
 {
 	int num_joints = mChar->GetNumJoints();
-	assert(static_cast<int>(action.size()) == num_joints - 1);
+	assert(static_cast<int>(action.size()) == GetPoliActionSize());
 
 	int idx = 0;
 	for (int j = 0; j < num_joints; ++j)

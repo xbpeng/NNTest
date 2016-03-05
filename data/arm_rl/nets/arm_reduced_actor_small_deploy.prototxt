@@ -4,8 +4,8 @@ input: "data"
 input_dim:1
 input_dim:1
 input_dim:1
-input_dim:11
-force_backward: true
+input_dim:10
+
 
 layer {
   name: "ip0"
@@ -85,9 +85,7 @@ layer {
   inner_product_param {
     num_output: 1
     weight_filler {
-      type: "uniform"
-	  min: -0.003
-	  max: 0.003
+      type: "xavier"
     }
     bias_filler {
       type: "constant"

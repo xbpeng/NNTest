@@ -136,7 +136,7 @@ void cArmController::BuildNNInputOffsetScale(Eigen::VectorXd& out_offset, Eigen:
 	}
 #else
 	double pose_scale = (1 / M_PI);
-	double vel_scale = (1 / (2 * M_PI));
+	double vel_scale = (1 / (10 * M_PI));
 	out_scale.segment(target_size, pose_size) = pose_scale * Eigen::VectorXd::Ones(pose_size);
 	out_scale.segment(target_size + pose_size, pose_size) = vel_scale * Eigen::VectorXd::Ones(pose_size);
 #endif
@@ -192,8 +192,8 @@ void cArmController::UpdatePoliState()
 	int num_joints = mChar->GetNumJoints();
 
 	tVector root_pos = mChar->GetRootPos();
-	mPoliState.segment(0, target_size) = (mTargetPos - root_pos).segment(0, target_size) * 0; // hack huge hack
-
+	mPoliState.segment(0, target_size) = (mTargetPos - root_pos).segment(0, target_size);
+	
 #if defined(ENABLE_MAX_COORD)
 	for (int j = 1; j < num_joints; ++j)
 	{

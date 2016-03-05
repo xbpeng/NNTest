@@ -6,7 +6,7 @@
 #include "stuff/ArmNNController.h"
 #include "stuff/ArmNNPixelController.h"
 #include "learning/ExpTuple.h"
-#include "learning/DPGTrainer.h"
+#include "learning/CaclaTrainer.h"
 #include "render/TextureDesc.h"
 #include "render/camera.h"
 
@@ -82,14 +82,13 @@ protected:
 	virtual void SetupScale();
 	virtual void SetupActorScale();
 	virtual void SetupCriticScale();
-	virtual void SetupActionBounds();
 
 	virtual void UpdatePolicy();
-	virtual void BuildDPGBounds(Eigen::VectorXd& out_min, Eigen::VectorXd& out_max) const;
-
+	
 	virtual void Train();
 	virtual int GetIter() const;
 	virtual double CalcExpRate() const;
+	virtual bool CheckOffPolicy() const;
 
 	virtual std::shared_ptr<cArmNNController> GetController() const;
 	virtual void PrintInfo() const;

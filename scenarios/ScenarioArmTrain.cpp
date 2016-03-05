@@ -6,6 +6,7 @@
 
 const int gTupleBufferSize = 32;
 const int gTrainerPlaybackMemSize = 500000; // 25000;
+const double gTupleRecordRate = 0.1;
 
 cScenarioArmTrain::cScenarioArmTrain()
 {
@@ -37,63 +38,6 @@ void cScenarioArmTrain::Init()
 
 	auto controller = GetController();
 	controller->EnableExp(true);
-	
-	// hack
-	auto trainer = std::static_pointer_cast<cDPGTrainer>(mTrainer);
-	int num_samples = 200;
-	double min_theta = -M_PI;
-	double max_theta = M_PI;
-	int state_size = trainer->GetStateSize();
-	int action_size = trainer->GetActionSize();
-	
-	tExpTuple tuple;
-	tuple.mStateBeg = Eigen::VectorXd::Zero(state_size);
-	tuple.mAction = Eigen::VectorXd::Zero(action_size);
-
-	FILE* critic_f = cFileUtil::OpenFile("scripts/dpg_arm_plot/critic_vals.txt", "w");
-	FILE* actor_f = cFileUtil::OpenFile("scripts/dpg_arm_plot/actor_data.txt", "w");
-	FILE* dpg_f = cFileUtil::OpenFile("scripts/dpg_arm_plot/dpg_data.txt", "w");
-
-	for (int i = 0; i < num_samples; ++i)
-	{
-		double curr_theta = (max_theta - min_theta) * i / (num_samples - 1.0) + min_theta;
-		double chain_len = mChar->CalcJointChainLength(mChar->GetNumJoints() - 1);
-		tMatrix rot_mat = cMathUtil::RotateMat(tVector(0, 0, 1, 0), curr_theta);
-		tVector delta = rot_mat * tVector(chain_len, 0, 0, 0);
-
-		//tuple.mStateBeg[2] = curr_theta;
-		tuple.mStateBeg[4] = delta[0];
-		tuple.mStateBeg[5] = delta[1];
-
-		Eigen::VectorXd actor_y;
-		trainer->EvalActor(tuple, actor_y);
-		tuple.mAction = actor_y;
-
-		Eigen::VectorXd critic_y;
-		trainer->EvalCritic(tuple, critic_y);
-		
-		Eigen::VectorXd dpg_y;
-		trainer->CalcDPG(tuple, dpg_y);
-
-		fprintf(critic_f, "%.5f, %.5f\n", curr_theta, critic_y[0]);
-
-		fprintf(actor_f, "%.5f", curr_theta);
-		for (int j = 0; j < actor_y.size(); ++j)
-		{
-			fprintf(actor_f, ", %.5f", actor_y[j]);
-		}
-		fprintf(actor_f, "\n");
-
-		fprintf(dpg_f, "%.5f", curr_theta);
-		for (int j = 0; j < dpg_y.size(); ++j)
-		{
-			fprintf(dpg_f, ", %.5f", dpg_y[j]);
-		}
-		fprintf(dpg_f, "\n");
-	}
-	cFileUtil::CloseFile(actor_f);
-	cFileUtil::CloseFile(dpg_f);
-	cFileUtil::CloseFile(critic_f);
 }
 
 void cScenarioArmTrain::ParseArgs(const cArgParser& parser)
@@ -194,8 +138,7 @@ int cScenarioArmTrain::GetActionSize() const
 
 void cScenarioArmTrain::RecordTuple(const tExpTuple& tuple)
 {
-	double record_rate = 0.1;
-	if (cMathUtil::FlipCoin(record_rate))
+	if (cMathUtil::FlipCoin(gTupleRecordRate))
 	{
 		int buffer_size = static_cast<int>(mTupleBuffer.size());
 		int idx = mNumTuples % buffer_size;
@@ -218,9 +161,9 @@ void cScenarioArmTrain::RecordAction(Eigen::VectorXd& out_action) const
 
 double cScenarioArmTrain::CalcReward() const
 {
-	double tar_w = 0;// 0.8;
-	double pose_w = 0.8; // 0.1
-	double vel_w = 0.2; // 0.1
+	double tar_w = 0;
+	double pose_w = 0.9;
+	double vel_w = 0.1;
 
 	int end_id = GetEndEffectorID();
 	const tVector& tar_pos = GetTargetPos();
@@ -264,12 +207,14 @@ void cScenarioArmTrain::ClearFlags(tExpTuple& out_tuple) const
 
 void cScenarioArmTrain::RecordFlagsBeg(tExpTuple& out_tuple) const
 {
+	bool off_policy = CheckOffPolicy();
+	out_tuple.SetFlag(off_policy, cCaclaTrainer::eFlagOffPolicy);
 }
 
 void cScenarioArmTrain::RecordFlagsEnd(tExpTuple& out_tuple) const
 {
 	bool fail = CheckFail();
-	out_tuple.SetFlag(fail, cDPGTrainer::eFlagFail);
+	out_tuple.SetFlag(fail, cCaclaTrainer::eFlagFail);
 }
 
 void cScenarioArmTrain::UpdateCharacter(double time_step)
@@ -277,11 +222,22 @@ void cScenarioArmTrain::UpdateCharacter(double time_step)
 	bool new_update = NeedCtrlUpdate();
 	if (new_update)
 	{
+		UpdateViewBuffer();
+		SetNNViewFeatures();
+	}
+
+	cScenarioSimChar::UpdateCharacter(time_step);
+
+	if (new_update)
+	{
+		UpdateViewBuffer();
+		SetNNViewFeatures();
+
 		RecordState(mCurrTuple.mStateEnd);
 		RecordFlagsEnd(mCurrTuple);
 		mCurrTuple.mReward = CalcReward();
 
-		if (mValidSample)
+		if (mEnableTraining && mValidSample)
 		{
 			RecordTuple(mCurrTuple);
 		}
@@ -291,14 +247,6 @@ void cScenarioArmTrain::UpdateCharacter(double time_step)
 			Train();
 		}
 
-		UpdateViewBuffer();
-		SetNNViewFeatures();
-	}
-	
-	cScenarioSimChar::UpdateCharacter(time_step);
-
-	if (new_update)
-	{
 		mCurrTuple.mStateBeg = mCurrTuple.mStateEnd;
 		RecordAction(mCurrTuple.mAction);
 		ClearFlags(mCurrTuple);
@@ -332,11 +280,8 @@ void cScenarioArmTrain::InitTupleBuffer()
 
 void cScenarioArmTrain::BuildTrainer(std::shared_ptr<cNeuralNetTrainer>& out_trainer) const
 {
-	auto trainer = std::shared_ptr<cDPGTrainer>(new cDPGTrainer());
+	auto trainer = std::shared_ptr<cCaclaTrainer>(new cCaclaTrainer());
 	trainer->SetActorFiles(mActorSolverFile, mActorNetFile);
-	trainer->SetDPGReg(0.0001);
-	trainer->SetPretrainIters(1000);
-	trainer->SetQDiff(4);
 	out_trainer = trainer;
 }
 
@@ -348,13 +293,12 @@ void cScenarioArmTrain::InitTrainer()
 	mTrainerParams.mPoolSize = 1;
 	mTrainerParams.mNumInitSamples = 20000;
 	mTrainerParams.mInitInputOffsetScale = false;
-	//mTrainerParams.mDiscount = 0.9;
+	mTrainerParams.mDiscount = 0.99;
 
 	mTrainer->Init(mTrainerParams);
 	SetupScale();
-	SetupActionBounds();
 
-	auto trainer = std::static_pointer_cast<cDPGTrainer>(mTrainer);
+	auto trainer = std::static_pointer_cast<cCaclaTrainer>(mTrainer);
 	if (mCriticModelFile != "")
 	{
 		trainer->LoadCriticModel(mCriticModelFile);
@@ -364,11 +308,6 @@ void cScenarioArmTrain::InitTrainer()
 	{
 		trainer->LoadActorModel(mActorModelFile);
 	}
-
-	//if (mScaleFile != "")
-	//{
-		//mTrainer->LoadScale(mScaleFile);
-	//}
 }
 
 void cScenarioArmTrain::SetupScale()
@@ -379,7 +318,7 @@ void cScenarioArmTrain::SetupScale()
 
 void cScenarioArmTrain::SetupActorScale()
 {
-	auto trainer = std::static_pointer_cast<cDPGTrainer>(mTrainer);
+	auto trainer = std::static_pointer_cast<cCaclaTrainer>(mTrainer);
 	auto ctrl = GetController();
 	int state_size = trainer->GetInputSize();
 	int action_size = trainer->GetOutputSize();
@@ -397,45 +336,23 @@ void cScenarioArmTrain::SetupActorScale()
 
 void cScenarioArmTrain::SetupCriticScale()
 {
-	auto trainer = std::static_pointer_cast<cDPGTrainer>(mTrainer);
+	auto trainer = std::static_pointer_cast<cCaclaTrainer>(mTrainer);
 	auto ctrl = GetController();
 	int state_size = trainer->GetStateSize();
-	int action_size = trainer->GetActionSize();
 	int critic_input_size = trainer->GetCriticInputSize();
 	int critic_output_size = trainer->GetCriticOutputSize();
 
-	Eigen::VectorXd state_offset = Eigen::VectorXd::Zero(state_size);
-	Eigen::VectorXd state_scale = Eigen::VectorXd::Ones(state_size);
-	ctrl->BuildNNInputOffsetScale(state_offset, state_scale);
+	Eigen::VectorXd input_offset = Eigen::VectorXd::Zero(critic_input_size);
+	Eigen::VectorXd input_scale = Eigen::VectorXd::Ones(critic_input_size);
+	ctrl->BuildNNInputOffsetScale(input_offset, input_scale);
 
-	Eigen::VectorXd action_offset = Eigen::VectorXd::Zero(action_size);
-	Eigen::VectorXd action_scale = Eigen::VectorXd::Ones(action_size);
-	ctrl->BuildNNOutputOffsetScale(action_offset, action_scale);
-
-	Eigen::VectorXd critic_input_offset = Eigen::VectorXd::Zero(state_size + action_size);
-	Eigen::VectorXd critic_input_scale = Eigen::VectorXd::Zero(state_size + action_size);
-	critic_input_offset.segment(0, state_size) = state_offset;
-	critic_input_offset.segment(state_size, action_size) = action_offset;
-	critic_input_scale.segment(0, state_size) = state_scale;
-	critic_input_scale.segment(state_size, action_size) = action_scale;
-
-	assert(critic_input_offset.size() == critic_input_size);
-	assert(critic_input_scale.size() == critic_input_size);
-	trainer->SetCriticInputOffsetScale(critic_input_offset, critic_input_scale);
+	assert(input_offset.size() == critic_input_size);
+	assert(input_scale.size() == critic_input_size);
+	trainer->SetCriticInputOffsetScale(input_offset, input_scale);
 
 	Eigen::VectorXd critic_output_offset = -0.5 * Eigen::VectorXd::Ones(critic_output_size);
 	Eigen::VectorXd critic_output_scale = 2 * Eigen::VectorXd::Ones(critic_output_size);
 	trainer->SetCriticOutputOffsetScale(critic_output_offset, critic_output_scale);
-}
-
-void cScenarioArmTrain::SetupActionBounds()
-{
-	auto trainer = std::static_pointer_cast<cDPGTrainer>(mTrainer);
-
-	Eigen::VectorXd action_min;
-	Eigen::VectorXd action_max;
-	BuildDPGBounds(action_min, action_max);
-	trainer->SetActionBounds(action_min, action_max);
 }
 
 void cScenarioArmTrain::UpdatePolicy()
@@ -449,12 +366,6 @@ void cScenarioArmTrain::UpdatePolicy()
 
 	double exp_rate = CalcExpRate();
 	ctrl->SetExpRate(exp_rate);
-}
-
-void cScenarioArmTrain::BuildDPGBounds(Eigen::VectorXd& out_min, Eigen::VectorXd& out_max) const
-{
-	auto ctrl = GetController();
-	ctrl->BuildActionBounds(out_min, out_max);
 }
 
 void cScenarioArmTrain::Train()
@@ -484,6 +395,13 @@ double cScenarioArmTrain::CalcExpRate() const
 	lerp = cMathUtil::Clamp(lerp, 0.0, 1.0);
 	double exp_rate = (1 - lerp) * mInitExpRate + lerp * mExpRate;
 	return exp_rate;
+}
+
+bool cScenarioArmTrain::CheckOffPolicy() const
+{
+	auto ctrl = GetController();
+	bool off_poli = ctrl->IsOffPolicy();
+	return off_poli;
 }
 
 std::shared_ptr<cArmNNController> cScenarioArmTrain::GetController() const
@@ -526,30 +444,5 @@ void cScenarioArmTrain::PrintInfo() const
 	{
 		printf("%.3f\t", vel[i]);
 	}
-	printf("\n");
-
-
-	if (!mEnableTraining)
-	{
-		Eigen::VectorXd state;
-		Eigen::VectorXd action;
-		RecordState(state);
-		RecordAction(action);
-		tExpTuple tuple;
-		tuple.mStateBeg = state;
-		tuple.mAction = action;
-
-		auto trainer = std::static_pointer_cast<cDPGTrainer>(mTrainer);
-		Eigen::VectorXd dpg;
-		trainer->CalcDPG(tuple, dpg);
-
-		printf("DPG:\n");
-		for (int i = 0; i < dpg.size(); ++i)
-		{
-			printf("%.5f\t", dpg[i]);
-		}
-		printf("\n");
-	}
-
-	printf("\n");
+	printf("\n\n");
 }
