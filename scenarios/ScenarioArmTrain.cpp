@@ -49,12 +49,12 @@ void cScenarioArmTrain::ParseArgs(const cArgParser& parser)
 	parser.ParseDouble("exp_rate", mExpRate);
 	parser.ParseDouble("init_exp_rate", mInitExpRate);
 	parser.ParseInt("num_exp_anneal_iters", mNumAnnealIters);
-	
+
 	parser.ParseString("critic_solver_file", mCriticSolverFile);
 	parser.ParseString("critic_net_file", mCriticNetFile);
 	parser.ParseString("critic_model_file", mCriticModelFile);
 	parser.ParseString("solver_file", mActorSolverFile);
-	
+
 	mActorNetFile = mNetFile;
 
 	if (mModelFiles.size() > 0)
@@ -161,8 +161,8 @@ void cScenarioArmTrain::RecordAction(Eigen::VectorXd& out_action) const
 
 double cScenarioArmTrain::CalcReward() const
 {
-	double tar_w = 0;
-	double pose_w = 0.9;
+	double tar_w = 0.9;
+	double pose_w = 0;
 	double vel_w = 0.1;
 
 	int end_id = GetEndEffectorID();
@@ -178,12 +178,20 @@ double cScenarioArmTrain::CalcReward() const
 	Eigen::VectorXd vel;
 	mChar->BuildPose(pose);
 	mChar->BuildVel(vel);
+
+	// hack
+	if (pose.size() > 5 && tar_w > 0)
+	{
+		// let base joint be whatever pose it wants
+		pose[3] = 0;
+	}
+
 	double pose_reward = 1 / (1 + pose.squaredNorm());
 	double vel_reward = 1 / (1 + 0.02 * vel.squaredNorm());
 
 	double reward = tar_w * tar_reward
-					+ pose_w * pose_reward
-					+ vel_w * vel_reward;
+		+ pose_w * pose_reward
+		+ vel_w * vel_reward;
 
 	if (CheckFail())
 	{
@@ -220,39 +228,33 @@ void cScenarioArmTrain::RecordFlagsEnd(tExpTuple& out_tuple) const
 void cScenarioArmTrain::UpdateCharacter(double time_step)
 {
 	bool new_update = NeedCtrlUpdate();
-	if (new_update)
-	{
-		UpdateViewBuffer();
-		SetNNViewFeatures();
-	}
-
-	cScenarioSimChar::UpdateCharacter(time_step);
+	cScenarioArm::UpdateCharacter(time_step);
 
 	if (new_update)
 	{
-		UpdateViewBuffer();
-		SetNNViewFeatures();
-
 		RecordState(mCurrTuple.mStateEnd);
 		RecordFlagsEnd(mCurrTuple);
 		mCurrTuple.mReward = CalcReward();
 
-		if (mEnableTraining && mValidSample)
+		if (mEnableTraining)
 		{
-			RecordTuple(mCurrTuple);
-		}
+			if (mValidSample)
+			{
+				RecordTuple(mCurrTuple);
+			}
 
-		if (mEnableTraining && (mNumTuples >= static_cast<int>(mTupleBuffer.size())))
-		{
-			Train();
+			if (mNumTuples >= static_cast<int>(mTupleBuffer.size()))
+			{
+				Train();
+			}
 		}
 
 		mCurrTuple.mStateBeg = mCurrTuple.mStateEnd;
 		RecordAction(mCurrTuple.mAction);
 		ClearFlags(mCurrTuple);
 		RecordFlagsBeg(mCurrTuple);
-		mValidSample = true;
 
+		mValidSample = true;
 		PrintInfo();
 	}
 }
@@ -293,7 +295,7 @@ void cScenarioArmTrain::InitTrainer()
 	mTrainerParams.mPoolSize = 1;
 	mTrainerParams.mNumInitSamples = 20000;
 	mTrainerParams.mInitInputOffsetScale = false;
-	mTrainerParams.mDiscount = 0.99;
+	//mTrainerParams.mDiscount = 0.99;
 
 	mTrainer->Init(mTrainerParams);
 	SetupScale();
@@ -322,7 +324,7 @@ void cScenarioArmTrain::SetupActorScale()
 	auto ctrl = GetController();
 	int state_size = trainer->GetInputSize();
 	int action_size = trainer->GetOutputSize();
-	
+
 	Eigen::VectorXd input_offset = Eigen::VectorXd::Zero(state_size);
 	Eigen::VectorXd input_scale = Eigen::VectorXd::Ones(state_size);
 	ctrl->BuildNNInputOffsetScale(input_offset, input_scale);

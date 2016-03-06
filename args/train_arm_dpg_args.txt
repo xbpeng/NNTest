@@ -11,27 +11,26 @@
 //-critic_net_file= data/arm_rl/nets/arm_reduced_dpg_critic_deploy.prototxt
 //-critic_model_file= data/arm_rl/models/arm_reduced_critic_init_model.h5
 
--solver_file= data/arm_rl/nets/arm_reduced_actor_small_solver.prototxt
--net_file= data/arm_rl/nets/arm_reduced_actor_small_deploy.prototxt
-//-model_file= data/arm_rl/models/arm_dpg_actor_small_model.h5
-//-model_file= data/arm_rl/models/arm_dpg_actor_small_init_model1.h5
-//-model_file= data/arm_rl/models/arm_cacla_actor_small_model.h5
+//-solver_file= data/arm_rl/nets/arm_reduced_actor_small_solver_adam.prototxt
+//-net_file= data/arm_rl/nets/arm_reduced_actor_small_deploy.prototxt
+-model_file= data/arm_rl/models/arm_dpg_actor_small_model.h5
+//-model_file= data/arm_rl/models/arm_dpg_actor_small_init_model.h5
 
--critic_solver_file= data/arm_rl/nets/arm_reduced_dpg_critic_small_solver.prototxt
--critic_net_file= data/arm_rl/nets/arm_reduced_dpg_critic_small_deploy.prototxt
-//-critic_model_file= data/arm_rl/models/arm_dpg_actor_small_model_critic.h5
-//-critic_model_file= data/arm_rl/models/arm_dpg_critic_small_init_model1.h5
+//-critic_solver_file= data/arm_rl/nets/arm_reduced_dpg_critic_small_solver_adam.prototxt
+//-critic_net_file= data/arm_rl/nets/arm_reduced_dpg_critic_small_deploy.prototxt
+-critic_model_file= data/arm_rl/models/arm_dpg_actor_small_model_critic.h5
+//-critic_model_file= data/arm_rl/models/arm_dpg_critic_small_init_model.h5
 
 
-//-solver_file= data/arm_rl/nets/arm_reduced_single_dpg_actor_solver.prototxt
-//-net_file= data/arm_rl/nets/arm_reduced_single_dpg_actor_deploy.prototxt
+-solver_file= data/arm_rl/nets/arm_reduced_single_dpg_actor_solver_adam.prototxt
+-net_file= data/arm_rl/nets/arm_reduced_single_dpg_actor_deploy.prototxt
 //-model_file= data/arm_rl/models/arm_single_dpg_actor_model.h5
-//-model_file= data/arm_rl/models/arm_single_dpg_actor_init_model.h5
+-model_file= data/arm_rl/models/arm_single_dpg_actor_init_model.h5
 
-//-critic_solver_file= data/arm_rl/nets/arm_reduced_single_dpg_critic_solver.prototxt
-//-critic_net_file= data/arm_rl/nets/arm_reduced_single_dpg_critic_deploy.prototxt
+-critic_solver_file= data/arm_rl/nets/arm_reduced_single_dpg_critic_solver_adam.prototxt
+-critic_net_file= data/arm_rl/nets/arm_reduced_single_dpg_critic_deploy.prototxt
 //-critic_model_file= data/arm_rl/models/arm_single_dpg_actor_model_critic.h5
-//-critic_model_file= data/arm_rl/models/arm_single_dpg_critic_init_model.h5
+-critic_model_file= data/arm_rl/models/arm_single_dpg_critic_init_model.h5
 
 -arm_ctrl_type= nn
 

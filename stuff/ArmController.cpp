@@ -223,18 +223,21 @@ void cArmController::ApplyPoliAction(double time_step, const Eigen::VectorXd& ac
 {
 	assert(static_cast<int>(action.size()) == GetPoliActionSize());
 
-	int joint_offset = 1;
-	for (int j = 0; j < action.size(); ++j)
+	int num_joints = mChar->GetNumJoints();
+	int idx = 0;
+	for (int j = 0; j < num_joints; ++j)
 	{
-		cJoint& joint = mChar->GetJoint(j + joint_offset);
+		cJoint& joint = mChar->GetJoint(j);
 		if (joint.IsValid())
 		{
-			double t = action[j];
+			double t = action[idx];
 			t = cMathUtil::Clamp(t, -mTorqueLim, mTorqueLim);
 			tVector torque = tVector(0, 0, t, 0);
 			joint.AddTorque(torque);
+			++idx;
 		}
 	}
+	assert(idx == action.size());
 }
 
 void cArmController::ApplyTorqueLimit(double lim)
