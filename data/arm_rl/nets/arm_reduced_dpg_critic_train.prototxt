@@ -10,7 +10,7 @@ layer {
     batch_size: 32
 	channels: 1
 	height: 1
-	width: 13
+	width: 21
 	label_size: 1
   }
 }
@@ -23,7 +23,7 @@ layer {
 	top: "data_action"
 	slice_param {
 		axis: 3
-		slice_point: 10
+		slice_point: 18
 	}
 }
 
@@ -154,7 +154,9 @@ layer {
   inner_product_param {
     num_output: 1
     weight_filler {
-      type: "xavier"
+      type: "uniform"
+	  min: -0.003
+	  max: 0.003
     }
     bias_filler {
       type: "constant"

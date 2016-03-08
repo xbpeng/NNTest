@@ -58,6 +58,7 @@ protected:
 
 	virtual void ApplyRandPose();
 	virtual void RandReset();
+	virtual void SetRandTarget();
 
 	virtual int GetStateSize() const;
 	virtual int GetActionSize() const;

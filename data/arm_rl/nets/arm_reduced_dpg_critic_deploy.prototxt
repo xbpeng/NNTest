@@ -4,7 +4,7 @@ input: "data"
 input_dim:1
 input_dim:1
 input_dim:1
-input_dim:13
+input_dim:21
 force_backward: true
 
 layer {
@@ -15,7 +15,7 @@ layer {
 	top: "data_action"
 	slice_param {
 		axis: 3
-		slice_point: 10
+		slice_point: 18
 	}
 }
 
@@ -146,7 +146,9 @@ layer {
   inner_product_param {
     num_output: 1
     weight_filler {
-      type: "xavier"
+      type: "uniform"
+	  min: -0.003
+	  max: 0.003
     }
     bias_filler {
       type: "constant"

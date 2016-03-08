@@ -5,7 +5,6 @@
 #include "render/DrawSimCharacter.h"
 #include "util/FileUtil.h"
 
-const int gTupleBufferSize = 32;
 const int gTrainerPlaybackMemSize = 500000; // 25000;
 
 cScenarioArmTrainDPG::cScenarioArmTrainDPG()
@@ -90,32 +89,22 @@ void cScenarioArmTrainDPG::RecordFlagsEnd(tExpTuple& out_tuple) const
 	out_tuple.SetFlag(fail, cDPGTrainer::eFlagFail);
 }
 
-void cScenarioArmTrainDPG::BuildTrainer(std::shared_ptr<cNeuralNetTrainer>& out_trainer) const
-{
-	auto trainer = std::shared_ptr<cDPGTrainer>(new cDPGTrainer());
-	trainer->SetActorFiles(mActorSolverFile, mActorNetFile);
-	trainer->SetDPGReg(0.0001);
-	trainer->SetPretrainIters(5000);
-	trainer->SetQDiff(1);
-	out_trainer = trainer;
-}
-
 void cScenarioArmTrainDPG::InitTrainer()
 {
-	cScenarioArmTrain::InitTrainer();
-	/*
+	//cScenarioArmTrain::InitTrainer();
+
 	mTrainerParams.mSolverFile = mCriticSolverFile;
 	mTrainerParams.mNetFile = mCriticNetFile;
 	mTrainerParams.mPlaybackMemSize = gTrainerPlaybackMemSize;
 	mTrainerParams.mPoolSize = 1;
 	mTrainerParams.mNumInitSamples = 20000;
 	mTrainerParams.mInitInputOffsetScale = false;
+	mTrainerParams.mFreezeTargetIters = 0;
 
 	mTrainer->Init(mTrainerParams);
 	SetupScale();
-	SetupActionBounds();
 
-	auto trainer = std::static_pointer_cast<cDPGTrainer>(mTrainer);
+	auto trainer = std::static_pointer_cast<cCaclaTrainer>(mTrainer);
 	if (mCriticModelFile != "")
 	{
 		trainer->LoadCriticModel(mCriticModelFile);
@@ -125,7 +114,18 @@ void cScenarioArmTrainDPG::InitTrainer()
 	{
 		trainer->LoadActorModel(mActorModelFile);
 	}
-	*/
+
+	SetupActionBounds();
+}
+
+void cScenarioArmTrainDPG::BuildTrainer(std::shared_ptr<cNeuralNetTrainer>& out_trainer) const
+{
+	auto trainer = std::shared_ptr<cDPGTrainer>(new cDPGTrainer());
+	trainer->SetActorFiles(mActorSolverFile, mActorNetFile);
+	trainer->SetDPGReg(0.0001);
+	trainer->SetPretrainIters(5000);
+	trainer->SetQDiff(10);
+	out_trainer = trainer;
 }
 
 void cScenarioArmTrainDPG::SetupCriticScale()

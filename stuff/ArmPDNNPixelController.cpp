@@ -42,6 +42,14 @@ void cArmPDNNPixelController::BuildNNOutputOffsetScale(Eigen::VectorXd& out_offs
 	out_scale = theta_scale * Eigen::VectorXd::Ones(output_size);
 }
 
+void cArmPDNNPixelController::BuildActionBounds(Eigen::VectorXd& out_min, Eigen::VectorXd& out_max) const
+{
+	int output_size = GetPoliActionSize();
+	double max_theta = 2 * M_PI;
+	out_min = -max_theta * Eigen::VectorXd::Ones(output_size);
+	out_max = max_theta * Eigen::VectorXd::Ones(output_size);
+}
+
 void cArmPDNNPixelController::UpdatePoliAction()
 {
 	cArmNNPixelController::UpdatePoliAction();

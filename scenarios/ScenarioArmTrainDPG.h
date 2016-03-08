@@ -15,8 +15,8 @@ public:
 
 protected:
 	virtual void RecordFlagsEnd(tExpTuple& out_tuple) const;
-	virtual void BuildTrainer(std::shared_ptr<cNeuralNetTrainer>& out_trainer) const;
 	virtual void InitTrainer();
+	virtual void BuildTrainer(std::shared_ptr<cNeuralNetTrainer>& out_trainer) const;
 
 	virtual void SetupCriticScale();
 	virtual void SetupActionBounds();

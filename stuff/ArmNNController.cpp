@@ -4,7 +4,7 @@
 cArmNNController::cArmNNController()
 {
 	mExpRate = 0.2;
-	mExpNoise = 0.5;
+	mExpNoise = 0.25;
 	mEnableExp = false;
 	mOffPolicy = false;
 }

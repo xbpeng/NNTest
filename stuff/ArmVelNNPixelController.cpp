@@ -52,6 +52,14 @@ void cArmVelNNPixelController::BuildNNOutputOffsetScale(Eigen::VectorXd& out_off
 	out_scale = vel_scale * Eigen::VectorXd::Ones(output_size);
 }
 
+void cArmVelNNPixelController::BuildActionBounds(Eigen::VectorXd& out_min, Eigen::VectorXd& out_max) const
+{
+	int output_size = GetPoliActionSize();
+	double max_vel = 15 * M_PI;
+	out_min = -max_vel * Eigen::VectorXd::Ones(output_size);
+	out_max = max_vel * Eigen::VectorXd::Ones(output_size);
+}
+
 void cArmVelNNPixelController::UpdatePoliAction()
 {
 	cArmNNPixelController::UpdatePoliAction();

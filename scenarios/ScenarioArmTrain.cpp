@@ -113,12 +113,15 @@ void cScenarioArmTrain::SetCtrlTargetPos(const tVector& target)
 void cScenarioArmTrain::ApplyRandPose()
 {
 	cScenarioArm::ApplyRandPose();
-
-	Eigen::VectorXd pose;
-	Eigen::VectorXd vel;
-	mChar->BuildPose(pose);
-	mChar->BuildVel(vel);
+	mValidSample = false;
 }
+
+void cScenarioArmTrain::SetRandTarget()
+{
+	cScenarioArm::SetRandTarget();
+	mValidSample = false;
+}
+
 
 void cScenarioArmTrain::RandReset()
 {
@@ -162,7 +165,7 @@ void cScenarioArmTrain::RecordAction(Eigen::VectorXd& out_action) const
 double cScenarioArmTrain::CalcReward() const
 {
 	double tar_w = 0.9;
-	double pose_w = 0;
+	double pose_w = 0.0;
 	double vel_w = 0.1;
 
 	int end_id = GetEndEffectorID();
@@ -180,7 +183,7 @@ double cScenarioArmTrain::CalcReward() const
 	mChar->BuildVel(vel);
 
 	// hack
-	if (pose.size() > 5 && tar_w > 0)
+	if (pose.size() > 3 && tar_w > 0)
 	{
 		// let base joint be whatever pose it wants
 		pose[3] = 0;
@@ -261,14 +264,18 @@ void cScenarioArmTrain::UpdateCharacter(double time_step)
 
 void cScenarioArmTrain::GetRandTargetMinMaxTime(double& out_min, double& out_max) const
 {
-	out_min = 20;
-	out_max = 40;
+	out_min = 2;
+	out_max = 6;
+	//out_min = 20;
+	//out_max = 40;
 }
 
 void cScenarioArmTrain::GetRandPoseMinMaxTime(double& out_min, double& out_max) const
 {
-	out_min = 20;
-	out_max = 40;
+	out_min = 6;
+	out_max = 8;
+	//out_min = 20;
+	//out_max = 40;
 }
 
 void cScenarioArmTrain::InitTupleBuffer()
@@ -295,8 +302,7 @@ void cScenarioArmTrain::InitTrainer()
 	mTrainerParams.mPoolSize = 1;
 	mTrainerParams.mNumInitSamples = 20000;
 	mTrainerParams.mInitInputOffsetScale = false;
-	//mTrainerParams.mDiscount = 0.99;
-
+	
 	mTrainer->Init(mTrainerParams);
 	SetupScale();
 
