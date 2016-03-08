@@ -6,7 +6,7 @@
 
 const int gTupleBufferSize = 32;
 const int gTrainerPlaybackMemSize = 500000; // 25000;
-const double gTupleRecordRate = 0.1;
+const double gTupleRecordRate = 1; // 0.1;
 
 cScenarioArmTrain::cScenarioArmTrain()
 {
