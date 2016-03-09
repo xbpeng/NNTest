@@ -38,7 +38,7 @@ int cArmControllerMACE::GetNetOutputSize() const
 
 void cArmControllerMACE::RecordPoliAction(Eigen::VectorXd& out_action) const
 {
-	out_action = Eigen::VectorXd::Zero(GetPoliActionSize() + 1);
+	out_action = Eigen::VectorXd::Zero(GetNetOutputSize());
 
 	int a = mPoliAction.mID;
 	cMACETrainer::SetActionFragIdx(a, out_action);
@@ -49,7 +49,7 @@ void cArmControllerMACE::RecordPoliAction(Eigen::VectorXd& out_action) const
 
 cArmControllerMACE::tAction cArmControllerMACE::BuildActionFromParams(const Eigen::VectorXd& action_params) const
 {
-	assert(action_params.size() == GetPoliActionSize() + 1);
+	assert(action_params.size() == GetNetOutputSize());
 	int a = cMACETrainer::GetActionFragIdx(action_params);
 	Eigen::VectorXd action_frag;
 	cMACETrainer::GetActionFrag(action_params, action_frag);
