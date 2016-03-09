@@ -50,7 +50,7 @@ void cArmQPController::UpdatePoliAction()
 	const auto& tau = mSoln.mX.segment(tau_offset, tau_size);
 
 	int root_size = mChar->GetParamSize(mChar->GetRootID());
-	mPoliAction = tau.segment(root_size, GetPoliActionSize());
+	mPoliAction.mParams = tau.segment(root_size, GetPoliActionSize());
 }
 
 void cArmQPController::ComputeQPTau()

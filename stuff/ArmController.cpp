@@ -31,7 +31,7 @@ void cArmController::Reset()
 {
 	cCharController::Reset();
 	mUpdateCounter = mUpdatePeriod;
-	mPoliAction.setZero();
+	mPoliAction.mParams.setZero();
 	mPoliState.setZero();
 }
 
@@ -102,7 +102,7 @@ void cArmController::RecordPoliState(Eigen::VectorXd& out_state) const
 
 void cArmController::RecordPoliAction(Eigen::VectorXd& out_action) const
 {
-	out_action = mPoliAction;
+	out_action = mPoliAction.mParams;
 }
 
 int cArmController::GetTargetPosSize() const
@@ -169,12 +169,13 @@ int cArmController::GetEndEffectorID() const
 
 void cArmController::InitPoliState()
 {
-	mPoliState= Eigen::VectorXd::Zero(GetPoliStateSize());
+	mPoliState = Eigen::VectorXd::Zero(GetPoliStateSize());
 }
 
 void cArmController::InitPoliAction()
 {
-	mPoliAction = Eigen::VectorXd::Zero(GetPoliActionSize());
+	mPoliAction.mID = 0;
+	mPoliAction.mParams = Eigen::VectorXd::Zero(GetPoliActionSize());
 }
 
 void cArmController::UpdatePoliState()
@@ -219,9 +220,9 @@ void cArmController::DecideAction()
 	UpdatePoliAction();
 }
 
-void cArmController::ApplyPoliAction(double time_step, const Eigen::VectorXd& action)
+void cArmController::ApplyPoliAction(double time_step, const tAction& action)
 {
-	assert(static_cast<int>(action.size()) == GetPoliActionSize());
+	assert(static_cast<int>(action.mParams.size()) == GetPoliActionSize());
 
 	int num_joints = mChar->GetNumJoints();
 	int idx = 0;
@@ -230,14 +231,14 @@ void cArmController::ApplyPoliAction(double time_step, const Eigen::VectorXd& ac
 		cJoint& joint = mChar->GetJoint(j);
 		if (joint.IsValid())
 		{
-			double t = action[idx];
+			double t = action.mParams[idx];
 			t = cMathUtil::Clamp(t, -mTorqueLim, mTorqueLim);
 			tVector torque = tVector(0, 0, t, 0);
 			joint.AddTorque(torque);
 			++idx;
 		}
 	}
-	assert(idx == action.size());
+	assert(idx == action.mParams.size());
 }
 
 void cArmController::ApplyTorqueLimit(double lim)

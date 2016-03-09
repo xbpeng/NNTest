@@ -327,6 +327,7 @@
     <ClCompile Include="scenarios\DrawScenarioArmRLPretrain.cpp" />
     <ClCompile Include="scenarios\DrawScenarioArmTrain.cpp" />
     <ClCompile Include="scenarios\DrawScenarioArmTrainDPG.cpp" />
+    <ClCompile Include="scenarios\DrawScenarioArmTrainMACE.cpp" />
     <ClCompile Include="scenarios\DrawScenarioBallEval.cpp" />
     <ClCompile Include="scenarios\DrawScenarioBallRL.cpp" />
     <ClCompile Include="scenarios\DrawScenarioBallRLCacla.cpp" />
@@ -341,6 +342,7 @@
     <ClCompile Include="scenarios\ScenarioArmRLPretrain.cpp" />
     <ClCompile Include="scenarios\ScenarioArmTrain.cpp" />
     <ClCompile Include="scenarios\ScenarioArmTrainDPG.cpp" />
+    <ClCompile Include="scenarios\ScenarioArmTrainMACE.cpp" />
     <ClCompile Include="scenarios\ScenarioBallEval.cpp" />
     <ClCompile Include="scenarios\ScenarioBallRL.cpp" />
     <ClCompile Include="scenarios\ScenarioBallRLCacla.cpp" />
@@ -350,6 +352,7 @@
     <ClCompile Include="scenarios\ScenarioReg1D.cpp" />
     <ClCompile Include="scenarios\ScenarioReg1DTrainer.cpp" />
     <ClCompile Include="stuff\ArmController.cpp" />
+    <ClCompile Include="stuff\ArmControllerMACE.cpp" />
     <ClCompile Include="stuff\ArmNNController.cpp" />
     <ClCompile Include="stuff\ArmNNPixelController.cpp" />
     <ClCompile Include="stuff\ArmNNPixelNoPoseController.cpp" />
@@ -456,6 +459,7 @@
     <ClInclude Include="scenarios\DrawScenarioArmRLPretrain.h" />
     <ClInclude Include="scenarios\DrawScenarioArmTrain.h" />
     <ClInclude Include="scenarios\DrawScenarioArmTrainDPG.h" />
+    <ClInclude Include="scenarios\DrawScenarioArmTrainMACE.h" />
     <ClInclude Include="scenarios\DrawScenarioBallEval.h" />
     <ClInclude Include="scenarios\DrawScenarioBallRL.h" />
     <ClInclude Include="scenarios\DrawScenarioBallRLCacla.h" />
@@ -470,6 +474,7 @@
     <ClInclude Include="scenarios\ScenarioArmRLPretrain.h" />
     <ClInclude Include="scenarios\ScenarioArmTrain.h" />
     <ClInclude Include="scenarios\ScenarioArmTrainDPG.h" />
+    <ClInclude Include="scenarios\ScenarioArmTrainMACE.h" />
     <ClInclude Include="scenarios\ScenarioBallEval.h" />
     <ClInclude Include="scenarios\ScenarioBallRL.h" />
     <ClInclude Include="scenarios\ScenarioBallRLCacla.h" />
@@ -479,6 +484,7 @@
     <ClInclude Include="scenarios\ScenarioReg1D.h" />
     <ClInclude Include="scenarios\ScenarioReg1DTrainer.h" />
     <ClInclude Include="stuff\ArmController.h" />
+    <ClInclude Include="stuff\ArmControllerMACE.h" />
     <ClInclude Include="stuff\ArmNNController.h" />
     <ClInclude Include="stuff\ArmNNPixelController.h" />
     <ClInclude Include="stuff\ArmNNPixelNoPoseController.h" />

@@ -99,7 +99,7 @@ void cScenarioArmTrainDPG::InitTrainer()
 	mTrainerParams.mPoolSize = 1;
 	mTrainerParams.mNumInitSamples = 20000;
 	mTrainerParams.mInitInputOffsetScale = false;
-	mTrainerParams.mFreezeTargetIters = 200;
+	mTrainerParams.mFreezeTargetIters = 500;
 
 	mTrainer->Init(mTrainerParams);
 	SetupScale();

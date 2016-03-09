@@ -21,5 +21,5 @@ protected:
 	virtual void TorquesToVel(const Eigen::VectorXd& torques, Eigen::VectorXd& out_vel) const;
 
 	virtual void UpdatePoliAction();
-	virtual void ApplyPoliAction(double time_step, const Eigen::VectorXd& action);
+	virtual void ApplyPoliAction(double time_step, const tAction& action);
 };

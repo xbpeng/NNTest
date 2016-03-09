@@ -1,0 +1,238 @@
+name: "Arm"
+
+layer {
+  name: "memory_data"
+  type: "MemoryData"
+  top: "data"
+  top: "label"
+
+  memory_data_param {
+    batch_size: 32
+	channels: 1
+	height: 1
+	width: 10
+	label_size: 4
+  }
+}
+
+layer {
+  name: "ip0"
+  type: "InnerProduct"
+  bottom: "data"
+  top: "ip0"
+  param {
+    lr_mult: 1
+	decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+	decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 128
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+layer {
+  name: "relu0"
+  type: "ReLU"
+  bottom: "ip0"
+  top: "relu0"
+}
+
+
+
+layer {
+  name: "val_ip0"
+  type: "InnerProduct"
+  bottom: "relu0"
+  top: "val_ip0"
+  param {
+    lr_mult: 1
+	decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+	decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 64
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+layer {
+  name: "val_relu0"
+  type: "ReLU"
+  bottom: "val_ip0"
+  top: "val_relu0"
+}
+
+layer {
+  name: "val_ip1"
+  type: "InnerProduct"
+  bottom: "val_relu0"
+  top: "val_ip1"
+  param {
+    lr_mult: 1
+	decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+	decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 2
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+
+layer {
+  name: "a0_ip0"
+  type: "InnerProduct"
+  bottom: "relu0"
+  top: "a0_ip0"
+  param {
+    lr_mult: 1
+	decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+	decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 64
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+layer {
+  name: "a0_relu0"
+  type: "ReLU"
+  bottom: "a0_ip0"
+  top: "a0_relu0"
+}
+
+layer {
+  name: "a0_ip1"
+  type: "InnerProduct"
+  bottom: "a0_relu0"
+  top: "a0_ip1"
+  param {
+    lr_mult: 1
+	decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+	decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+
+
+layer {
+  name: "a1_ip0"
+  type: "InnerProduct"
+  bottom: "relu0"
+  top: "a1_ip0"
+  param {
+    lr_mult: 1
+	decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+	decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 64
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+layer {
+  name: "a1_relu0"
+  type: "ReLU"
+  bottom: "a1_ip0"
+  top: "a1_relu0"
+}
+
+layer {
+  name: "a1_ip1"
+  type: "InnerProduct"
+  bottom: "a1_relu0"
+  top: "a1_ip1"
+  param {
+    lr_mult: 1
+	decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+	decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+
+layer {
+	name: "output"
+	type: "Concat"
+	bottom: "val_ip1"
+	bottom: "a0_ip1"
+	bottom: "a1_ip1"
+	top: "output"
+	concat_param {
+		axis: 1
+	}
+}
+
+layer {
+  name: "loss"
+  type: "EuclideanLoss"
+  bottom: "output"
+  bottom: "label"
+  top: "loss"
+}

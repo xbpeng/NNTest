@@ -32,7 +32,7 @@ void cScenarioBallRLDPG::InitTrainer()
 	mTrainerParams.mPlaybackMemSize = gTrainerPlaybackMemSize;
 	mTrainerParams.mPoolSize = 1;
 	mTrainerParams.mNumInitSamples = 10000;
-	mTrainerParams.mFreezeTargetIters = 200;
+	mTrainerParams.mFreezeTargetIters = 500;
 
 	trainer->SetPretrainIters(5000);
 	trainer->SetDPGReg(0.1);
@@ -71,9 +71,12 @@ void cScenarioBallRLDPG::InitTrainer()
 	/*
 	// hack hack hack
 	auto test_net = std::unique_ptr<cNeuralNet>(new cNeuralNet());
+	auto test_net1 = std::unique_ptr<cNeuralNet>(new cNeuralNet());
 	test_net->LoadNet("data/ball_rl/nets/linear_test_deploy.prototxt");
 	test_net->LoadSolver("data/ball_rl/nets/linear_test_solver.prototxt");
-
+	test_net1->LoadNet("data/ball_rl/nets/linear_test_deploy.prototxt");
+	test_net1->LoadSolver("data/ball_rl/nets/linear_test_solver.prototxt");
+	
 	const auto& params = test_net->GetParams();
 	cNeuralNet::tNNData blob0_data[] = { 1 };
 	cNeuralNet::tNNData blob1_data[] = { 0 };
@@ -83,6 +86,18 @@ void cScenarioBallRLDPG::InitTrainer()
 	params[1]->set_cpu_data(blob1_data);
 	params[2]->set_cpu_data(blob2_data);
 	params[3]->set_cpu_data(blob3_data);
+	test_net->SyncSolverParams();
+
+	const auto& params1 = test_net1->GetParams();
+	cNeuralNet::tNNData blob0_data1[] = { 2 };
+	cNeuralNet::tNNData blob1_data1[] = { 3 };
+	cNeuralNet::tNNData blob2_data1[] = { 2 };
+	cNeuralNet::tNNData blob3_data1[] = { 4 };
+	params1[0]->set_cpu_data(blob0_data1);
+	params1[1]->set_cpu_data(blob1_data1);
+	params1[2]->set_cpu_data(blob2_data1);
+	params1[3]->set_cpu_data(blob3_data1);
+	test_net1->SyncSolverParams();
 
 	test_net->PrintParams();
 	Eigen::VectorXd test_x = 0.1 * Eigen::VectorXd::Ones(1);
@@ -92,6 +107,13 @@ void cScenarioBallRLDPG::InitTrainer()
 	test_net->Eval(test_x, out_y);
 	test_net->Backward(test_y, out_x);
 
+	test_net1->LerpModel(*test_net, 0.1);
+	printf("Nets 0:\n");
+	test_net->PrintParams();
+	printf("\n");
+	printf("Net 1:\n");
+	test_net1->PrintParams();
+	printf("\n");
 	int xx = 0;
 	++xx;
 	*/

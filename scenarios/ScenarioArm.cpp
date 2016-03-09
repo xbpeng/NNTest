@@ -3,6 +3,7 @@
 #include "stuff/ArmQPController.h"
 #include "stuff/ArmPDQPController.h"
 #include "stuff/ArmVelQPController.h"
+#include "stuff/ArmControllerMACE.h"
 #include "render/DrawUtil.h"
 #include "render/DrawSimCharacter.h"
 #include "util/FileUtil.h"
@@ -199,7 +200,7 @@ bool cScenarioArm::BuildController(const std::shared_ptr<cSimCharacter>& charact
 	}
 	else if (ctrl_type == eCtrlNN || ctrl_type == eCtrlPDNN || ctrl_type == eCtrlVelNN 
 		|| ctrl_type == eCtrlNNPixel || ctrl_type == eCtrlPDNNPixel || ctrl_type == eCtrlVelNNPixel
-		|| ctrl_type == eCtrlNNPixelNoPose)
+		|| ctrl_type == eCtrlNNPixelNoPose || ctrl_type == eCtrlMACE)
 	{
 		succ = BuildNNController(ctrl_type, ctrl);
 	}
@@ -285,6 +286,12 @@ bool cScenarioArm::BuildNNController(eCtrlType ctrl_type, std::shared_ptr<cArmCo
 	else if (ctrl_type == eCtrlNNPixelNoPose)
 	{
 		std::shared_ptr<cArmNNPixelNoPoseController> curr_ctrl = std::shared_ptr<cArmNNPixelNoPoseController>(new cArmNNPixelNoPoseController());
+		curr_ctrl->Init(mChar.get());
+		ctrl = curr_ctrl;
+	}
+	else if (ctrl_type == eCtrlMACE)
+	{
+		std::shared_ptr<cArmControllerMACE> curr_ctrl = std::shared_ptr<cArmControllerMACE>(new cArmControllerMACE());
 		curr_ctrl->Init(mChar.get());
 		ctrl = curr_ctrl;
 	}
@@ -619,6 +626,10 @@ void cScenarioArm::ParseCtrlType(const cArgParser& parser, const std::string& ke
 	else if (str == "nn")
 	{
 		out_ctrl = eCtrlNN;
+	}
+	else if (str == "mace")
+	{
+		out_ctrl = eCtrlMACE;
 	}
 	else if (str == "pd_nn")
 	{

@@ -63,6 +63,7 @@ protected:
 		eCtrlPDNNPixel,
 		eCtrlVelNNPixel,
 		eCtrlNNPixelNoPose,
+		eCtrlMACE,
 		eCtrlMax
 	};
 

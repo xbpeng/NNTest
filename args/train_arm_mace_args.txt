@@ -1,0 +1,20 @@
+-scenario= arm_train_mace
+-playback_speed= 60
+
+-character_file= data/arm_rl/arm_small.txt
+
+-solver_file= data/arm_rl/nets/arm_reduced_mace4_small_solver.prototxt
+-net_file= data/arm_rl/nets/arm_reduced_mace4_small_deploy.prototxt
+//-model_file= data/arm_rl/models/arm_reduced_mace4_small_model.h5
+
+-arm_ctrl_type= mace
+
+-exp_rate= 0.2
+-exp_temp= 0.025
+-init_exp_rate= 0.9
+-num_exp_anneal_iters= 30000
+
+//-trainer_int_iter= 500
+//-trainer_int_output= output/intermediate/trainer_int_model.h5
+
+-output_net_file= output/arm_reduced_mace4_small_model.h5

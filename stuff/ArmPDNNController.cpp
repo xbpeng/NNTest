@@ -55,17 +55,17 @@ void cArmPDNNController::UpdatePoliAction()
 	cArmNNController::UpdatePoliAction();
 }
 
-void cArmPDNNController::ApplyPoliAction(double time_step, const Eigen::VectorXd& action)
+void cArmPDNNController::ApplyPoliAction(double time_step, const tAction& action)
 {
 	int num_joints = mChar->GetNumJoints();
-	assert(static_cast<int>(action.size()) == GetPoliActionSize());
+	assert(static_cast<int>(action.mParams.size()) == GetPoliActionSize());
 
 	int idx = 0;
 	for (int j = 0; j < num_joints; ++j)
 	{
 		if (mImpPDCtrl.IsValidPDCtrl(j))
 		{
-			double theta = action[idx];
+			double theta = action.mParams[idx];
 			mImpPDCtrl.SetTargetTheta(j, theta);
 			++idx;
 		}

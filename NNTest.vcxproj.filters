@@ -659,6 +659,15 @@
     <ClCompile Include="scenarios\DrawScenarioArmTrainDPG.cpp">
       <Filter>Source Files\scenarios</Filter>
     </ClCompile>
+    <ClCompile Include="scenarios\ScenarioArmTrainMACE.cpp">
+      <Filter>Source Files\scenarios</Filter>
+    </ClCompile>
+    <ClCompile Include="scenarios\DrawScenarioArmTrainMACE.cpp">
+      <Filter>Source Files\scenarios</Filter>
+    </ClCompile>
+    <ClCompile Include="stuff\ArmControllerMACE.cpp">
+      <Filter>Source Files\stuff</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\TerrainRL\util\Rand.h">
@@ -1041,6 +1050,15 @@
     </ClInclude>
     <ClInclude Include="scenarios\DrawScenarioArmTrainDPG.h">
       <Filter>Source Files\scenarios</Filter>
+    </ClInclude>
+    <ClInclude Include="scenarios\ScenarioArmTrainMACE.h">
+      <Filter>Source Files\scenarios</Filter>
+    </ClInclude>
+    <ClInclude Include="scenarios\DrawScenarioArmTrainMACE.h">
+      <Filter>Source Files\scenarios</Filter>
+    </ClInclude>
+    <ClInclude Include="stuff\ArmControllerMACE.h">
+      <Filter>Source Files\stuff</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

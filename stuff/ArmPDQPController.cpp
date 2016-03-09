@@ -37,8 +37,8 @@ void cArmPDQPController::Clear()
 void cArmPDQPController::UpdatePoliAction()
 {
 	cArmQPController::UpdatePoliAction();
-	Eigen::VectorXd torques = mPoliAction;
-	TorquesToTheta(torques, mPoliAction);
+	Eigen::VectorXd torques = mPoliAction.mParams;
+	TorquesToTheta(torques, mPoliAction.mParams);
 }
 
 void cArmPDQPController::TorquesToTheta(const Eigen::VectorXd& torques, Eigen::VectorXd& out_theta) const
@@ -60,17 +60,17 @@ void cArmPDQPController::TorquesToTheta(const Eigen::VectorXd& torques, Eigen::V
 	}
 }
 
-void cArmPDQPController::ApplyPoliAction(double time_step, const Eigen::VectorXd& action)
+void cArmPDQPController::ApplyPoliAction(double time_step, const tAction& action)
 {
 	int num_joints = mChar->GetNumJoints();
-	assert(static_cast<int>(action.size()) == num_joints - 1);
+	assert(static_cast<int>(action.mParams.size()) == num_joints - 1);
 
 	int idx = 0;
 	for (int j = 0; j < num_joints; ++j)
 	{
 		if (mImpPDCtrl.IsValidPDCtrl(j))
 		{
-			double theta = action[idx];
+			double theta = action.mParams[idx];
 			mImpPDCtrl.SetTargetTheta(j, theta);
 			++idx;
 		}

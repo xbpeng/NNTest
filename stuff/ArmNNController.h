@@ -30,10 +30,15 @@ protected:
 	double mExpNoise;
 	bool mOffPolicy;
 
+	virtual void LoadNetIntern(const std::string& net_file);
+
 	virtual void UpdatePoliAction();
 	virtual void DecideAction();
-	virtual void ApplyExpNoise(Eigen::VectorXd& out_action) const;
+	virtual void ApplyExpNoise(tAction& out_action) const;
 	virtual void FetchExpNoiseScale(Eigen::VectorXd& out_noise) const;
 
-	virtual void ApplyPoliAction(double time_step, const Eigen::VectorXd& action);
+	virtual void ApplyPoliAction(double time_step, const tAction& action);
+
+	virtual int GetNetInputSize() const;
+	virtual int GetNetOutputSize() const;
 };

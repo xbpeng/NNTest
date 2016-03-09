@@ -32,23 +32,22 @@ void cArmNNController::Clear()
 bool cArmNNController::LoadNet(const std::string& net_file)
 {
 	bool succ = true;
-	mNet.Clear();
-	mNet.LoadNet(net_file);
+	LoadNetIntern(net_file);
 
 	int input_size = mNet.GetInputSize();
 	int output_size = mNet.GetOutputSize();
-	int state_size = GetPoliStateSize();
-	int action_size = GetPoliActionSize();
+	int nn_input_size = GetNetInputSize();
+	int nn_output_size = GetNetOutputSize();
 
-	if (output_size != action_size)
+	if (output_size != nn_output_size)
 	{
-		printf("Network output dimension does not match number of actions (%i vs %i).\n", output_size, state_size);
+		printf("Network output dimension does not match expected size (%i vs %i).\n", output_size, nn_output_size);
 		succ = false;
 	}
 
-	if (input_size != state_size)
+	if (input_size != nn_input_size)
 	{
-		printf("Network input dimension does not match state size (%i vs %i).\n", input_size, state_size);
+		printf("Network input dimension does not match expected size (%i vs %i).\n", input_size, nn_input_size);
 		succ = false;
 	}
 
@@ -59,6 +58,12 @@ bool cArmNNController::LoadNet(const std::string& net_file)
 	}
 
 	return succ;
+}
+
+void cArmNNController::LoadNetIntern(const std::string& net_file)
+{
+	mNet.Clear();
+	mNet.LoadNet(net_file);
 }
 
 void cArmNNController::LoadModel(const std::string& model_file)
@@ -95,7 +100,7 @@ void cArmNNController::UpdatePoliAction()
 {
 	if (HasNet())
 	{
-		mNet.Eval(mPoliState, mPoliAction);
+		mNet.Eval(mPoliState, mPoliAction.mParams);
 	}
 }
 
@@ -115,17 +120,17 @@ void cArmNNController::DecideAction()
 	}
 }
 
-void cArmNNController::ApplyExpNoise(Eigen::VectorXd& out_action) const
+void cArmNNController::ApplyExpNoise(tAction& out_action) const
 {
 	Eigen::VectorXd noise_scale;
 	FetchExpNoiseScale(noise_scale);
 
-	for (int i = 0; i < out_action.size(); ++i)
+	for (int i = 0; i < out_action.mParams.size(); ++i)
 	{
 		double noise = cMathUtil::RandDoubleNorm(0, mExpNoise);
 		double scale = noise_scale[i];
 		noise *= scale;
-		out_action[i] += noise;
+		out_action.mParams[i] += noise;
 	}
 }
 
@@ -135,7 +140,17 @@ void cArmNNController::FetchExpNoiseScale(Eigen::VectorXd& out_noise) const
 	out_noise = nn_output_scale.cwiseInverse();
 }
 
-void cArmNNController::ApplyPoliAction(double time_step, const Eigen::VectorXd& action)
+void cArmNNController::ApplyPoliAction(double time_step, const tAction& action)
 {
 	cArmController::ApplyPoliAction(time_step, action);
+}
+
+int cArmNNController::GetNetInputSize() const
+{
+	return GetPoliStateSize();
+}
+
+int cArmNNController::GetNetOutputSize() const
+{
+	return GetPoliActionSize();
 }

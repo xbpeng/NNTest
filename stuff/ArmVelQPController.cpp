@@ -46,8 +46,8 @@ void cArmVelQPController::Clear()
 void cArmVelQPController::UpdatePoliAction()
 {
 	cArmQPController::UpdatePoliAction();
-	Eigen::VectorXd torques = mPoliAction;
-	TorquesToVel(torques, mPoliAction);
+	Eigen::VectorXd torques = mPoliAction.mParams;
+	TorquesToVel(torques, mPoliAction.mParams);
 }
 
 void cArmVelQPController::TorquesToVel(const Eigen::VectorXd& torques, Eigen::VectorXd& out_vel) const
@@ -69,17 +69,17 @@ void cArmVelQPController::TorquesToVel(const Eigen::VectorXd& torques, Eigen::Ve
 	}
 }
 
-void cArmVelQPController::ApplyPoliAction(double time_step, const Eigen::VectorXd& action)
+void cArmVelQPController::ApplyPoliAction(double time_step, const tAction& action)
 {
 	int num_joints = mChar->GetNumJoints();
-	assert(static_cast<int>(action.size()) == num_joints - 1);
+	assert(static_cast<int>(action.mParams.size()) == num_joints - 1);
 
 	int idx = 0;
 	for (int j = 0; j < num_joints; ++j)
 	{
 		if (mImpPDCtrl.IsValidPDCtrl(j))
 		{
-			double vel = action[idx];
+			double vel = action.mParams[idx];
 			mImpPDCtrl.SetTargetVel(j, vel);
 			++idx;
 		}

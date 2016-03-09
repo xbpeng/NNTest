@@ -64,17 +64,17 @@ void cArmVelNNController::UpdatePoliAction()
 	cArmNNController::UpdatePoliAction();
 }
 
-void cArmVelNNController::ApplyPoliAction(double time_step, const Eigen::VectorXd& action)
+void cArmVelNNController::ApplyPoliAction(double time_step, const tAction& action)
 {
 	int num_joints = mChar->GetNumJoints();
-	assert(static_cast<int>(action.size()) == num_joints - 1);
+	assert(static_cast<int>(action.mParams.size()) == num_joints - 1);
 
 	int idx = 0;
 	for (int j = 0; j < num_joints; ++j)
 	{
 		if (mImpPDCtrl.IsValidPDCtrl(j))
 		{
-			double vel = action[idx];
+			double vel = action.mParams[idx];
 			mImpPDCtrl.SetTargetVel(j, vel);
 			++idx;
 		}

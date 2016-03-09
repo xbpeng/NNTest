@@ -7,6 +7,12 @@ class cArmController : public cCharController
 public:
 	EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
+	struct tAction
+	{
+		int mID;
+		Eigen::VectorXd mParams;
+	};
+
 	cArmController();
 	virtual ~cArmController();
 
@@ -38,7 +44,7 @@ protected:
 	double mUpdateCounter;
 
 	Eigen::VectorXd mPoliState;
-	Eigen::VectorXd mPoliAction;
+	tAction mPoliAction;
 	tVector mTargetPos;
 	
 	virtual void InitPoliState();
@@ -47,6 +53,6 @@ protected:
 	virtual void UpdatePoliAction();
 	virtual void DecideAction();
 
-	virtual void ApplyPoliAction(double time_step, const Eigen::VectorXd& action);
+	virtual void ApplyPoliAction(double time_step, const tAction& action);
 	virtual void ApplyTorqueLimit(double lim);
 };
