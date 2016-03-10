@@ -94,8 +94,16 @@ void cArmControllerMACE::BuildActorBias(int a_id, Eigen::VectorXd& out_bias) con
 
 	double torque_lim = mTorqueLim;
 	int num_actors = GetNumActionFrags();
-	double lerp = a_id / (GetNumActionFrags() - 1.0);
-	out_bias = bound_min + lerp * delta;
+
+	if (num_actors < 2)
+	{
+		out_bias = mean;
+	}
+	else
+	{
+		double lerp = a_id / (num_actors - 1.0);
+		out_bias = bound_min + lerp * delta;
+	}
 }
 
 void cArmControllerMACE::DecideAction()
