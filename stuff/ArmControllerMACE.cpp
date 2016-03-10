@@ -38,29 +38,13 @@ int cArmControllerMACE::GetNetOutputSize() const
 
 void cArmControllerMACE::RecordPoliAction(Eigen::VectorXd& out_action) const
 {
-	out_action = Eigen::VectorXd::Zero(GetNetOutputSize());
+	out_action = Eigen::VectorXd::Zero(GetPoliActionSize() + 1);
 
 	int a = mPoliAction.mID;
 	cMACETrainer::SetActionFragIdx(a, out_action);
 
 	Eigen::VectorXd frag = mPoliAction.mParams;
 	cMACETrainer::SetActionFrag(frag, out_action);
-}
-
-cArmControllerMACE::tAction cArmControllerMACE::BuildActionFromParams(const Eigen::VectorXd& action_params) const
-{
-	assert(action_params.size() == GetNetOutputSize());
-	int a = cMACETrainer::GetActionFragIdx(action_params);
-	Eigen::VectorXd action_frag;
-	cMACETrainer::GetActionFrag(action_params, action_frag);
-
-	assert(action_frag.size() == 1);
-
-	tAction action;
-	action.mID = a;
-	action.mParams = action_frag;
-
-	return action;
 }
 
 bool cArmControllerMACE::IsExpCritic() const
@@ -91,10 +75,27 @@ void cArmControllerMACE::BuildNNOutputOffsetScale(Eigen::VectorXd& out_offset, E
 
 	for (int a = 0; a < num_actions; ++a)
 	{
-		// TODO: add actor bias
-		out_offset.segment(num_actions + a * action_size, action_size) = action_offset;
+		Eigen::VectorXd curr_offset;
+		BuildActorBias(a, curr_offset);
+		out_offset.segment(num_actions + a * action_size, action_size) = curr_offset;
 		out_scale.segment(num_actions + a * action_size, action_size) = action_scale;
 	}
+}
+
+void cArmControllerMACE::BuildActorBias(int a_id, Eigen::VectorXd& out_bias) const
+{
+	Eigen::VectorXd bound_max;
+	Eigen::VectorXd bound_min;
+	BuildActionBounds(bound_max, bound_min);
+	Eigen::VectorXd mean = 0.5 * (bound_max + bound_min);
+	Eigen::VectorXd delta = bound_max - bound_min;
+	delta *= 0.25;
+	bound_min = mean - 0.5 * delta;
+
+	double torque_lim = mTorqueLim;
+	int num_actors = GetNumActionFrags();
+	double lerp = a_id / (GetNumActionFrags() - 1.0);
+	out_bias = bound_min + lerp * delta;
 }
 
 void cArmControllerMACE::DecideAction()
@@ -156,6 +157,11 @@ void cArmControllerMACE::DecideAction()
 	if (mExpCritic || mExpActor)
 	{
 		mOffPolicy = true;
+	}
+
+#if defined (ENABLE_DEBUG_PRINT)
+	if (mExpCritic || mExpActor)
+	{
 		if (mExpActor)
 		{
 			printf("Actor ");
@@ -166,6 +172,14 @@ void cArmControllerMACE::DecideAction()
 		}
 		printf("Exploration\n");
 	}
+	printf("Actor: (%i)\t", a);
+	for (int i = 0; i < y.size(); ++i)
+	{
+		double val = GetVal(y, i);
+		printf("%.3f\t", val);
+	}
+	printf("\n");
+#endif
 }
 
 void cArmControllerMACE::UpdateFragParams()

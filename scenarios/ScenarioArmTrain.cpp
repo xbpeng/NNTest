@@ -16,6 +16,9 @@ cScenarioArmTrain::cScenarioArmTrain()
 
 	mExpRate = 0.2;
 	mInitExpRate = 1;
+	mExpTemp = 0.025;
+	mInitExpTemp = 20;
+
 	mNumAnnealIters = 1000;
 	//mEnableRandPose = false;
 
@@ -48,6 +51,8 @@ void cScenarioArmTrain::ParseArgs(const cArgParser& parser)
 	parser.ParseString("trainer_int_output", mTrainerParams.mIntOutputFile);
 	parser.ParseDouble("exp_rate", mExpRate);
 	parser.ParseDouble("init_exp_rate", mInitExpRate);
+	parser.ParseDouble("exp_temp", mExpTemp);
+	parser.ParseDouble("init_exp_temp", mInitExpTemp);
 	parser.ParseInt("num_exp_anneal_iters", mNumAnnealIters);
 
 	parser.ParseString("critic_solver_file", mCriticSolverFile);
@@ -302,7 +307,8 @@ void cScenarioArmTrain::InitTrainer()
 	mTrainerParams.mPoolSize = 1;
 	mTrainerParams.mNumInitSamples = 20000;
 	mTrainerParams.mInitInputOffsetScale = false;
-	
+	mTrainerParams.mFreezeTargetIters = 500;
+
 	mTrainer->Init(mTrainerParams);
 	SetupScale();
 
@@ -373,7 +379,9 @@ void cScenarioArmTrain::UpdatePolicy()
 	}
 
 	double exp_rate = CalcExpRate();
+	double exp_temp = CalcExpTemp();
 	ctrl->SetExpRate(exp_rate);
+	ctrl->SetExpTemp(exp_temp);
 }
 
 void cScenarioArmTrain::Train()
@@ -383,6 +391,7 @@ void cScenarioArmTrain::Train()
 	printf("\nTraining Iter: %i\n", iter);
 	printf("Num Tuples: %i\n", num_tuples);
 	printf("Exp Rate: %.3f\n", CalcExpRate());
+	printf("Exp Temp: %.3f\n", CalcExpTemp());
 
 	mTrainer->AddTuples(mTupleBuffer);
 
@@ -402,6 +411,15 @@ double cScenarioArmTrain::CalcExpRate() const
 	double lerp = static_cast<double>(iters) / mNumAnnealIters;
 	lerp = cMathUtil::Clamp(lerp, 0.0, 1.0);
 	double exp_rate = (1 - lerp) * mInitExpRate + lerp * mExpRate;
+	return exp_rate;
+}
+
+double cScenarioArmTrain::CalcExpTemp() const
+{
+	int iters = GetIter();
+	double lerp = static_cast<double>(iters) / mNumAnnealIters;
+	lerp = cMathUtil::Clamp(lerp, 0.0, 1.0);
+	double exp_rate = (1 - lerp) * mInitExpTemp + lerp * mExpTemp;
 	return exp_rate;
 }
 

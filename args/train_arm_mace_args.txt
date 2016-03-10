@@ -12,6 +12,7 @@
 -exp_rate= 0.2
 -exp_temp= 0.025
 -init_exp_rate= 0.9
+-init_exp_temp= 20
 -num_exp_anneal_iters= 30000
 
 //-trainer_int_iter= 500

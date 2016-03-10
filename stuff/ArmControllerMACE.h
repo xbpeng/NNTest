@@ -18,8 +18,7 @@ public:
 	virtual int GetNetOutputSize() const;
 
 	virtual void RecordPoliAction(Eigen::VectorXd& out_action) const;
-	virtual tAction BuildActionFromParams(const Eigen::VectorXd& action_params) const;
-
+	
 	virtual bool IsExpCritic() const;
 	virtual bool IsExpActor() const;
 
@@ -38,6 +37,7 @@ protected:
 	virtual void BuildActorAction(const Eigen::VectorXd& params, int a_id, tAction& out_action) const;
 
 	virtual void FetchExpNoiseScale(Eigen::VectorXd& out_noise) const;
+	virtual void BuildActorBias(int a_id, Eigen::VectorXd& out_bias) const;
 
 	virtual int GetMaxFragIdx(const Eigen::VectorXd& params) const;
 	virtual double GetMaxFragVal(const Eigen::VectorXd& params) const;

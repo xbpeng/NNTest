@@ -167,6 +167,11 @@ int cArmController::GetEndEffectorID() const
 	return static_cast<int>(mChar->GetNumJoints() - 1);
 }
 
+int cArmController::GetCurrActionID() const
+{
+	return mPoliAction.mID;
+}
+
 void cArmController::InitPoliState()
 {
 	mPoliState = Eigen::VectorXd::Zero(GetPoliStateSize());

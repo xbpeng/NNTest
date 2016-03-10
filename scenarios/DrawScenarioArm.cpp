@@ -1,4 +1,5 @@
 #include "DrawScenarioArm.h"
+#include "stuff/ArmControllerMACE.h"
 #include "render/DrawUtil.h"
 #include "render/DrawSimCharacter.h"
 #include "render/DrawWorld.h"
@@ -59,7 +60,7 @@ void cDrawScenarioArm::Update(double time_elapsed)
 
 	if (mEnableTrace)
 	{
-		mTracer.Update(time_elapsed);
+		UpdateTrace(time_elapsed);
 	}
 }
 
@@ -173,19 +174,37 @@ void cDrawScenarioArm::BuildScene()
 
 void cDrawScenarioArm::InitTracer()
 {
-	mTracer.Init(gTracerBufferSize, gTracerSamplePeriod);
-	AddCharTrace(mScene->GetCharacter(), tVector(0, 0, 1, 0.5));
+	mTraceHandles.clear();
+
+	tVectorArr tracer_cols;
+	tracer_cols.push_back(tVector(0, 0, 1, 0.5));
+	tracer_cols.push_back(tVector(1, 0, 0, 0.5));
+	tracer_cols.push_back(tVector(0, 0.5, 0, 0.5));
+	tracer_cols.push_back(tVector(0.75, 0, 0.75, 0.5));
+	tracer_cols.push_back(tVector(0, 0.5, 0.5, 0.5));
+	tracer_cols.push_back(tVector(0, 0, 0, 0.5));
+	int handle = AddCharTrace(mScene->GetCharacter(), tracer_cols);
+	mTraceHandles.push_back(handle);
 }
 
-void cDrawScenarioArm::AddCharTrace(const std::shared_ptr<cSimCharacter>& character,
+int cDrawScenarioArm::AddCharTrace(const std::shared_ptr<cSimCharacter>& character,
 									const tVector& col)
+{
+	tVectorArr cols;
+	cols.push_back(col);
+	return AddCharTrace(character, cols);
+}
+
+int cDrawScenarioArm::AddCharTrace(const std::shared_ptr<cSimCharacter>& character,
+										const tVectorArr& cols)
 {
 	cCharTracer::tParams params;
 	params.mChar = character;
-	params.mColors.push_back(col);
+	params.mColors = cols;
 	params.mType = cCharTracer::eTraceJoint;
 	params.mTraceID = GetEndEffectorID();
-	mTracer.AddTrace(params);
+	int handle = mTracer.AddTrace(params);
+	return handle;
 }
 
 void cDrawScenarioArm::ToggleTrace()
@@ -201,6 +220,22 @@ void cDrawScenarioArm::ToggleTrace()
 	{
 		printf("Trace Disabled\n");
 	}
+}
+
+void cDrawScenarioArm::UpdateTrace(double time_elapsed)
+{
+	auto ctrl = mScene->GetCharacter()->GetController();
+	const std::shared_ptr<cArmControllerMACE> mace_ctrl = std::dynamic_pointer_cast<cArmControllerMACE>(ctrl);
+	
+	bool is_mace_ctrl = (mace_ctrl != nullptr);
+	if (is_mace_ctrl)
+	{
+		int action_id = ctrl->GetCurrActionID();
+		int trace_handle = mTraceHandles[0];
+		mTracer.SetTraceColIdx(trace_handle, action_id);
+	}
+
+	mTracer.Update(time_elapsed);
 }
 
 void cDrawScenarioArm::SetTarget(const tVector& target)

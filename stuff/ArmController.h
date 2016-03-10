@@ -37,6 +37,7 @@ public:
 	virtual void SetTargetPos(const tVector& target);
 
 	virtual int GetEndEffectorID() const;
+	virtual int GetCurrActionID() const;
 
 protected:
 	double mTorqueLim;

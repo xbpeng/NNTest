@@ -17,6 +17,7 @@ cScenarioArmTrainMACE::~cScenarioArmTrainMACE()
 
 void cScenarioArmTrainMACE::Init()
 {
+	assert(mCtrlType == eCtrlMACE);
 	cScenarioArmTrain::Init();
 }
 

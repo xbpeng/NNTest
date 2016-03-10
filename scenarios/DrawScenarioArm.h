@@ -35,6 +35,7 @@ protected:
 
 	bool mEnableTrace;
 	cCharTracer mTracer;
+	std::vector<int> mTraceHandles;
 
 	virtual void ToggleAutoTarget();
 	virtual void ToggleRandPose();
@@ -42,8 +43,11 @@ protected:
 	virtual void BuildScene();
 
 	virtual void InitTracer();
-	virtual void AddCharTrace(const std::shared_ptr<cSimCharacter>& character,
-							const tVector& col);
+	virtual int AddCharTrace(const std::shared_ptr<cSimCharacter>& character,
+								const tVector& col);
+	virtual int AddCharTrace(const std::shared_ptr<cSimCharacter>& character,
+								const tVectorArr& cols);
+	virtual void UpdateTrace(double time_elapsed);
 	virtual void ToggleTrace();
 
 	virtual void SetTarget(const tVector& target);

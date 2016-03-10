@@ -49,7 +49,6 @@ void cDrawScenarioBallRLMACE::DrawTrace() const
 		cDrawUtil::SetColor(col);
 		cDrawUtil::DrawLine(a, b);
 	}
-
 }
 
 const tVector& cDrawScenarioBallRLMACE::GetActionCol(int a_id) const

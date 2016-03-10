@@ -39,6 +39,8 @@ protected:
 
 	double mExpRate;
 	double mInitExpRate;
+	double mExpTemp;
+	double mInitExpTemp;
 	int mNumAnnealIters;
 
 	std::string mActorSolverFile;
@@ -89,6 +91,7 @@ protected:
 	virtual void Train();
 	virtual int GetIter() const;
 	virtual double CalcExpRate() const;
+	virtual double CalcExpTemp() const;
 	virtual bool CheckOffPolicy() const;
 
 	virtual std::shared_ptr<cArmNNController> GetController() const;

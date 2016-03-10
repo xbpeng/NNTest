@@ -11,7 +11,7 @@ layer {
 	channels: 1
 	height: 1
 	width: 10
-	label_size: 4
+	label_size: 6
   }
 }
 
@@ -29,7 +29,7 @@ layer {
 	decay_mult: 0
   }
   inner_product_param {
-    num_output: 128
+    num_output: 256
     weight_filler {
       type: "xavier"
     }
@@ -62,7 +62,7 @@ layer {
 	decay_mult: 0
   }
   inner_product_param {
-    num_output: 64
+    num_output: 128
     weight_filler {
       type: "xavier"
     }
@@ -93,7 +93,7 @@ layer {
 	decay_mult: 0
   }
   inner_product_param {
-    num_output: 2
+    num_output: 3
     weight_filler {
       type: "xavier"
     }
@@ -216,6 +216,61 @@ layer {
   }
 }
 
+layer {
+  name: "a2_ip0"
+  type: "InnerProduct"
+  bottom: "relu0"
+  top: "a2_ip0"
+  param {
+    lr_mult: 1
+	decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+	decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 64
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+layer {
+  name: "a2_relu0"
+  type: "ReLU"
+  bottom: "a2_ip0"
+  top: "a2_relu0"
+}
+
+layer {
+  name: "a2_ip1"
+  type: "InnerProduct"
+  bottom: "a2_relu0"
+  top: "a2_ip1"
+  param {
+    lr_mult: 1
+	decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+	decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
 
 layer {
 	name: "output"
@@ -223,6 +278,7 @@ layer {
 	bottom: "val_ip1"
 	bottom: "a0_ip1"
 	bottom: "a1_ip1"
+	bottom: "a2_ip1"
 	top: "output"
 	concat_param {
 		axis: 1
