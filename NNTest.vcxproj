@@ -245,6 +245,7 @@
     <ClCompile Include="..\TerrainRL\anim\Character.cpp" />
     <ClCompile Include="..\TerrainRL\anim\KinTree.cpp" />
     <ClCompile Include="..\TerrainRL\learning\CaclaTrainer.cpp" />
+    <ClCompile Include="..\TerrainRL\learning\DMACETrainer.cpp" />
     <ClCompile Include="..\TerrainRL\learning\DPGTrainer.cpp" />
     <ClCompile Include="..\TerrainRL\learning\MACEDPGTrainer.cpp" />
     <ClCompile Include="..\TerrainRL\learning\MACETrainer.cpp" />
@@ -326,6 +327,7 @@
     <ClCompile Include="scenarios\DrawScenarioArmRL.cpp" />
     <ClCompile Include="scenarios\DrawScenarioArmRLPretrain.cpp" />
     <ClCompile Include="scenarios\DrawScenarioArmTrain.cpp" />
+    <ClCompile Include="scenarios\DrawScenarioArmTrainDMACE.cpp" />
     <ClCompile Include="scenarios\DrawScenarioArmTrainDPG.cpp" />
     <ClCompile Include="scenarios\DrawScenarioArmTrainMACE.cpp" />
     <ClCompile Include="scenarios\DrawScenarioBallEval.cpp" />
@@ -341,6 +343,7 @@
     <ClCompile Include="scenarios\ScenarioArmRL.cpp" />
     <ClCompile Include="scenarios\ScenarioArmRLPretrain.cpp" />
     <ClCompile Include="scenarios\ScenarioArmTrain.cpp" />
+    <ClCompile Include="scenarios\ScenarioArmTrainDMACE.cpp" />
     <ClCompile Include="scenarios\ScenarioArmTrainDPG.cpp" />
     <ClCompile Include="scenarios\ScenarioArmTrainMACE.cpp" />
     <ClCompile Include="scenarios\ScenarioBallEval.cpp" />
@@ -377,6 +380,7 @@
   <ItemGroup>
     <ClInclude Include="..\TerrainRL\anim\Character.h" />
     <ClInclude Include="..\TerrainRL\anim\KinTree.h" />
+    <ClInclude Include="..\TerrainRL\learning\DMACETrainer.h" />
     <ClInclude Include="..\TerrainRL\learning\DPGTrainer.h" />
     <ClInclude Include="..\TerrainRL\learning\MACEDPGTrainer.h" />
     <ClInclude Include="..\TerrainRL\learning\MACETrainer.h" />
@@ -458,6 +462,7 @@
     <ClInclude Include="scenarios\DrawScenarioArmRL.h" />
     <ClInclude Include="scenarios\DrawScenarioArmRLPretrain.h" />
     <ClInclude Include="scenarios\DrawScenarioArmTrain.h" />
+    <ClInclude Include="scenarios\DrawScenarioArmTrainDMACE.h" />
     <ClInclude Include="scenarios\DrawScenarioArmTrainDPG.h" />
     <ClInclude Include="scenarios\DrawScenarioArmTrainMACE.h" />
     <ClInclude Include="scenarios\DrawScenarioBallEval.h" />
@@ -473,6 +478,7 @@
     <ClInclude Include="scenarios\ScenarioArmRL.h" />
     <ClInclude Include="scenarios\ScenarioArmRLPretrain.h" />
     <ClInclude Include="scenarios\ScenarioArmTrain.h" />
+    <ClInclude Include="scenarios\ScenarioArmTrainDMACE.h" />
     <ClInclude Include="scenarios\ScenarioArmTrainDPG.h" />
     <ClInclude Include="scenarios\ScenarioArmTrainMACE.h" />
     <ClInclude Include="scenarios\ScenarioBallEval.h" />

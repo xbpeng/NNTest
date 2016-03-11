@@ -64,4 +64,5 @@ protected:
 	virtual void DrawViewRT() const;
 
 	virtual void ResetCallback();
+	virtual void PostSubstepCallback(double time_elapsed);
 };

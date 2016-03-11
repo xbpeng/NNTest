@@ -57,11 +57,6 @@ void cDrawScenarioArm::Update(double time_elapsed)
 {
 	cDrawScenario::Update(time_elapsed);
 	mScene->Update(time_elapsed);
-
-	if (mEnableTrace)
-	{
-		UpdateTrace(time_elapsed);
-	}
 }
 
 void cDrawScenarioArm::Init()
@@ -69,8 +64,11 @@ void cDrawScenarioArm::Init()
 	cDrawScenario::Init();
 	BuildScene();
 
-	tCallbackFunc func = std::bind(&cDrawScenarioArm::ResetCallback, this);
-	mScene->SetResetCallback(func);
+	tCallbackFunc reset_func = std::bind(&cDrawScenarioArm::ResetCallback, this);
+	mScene->SetResetCallback(reset_func);
+
+	tTimeCallbackFunc substep_func = std::bind(&cDrawScenarioArm::PostSubstepCallback, this, std::placeholders::_1);
+	mScene->SetPostSubstepCallback(substep_func);
 
 	mScene->ParseArgs(mArgParser);
 	mScene->Init();
@@ -174,6 +172,9 @@ void cDrawScenarioArm::BuildScene()
 
 void cDrawScenarioArm::InitTracer()
 {
+	int buffer_size = 500;
+	double sample_period = 1 / 120.0;
+	mTracer.Init(buffer_size, sample_period);
 	mTraceHandles.clear();
 
 	tVectorArr tracer_cols;
@@ -347,4 +348,12 @@ void cDrawScenarioArm::MouseMove(double x, double y)
 void cDrawScenarioArm::ResetCallback()
 {
 	mTracer.Reset();
+}
+
+void cDrawScenarioArm::PostSubstepCallback(double time_elapsed)
+{
+	if (mEnableTrace)
+	{
+		UpdateTrace(time_elapsed);
+	}
 }

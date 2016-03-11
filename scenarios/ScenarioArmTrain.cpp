@@ -169,8 +169,8 @@ void cScenarioArmTrain::RecordAction(Eigen::VectorXd& out_action) const
 
 double cScenarioArmTrain::CalcReward() const
 {
-	double tar_w = 0.9;
-	double pose_w = 0.0;
+	double tar_w = 0.8;
+	double pose_w = 0.1;
 	double vel_w = 0.1;
 
 	int end_id = GetEndEffectorID();

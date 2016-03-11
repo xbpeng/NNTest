@@ -84,25 +84,19 @@ void cArmControllerMACE::BuildNNOutputOffsetScale(Eigen::VectorXd& out_offset, E
 
 void cArmControllerMACE::BuildActorBias(int a_id, Eigen::VectorXd& out_bias) const
 {
-	Eigen::VectorXd bound_max;
-	Eigen::VectorXd bound_min;
-	BuildActionBounds(bound_max, bound_min);
-	Eigen::VectorXd mean = 0.5 * (bound_max + bound_min);
-	Eigen::VectorXd delta = bound_max - bound_min;
-	delta *= 0.25;
-	bound_min = mean - 0.5 * delta;
-
-	double torque_lim = mTorqueLim;
+	double min = -20;
+	double max = 20;
+	
+	out_bias = Eigen::VectorXd::Ones(GetActionFragSize());
 	int num_actors = GetNumActionFrags();
-
 	if (num_actors < 2)
 	{
-		out_bias = mean;
+		out_bias *= 0;
 	}
 	else
 	{
-		double lerp = a_id / (num_actors - 1.0);
-		out_bias = bound_min + lerp * delta;
+		double lerp = 1 - a_id / (num_actors - 1.0);
+		out_bias *= lerp * (max - min) + min;
 	}
 }
 

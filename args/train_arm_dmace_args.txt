@@ -1,0 +1,33 @@
+-scenario= arm_train_dmace
+-playback_speed= 60
+
+-character_file= data/arm_rl/arm.txt
+
+//-solver_file= data/arm_rl/nets/arm_reduced_mace3_small_solver.prototxt
+//-net_file= data/arm_rl/nets/arm_reduced_mace3_small_deploy.prototxt
+//-model_file= data/arm_rl/models/arm_reduced_dmace3_actor_small_init_model.h5
+
+//-critic_solver_file= data/arm_rl/nets/arm_reduced_mace3_critic_small_solver.prototxt
+//-critic_net_file= data/arm_rl/nets/arm_reduced_mace3_critic_small_deploy.prototxt
+//-critic_model_file= data/arm_rl/models/arm_reduced_dmace3_critic_small_init_model.h5
+
+-solver_file= data/arm_rl/nets/arm_reduced_mace3_solver.prototxt
+-net_file= data/arm_rl/nets/arm_reduced_mace3_deploy.prototxt
+-model_file= data/arm_rl/models/arm_reduced_dmace3_actor_init_model.h5
+
+-critic_solver_file= data/arm_rl/nets/arm_reduced_mace3_critic_solver.prototxt
+-critic_net_file= data/arm_rl/nets/arm_reduced_mace3_critic_deploy.prototxt
+-critic_model_file= data/arm_rl/models/arm_reduced_dmace3_critic_init_model.h5
+
+-arm_ctrl_type= mace
+
+-exp_rate= 0.2
+-exp_temp= 0.0025
+-init_exp_rate= 0.9
+-init_exp_temp= 2
+-num_exp_anneal_iters= 30000
+
+//-trainer_int_iter= 500
+//-trainer_int_output= output/intermediate/trainer_int_model.h5
+
+-output_net_file= output/arm_reduced_dmace_model.h5

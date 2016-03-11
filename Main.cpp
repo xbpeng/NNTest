@@ -24,6 +24,7 @@
 #include "scenarios/DrawScenarioArmTrain.h"
 #include "scenarios/DrawScenarioArmTrainDPG.h"
 #include "scenarios/DrawScenarioArmTrainMACE.h"
+#include "scenarios/DrawScenarioArmTrainDMACE.h"
 
 // Dimensions of the window we are drawing into.
 int winWidth = 800;
@@ -151,6 +152,10 @@ void SetupScenario()
 	else if (scenario_name == "arm_train_mace")
 	{
 		gScenario = std::shared_ptr<cDrawScenarioArmTrainMACE>(new cDrawScenarioArmTrainMACE(gCamera));
+	}
+	else if (scenario_name == "arm_train_dmace")
+	{
+		gScenario = std::shared_ptr<cDrawScenarioArmTrainDMACE>(new cDrawScenarioArmTrainDMACE(gCamera));
 	}
 
 	if (gScenario != NULL)

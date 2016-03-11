@@ -1,30 +1,30 @@
 -scenario= arm_train
 -playback_speed= 60
 
--character_file= data/arm_rl/arm.txt
+-character_file= data/arm_rl/arm_small.txt
 
-//-solver_file= data/arm_rl/nets/arm_reduced_actor_small_solver_adam.prototxt
-//-net_file= data/arm_rl/nets/arm_reduced_actor_small_deploy.prototxt
+-solver_file= data/arm_rl/nets/arm_reduced_actor_small_solver_adam.prototxt
+-net_file= data/arm_rl/nets/arm_reduced_actor_small_deploy.prototxt
 //-model_file= data/arm_rl/models/arm_cacla_actor_small_model.h5
-//-model_file= data/arm_rl/models/arm_cacla_actor_small_init_model1.h5
+-model_file= data/arm_rl/models/arm_cacla_actor_small_init_model.h5
 
-//-critic_solver_file= data/arm_rl/nets/arm_reduced_cacla_critic_small_solver_adam.prototxt
-//-critic_net_file= data/arm_rl/nets/arm_reduced_cacla_critic_small_deploy.prototxt
+-critic_solver_file= data/arm_rl/nets/arm_reduced_cacla_critic_small_solver_adam.prototxt
+-critic_net_file= data/arm_rl/nets/arm_reduced_cacla_critic_small_deploy.prototxt
 //-critic_model_file= data/arm_rl/models/arm_cacla_actor_small_model_critic.h5
-//-critic_model_file= data/arm_rl/models/arm_cacla_critic_small_init_model1.h5
+-critic_model_file= data/arm_rl/models/arm_cacla_critic_small_init_model.h5
 
--solver_file= data/arm_rl/nets/arm_reduced_actor_solver_adam.prototxt
--net_file= data/arm_rl/nets/arm_reduced_actor_deploy.prototxt
+//-solver_file= data/arm_rl/nets/arm_reduced_actor_solver.prototxt
+//-net_file= data/arm_rl/nets/arm_reduced_actor_deploy.prototxt
 
--critic_solver_file= data/arm_rl/nets/arm_reduced_cacla_critic_solver_adam.prototxt
--critic_net_file= data/arm_rl/nets/arm_reduced_cacla_critic_deploy.prototxt
+//-critic_solver_file= data/arm_rl/nets/arm_reduced_cacla_critic_solver.prototxt
+//-critic_net_file= data/arm_rl/nets/arm_reduced_cacla_critic_deploy.prototxt
 
 -arm_ctrl_type= nn
 
 -exp_rate= 0.2
 -exp_temp= 0.025
 -init_exp_rate= 1
--num_exp_anneal_iters= 30000
+-num_exp_anneal_iters= 100000
 
 //-trainer_int_iter= 500
 //-trainer_int_output= output/intermediate/trainer_int_model.h5
