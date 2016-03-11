@@ -74,22 +74,19 @@ void cScenarioArmTrainMACE::BuildTrainer(std::shared_ptr<cNeuralNetTrainer>& out
 void cScenarioArmTrainMACE::SetupActorScale()
 {
 	auto trainer = std::static_pointer_cast<cMACETrainer>(mTrainer);
-	if (!trainer->HasInitModel())
-	{
-		auto ctrl = GetController();
-		int state_size = trainer->GetInputSize();
-		int action_size = trainer->GetOutputSize();
+	auto ctrl = GetController();
+	int state_size = trainer->GetInputSize();
+	int action_size = trainer->GetOutputSize();
 
-		Eigen::VectorXd input_offset = Eigen::VectorXd::Zero(state_size);
-		Eigen::VectorXd input_scale = Eigen::VectorXd::Ones(state_size);
-		ctrl->BuildNNInputOffsetScale(input_offset, input_scale);
-		trainer->SetInputOffsetScale(input_offset, input_scale);
+	Eigen::VectorXd input_offset = Eigen::VectorXd::Zero(state_size);
+	Eigen::VectorXd input_scale = Eigen::VectorXd::Ones(state_size);
+	ctrl->BuildNNInputOffsetScale(input_offset, input_scale);
+	trainer->SetInputOffsetScale(input_offset, input_scale);
 
-		Eigen::VectorXd output_offset = Eigen::VectorXd::Zero(action_size);
-		Eigen::VectorXd output_scale = Eigen::VectorXd::Ones(action_size);
-		ctrl->BuildNNOutputOffsetScale(output_offset, output_scale);
-		trainer->SetOutputOffsetScale(output_offset, output_scale);
-	}
+	Eigen::VectorXd output_offset = Eigen::VectorXd::Zero(action_size);
+	Eigen::VectorXd output_scale = Eigen::VectorXd::Ones(action_size);
+	ctrl->BuildNNOutputOffsetScale(output_offset, output_scale);
+	trainer->SetOutputOffsetScale(output_offset, output_scale);
 }
 
 void cScenarioArmTrainMACE::SetupCriticScale()

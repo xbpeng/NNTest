@@ -56,36 +56,46 @@ void cScenarioArmTrainDMACE::BuildTrainer(std::shared_ptr<cNeuralNetTrainer>& ou
 void cScenarioArmTrainDMACE::SetupActorScale()
 {
 	auto trainer = std::static_pointer_cast<cDMACETrainer>(mTrainer);
-	auto ctrl = GetController();
-	int input_size = trainer->GetActorInputSize();
-	int output_size = trainer->GetActorOutputSize();
+	if (!trainer->HasActorInitModel())
+	{
+		auto ctrl = GetController();
+		int input_size = trainer->GetActorInputSize();
+		int output_size = trainer->GetActorOutputSize();
+		int num_actors = trainer->GetNumActionFrags();
 
-	Eigen::VectorXd input_offset = Eigen::VectorXd::Zero(input_size);
-	Eigen::VectorXd input_scale = Eigen::VectorXd::Ones(input_size);
-	ctrl->BuildNNInputOffsetScale(input_offset, input_scale);
-	trainer->SetActorInputOffsetScale(input_offset, input_scale);
+		Eigen::VectorXd input_offset = Eigen::VectorXd::Zero(input_size);
+		Eigen::VectorXd input_scale = Eigen::VectorXd::Ones(input_size);
+		ctrl->BuildNNInputOffsetScale(input_offset, input_scale);
+		trainer->SetActorInputOffsetScale(input_offset, input_scale);
 
-	Eigen::VectorXd output_offset = Eigen::VectorXd::Zero(output_size);
-	Eigen::VectorXd output_scale = Eigen::VectorXd::Ones(output_size);
-	ctrl->BuildNNOutputOffsetScale(output_offset, output_scale);
-	trainer->SetActorOutputOffsetScale(output_offset, output_scale);
+		Eigen::VectorXd output_offset = Eigen::VectorXd::Zero(output_size);
+		Eigen::VectorXd output_scale = Eigen::VectorXd::Ones(output_size);
+		ctrl->BuildNNOutputOffsetScale(output_offset, output_scale);
+		output_offset.segment(0, num_actors) = Eigen::VectorXd::Zero(num_actors);
+		output_scale.segment(0, num_actors) = 0.1 * Eigen::VectorXd::Ones(num_actors);
+
+		trainer->SetActorOutputOffsetScale(output_offset, output_scale);
+	}
 }
 
 void cScenarioArmTrainDMACE::SetupCriticScale()
 {
 	auto trainer = std::static_pointer_cast<cDMACETrainer>(mTrainer);
-	auto ctrl = GetController();
-	int input_size = trainer->GetCriticInputSize();
-	int output_size = trainer->GetCriticOutputSize();
+	if (!trainer->HasCriticInitModel())
+	{
+		auto ctrl = GetController();
+		int input_size = trainer->GetCriticInputSize();
+		int output_size = trainer->GetCriticOutputSize();
 
-	Eigen::VectorXd input_offset = Eigen::VectorXd::Zero(input_size);
-	Eigen::VectorXd input_scale = Eigen::VectorXd::Ones(input_size);
-	ctrl->BuildNNInputOffsetScale(input_offset, input_scale);
-	trainer->SetCriticInputOffsetScale(input_offset, input_scale);
+		Eigen::VectorXd input_offset = Eigen::VectorXd::Zero(input_size);
+		Eigen::VectorXd input_scale = Eigen::VectorXd::Ones(input_size);
+		ctrl->BuildNNInputOffsetScale(input_offset, input_scale);
+		trainer->SetCriticInputOffsetScale(input_offset, input_scale);
 
-	Eigen::VectorXd output_offset = -0.5 * Eigen::VectorXd::Ones(output_size);
-	Eigen::VectorXd output_scale = 2 * Eigen::VectorXd::Ones(output_size);
-	trainer->SetCriticOutputOffsetScale(output_offset, output_scale);
+		Eigen::VectorXd output_offset = -0.5 * Eigen::VectorXd::Ones(output_size);
+		Eigen::VectorXd output_scale = 2 * Eigen::VectorXd::Ones(output_size);
+		trainer->SetCriticOutputOffsetScale(output_offset, output_scale);
+	}
 }
 
 double cScenarioArmTrainDMACE::CalcExpTemp() const
