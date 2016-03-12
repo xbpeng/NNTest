@@ -677,6 +677,9 @@
     <ClCompile Include="..\TerrainRL\learning\DMACETrainer.cpp">
       <Filter>Source Files\util</Filter>
     </ClCompile>
+    <ClCompile Include="stuff\ArmPDControllerMACE.cpp">
+      <Filter>Source Files\stuff</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\TerrainRL\util\Rand.h">
@@ -1077,6 +1080,9 @@
     </ClInclude>
     <ClInclude Include="..\TerrainRL\learning\DMACETrainer.h">
       <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="stuff\ArmPDControllerMACE.h">
+      <Filter>Source Files\stuff</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

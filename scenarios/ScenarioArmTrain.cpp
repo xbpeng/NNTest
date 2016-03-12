@@ -194,8 +194,10 @@ double cScenarioArmTrain::CalcReward() const
 		pose[3] = 0;
 	}
 
-	double pose_reward = 1 / (1 + pose.squaredNorm());
-	double vel_reward = 1 / (1 + 0.02 * vel.squaredNorm());
+	//double pose_reward = 1 / (1 + pose.squaredNorm());
+	//double vel_reward = 1 / (1 + 0.02 * vel.squaredNorm());
+	double pose_reward = exp(-2 * pose.squaredNorm() / pose.size());
+	double vel_reward = exp(-0.02 * vel.squaredNorm() / pose.size());
 
 	double reward = tar_w * tar_reward
 		+ pose_w * pose_reward

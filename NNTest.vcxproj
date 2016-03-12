@@ -359,6 +359,7 @@
     <ClCompile Include="stuff\ArmNNController.cpp" />
     <ClCompile Include="stuff\ArmNNPixelController.cpp" />
     <ClCompile Include="stuff\ArmNNPixelNoPoseController.cpp" />
+    <ClCompile Include="stuff\ArmPDControllerMACE.cpp" />
     <ClCompile Include="stuff\ArmPDNNController.cpp" />
     <ClCompile Include="stuff\ArmPDNNPixelController.cpp" />
     <ClCompile Include="stuff\ArmPDQPController.cpp" />
@@ -494,6 +495,7 @@
     <ClInclude Include="stuff\ArmNNController.h" />
     <ClInclude Include="stuff\ArmNNPixelController.h" />
     <ClInclude Include="stuff\ArmNNPixelNoPoseController.h" />
+    <ClInclude Include="stuff\ArmPDControllerMACE.h" />
     <ClInclude Include="stuff\ArmPDNNController.h" />
     <ClInclude Include="stuff\ArmPDNNPixelController.h" />
     <ClInclude Include="stuff\ArmPDQPController.h" />
