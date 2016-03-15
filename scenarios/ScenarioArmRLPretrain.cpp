@@ -97,7 +97,7 @@ void cScenarioArmRLPretrain::Train()
 
 void cScenarioArmRLPretrain::UpdatePredTarget()
 {
-	const auto& net = mTrainer.GetNet();
+	const auto& net = mLearner->GetNet();
 
 	Eigen::VectorXd state;
 	RecordState(state);
