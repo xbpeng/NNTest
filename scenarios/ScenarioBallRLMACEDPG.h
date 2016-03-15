@@ -21,6 +21,5 @@ protected:
 	virtual void BuildActorOutputOffsetScale(const std::shared_ptr<cNeuralNetTrainer>& trainer,
 											Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const;
 
-	virtual void CopyTrainerNets();
 	virtual void Train();
 };

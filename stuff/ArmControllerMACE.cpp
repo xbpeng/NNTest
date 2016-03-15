@@ -84,11 +84,9 @@ void cArmControllerMACE::BuildNNOutputOffsetScale(Eigen::VectorXd& out_offset, E
 
 void cArmControllerMACE::BuildActorBias(int a_id, Eigen::VectorXd& out_bias) const
 {
-	//double min = -20;
-	//double max = 20;
-	double min = -50;
-	double max = 50;
-
+	double min = -20;
+	double max = 20;
+	
 	out_bias = Eigen::VectorXd::Ones(GetActionFragSize());
 	int num_actors = GetNumActionFrags();
 	if (num_actors < 2)

@@ -34,14 +34,14 @@ void cScenarioBallRLCacla::ParseArgs(const cArgParser& parser)
 
 void cScenarioBallRLCacla::SaveCriticNet(const std::string& filename) const
 {
-	std::shared_ptr<cCaclaTrainer> trainer = std::static_pointer_cast<cCaclaTrainer>(mTrainer);
-	trainer->OutputCritic(filename);
+	std::shared_ptr<cACLearner> learner = std::static_pointer_cast<cACLearner>(mLearner);
+	learner->OutputCritic(filename);
 }
 
 void cScenarioBallRLCacla::SaveActorNet(const std::string& filename) const
 {
-	std::shared_ptr<cCaclaTrainer> trainer = std::static_pointer_cast<cCaclaTrainer>(mTrainer);
-	trainer->OutputActor(filename);
+	std::shared_ptr<cACLearner> learner = std::static_pointer_cast<cACLearner>(mLearner);
+	learner->OutputActor(filename);
 }
 
 std::string cScenarioBallRLCacla::GetName() const

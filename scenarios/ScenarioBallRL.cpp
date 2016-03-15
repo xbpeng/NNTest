@@ -28,7 +28,6 @@ void cScenarioBallRL::Init()
 	InitLearner();
 
 	InitGround();
-	CopyTrainerNets();
 	Reset();
 }
 
@@ -122,8 +121,7 @@ double cScenarioBallRL::GetSuccRate() const
 
 void cScenarioBallRL::SaveNet(const std::string& out_file) const
 {
-	const auto& ctrl = mBall.GetController();
-	ctrl->SaveNet(out_file);
+	mLearner->OutputModel(out_file);
 }
 
 const cBall& cScenarioBallRL::GetBall() const
@@ -368,17 +366,16 @@ void cScenarioBallRL::SetupTrainerOutputOffsetScale()
 
 int cScenarioBallRL::GetIter() const
 {
-	return mTrainer->GetIter();
+	return mLearner->GetIter();
 }
 
 void cScenarioBallRL::Train()
 {
 	printf("\nTraining iter: %i\n", GetIter());
-	printf("Num Tuples: %i\n", mTrainer->GetNumTuples());
+	printf("Num Tuples: %i\n", mLearner->GetNumTuples());
 
 	mNumTuples = 0;
 	mLearner->Train(mTupleBuffer);
-	CopyTrainerNets();
 }
 
 double cScenarioBallRL::GetExpRate() const
@@ -397,11 +394,4 @@ double cScenarioBallRL::GetExpTemp() const
 	temp = cMathUtil::Clamp(temp, 0.0, 1.0);
 	temp = temp * (mInitExpTemp - mExpTemp) + mExpTemp;
 	return temp;
-}
-
-void cScenarioBallRL::CopyTrainerNets()
-{
-	const auto& learner_net = mLearner->GetNet();
-	auto& ctrl = mBall.GetController();
-	ctrl->CopyNet(*learner_net);
 }

@@ -3,7 +3,6 @@
 #include "scenarios/ScenarioBallRL.h"
 #include "stuff/BallControllerCacla.h"
 #include "learning/CaclaTrainer.h"
-#include "learning/QCaclaTrainer.h"
 
 class cScenarioBallRLCacla : public cScenarioBallRL
 {

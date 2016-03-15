@@ -109,22 +109,10 @@ void cScenarioBallRLMACEDPG::BuildActorOutputOffsetScale(const std::shared_ptr<c
 	ctrl->BuildActorOutputOffsetScale(out_offset, out_scale);
 }
 
-void cScenarioBallRLMACEDPG::CopyTrainerNets()
-{
-	auto ctrl = std::static_pointer_cast<cBallControllerMACEDPG>(mBall.GetController());
-	auto trainer = std::static_pointer_cast<cMACEDPGTrainer>(mTrainer);
-	const auto& actor_net = trainer->GetActor();
-	const auto& critic_net = trainer->GetCritic();
-
-	ctrl->CopyActorNet(*actor_net.get());
-	ctrl->CopyCriticNet(*critic_net.get());
-}
-
 void cScenarioBallRLMACEDPG::Train()
 {
-	cScenarioBallRLDPG::Train();
-
 	double temp = GetExpTemp();
-	auto trainer = std::static_pointer_cast<cMACEDPGTrainer>(mTrainer);
-	trainer->SetBoltzTemp(gTrainerTempScale * temp);
+	auto learner = std::static_pointer_cast<cMACEDPGLearner>(mLearner);
+	learner->SetTemp(gTrainerTempScale * temp);
+	cScenarioBallRLDPG::Train();
 }
