@@ -15,71 +15,11 @@ layer {
   }
 }
 
-layer {
-	name: "slice0"
-	type: "Slice"
-	bottom: "data"
-	top: "data_state"
-	top: "data_action"
-	slice_param {
-		axis: 3
-		slice_point: 18
-	}
-}
-
-layer {
-  name: "state_ip0"
-  type: "InnerProduct"
-  bottom: "data_state"
-  top: "state_ip0"
-  param {
-    lr_mult: 1
-	decay_mult: 1
-  }
-  param {
-    lr_mult: 2
-	decay_mult: 0
-  }
-  inner_product_param {
-    num_output: 256
-    weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-    }
-  }
-}
-
-layer {
-  name: "state_relu0"
-  type: "ReLU"
-  bottom: "state_ip0"
-  top: "state_relu0"
-}
-
-layer {
-	name: "action_flatten0"
-	type: "Flatten"
-	bottom: "data_action"
-	top: "action_flatten0"
-}
-
-layer {
-	name: "concat0"
-	type: "Concat"
-	bottom: "state_relu0"
-	bottom: "action_flatten0"
-	top: "concat0"
-	concat_param {
-		axis: 1
-	}
-}
 
 layer {
   name: "ip0"
   type: "InnerProduct"
-  bottom: "concat0"
+  bottom: "data"
   top: "ip0"
   param {
     lr_mult: 1
@@ -90,7 +30,7 @@ layer {
 	decay_mult: 0
   }
   inner_product_param {
-    num_output: 256
+    num_output: 512
     weight_filler {
       type: "xavier"
     }
@@ -121,7 +61,7 @@ layer {
 	decay_mult: 0
   }
   inner_product_param {
-    num_output: 128
+    num_output: 256
     weight_filler {
       type: "xavier"
     }

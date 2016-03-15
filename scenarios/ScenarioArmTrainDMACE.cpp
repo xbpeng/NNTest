@@ -1,7 +1,7 @@
 #include "ScenarioArmTrainDMACE.h"
 #include "learning/DMACETrainer.h"
 
-const int gTrainerPlaybackMemSize = 500000; // 25000;
+const int gTrainerPlaybackMemSize = 25000;
 
 cScenarioArmTrainDMACE::cScenarioArmTrainDMACE()
 {
@@ -45,6 +45,7 @@ void cScenarioArmTrainDMACE::InitTrainer()
 	}
 
 	SetupScale();
+	trainer->SetTemp(CalcExpTemp());
 }
 
 void cScenarioArmTrainDMACE::BuildTrainer(std::shared_ptr<cNeuralNetTrainer>& out_trainer) const
@@ -72,8 +73,9 @@ void cScenarioArmTrainDMACE::SetupActorScale()
 		Eigen::VectorXd output_scale = Eigen::VectorXd::Ones(output_size);
 		ctrl->BuildNNOutputOffsetScale(output_offset, output_scale);
 		output_offset.segment(0, num_actors) = Eigen::VectorXd::Zero(num_actors);
-		output_scale.segment(0, num_actors) = 0.1 * Eigen::VectorXd::Ones(num_actors);
-
+		output_scale.segment(0, num_actors) = Eigen::VectorXd::Ones(num_actors);
+		//output_scale.segment(0, num_actors) = 0.1 * Eigen::VectorXd::Ones(num_actors);
+		
 		trainer->SetActorOutputOffsetScale(output_offset, output_scale);
 	}
 }
@@ -101,4 +103,11 @@ void cScenarioArmTrainDMACE::SetupCriticScale()
 double cScenarioArmTrainDMACE::CalcExpTemp() const
 {
 	return cScenarioArmTrainMACE::CalcExpTemp();
+}
+
+void cScenarioArmTrainDMACE::Train()
+{
+	cScenarioArmTrainMACE::Train();
+	auto trainer = std::static_pointer_cast<cDMACETrainer>(mTrainer);
+	trainer->SetTemp(CalcExpTemp());
 }

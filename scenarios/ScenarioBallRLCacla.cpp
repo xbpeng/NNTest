@@ -1,4 +1,5 @@
 #include "ScenarioBallRLCacla.h"
+#include "learning/ACLearner.h"
 
 const int gTrainerPlaybackMemSize = 20000;
 
@@ -8,6 +9,19 @@ cScenarioBallRLCacla::cScenarioBallRLCacla()
 
 cScenarioBallRLCacla::~cScenarioBallRLCacla()
 {
+}
+
+void cScenarioBallRLCacla::InitLearner()
+{
+	mTrainer->RequestLearner(mLearner);
+	std::shared_ptr<cACLearner> learner = std::static_pointer_cast<cACLearner>(mLearner);
+
+	auto ctrl = std::static_pointer_cast<cBallControllerCacla>(mBall.GetController());
+	cNeuralNet& actor_net = ctrl->GetActor();
+	cNeuralNet& critic_net = ctrl->GetCritic();
+	learner->SetActorNet(&actor_net);
+	learner->SetCriticNet(&critic_net);
+	learner->Init();
 }
 
 void cScenarioBallRLCacla::ParseArgs(const cArgParser& parser)

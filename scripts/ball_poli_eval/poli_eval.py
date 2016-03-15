@@ -3,9 +3,7 @@ import subprocess
 
 poli_files_dir = 'output/intermediate/'
 exe_path = 'NNTest.exe'
-
 root_dir = curr_dir = os.path.dirname(__file__)
-print(root_dir)
 
 args = '-arg_file= args/ball_int_poli_eval.txt'
 

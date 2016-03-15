@@ -9,7 +9,7 @@ const int gTraceSize = 1000;
 cDrawScenarioBallRL::cDrawScenarioBallRL(cCamera& cam)
 	: cDrawScenario(cam)
 {
-	cam.TranslateToPos(gCamPos0);
+	cam.TranslatePos(gCamPos0);
 	mTrackCharacter = false;
 	mEnableTrace = true;
 	mOutputNetFile = "";
@@ -99,23 +99,23 @@ void cDrawScenarioBallRL::BuildScene()
 void cDrawScenarioBallRL::UpdateCamera()
 {
 	tVector char_pos = mScene->GetBallPos();
-	tVector cam_pos = mCam.GetPosition();
+	tVector cam_focus = mCam.GetFocus();
 
 	if (mTrackCharacter)
 	{
-		cam_pos[0] = char_pos[0];
-		mCam.TranslateToPos(cam_pos);
+		cam_focus[0] = char_pos[0];
+		mCam.TranslateFocus(cam_focus);
 	}
 	else
 	{
 		double cam_w = mCam.GetWidth();
 		cam_w *= 0.5;
 		const double pad = std::min(0.5, cam_w);
-		if (std::abs(char_pos[0] - cam_pos[0]) > cam_w - pad)
+		if (std::abs(char_pos[0] - cam_focus[0]) > cam_w - pad)
 		{
-			cam_pos[0] = char_pos[0];
-			cam_pos[0] += cam_w - pad;
-			mCam.TranslateToPos(cam_pos);
+			cam_focus[0] = char_pos[0];
+			cam_focus[0] += cam_w - pad;
+			mCam.TranslateFocus(cam_focus);
 		}
 	}
 }

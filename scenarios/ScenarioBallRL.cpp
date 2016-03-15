@@ -25,6 +25,8 @@ void cScenarioBallRL::Init()
 	mCurrTuple = tExpTuple(GetStateSize(), GetActionSize());
 	InitTupleBuffer();
 	InitTrainer();
+	InitLearner();
+
 	InitGround();
 	CopyTrainerNets();
 	Reset();
@@ -340,6 +342,16 @@ void cScenarioBallRL::InitTrainer()
 	SetupTrainerOutputOffsetScale();
 }
 
+void cScenarioBallRL::InitLearner()
+{
+	mTrainer->RequestLearner(mLearner);
+	auto& ctrl = mBall.GetController();
+	
+	cNeuralNet& net = ctrl->GetNet();
+	mLearner->SetNet(&net);
+	mLearner->Init();
+}
+
 void cScenarioBallRL::InitGround()
 {
 	mGround.Init(mGroundParams);
@@ -365,9 +377,7 @@ void cScenarioBallRL::Train()
 	printf("Num Tuples: %i\n", mTrainer->GetNumTuples());
 
 	mNumTuples = 0;
-	mTrainer->AddTuples(mTupleBuffer);
-	mTrainer->Train();
-
+	mLearner->Train(mTupleBuffer);
 	CopyTrainerNets();
 }
 
@@ -391,7 +401,7 @@ double cScenarioBallRL::GetExpTemp() const
 
 void cScenarioBallRL::CopyTrainerNets()
 {
-	const auto& trainer_net = mTrainer->GetNet();
+	const auto& learner_net = mLearner->GetNet();
 	auto& ctrl = mBall.GetController();
-	ctrl->CopyNet(*trainer_net.get());
+	ctrl->CopyNet(*learner_net);
 }

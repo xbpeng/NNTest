@@ -60,6 +60,7 @@ protected:
 	tExpTuple mCurrTuple;
 
 	std::shared_ptr<cNeuralNetTrainer> mTrainer;
+	std::shared_ptr<cNeuralNetLearner> mLearner;
 
 	virtual void SetupController();
 	virtual void BuildController(std::shared_ptr<cBallController>& out_ctrl);
@@ -82,6 +83,7 @@ protected:
 
 	virtual void InitTupleBuffer();
 	virtual void InitTrainer();
+	virtual void InitLearner();
 	virtual void InitGround();
 
 	virtual void SetupTrainerOutputOffsetScale();

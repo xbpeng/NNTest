@@ -13,6 +13,8 @@ public:
 
 	virtual void ParseArgs(const cArgParser& parser);
 
+	virtual void InitLearner();
+
 	virtual void SaveCriticNet(const std::string& filename) const;
 	virtual void SaveActorNet(const std::string& filename) const;
 

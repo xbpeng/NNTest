@@ -102,10 +102,10 @@ layer {
 }
 
 layer {
-  name: "ip1"
+  name: "output"
   type: "InnerProduct"
   bottom: "relu2"
-  top: "ip1"
+  top: "output"
   param {
     lr_mult: 1
 	decay_mult: 1

@@ -5,7 +5,7 @@
 #include "render/DrawSimCharacter.h"
 #include "util/FileUtil.h"
 
-const int gTrainerPlaybackMemSize = 500000; // 25000;
+const int gTrainerPlaybackMemSize = 25000;
 
 cScenarioArmTrainMACE::cScenarioArmTrainMACE()
 {

@@ -16,7 +16,7 @@ const double gTracerSamplePeriod = 0.033;
 cDrawScenarioArm::cDrawScenarioArm(cCamera& cam)
 	: cDrawScenario(cam)
 {
-	cam.TranslateToPos(gCamPos0);
+	cam.TranslatePos(gCamPos0);
 	mMouseDown = false;
 }
 

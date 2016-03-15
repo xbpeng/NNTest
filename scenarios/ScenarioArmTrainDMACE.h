@@ -20,4 +20,6 @@ protected:
 	virtual void SetupActorScale();
 	virtual void SetupCriticScale();
 	virtual double CalcExpTemp() const;
+
+	virtual void Train();
 };

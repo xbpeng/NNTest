@@ -7,7 +7,7 @@ const tVector gCamPos0 = tVector(0, 0, 1, 0);
 cDrawScenarioReg1D::cDrawScenarioReg1D(cCamera& cam)
 	: cDrawScenario(cam)
 {
-	cam.TranslateToPos(gCamPos0);
+	cam.TranslatePos(gCamPos0);
 	mMousePos.setZero();
 	mMousePressed = false;
 }

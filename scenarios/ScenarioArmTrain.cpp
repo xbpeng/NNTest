@@ -5,7 +5,7 @@
 #include "util/FileUtil.h"
 
 const int gTupleBufferSize = 32;
-const int gTrainerPlaybackMemSize = 500000; // 25000;
+const int gTrainerPlaybackMemSize = 25000; // 500000;
 const double gTupleRecordRate = 1; // 0.1;
 
 cScenarioArmTrain::cScenarioArmTrain()
@@ -197,7 +197,7 @@ double cScenarioArmTrain::CalcReward() const
 	//double pose_reward = 1 / (1 + pose.squaredNorm());
 	//double vel_reward = 1 / (1 + 0.02 * vel.squaredNorm());
 	double pose_reward = exp(-2 * pose.squaredNorm() / pose.size());
-	double vel_reward = exp(-0.02 * vel.squaredNorm() / pose.size());
+	double vel_reward = exp(-0.1 * vel.squaredNorm() / pose.size());
 
 	double reward = tar_w * tar_reward
 		+ pose_w * pose_reward

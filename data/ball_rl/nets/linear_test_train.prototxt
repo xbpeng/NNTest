@@ -47,10 +47,10 @@ layer {
 }
 
 layer {
-  name: "ip1"
+  name: "output"
   type: "InnerProduct"
   bottom: "relu0"
-  top: "ip1"
+  top: "output"
   param {
     lr_mult: 1
 	decay_mult: 1
@@ -73,7 +73,7 @@ layer {
 layer {
   name: "loss"
   type: "EuclideanLoss"
-  bottom: "ip1"
+  bottom: "output"
   bottom: "label"
   top: "loss"
 }

@@ -371,6 +371,11 @@ void cBallController::BuildNNOutputOffsetScale(Eigen::VectorXd& out_offset, Eige
 	out_scale = 2 * Eigen::VectorXd::Ones(output_size);
 }
 
+cNeuralNet& cBallController::GetNet()
+{
+	return mNet;
+}
+
 void cBallController::BuildState(Eigen::VectorXd& state) const
 {
 	state = mGroundSamples;

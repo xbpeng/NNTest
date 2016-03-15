@@ -7,10 +7,10 @@ input_dim:1
 input_dim:100
 
 layer {
-  name: "ip0"
+  name: "output"
   type: "InnerProduct"
   bottom: "data"
-  top: "ip0"
+  top: "output"
   param {
     lr_mult: 1
 	decay_mult: 1

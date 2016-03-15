@@ -1,10 +1,10 @@
 -scenario= arm_eval
--playback_speed= 10
+-playback_speed= 60
 
 -character_file= data/arm_rl/arm.txt
 -output_file= output/arm_int_eval.txt
 
--net_file= data/arm_rl/arm_reduced_deploy.prototxt
+-net_file= data/arm_rl/nets/arm_reduced_mace3_actor_deploy.prototxt
 
--arm_ctrl_type= nn
+-arm_ctrl_type= mace
 -eval_max_samples= 5000
