@@ -47,6 +47,8 @@ protected:
 	std::string mSolverFile;
 
 	cNeuralNetTrainer mTrainer;
+	std::shared_ptr<cNeuralNetLearner> mLearner;
+
 	cNeuralNetTrainer::tParams mTrainerParams;
 	std::vector<tExpTuple> mTupleBuffer;
 	int mNumTuples;
@@ -70,6 +72,7 @@ protected:
 
 	virtual void InitTupleBuffer();
 	virtual void InitTrainer();
+	virtual void InitLearner();
 	virtual void SetupScale();
 
 	virtual void Train();

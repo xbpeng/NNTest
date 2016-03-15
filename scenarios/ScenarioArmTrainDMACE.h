@@ -15,6 +15,7 @@ public:
 protected:
 	
 	virtual void InitTrainer();
+	virtual void InitLearner();
 	virtual void BuildTrainer(std::shared_ptr<cNeuralNetTrainer>& out_trainer) const;
 	
 	virtual void SetupActorScale();

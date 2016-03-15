@@ -23,6 +23,7 @@ public:
 	virtual void SaveNet(const std::string& out_file) const;
 
 	virtual bool HasNet() const;
+	virtual cNeuralNet& GetNet();
 	virtual bool IsOffPolicy() const;
 
 protected:

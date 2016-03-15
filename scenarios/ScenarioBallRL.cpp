@@ -74,7 +74,8 @@ void cScenarioBallRL::Reset()
 
 void cScenarioBallRL::Clear()
 {
-	
+	mTrainer.reset();
+	mLearner.reset();
 }
 
 void cScenarioBallRL::Update(double time_elapsed)
@@ -374,8 +375,8 @@ void cScenarioBallRL::Train()
 	printf("\nTraining iter: %i\n", GetIter());
 	printf("Num Tuples: %i\n", mLearner->GetNumTuples());
 
-	mNumTuples = 0;
 	mLearner->Train(mTupleBuffer);
+	mNumTuples = 0;
 }
 
 double cScenarioBallRL::GetExpRate() const

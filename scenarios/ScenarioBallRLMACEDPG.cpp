@@ -67,7 +67,7 @@ void cScenarioBallRLMACEDPG::InitTrainer()
 	trainer->SetActorOutputOffsetScale(actor_output_offset, actor_output_scale);
 	
 	double temp = GetExpTemp();
-	trainer->SetBoltzTemp(gTrainerTempScale * temp);
+	trainer->SetTemp(gTrainerTempScale * temp);
 }
 
 void cScenarioBallRLMACEDPG::SetupController()

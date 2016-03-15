@@ -45,7 +45,17 @@ void cScenarioArmTrainDMACE::InitTrainer()
 	}
 
 	SetupScale();
-	trainer->SetTemp(CalcExpTemp());
+}
+
+void cScenarioArmTrainDMACE::InitLearner()
+{
+	cScenarioArmTrain::InitLearner();
+
+	double temp = CalcExpTemp();
+	auto trainer = std::static_pointer_cast<cDMACETrainer>(mTrainer);
+	auto learner = std::static_pointer_cast<cDMACELearner>(mLearner);
+	learner->SetTemp(temp);
+	trainer->SetTemp(temp);
 }
 
 void cScenarioArmTrainDMACE::BuildTrainer(std::shared_ptr<cNeuralNetTrainer>& out_trainer) const

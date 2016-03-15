@@ -247,6 +247,7 @@
     <ClCompile Include="..\TerrainRL\learning\ACLearner.cpp" />
     <ClCompile Include="..\TerrainRL\learning\ACTrainer.cpp" />
     <ClCompile Include="..\TerrainRL\learning\CaclaTrainer.cpp" />
+    <ClCompile Include="..\TerrainRL\learning\DMACELearner.cpp" />
     <ClCompile Include="..\TerrainRL\learning\DMACETrainer.cpp" />
     <ClCompile Include="..\TerrainRL\learning\DPGTrainer.cpp" />
     <ClCompile Include="..\TerrainRL\learning\MACEDPGLearner.cpp" />
@@ -386,6 +387,7 @@
     <ClInclude Include="..\TerrainRL\anim\KinTree.h" />
     <ClInclude Include="..\TerrainRL\learning\ACLearner.h" />
     <ClInclude Include="..\TerrainRL\learning\ACTrainer.h" />
+    <ClInclude Include="..\TerrainRL\learning\DMACELearner.h" />
     <ClInclude Include="..\TerrainRL\learning\DMACETrainer.h" />
     <ClInclude Include="..\TerrainRL\learning\DPGTrainer.h" />
     <ClInclude Include="..\TerrainRL\learning\MACEDPGLearner.h" />

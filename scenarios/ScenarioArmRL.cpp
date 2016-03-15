@@ -26,6 +26,7 @@ void cScenarioArmRL::Init()
 	BuildCoach();
 
 	InitTrainer();
+	InitLearner();
 	InitTupleBuffer();
 }
 
@@ -52,6 +53,7 @@ void cScenarioArmRL::Clear()
 	cScenarioArm::Clear();
 	mCoach->Clear();
 	mNumTuples = 0;
+	mLearner.reset();
 }
 
 void cScenarioArmRL::Update(double time_elapsed)
@@ -76,7 +78,7 @@ const std::shared_ptr<cSimCharacter>& cScenarioArmRL::GetCoach() const
 
 void cScenarioArmRL::SaveNet(const std::string& out_file) const
 {
-	mTrainer.OutputModel(out_file);
+	mLearner->OutputModel(out_file);
 }
 
 std::string cScenarioArmRL::GetName() const
@@ -247,6 +249,16 @@ void cScenarioArmRL::InitTrainer()
 	}
 }
 
+void cScenarioArmRL::InitLearner()
+{
+	mTrainer.RequestLearner(mLearner);
+	auto ctrl = GetStudentController();
+
+	cNeuralNet& net = ctrl->GetNet();
+	mLearner->SetNet(&net);
+	mLearner->Init();
+}
+
 void cScenarioArmRL::SetupScale()
 {
 	int state_size = mTrainer.GetStateSize();
@@ -269,29 +281,20 @@ void cScenarioArmRL::SetupScale()
 void cScenarioArmRL::Train()
 {
 	int iter = GetIter();
-	int num_tuples = mTrainer.GetNumTuples();
+	int num_tuples = mLearner->GetNumTuples();
 	printf("\nTraining Iter: %i\n", iter);
 	printf("Num Tuples: %i\n", num_tuples);
 
-	mTrainer.AddTuples(mTupleBuffer);
-
 	cNeuralNetTrainer::eStage stage0 = mTrainer.GetStage();
-	mTrainer.Train();
+	mLearner->Train(mTupleBuffer);
 	cNeuralNetTrainer::eStage stage1 = mTrainer.GetStage();
-
-	const auto& trainer_net = mTrainer.GetNet();
-	std::shared_ptr<cArmNNController> ctrl = GetStudentController();
-	if (ctrl != nullptr)
-	{
-		ctrl->CopyNet(*trainer_net.get());
-	}
 
 	mNumTuples = 0;
 }
 
 int cScenarioArmRL::GetIter() const
 {
-	return mTrainer.GetIter();
+	return mLearner->GetIter();
 }
 
 std::shared_ptr<cArmQPController> cScenarioArmRL::GetCoachController() const

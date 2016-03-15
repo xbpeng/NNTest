@@ -35,6 +35,8 @@ void cScenarioArmTrain::Init()
 
 	BuildTrainer(mTrainer);
 	InitTrainer();
+	InitLearner();
+
 	InitTupleBuffer();
 	UpdatePolicy();
 	mValidSample = false;
@@ -80,6 +82,7 @@ void cScenarioArmTrain::Clear()
 	mNumTuples = 0;
 	mValidSample = false;
 	mTrainer.reset();
+	mLearner.reset();
 }
 
 void cScenarioArmTrain::Update(double time_elapsed)
@@ -102,7 +105,7 @@ bool cScenarioArmTrain::EnableTraining() const
 
 void cScenarioArmTrain::SaveNet(const std::string& out_file) const
 {
-	mTrainer->OutputModel(out_file);
+	mLearner->OutputModel(out_file);
 }
 
 std::string cScenarioArmTrain::GetName() const
@@ -326,6 +329,16 @@ void cScenarioArmTrain::InitTrainer()
 	}
 }
 
+void cScenarioArmTrain::InitLearner()
+{
+	mTrainer->RequestLearner(mLearner);
+	auto ctrl = GetController();
+
+	cNeuralNet& net = ctrl->GetNet();
+	mLearner->SetNet(&net);
+	mLearner->Init();
+}
+
 void cScenarioArmTrain::SetupScale()
 {
 	SetupActorScale();
@@ -373,11 +386,11 @@ void cScenarioArmTrain::SetupCriticScale()
 
 void cScenarioArmTrain::UpdatePolicy()
 {
-	const auto& trainer_net = mTrainer->GetNet();
+	const auto& learner_net = mLearner->GetNet();
 	std::shared_ptr<cArmNNController> ctrl = GetController();
 	if (ctrl != nullptr)
 	{
-		ctrl->CopyNet(*trainer_net.get());
+		ctrl->CopyNet(*learner_net);
 	}
 
 	double exp_rate = CalcExpRate();
@@ -389,22 +402,21 @@ void cScenarioArmTrain::UpdatePolicy()
 void cScenarioArmTrain::Train()
 {
 	int iter = GetIter();
-	int num_tuples = mTrainer->GetNumTuples();
+	int num_tuples = mLearner->GetNumTuples();
 	printf("\nTraining Iter: %i\n", iter);
 	printf("Num Tuples: %i\n", num_tuples);
 	printf("Exp Rate: %.3f\n", CalcExpRate());
 	printf("Exp Temp: %.3f\n", CalcExpTemp());
 
-	mTrainer->AddTuples(mTupleBuffer);
+	mLearner->Train(mTupleBuffer);
 
-	mTrainer->Train();
 	UpdatePolicy();
 	mNumTuples = 0;
 }
 
 int cScenarioArmTrain::GetIter() const
 {
-	return mTrainer->GetIter();
+	return mLearner->GetIter();
 }
 
 double cScenarioArmTrain::CalcExpRate() const

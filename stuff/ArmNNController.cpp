@@ -91,6 +91,11 @@ bool cArmNNController::HasNet() const
 	return mNet.HasNet();
 }
 
+cNeuralNet& cArmNNController::GetNet()
+{
+	return mNet;
+}
+
 bool cArmNNController::IsOffPolicy() const
 {
 	return mOffPolicy;

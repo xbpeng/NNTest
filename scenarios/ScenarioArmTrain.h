@@ -51,6 +51,8 @@ protected:
 	std::string mCriticModelFile;
 
 	std::shared_ptr<cNeuralNetTrainer> mTrainer;
+	std::shared_ptr<cNeuralNetLearner> mLearner;
+
 	cNeuralNetTrainer::tParams mTrainerParams;
 	std::vector<tExpTuple> mTupleBuffer;
 	tExpTuple mCurrTuple;
@@ -82,6 +84,8 @@ protected:
 	virtual void InitTupleBuffer();
 	virtual void BuildTrainer(std::shared_ptr<cNeuralNetTrainer>& out_trainer) const;
 	virtual void InitTrainer();
+	virtual void InitLearner();
+
 	virtual void SetupScale();
 	virtual void SetupActorScale();
 	virtual void SetupCriticScale();

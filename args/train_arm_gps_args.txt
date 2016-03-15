@@ -1,0 +1,56 @@
+-scenario= arm_rl
+-playback_speed= 60
+
+-character_file= data/arm_rl/arm.txt
+
+//-solver_file= data/arm_rl/nets/arm_solver.prototxt
+//-net_file= data/arm_rl/nets/arm_deploy.prototxt
+//-model_file= data/arm_rl/nets/arm_torque_model.h5
+
+//-solver_file= data/arm_rl/arm_pixel_solver.prototxt
+//-net_file= data/arm_rl/arm_pixel_deploy.prototxt
+//-model_file= data/arm_rl/arm_torque_pixel_model.h5
+
+//-solver_file= data/arm_rl/arm_pixel_no_pose_solver.prototxt
+//-net_file= data/arm_rl/arm_pixel_no_pose_deploy.prototxt
+//-model_file= data/arm_rl/arm_pixel_no_pose_model.h5
+
+//-solver_file= data/reg1D/reg1D_multi_solver.prototxt
+//-net_file= data/reg1D/reg1D_multi_deploy.prototxt
+
+-solver_file= data/arm_rl/nets/arm_reduced_solver.prototxt
+-net_file= data/arm_rl/nets/arm_reduced_deploy.prototxt
+//-model_file= data/arm_rl/arm_torque_model.h5
+//-model_file= data/arm_rl/arm_pd_model.h5
+//-model_file= data/arm_rl/arm_vel_model.h5
+
+//-solver_file= data/arm_rl/arm_pixel_motor_solver.prototxt
+//-net_file= data/arm_rl/arm_pixel_motor_deploy.prototxt
+//-model_file= data/arm_rl/arm_pixel_motor_model.h5
+
+//-solver_file= data/arm_rl/arm_pixel_vis_solver.prototxt
+//-net_file= data/arm_rl/arm_pixel_vis_deploy.prototxt
+//-model_file= data/arm_rl/arm_pixel_vis_model.h5
+
+//-solver_file= data/arm_rl/arm_pixel_vis_motor_solver.prototxt
+//-net_file= data/arm_rl/arm_pixel_vis_motor_deploy.prototxt
+//-model_file= data/arm_rl/arm_pixel_vis_motor_model.h5
+//-model_file= data/arm_rl/arm_pixel_vis_model.h5
+//				data/arm_rl/arm_pixel_motor_model.h5
+//-scale_file= data/arm_rl/arm_pixel_vis_motor_model_scale.txt
+//-scale_file= data/arm_rl/arm_pixel_model_scale.txt
+
+-coach_type= qp
+-arm_ctrl_type= nn
+
+-exp_rate= 0.2
+-exp_temp= 0.025
+-num_exp_anneal_iters= 10000
+
+//-trainer_int_iter= 500
+//-trainer_int_output= output/intermediate/trainer_int_model.h5
+
+-arm_pretrain= false
+
+-output_net_file= output/arm_model.h5
+-output_file= output/arm_eval.txt
