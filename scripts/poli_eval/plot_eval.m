@@ -16,9 +16,9 @@ files = {};
 %files{1} = 'pixel_nn_torque_eval.txt';
 %files{2} = 'pixel_torque_no_pose.txt';
 
-files{1} = {'gps_eval.txt', 'GPS', 1000};
-files{2} = {'dmace_torque_eval.txt', 'MACE Torque', 5000};
-files{3} = {'dmace_pd_eval.txt', 'MACE PD', 5000};
+files{end + 1} = {'gps_eval.txt', 'GPS', 1000};
+files{end + 1} = {'dmace_torque_eval.txt', 'MACE Torque', 2000};
+files{end + 1} = {'dmace_pd_eval.txt', 'MACE PD', 2000};
 
 lines = {'b-', 'r-', 'm-', 'k-'};
 

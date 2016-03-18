@@ -105,7 +105,7 @@ bool cScenarioArmTrain::EnableTraining() const
 
 void cScenarioArmTrain::SaveNet(const std::string& out_file) const
 {
-	mLearner->OutputModel(out_file);
+	mTrainer->OutputModel(out_file);
 }
 
 std::string cScenarioArmTrain::GetName() const
@@ -181,9 +181,7 @@ double cScenarioArmTrain::CalcReward() const
 	tVector end_pos = mChar->CalcJointPos(end_id);
 
 	tVector delta = mTargetPos - end_pos;
-	double gamma = 1;
-	double tar_reward = exp(-gamma * delta.squaredNorm());
-	//double tar_reward = 1 / (1 + delta.squaredNorm());
+	double tar_reward = exp(-2 * delta.squaredNorm());
 
 	Eigen::VectorXd pose;
 	Eigen::VectorXd vel;
@@ -197,8 +195,6 @@ double cScenarioArmTrain::CalcReward() const
 		pose[3] = 0;
 	}
 
-	//double pose_reward = 1 / (1 + pose.squaredNorm());
-	//double vel_reward = 1 / (1 + 0.02 * vel.squaredNorm());
 	double pose_reward = exp(-2 * pose.squaredNorm() / pose.size());
 	double vel_reward = exp(-0.1 * vel.squaredNorm() / pose.size());
 

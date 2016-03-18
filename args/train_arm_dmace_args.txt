@@ -17,11 +17,16 @@
 -net_file= data/arm_rl/nets/arm_reduced_mace3_actor_deploy.prototxt
 //-model_file= data/arm_rl/models/arm_reduced_dmace3_actor_init_model.h5
 //-model_file= data/arm_rl/models/arm_reduced_dmace_model.h5
+//-model_file= data/arm_rl/models/arm_reduced_dmace_torque_actor_model.h5
 
--critic_solver_file= data/arm_rl/nets/arm_reduced_mace3_critic_solver.prototxt
--critic_net_file= data/arm_rl/nets/arm_reduced_mace3_critic_deploy.prototxt
+//-critic_solver_file= data/arm_rl/nets/arm_reduced_mace3_critic_solver.prototxt
+//-critic_net_file= data/arm_rl/nets/arm_reduced_mace3_critic_deploy.prototxt
 //-critic_model_file= data/arm_rl/models/arm_reduced_dmace3_critic_init_model.h5
 //-critic_model_file= data/arm_rl/models/arm_reduced_dmace_model_critic.h5
+//-critic_model_file= data/arm_rl/models/arm_reduced_dmace_pd_critic_model.h5
+
+-critic_solver_file= data/arm_rl/nets/arm_reduced_dmace3_critic_solver.prototxt
+-critic_net_file= data/arm_rl/nets/arm_reduced_dmace3_critic_deploy.prototxt
 
 -arm_ctrl_type= mace
 

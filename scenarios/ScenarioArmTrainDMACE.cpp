@@ -16,6 +16,21 @@ std::string cScenarioArmTrainDMACE::GetName() const
 	return "Arm Train D-MACE";
 }
 
+
+void cScenarioArmTrainDMACE::RecordFlagsBeg(tExpTuple& out_tuple) const
+{
+	bool exp_critic = CheckExpCritic();
+	bool exp_actor = CheckExpActor();
+	out_tuple.SetFlag(exp_critic, cDMACETrainer::eFlagExpCritic);
+	out_tuple.SetFlag(exp_actor, cDMACETrainer::eFlagExpActor);
+}
+
+void cScenarioArmTrainDMACE::RecordFlagsEnd(tExpTuple& out_tuple) const
+{
+	bool fail = CheckFail();
+	out_tuple.SetFlag(fail, cDMACETrainer::eFlagFail);
+}
+
 void cScenarioArmTrainDMACE::InitTrainer()
 {
 	auto trainer = std::static_pointer_cast<cDMACETrainer>(mTrainer);
@@ -117,7 +132,7 @@ double cScenarioArmTrainDMACE::CalcExpTemp() const
 
 void cScenarioArmTrainDMACE::Train()
 {
+	auto learner = std::static_pointer_cast<cDMACELearner>(mLearner);
+	learner->SetTemp(CalcExpTemp());
 	cScenarioArmTrainMACE::Train();
-	auto trainer = std::static_pointer_cast<cDMACETrainer>(mTrainer);
-	trainer->SetTemp(CalcExpTemp());
 }

@@ -71,7 +71,7 @@ void cArmPDControllerMACE::BuildActorBias(int a_id, Eigen::VectorXd& out_bias) c
 	double min = -M_PI * 0.75;
 	double max = M_PI * 0.75;
 
-	out_bias = Eigen::VectorXd::Zero(GetActionFragSize());
+	out_bias = Eigen::VectorXd::Ones(GetActionFragSize());
 	int num_actors = GetNumActionFrags();
 	if (num_actors < 2)
 	{
@@ -80,8 +80,8 @@ void cArmPDControllerMACE::BuildActorBias(int a_id, Eigen::VectorXd& out_bias) c
 	else
 	{
 		double lerp = 1 - a_id / (num_actors - 1.0);
-		//out_bias *= lerp * (max - min) + min;
-		out_bias[0] = lerp * (max - min) + min;
+		out_bias *= lerp * (max - min) + min;
+		//out_bias[0] = lerp * (max - min) + min;
 	}
 }
 

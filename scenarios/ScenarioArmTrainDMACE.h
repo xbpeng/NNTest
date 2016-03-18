@@ -13,6 +13,8 @@ public:
 	virtual std::string GetName() const;
 
 protected:
+	virtual void RecordFlagsBeg(tExpTuple& out_tuple) const;
+	virtual void RecordFlagsEnd(tExpTuple& out_tuple) const;
 	
 	virtual void InitTrainer();
 	virtual void InitLearner();
