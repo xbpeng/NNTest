@@ -8,6 +8,7 @@ const double gBigMarkerH = 0.075;
 
 void cDrawPenaltyGround::Draw(const cPenaltyGround& ground, const tVector& bound_min, const tVector& bound_max)
 {
+	const tVector ground_col = tVector(151 / 255.0, 151 / 255.0, 151 / 255.0, 1.0);
 	const double ground_h = ground.GetHeight();
 
 	tVector origin = (bound_min + bound_max) * 0.5;
@@ -22,7 +23,7 @@ void cDrawPenaltyGround::Draw(const cPenaltyGround& ground, const tVector& bound
 	tVector pos = tVector(origin(0), (min_y + max_y) * 0.5, 0, 0);
 	tVector size = tVector(w, (max_y - min_y), 0, 0);
 
-	cDrawUtil::DrawRuler2D(pos, size, gMarkerSpacing, gBigMarkerSpacing, gMarkerH, gBigMarkerH);
+	cDrawUtil::DrawRuler2D(pos, size, ground_col, gMarkerSpacing, gBigMarkerSpacing, gMarkerH, gBigMarkerH);
 
 	cDrawUtil::SetLineWidth(1);
 

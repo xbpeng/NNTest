@@ -242,6 +242,8 @@
     <ClCompile Include="..\library\caffe\src\caffe\util\io.cpp" />
     <ClCompile Include="..\library\caffe\src\caffe\util\math_functions.cpp" />
     <ClCompile Include="..\library\caffe\src\caffe\util\upgrade_proto.cpp" />
+    <ClCompile Include="..\library\LodePNG\lodepng.cpp" />
+    <ClCompile Include="..\library\LodePNG\lodepng_util.cpp" />
     <ClCompile Include="..\TerrainRL\anim\Character.cpp" />
     <ClCompile Include="..\TerrainRL\anim\KinTree.cpp" />
     <ClCompile Include="..\TerrainRL\learning\ACLearner.cpp" />
@@ -257,10 +259,13 @@
     <ClCompile Include="..\TerrainRL\learning\ExpTuple.cpp" />
     <ClCompile Include="..\TerrainRL\learning\NeuralNet.cpp" />
     <ClCompile Include="..\TerrainRL\learning\NeuralNetTrainer.cpp" />
+    <ClCompile Include="..\TerrainRL\learning\NNSolver.cpp" />
     <ClCompile Include="..\TerrainRL\learning\QNetTrainer.cpp" />
     <ClCompile Include="..\TerrainRL\optimizer\opt\QL.c" />
     <ClCompile Include="..\TerrainRL\optimizer\opt\QuadProg.cpp" />
     <ClCompile Include="..\TerrainRL\render\Camera.cpp" />
+    <ClCompile Include="..\TerrainRL\render\DrawCharacter.cpp" />
+    <ClCompile Include="..\TerrainRL\render\DrawKinTree.cpp" />
     <ClCompile Include="..\TerrainRL\render\DrawObj.cpp" />
     <ClCompile Include="..\TerrainRL\render\DrawPerturb.cpp" />
     <ClCompile Include="..\TerrainRL\render\DrawSimCharacter.cpp" />
@@ -383,10 +388,13 @@
     <ClCompile Include="stuff\SimArm.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\library\LodePNG\lodepng.h" />
+    <ClInclude Include="..\library\LodePNG\lodepng_util.h" />
     <ClInclude Include="..\TerrainRL\anim\Character.h" />
     <ClInclude Include="..\TerrainRL\anim\KinTree.h" />
     <ClInclude Include="..\TerrainRL\learning\ACLearner.h" />
     <ClInclude Include="..\TerrainRL\learning\ACTrainer.h" />
+    <ClInclude Include="..\TerrainRL\learning\AsyncSolver.h" />
     <ClInclude Include="..\TerrainRL\learning\DMACELearner.h" />
     <ClInclude Include="..\TerrainRL\learning\DMACETrainer.h" />
     <ClInclude Include="..\TerrainRL\learning\DPGTrainer.h" />
@@ -398,9 +406,13 @@
     <ClInclude Include="..\TerrainRL\learning\ExpTuple.h" />
     <ClInclude Include="..\TerrainRL\learning\NeuralNet.h" />
     <ClInclude Include="..\TerrainRL\learning\NeuralNetTrainer.h" />
+    <ClInclude Include="..\TerrainRL\learning\NNSolver.h" />
     <ClInclude Include="..\TerrainRL\learning\QNetTrainer.h" />
+    <ClInclude Include="..\TerrainRL\learning\TrainerInterface.h" />
     <ClInclude Include="..\TerrainRL\optimizer\opt\QuadProg.h" />
     <ClInclude Include="..\TerrainRL\render\Camera.h" />
+    <ClInclude Include="..\TerrainRL\render\DrawCharacter.h" />
+    <ClInclude Include="..\TerrainRL\render\DrawKinTree.h" />
     <ClInclude Include="..\TerrainRL\render\DrawObj.h" />
     <ClInclude Include="..\TerrainRL\render\DrawPerturb.h" />
     <ClInclude Include="..\TerrainRL\render\DrawSimCharacter.h" />

@@ -84,6 +84,7 @@ void cArmControllerMACE::BuildNNOutputOffsetScale(Eigen::VectorXd& out_offset, E
 
 void cArmControllerMACE::BuildActorBias(int a_id, Eigen::VectorXd& out_bias) const
 {
+	/*
 	double min = -20;
 	double max = 20;
 	
@@ -98,6 +99,25 @@ void cArmControllerMACE::BuildActorBias(int a_id, Eigen::VectorXd& out_bias) con
 		double lerp = 1 - a_id / (num_actors - 1.0);
 		out_bias *= lerp * (max - min) + min;
 	}
+	*/
+	cRand rand;
+	rand.Seed(a_id);
+	out_bias = Eigen::VectorXd::Ones(GetActionFragSize());
+
+	Eigen::VectorXd offset;
+	Eigen::VectorXd scale;
+	BuildActorBiasScale(scale);
+
+	for (size_t i = 0; i < out_bias.size(); ++i)
+	{
+		out_bias[i] = scale[i] * rand.RandDoubleNorm(0, 1);
+	}
+}
+
+void cArmControllerMACE::BuildActorBiasScale(Eigen::VectorXd& out_scale) const
+{
+	const double torque_scale = 0.25 * 100;
+	out_scale = torque_scale * Eigen::VectorXd::Ones(GetActionFragSize());
 }
 
 void cArmControllerMACE::DecideAction()

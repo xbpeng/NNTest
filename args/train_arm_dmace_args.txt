@@ -28,7 +28,7 @@
 -critic_solver_file= data/arm_rl/nets/arm_reduced_dmace3_critic_solver.prototxt
 -critic_net_file= data/arm_rl/nets/arm_reduced_dmace3_critic_deploy.prototxt
 
--arm_ctrl_type= mace
+-arm_ctrl_type= pd_mace
 
 -exp_rate= 0.2
 -exp_temp= 0.025

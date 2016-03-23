@@ -21,6 +21,6 @@ public:
 protected:
 	cImpPDController mImpPDCtrl;
 
-	virtual void BuildActorBias(int a_id, Eigen::VectorXd& out_bias) const;
+	virtual void BuildActorBiasScale(Eigen::VectorXd& out_scale) const;
 	virtual void ApplyPoliAction(double time_step, const tAction& action);
 };

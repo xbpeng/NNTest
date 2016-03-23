@@ -66,23 +66,10 @@ void cArmPDControllerMACE::BuildActionBounds(Eigen::VectorXd& out_min, Eigen::Ve
 	out_max = max_theta * Eigen::VectorXd::Ones(output_size);
 }
 
-void cArmPDControllerMACE::BuildActorBias(int a_id, Eigen::VectorXd& out_bias) const
+void cArmPDControllerMACE::BuildActorBiasScale(Eigen::VectorXd& out_scale) const
 {
-	double min = -M_PI * 0.75;
-	double max = M_PI * 0.75;
-
-	out_bias = Eigen::VectorXd::Ones(GetActionFragSize());
-	int num_actors = GetNumActionFrags();
-	if (num_actors < 2)
-	{
-		out_bias *= 0;
-	}
-	else
-	{
-		double lerp = 1 - a_id / (num_actors - 1.0);
-		out_bias *= lerp * (max - min) + min;
-		//out_bias[0] = lerp * (max - min) + min;
-	}
+	const double theta_scale = 0.25 * 2 * M_PI;
+	out_scale = theta_scale * Eigen::VectorXd::Ones(GetActionFragSize());
 }
 
 void cArmPDControllerMACE::ApplyPoliAction(double time_step, const tAction& action)
