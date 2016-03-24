@@ -327,7 +327,7 @@ void cScenarioBallRL::InitTrainer()
 	mTrainerParams.mSolverFile = mSolverFile;
 	mTrainerParams.mPlaybackMemSize = gTrainerPlaybackMemSize;
 	mTrainerParams.mPoolSize = 2; // double Q learning
-	mTrainerParams.mNumInitSamples = 10000; // hack
+	mTrainerParams.mNumInitSamples = 10000;
 	//mTrainerParams.mNumInitSamples = 100; // hack
 	mTrainerParams.mNumStepsPerIter = 1;
 	//mTrainerParams.mFreezeTargetIters = 500;
