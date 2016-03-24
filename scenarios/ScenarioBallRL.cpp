@@ -320,8 +320,8 @@ void cScenarioBallRL::InitTupleBuffer()
 
 void cScenarioBallRL::InitTrainer()
 {
-	//std::shared_ptr<cQNetTrainer> trainer = std::shared_ptr<cQNetTrainer>(new cQNetTrainer());
-	std::shared_ptr<cAsyncQNetTrainer> trainer = std::shared_ptr<cAsyncQNetTrainer>(new cAsyncQNetTrainer());
+	std::shared_ptr<cQNetTrainer> trainer = std::shared_ptr<cQNetTrainer>(new cQNetTrainer());
+	//std::shared_ptr<cAsyncQNetTrainer> trainer = std::shared_ptr<cAsyncQNetTrainer>(new cAsyncQNetTrainer());
 	
 	mTrainerParams.mNetFile = mNetFile;
 	mTrainerParams.mSolverFile = mSolverFile;
