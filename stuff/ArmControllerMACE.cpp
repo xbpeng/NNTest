@@ -108,7 +108,7 @@ void cArmControllerMACE::BuildActorBias(int a_id, Eigen::VectorXd& out_bias) con
 	Eigen::VectorXd scale;
 	BuildActorBiasScale(scale);
 
-	for (size_t i = 0; i < out_bias.size(); ++i)
+	for (int i = 0; i < static_cast<int>(out_bias.size()); ++i)
 	{
 		out_bias[i] = scale[i] * rand.RandDoubleNorm(0, 1);
 	}

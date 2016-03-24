@@ -248,6 +248,8 @@
     <ClCompile Include="..\TerrainRL\anim\KinTree.cpp" />
     <ClCompile Include="..\TerrainRL\learning\ACLearner.cpp" />
     <ClCompile Include="..\TerrainRL\learning\ACTrainer.cpp" />
+    <ClCompile Include="..\TerrainRL\learning\AsyncQNetTrainer.cpp" />
+    <ClCompile Include="..\TerrainRL\learning\AsyncTrainer.cpp" />
     <ClCompile Include="..\TerrainRL\learning\CaclaTrainer.cpp" />
     <ClCompile Include="..\TerrainRL\learning\DMACELearner.cpp" />
     <ClCompile Include="..\TerrainRL\learning\DMACETrainer.cpp" />
@@ -260,6 +262,7 @@
     <ClCompile Include="..\TerrainRL\learning\NeuralNet.cpp" />
     <ClCompile Include="..\TerrainRL\learning\NeuralNetTrainer.cpp" />
     <ClCompile Include="..\TerrainRL\learning\NNSolver.cpp" />
+    <ClCompile Include="..\TerrainRL\learning\ParamServer.cpp" />
     <ClCompile Include="..\TerrainRL\learning\QNetTrainer.cpp" />
     <ClCompile Include="..\TerrainRL\optimizer\opt\QL.c" />
     <ClCompile Include="..\TerrainRL\optimizer\opt\QuadProg.cpp" />
@@ -394,7 +397,9 @@
     <ClInclude Include="..\TerrainRL\anim\KinTree.h" />
     <ClInclude Include="..\TerrainRL\learning\ACLearner.h" />
     <ClInclude Include="..\TerrainRL\learning\ACTrainer.h" />
+    <ClInclude Include="..\TerrainRL\learning\AsyncQNetTrainer.h" />
     <ClInclude Include="..\TerrainRL\learning\AsyncSolver.h" />
+    <ClInclude Include="..\TerrainRL\learning\AsyncTrainer.h" />
     <ClInclude Include="..\TerrainRL\learning\DMACELearner.h" />
     <ClInclude Include="..\TerrainRL\learning\DMACETrainer.h" />
     <ClInclude Include="..\TerrainRL\learning\DPGTrainer.h" />
@@ -407,6 +412,7 @@
     <ClInclude Include="..\TerrainRL\learning\NeuralNet.h" />
     <ClInclude Include="..\TerrainRL\learning\NeuralNetTrainer.h" />
     <ClInclude Include="..\TerrainRL\learning\NNSolver.h" />
+    <ClInclude Include="..\TerrainRL\learning\ParamServer.h" />
     <ClInclude Include="..\TerrainRL\learning\QNetTrainer.h" />
     <ClInclude Include="..\TerrainRL\learning\TrainerInterface.h" />
     <ClInclude Include="..\TerrainRL\optimizer\opt\QuadProg.h" />

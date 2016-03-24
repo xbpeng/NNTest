@@ -1,4 +1,5 @@
 #include "ScenarioBallRL.h"
+#include "learning/AsyncQNetTrainer.h"
 
 const int gTupleBufferSize = 32;
 const int gTrainerPlaybackMemSize = 50000;
@@ -319,14 +320,15 @@ void cScenarioBallRL::InitTupleBuffer()
 
 void cScenarioBallRL::InitTrainer()
 {
-	std::shared_ptr<cQNetTrainer> trainer = std::shared_ptr<cQNetTrainer>(new cQNetTrainer());
-
+	//std::shared_ptr<cQNetTrainer> trainer = std::shared_ptr<cQNetTrainer>(new cQNetTrainer());
+	std::shared_ptr<cAsyncQNetTrainer> trainer = std::shared_ptr<cAsyncQNetTrainer>(new cAsyncQNetTrainer());
+	
 	mTrainerParams.mNetFile = mNetFile;
 	mTrainerParams.mSolverFile = mSolverFile;
 	mTrainerParams.mPlaybackMemSize = gTrainerPlaybackMemSize;
 	mTrainerParams.mPoolSize = 2; // double Q learning
 	mTrainerParams.mNumInitSamples = 10000; // hack
-	//mTrainerParams.mNumInitSamples = 5; // hack
+	//mTrainerParams.mNumInitSamples = 100; // hack
 	mTrainerParams.mNumStepsPerIter = 1;
 	//mTrainerParams.mFreezeTargetIters = 500;
 	//mTrainerParams.mInitInputOffsetScale = false;

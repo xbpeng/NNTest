@@ -59,7 +59,7 @@ protected:
 	std::vector<tExpTuple> mTupleBuffer;
 	tExpTuple mCurrTuple;
 
-	std::shared_ptr<cNeuralNetTrainer> mTrainer;
+	std::shared_ptr<cTrainerInterface> mTrainer;
 	std::shared_ptr<cNeuralNetLearner> mLearner;
 
 	virtual void SetupController();

@@ -707,6 +707,15 @@
     <ClCompile Include="..\TerrainRL\render\DrawKinTree.cpp">
       <Filter>Source Files\util</Filter>
     </ClCompile>
+    <ClCompile Include="..\TerrainRL\learning\AsyncTrainer.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\learning\AsyncQNetTrainer.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\learning\ParamServer.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\TerrainRL\util\Rand.h">
@@ -1142,6 +1151,15 @@
       <Filter>Source Files\util</Filter>
     </ClInclude>
     <ClInclude Include="..\TerrainRL\learning\TrainerInterface.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\learning\AsyncTrainer.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\learning\AsyncQNetTrainer.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\learning\ParamServer.h">
       <Filter>Source Files\util</Filter>
     </ClInclude>
   </ItemGroup>
