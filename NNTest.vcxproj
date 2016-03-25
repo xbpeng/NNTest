@@ -250,6 +250,10 @@
     <ClCompile Include="..\TerrainRL\learning\ACTrainer.cpp" />
     <ClCompile Include="..\TerrainRL\learning\AsyncACTrainer.cpp" />
     <ClCompile Include="..\TerrainRL\learning\AsyncCaclaTrainer.cpp" />
+    <ClCompile Include="..\TerrainRL\learning\AsyncDMACETrainer.cpp" />
+    <ClCompile Include="..\TerrainRL\learning\AsyncDPGTrainer.cpp" />
+    <ClCompile Include="..\TerrainRL\learning\AsyncMACEDPGTrainer.cpp" />
+    <ClCompile Include="..\TerrainRL\learning\AsyncMACETrainer.cpp" />
     <ClCompile Include="..\TerrainRL\learning\AsyncQNetTrainer.cpp" />
     <ClCompile Include="..\TerrainRL\learning\AsyncTrainer.cpp" />
     <ClCompile Include="..\TerrainRL\learning\CaclaTrainer.cpp" />
@@ -402,6 +406,10 @@
     <ClInclude Include="..\TerrainRL\learning\ACTrainer.h" />
     <ClInclude Include="..\TerrainRL\learning\AsyncACTrainer.h" />
     <ClInclude Include="..\TerrainRL\learning\AsyncCaclaTrainer.h" />
+    <ClInclude Include="..\TerrainRL\learning\AsyncDMACETrainer.h" />
+    <ClInclude Include="..\TerrainRL\learning\AsyncDPGTrainer.h" />
+    <ClInclude Include="..\TerrainRL\learning\AsyncMACEDPGTrainer.h" />
+    <ClInclude Include="..\TerrainRL\learning\AsyncMACETrainer.h" />
     <ClInclude Include="..\TerrainRL\learning\AsyncQNetTrainer.h" />
     <ClInclude Include="..\TerrainRL\learning\AsyncSolver.h" />
     <ClInclude Include="..\TerrainRL\learning\AsyncTrainer.h" />

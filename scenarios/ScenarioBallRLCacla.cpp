@@ -57,8 +57,8 @@ void cScenarioBallRLCacla::BuildController(std::shared_ptr<cBallController>& out
 
 void cScenarioBallRLCacla::InitTrainer()
 {
-	//auto trainer = std::shared_ptr<cCaclaTrainer>(new cCaclaTrainer());
-	auto trainer = std::shared_ptr<cAsyncCaclaTrainer>(new cAsyncCaclaTrainer());
+	auto trainer = std::shared_ptr<cCaclaTrainer>(new cCaclaTrainer());
+	//auto trainer = std::shared_ptr<cAsyncCaclaTrainer>(new cAsyncCaclaTrainer());
 
 	mTrainerParams.mNetFile = mCriticNetFile;
 	mTrainerParams.mSolverFile = mCriticSolverFile;

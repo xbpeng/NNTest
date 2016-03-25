@@ -1,4 +1,5 @@
 #include "ScenarioBallRLMACE.h"
+#include "learning/AsyncMACETrainer.h"
 
 const int gTrainerPlaybackMemSize = 50000;
 
@@ -28,8 +29,9 @@ void cScenarioBallRLMACE::BuildController(std::shared_ptr<cBallController>& out_
 
 void cScenarioBallRLMACE::InitTrainer()
 {
-	std::shared_ptr<cMACETrainer> trainer = std::shared_ptr<cMACETrainer>(new cMACETrainer());
-	
+	//auto trainer = std::shared_ptr<cMACETrainer>(new cMACETrainer());
+	auto trainer = std::shared_ptr<cAsyncMACETrainer>(new cAsyncMACETrainer());
+
 	mTrainerParams.mNetFile = mNetFile;
 	mTrainerParams.mSolverFile = mSolverFile;
 	mTrainerParams.mPlaybackMemSize = gTrainerPlaybackMemSize;

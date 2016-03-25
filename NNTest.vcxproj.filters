@@ -725,6 +725,18 @@
     <ClCompile Include="..\TerrainRL\learning\AsyncCaclaTrainer.cpp">
       <Filter>Source Files\util</Filter>
     </ClCompile>
+    <ClCompile Include="..\TerrainRL\learning\AsyncMACETrainer.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\learning\AsyncDMACETrainer.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\learning\AsyncDPGTrainer.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\learning\AsyncMACEDPGTrainer.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\TerrainRL\util\Rand.h">
@@ -1175,6 +1187,18 @@
       <Filter>Source Files\util</Filter>
     </ClInclude>
     <ClInclude Include="..\TerrainRL\learning\AsyncCaclaTrainer.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\learning\AsyncMACETrainer.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\learning\AsyncDMACETrainer.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\learning\AsyncDPGTrainer.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\learning\AsyncMACEDPGTrainer.h">
       <Filter>Source Files\util</Filter>
     </ClInclude>
   </ItemGroup>
