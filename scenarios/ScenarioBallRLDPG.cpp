@@ -52,12 +52,12 @@ void cScenarioBallRLDPG::InitTrainer()
 	
 	Eigen::VectorXd critic_output_offset;
 	Eigen::VectorXd critic_output_scale;
-	BuildCriticOutputOffsetScale(trainer, critic_output_offset, critic_output_scale);
+	BuildCriticOutputOffsetScale(critic_output_offset, critic_output_scale);
 	trainer->SetCriticOutputOffsetScale(critic_output_offset, critic_output_scale);
 
 	Eigen::VectorXd actor_output_offset;
 	Eigen::VectorXd actor_output_scale;
-	BuildActorOutputOffsetScale(trainer, actor_output_offset, actor_output_scale);
+	BuildActorOutputOffsetScale(actor_output_offset, actor_output_scale);
 	trainer->SetActorOutputOffsetScale(actor_output_offset, actor_output_scale);
 	
 	const auto& ctrl = mBall.GetController();
@@ -131,6 +131,7 @@ void cScenarioBallRLDPG::NewCycleUpdate()
 	if (!mEnableTraining)
 	{
 		// hack huge hack
+		/*
 		const auto& ctrl = mBall.GetController();
 		auto trainer = std::static_pointer_cast<cDPGTrainer>(mTrainer);
 
@@ -151,5 +152,6 @@ void cScenarioBallRLDPG::NewCycleUpdate()
 			printf("%.3f\t", dpg[i]);
 		}
 		printf("\n");
+		*/
 	}
 }

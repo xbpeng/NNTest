@@ -719,6 +719,12 @@
     <ClCompile Include="..\TerrainRL\learning\AsyncACTrainer.cpp">
       <Filter>Source Files\util</Filter>
     </ClCompile>
+    <ClCompile Include="..\TerrainRL\learning\TrainerInterface.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\learning\AsyncCaclaTrainer.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\TerrainRL\util\Rand.h">
@@ -1166,6 +1172,9 @@
       <Filter>Source Files\util</Filter>
     </ClInclude>
     <ClInclude Include="..\TerrainRL\learning\AsyncACTrainer.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\learning\AsyncCaclaTrainer.h">
       <Filter>Source Files\util</Filter>
     </ClInclude>
   </ItemGroup>

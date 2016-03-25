@@ -313,15 +313,14 @@ void cScenarioArmTrain::InitTrainer()
 	mTrainer->Init(mTrainerParams);
 	SetupScale();
 
-	auto trainer = std::static_pointer_cast<cCaclaTrainer>(mTrainer);
 	if (mCriticModelFile != "")
 	{
-		trainer->LoadCriticModel(mCriticModelFile);
+		mTrainer->LoadCriticModel(mCriticModelFile);
 	}
 
 	if (mActorModelFile != "")
 	{
-		trainer->LoadActorModel(mActorModelFile);
+		mTrainer->LoadActorModel(mActorModelFile);
 	}
 }
 
@@ -343,29 +342,27 @@ void cScenarioArmTrain::SetupScale()
 
 void cScenarioArmTrain::SetupActorScale()
 {
-	auto trainer = std::static_pointer_cast<cCaclaTrainer>(mTrainer);
 	auto ctrl = GetController();
-	int state_size = trainer->GetInputSize();
-	int action_size = trainer->GetOutputSize();
+	int state_size = mTrainer->GetInputSize();
+	int action_size = mTrainer->GetOutputSize();
 
 	Eigen::VectorXd input_offset = Eigen::VectorXd::Zero(state_size);
 	Eigen::VectorXd input_scale = Eigen::VectorXd::Ones(state_size);
 	ctrl->BuildNNInputOffsetScale(input_offset, input_scale);
-	trainer->SetActorInputOffsetScale(input_offset, input_scale);
+	mTrainer->SetActorInputOffsetScale(input_offset, input_scale);
 
 	Eigen::VectorXd output_offset = Eigen::VectorXd::Zero(action_size);
 	Eigen::VectorXd output_scale = Eigen::VectorXd::Ones(action_size);
 	ctrl->BuildNNOutputOffsetScale(output_offset, output_scale);
-	trainer->SetActorOutputOffsetScale(output_offset, output_scale);
+	mTrainer->SetActorOutputOffsetScale(output_offset, output_scale);
 }
 
 void cScenarioArmTrain::SetupCriticScale()
 {
-	auto trainer = std::static_pointer_cast<cCaclaTrainer>(mTrainer);
 	auto ctrl = GetController();
-	int state_size = trainer->GetStateSize();
-	int critic_input_size = trainer->GetCriticInputSize();
-	int critic_output_size = trainer->GetCriticOutputSize();
+	int state_size = mTrainer->GetStateSize();
+	int critic_input_size = mTrainer->GetCriticInputSize();
+	int critic_output_size = mTrainer->GetCriticOutputSize();
 
 	Eigen::VectorXd input_offset = Eigen::VectorXd::Zero(critic_input_size);
 	Eigen::VectorXd input_scale = Eigen::VectorXd::Ones(critic_input_size);
@@ -373,11 +370,11 @@ void cScenarioArmTrain::SetupCriticScale()
 
 	assert(input_offset.size() == critic_input_size);
 	assert(input_scale.size() == critic_input_size);
-	trainer->SetCriticInputOffsetScale(input_offset, input_scale);
+	mTrainer->SetCriticInputOffsetScale(input_offset, input_scale);
 
 	Eigen::VectorXd critic_output_offset = -0.5 * Eigen::VectorXd::Ones(critic_output_size);
 	Eigen::VectorXd critic_output_scale = 2 * Eigen::VectorXd::Ones(critic_output_size);
-	trainer->SetCriticOutputOffsetScale(critic_output_offset, critic_output_scale);
+	mTrainer->SetCriticOutputOffsetScale(critic_output_offset, critic_output_scale);
 }
 
 void cScenarioArmTrain::UpdatePolicy()

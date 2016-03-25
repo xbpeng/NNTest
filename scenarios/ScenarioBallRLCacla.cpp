@@ -1,5 +1,6 @@
 #include "ScenarioBallRLCacla.h"
 #include "learning/ACLearner.h"
+#include "learning/AsyncCaclaTrainer.h"
 
 const int gTrainerPlaybackMemSize = 20000;
 
@@ -56,9 +57,8 @@ void cScenarioBallRLCacla::BuildController(std::shared_ptr<cBallController>& out
 
 void cScenarioBallRLCacla::InitTrainer()
 {
-	std::shared_ptr<cCaclaTrainer> trainer = std::shared_ptr<cCaclaTrainer>(new cCaclaTrainer());
-	//std::shared_ptr<cCaclaACTrainer> trainer = std::shared_ptr<cCaclaACTrainer>(new cCaclaACTrainer());
-	//std::shared_ptr<cCaclaTrainer> trainer = std::shared_ptr<cCaclaTrainer>(new cQCaclaTrainer());
+	//auto trainer = std::shared_ptr<cCaclaTrainer>(new cCaclaTrainer());
+	auto trainer = std::shared_ptr<cAsyncCaclaTrainer>(new cAsyncCaclaTrainer());
 
 	mTrainerParams.mNetFile = mCriticNetFile;
 	mTrainerParams.mSolverFile = mCriticSolverFile;
@@ -67,8 +67,8 @@ void cScenarioBallRLCacla::InitTrainer()
 
 	mTrainerParams.mPlaybackMemSize = gTrainerPlaybackMemSize;
 	mTrainerParams.mPoolSize = 1;
-	//mTrainerParams.mNumInitSamples = 10000;
-	mTrainerParams.mNumInitSamples = 100;
+	mTrainerParams.mNumInitSamples = 10000;
+	//mTrainerParams.mNumInitSamples = 100;
 	//mTrainerParams.mFreezeTargetIters = 100;
 
 	trainer->SetActorFiles(mSolverFile, mNetFile);
@@ -86,26 +86,24 @@ void cScenarioBallRLCacla::InitTrainer()
 	
 	Eigen::VectorXd critic_output_offset;
 	Eigen::VectorXd critic_output_scale;
-	BuildCriticOutputOffsetScale(trainer, critic_output_offset, critic_output_scale);
+	BuildCriticOutputOffsetScale(critic_output_offset, critic_output_scale);
 	trainer->SetCriticOutputOffsetScale(critic_output_offset, critic_output_scale);
 
 	Eigen::VectorXd actor_output_offset;
 	Eigen::VectorXd actor_output_scale;
-	BuildActorOutputOffsetScale(trainer, actor_output_offset, actor_output_scale);
+	BuildActorOutputOffsetScale(actor_output_offset, actor_output_scale);
 	trainer->SetActorOutputOffsetScale(actor_output_offset, actor_output_scale);
 	
 	mTrainer = trainer;
 }
 
-void cScenarioBallRLCacla::BuildCriticOutputOffsetScale(const std::shared_ptr<cCaclaTrainer>& trainer,
-														Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const
+void cScenarioBallRLCacla::BuildCriticOutputOffsetScale(Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const
 {
 	auto ctrl = std::static_pointer_cast<cBallControllerCacla>(mBall.GetController());
 	ctrl->BuildCriticOutputOffsetScale(out_offset, out_scale);
 }
 
-void cScenarioBallRLCacla::BuildActorOutputOffsetScale(const std::shared_ptr<cCaclaTrainer>& trainer,
-														Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const
+void cScenarioBallRLCacla::BuildActorOutputOffsetScale(Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const
 {
 	auto ctrl = std::static_pointer_cast<cBallControllerCacla>(mBall.GetController());
 	ctrl->BuildActorOutputOffsetScale(out_offset, out_scale);
