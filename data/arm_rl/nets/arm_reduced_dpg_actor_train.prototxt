@@ -1,7 +1,7 @@
 name: "Arm"
 
 layer {
-  name: "memory_data"
+  name: "data"
   type: "MemoryData"
   top: "data"
   top: "label"
