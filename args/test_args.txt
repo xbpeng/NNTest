@@ -95,7 +95,7 @@
 -num_exp_anneal_iters= 10000
 //-num_exp_anneal_iters= 1
 
--trainer_int_iter= 500
+-trainer_int_iter= 1000
 -trainer_int_output= output/intermediate/trainer_int_model.h5
 
 -arm_pretrain= false

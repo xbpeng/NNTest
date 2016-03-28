@@ -26,7 +26,7 @@
 -init_exp_rate= 1
 -num_exp_anneal_iters= 30000
 
-//-trainer_int_iter= 500
+//-trainer_int_iter= 2000
 //-trainer_int_output= output/intermediate/trainer_int_model.h5
 
 -arm_pretrain= false
