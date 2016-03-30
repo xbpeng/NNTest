@@ -19,8 +19,6 @@ protected:
 	virtual void BuildTrainer(std::shared_ptr<cNeuralNetTrainer>& out_trainer) const;
 
 	virtual void SetupCriticScale();
-	virtual void SetupActionBounds();
-	virtual void BuildDPGBounds(Eigen::VectorXd& out_min, Eigen::VectorXd& out_max) const;
-
+	
 	virtual void PrintInfo() const;
 };

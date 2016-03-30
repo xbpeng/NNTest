@@ -41,12 +41,15 @@ void cScenarioArmTrainDMACE::InitTrainer()
 	mTrainerParams.mPoolSize = 1;
 	mTrainerParams.mNumInitSamples = 20000;
 	mTrainerParams.mInitInputOffsetScale = false;
-	mTrainerParams.mFreezeTargetIters = 500;
+	mTrainerParams.mFreezeTargetIters = 200;
 
 	auto ctrl = GetMACECtrl();
 	trainer->SetNumActionFrags(ctrl->GetNumActionFrags());
 	trainer->SetActionFragSize(ctrl->GetActionFragSize());
 	trainer->SetActorFiles(mActorSolverFile, mActorNetFile);
+	trainer->SetMode(cCaclaTrainer::eModeCacla);
+	trainer->SetTDScale(10);
+
 	trainer->Init(mTrainerParams);
 
 	if (mCriticModelFile != "")
@@ -60,6 +63,7 @@ void cScenarioArmTrainDMACE::InitTrainer()
 	}
 
 	SetupScale();
+	SetupActionBounds();
 }
 
 void cScenarioArmTrainDMACE::InitLearner()

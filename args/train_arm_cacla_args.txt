@@ -14,6 +14,7 @@
 //-critic_model_file= data/arm_rl/models/arm_cacla_critic_small_init_model.h5
 
 //-solver_file= data/arm_rl/nets/arm_reduced_actor_solver.prototxt
+//-solver_file= data/arm_rl/nets/arm_reduced_cacla_td_actor_solver.prototxt
 //-net_file= data/arm_rl/nets/arm_reduced_actor_deploy.prototxt
 
 //-critic_solver_file= data/arm_rl/nets/arm_reduced_cacla_critic_solver.prototxt

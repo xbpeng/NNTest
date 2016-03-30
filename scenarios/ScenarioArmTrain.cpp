@@ -297,8 +297,8 @@ void cScenarioArmTrain::BuildTrainer(std::shared_ptr<cNeuralNetTrainer>& out_tra
 {
 	auto trainer = std::shared_ptr<cCaclaTrainer>(new cCaclaTrainer());
 	trainer->SetActorFiles(mActorSolverFile, mActorNetFile);
-	trainer->SetMode(cCaclaTrainer::eModeTD);
-	trainer->SetTDScale(0.1);
+	trainer->SetMode(cCaclaTrainer::eModeCacla);
+	trainer->SetTDScale(1);
 	out_trainer = trainer;
 }
 
@@ -326,6 +326,8 @@ void cScenarioArmTrain::InitTrainer()
 	{
 		mTrainer->LoadActorModel(mActorModelFile);
 	}
+
+	SetupActionBounds();
 }
 
 void cScenarioArmTrain::InitLearner()
@@ -336,6 +338,22 @@ void cScenarioArmTrain::InitLearner()
 	cNeuralNet& net = ctrl->GetNet();
 	mLearner->SetNet(&net);
 	mLearner->Init();
+}
+
+void cScenarioArmTrain::SetupActionBounds()
+{
+	auto trainer = std::static_pointer_cast<cCaclaTrainer>(mTrainer);
+
+	Eigen::VectorXd action_min;
+	Eigen::VectorXd action_max;
+	BuildActionBounds(action_min, action_max);
+	trainer->SetActionBounds(action_min, action_max);
+}
+
+void cScenarioArmTrain::BuildActionBounds(Eigen::VectorXd& out_min, Eigen::VectorXd& out_max) const
+{
+	auto ctrl = GetController();
+	ctrl->BuildActionBounds(out_min, out_max);
 }
 
 void cScenarioArmTrain::SetupScale()
@@ -429,6 +447,10 @@ double cScenarioArmTrain::CalcExpTemp() const
 {
 	int iters = GetIter();
 	double lerp = static_cast<double>(iters) / mNumAnnealIters;
+
+	// hack
+	//lerp = 1 - 1 / (1 + 0.0001 * iters);
+
 	lerp = cMathUtil::Clamp(lerp, 0.0, 1.0);
 	double exp_rate = (1 - lerp) * mInitExpTemp + lerp * mExpTemp;
 	return exp_rate;

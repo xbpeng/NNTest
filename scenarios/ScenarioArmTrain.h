@@ -86,6 +86,9 @@ protected:
 	virtual void InitTrainer();
 	virtual void InitLearner();
 
+	virtual void SetupActionBounds();
+	virtual void BuildActionBounds(Eigen::VectorXd& out_min, Eigen::VectorXd& out_max) const;
+
 	virtual void SetupScale();
 	virtual void SetupActorScale();
 	virtual void SetupCriticScale();

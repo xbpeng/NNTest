@@ -161,22 +161,6 @@ void cScenarioArmTrainDPG::SetupCriticScale()
 	trainer->SetCriticOutputOffsetScale(critic_output_offset, critic_output_scale);
 }
 
-void cScenarioArmTrainDPG::SetupActionBounds()
-{
-	auto trainer = std::static_pointer_cast<cDPGTrainer>(mTrainer);
-
-	Eigen::VectorXd action_min;
-	Eigen::VectorXd action_max;
-	BuildDPGBounds(action_min, action_max);
-	trainer->SetActionBounds(action_min, action_max);
-}
-
-void cScenarioArmTrainDPG::BuildDPGBounds(Eigen::VectorXd& out_min, Eigen::VectorXd& out_max) const
-{
-	auto ctrl = GetController();
-	ctrl->BuildActionBounds(out_min, out_max);
-}
-
 void cScenarioArmTrainDPG::PrintInfo() const
 {
 	cScenarioArmTrain::PrintInfo();

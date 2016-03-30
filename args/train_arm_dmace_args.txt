@@ -1,7 +1,7 @@
 -scenario= arm_train_dmace
 -playback_speed= 60
 
--character_file= data/arm_rl/arm.txt
+-character_file= data/arm_rl/arm_small.txt
 
 //-solver_file= data/arm_rl/nets/arm_reduced_mace3_small_solver.prototxt
 //-net_file= data/arm_rl/nets/arm_reduced_mace3_small_deploy.prototxt
@@ -13,8 +13,14 @@
 //-critic_model_file= data/arm_rl/models/arm_reduced_dmace3_critic_small_init_model.h5
 //-critic_model_file= data/arm_rl/models/arm_reduced_dmace3_critic_small_model.h5
 
--solver_file= data/arm_rl/nets/arm_reduced_mace3_actor_solver.prototxt
--net_file= data/arm_rl/nets/arm_reduced_mace3_actor_deploy.prototxt
+-solver_file= data/arm_rl/nets/arm_reduced_mace1_small_solver.prototxt
+-net_file= data/arm_rl/nets/arm_reduced_mace1_small_deploy.prototxt
+
+-critic_solver_file= data/arm_rl/nets/arm_reduced_dmace3_critic_small_solver.prototxt
+-critic_net_file= data/arm_rl/nets/arm_reduced_dmace3_critic_small_deploy.prototxt
+
+//-solver_file= data/arm_rl/nets/arm_reduced_mace3_actor_solver.prototxt
+//-net_file= data/arm_rl/nets/arm_reduced_mace3_actor_deploy.prototxt
 //-model_file= data/arm_rl/models/arm_reduced_dmace3_actor_init_model.h5
 //-model_file= data/arm_rl/models/arm_reduced_dmace_model.h5
 //-model_file= data/arm_rl/models/arm_reduced_dmace_torque_actor_model.h5
@@ -25,10 +31,10 @@
 //-critic_model_file= data/arm_rl/models/arm_reduced_dmace_model_critic.h5
 //-critic_model_file= data/arm_rl/models/arm_reduced_dmace_pd_critic_model.h5
 
--critic_solver_file= data/arm_rl/nets/arm_reduced_dmace3_critic_solver.prototxt
--critic_net_file= data/arm_rl/nets/arm_reduced_dmace3_critic_deploy.prototxt
+//-critic_solver_file= data/arm_rl/nets/arm_reduced_dmace3_critic_solver.prototxt
+//-critic_net_file= data/arm_rl/nets/arm_reduced_dmace3_critic_deploy.prototxt
 
--arm_ctrl_type= pd_mace
+-arm_ctrl_type= mace
 
 -exp_rate= 0.2
 -exp_temp= 0.025
@@ -36,7 +42,7 @@
 -init_exp_temp= 20
 -num_exp_anneal_iters= 50000
 
--trainer_int_iter= 2000
--trainer_int_output= output/intermediate/trainer_int_model.h5
+//-trainer_int_iter= 2000
+//-trainer_int_output= output/intermediate/trainer_int_model.h5
 
 -output_net_file= output/arm_reduced_dmace_model.h5
