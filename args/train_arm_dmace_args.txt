@@ -1,7 +1,7 @@
 -scenario= arm_train_dmace
 -playback_speed= 60
 
--character_file= data/arm_rl/arm_small.txt
+-character_file= data/arm_rl/arm.txt
 
 //-solver_file= data/arm_rl/nets/arm_reduced_mace3_small_solver.prototxt
 //-net_file= data/arm_rl/nets/arm_reduced_mace3_small_deploy.prototxt
@@ -13,17 +13,20 @@
 //-critic_model_file= data/arm_rl/models/arm_reduced_dmace3_critic_small_init_model.h5
 //-critic_model_file= data/arm_rl/models/arm_reduced_dmace3_critic_small_model.h5
 
--solver_file= data/arm_rl/nets/arm_reduced_mace1_small_solver.prototxt
--net_file= data/arm_rl/nets/arm_reduced_mace1_small_deploy.prototxt
+//-solver_file= data/arm_rl/nets/arm_reduced_mace1_small_solver.prototxt
+//-net_file= data/arm_rl/nets/arm_reduced_mace1_small_deploy.prototxt
 
--critic_solver_file= data/arm_rl/nets/arm_reduced_dmace3_critic_small_solver.prototxt
--critic_net_file= data/arm_rl/nets/arm_reduced_dmace3_critic_small_deploy.prototxt
+//-critic_solver_file= data/arm_rl/nets/arm_reduced_dmace3_critic_small_solver.prototxt
+//-critic_net_file= data/arm_rl/nets/arm_reduced_dmace3_critic_small_deploy.prototxt
 
 //-solver_file= data/arm_rl/nets/arm_reduced_mace3_actor_solver.prototxt
 //-net_file= data/arm_rl/nets/arm_reduced_mace3_actor_deploy.prototxt
 //-model_file= data/arm_rl/models/arm_reduced_dmace3_actor_init_model.h5
 //-model_file= data/arm_rl/models/arm_reduced_dmace_model.h5
 //-model_file= data/arm_rl/models/arm_reduced_dmace_torque_actor_model.h5
+
+-solver_file= data/arm_rl/nets/arm_reduced_mace3_actor_solver.prototxt
+-net_file= data/arm_rl/nets/arm_reduced_mace3_actor_deploy.prototxt
 
 //-critic_solver_file= data/arm_rl/nets/arm_reduced_mace3_critic_solver.prototxt
 //-critic_net_file= data/arm_rl/nets/arm_reduced_mace3_critic_deploy.prototxt
@@ -33,6 +36,9 @@
 
 //-critic_solver_file= data/arm_rl/nets/arm_reduced_dmace3_critic_solver.prototxt
 //-critic_net_file= data/arm_rl/nets/arm_reduced_dmace3_critic_deploy.prototxt
+
+-critic_solver_file= data/arm_rl/nets/arm_reduced_cacla_critic_solver.prototxt
+-critic_net_file= data/arm_rl/nets/arm_reduced_cacla_critic_deploy.prototxt
 
 -arm_ctrl_type= mace
 

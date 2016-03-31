@@ -447,13 +447,18 @@ double cScenarioArmTrain::CalcExpTemp() const
 {
 	int iters = GetIter();
 	double lerp = static_cast<double>(iters) / mNumAnnealIters;
-
-	// hack
-	//lerp = 1 - 1 / (1 + 0.0001 * iters);
-
 	lerp = cMathUtil::Clamp(lerp, 0.0, 1.0);
 	double exp_rate = (1 - lerp) * mInitExpTemp + lerp * mExpTemp;
 	return exp_rate;
+
+	/*
+	int iters = GetIter();
+	double lerp = static_cast<double>(iters) / mNumAnnealIters;
+	lerp = cMathUtil::Clamp(lerp, 0.0, 1.0);
+	double exp_temp = (1 - lerp) / mInitExpTemp + lerp / mExpTemp;
+	exp_temp = 1 / exp_temp;
+	return exp_temp;
+	*/
 }
 
 bool cScenarioArmTrain::CheckOffPolicy() const

@@ -47,7 +47,7 @@ void cScenarioArmTrainDMACE::InitTrainer()
 	trainer->SetNumActionFrags(ctrl->GetNumActionFrags());
 	trainer->SetActionFragSize(ctrl->GetActionFragSize());
 	trainer->SetActorFiles(mActorSolverFile, mActorNetFile);
-	trainer->SetMode(cCaclaTrainer::eModeCacla);
+	trainer->SetMode(cCaclaTrainer::eModeTD);
 	trainer->SetTDScale(10);
 
 	trainer->Init(mTrainerParams);
