@@ -15,7 +15,7 @@ const double gTargetRadius = 0.15;
 const tVector gLineColor = tVector(0, 0, 0, 1);
 const tVector gFillTint = tVector(1, 1, 1, 1);
 const double gTorqueLim = 300;
-const double gCtrlUpdatePeriod = 1 / 120.0;
+const double gCtrlUpdatePeriod = 1 / 30.0;
 
 const double gLinearDamping = 0;
 const double gAngularDamping = 0;
