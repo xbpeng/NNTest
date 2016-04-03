@@ -297,7 +297,7 @@ void cScenarioArmTrain::BuildTrainer(std::shared_ptr<cNeuralNetTrainer>& out_tra
 {
 	auto trainer = std::shared_ptr<cCaclaTrainer>(new cCaclaTrainer());
 	trainer->SetActorFiles(mActorSolverFile, mActorNetFile);
-	trainer->SetMode(cCaclaTrainer::eModePTD);
+	trainer->SetMode(cCaclaTrainer::eModeCacla);
 	trainer->SetTDScale(10);
 	out_trainer = trainer;
 }
@@ -311,8 +311,9 @@ void cScenarioArmTrain::InitTrainer()
 	mTrainerParams.mInitInputOffsetScale = false;
 	mTrainerParams.mNumInitSamples = 20000;
 	mTrainerParams.mFreezeTargetIters = 200;
-	mTrainerParams.mNumInitSamples = 200;
 	//mTrainerParams.mFreezeTargetIters = 5;
+
+	//mTrainerParams.mRewardMode = cTrainerInterface::eRewardModeAvg;
 
 	mTrainer->Init(mTrainerParams);
 	SetupScale();
@@ -395,6 +396,7 @@ void cScenarioArmTrain::SetupCriticScale()
 	mTrainer->SetCriticInputOffsetScale(input_offset, input_scale);
 
 	Eigen::VectorXd critic_output_offset = -0.5 * Eigen::VectorXd::Ones(critic_output_size);
+	//Eigen::VectorXd critic_output_offset = Eigen::VectorXd::Zero(critic_output_size);
 	Eigen::VectorXd critic_output_scale = 2 * Eigen::VectorXd::Ones(critic_output_size);
 	mTrainer->SetCriticOutputOffsetScale(critic_output_offset, critic_output_scale);
 }
