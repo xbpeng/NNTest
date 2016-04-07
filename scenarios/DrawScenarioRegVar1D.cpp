@@ -24,10 +24,11 @@ void cDrawScenarioRegVar1D::DrawNetEval() const
 
 	const tVector col0 = tVector(0, 0, 1, 0.75);
 	const tVector col1 = tVector(0, 0.5, 0, 0.75);
-	const double weight = 3;
+	const double weight0 = 3;
+	const double weight1 = 2;
+	const int dash_skip = 4;
 
 	const auto& eval_pts = mScene->GetEvalPts();
-	cDrawUtil::SetLineWidth(weight);
 
 	int num_pts = static_cast<int>(eval_pts.size());
 	for (int i = 0; i < (num_pts - 1); ++i)
@@ -35,11 +36,16 @@ void cDrawScenarioRegVar1D::DrawNetEval() const
 		const tVector& a = eval_pts[i];
 		const tVector& b = eval_pts[i + 1];
 
+		cDrawUtil::SetLineWidth(weight0);
 		cDrawUtil::SetColor(col0);
 		cDrawUtil::DrawLine(tVector(a[0], a[1], 0, 0), tVector(b[0], b[1], 0, 0));
 
-		cDrawUtil::SetColor(col1);
-		cDrawUtil::DrawLine(tVector(a[0], a[1] + 2 * a[2], 0, 0), tVector(b[0], b[1] + 2 * b[2], 0, 0));
-		cDrawUtil::DrawLine(tVector(a[0], a[1] - 2 * a[2], 0, 0), tVector(b[0], b[1] - 2 * b[2], 0, 0));
+		if ((i % dash_skip) <= (dash_skip / 2))
+		{
+			cDrawUtil::SetLineWidth(weight1);
+			cDrawUtil::SetColor(col1);
+			cDrawUtil::DrawLine(tVector(a[0], a[1] + 2 * a[2], 0, 0), tVector(b[0], b[1] + 2 * b[2], 0, 0));
+			cDrawUtil::DrawLine(tVector(a[0], a[1] - 2 * a[2], 0, 0), tVector(b[0], b[1] - 2 * b[2], 0, 0));
+		}
 	}
 }

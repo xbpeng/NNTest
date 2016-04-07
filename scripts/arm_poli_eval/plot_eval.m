@@ -16,7 +16,7 @@ files = {};
 %files{1} = 'pixel_nn_torque_eval.txt';
 %files{2} = 'pixel_torque_no_pose.txt';
 
-files{end + 1} = {'gps_eval.txt', 'GPS', 1000};
+%files{end + 1} = {'gps_eval.txt', 'GPS', 1000};
 %files{end + 1} = {'dmace_torque_eval.txt', 'MACE Torque', 2000};
 %files{end + 1} = {'dmace_pd_eval.txt', 'MACE PD', 2000};
 %files{end + 1} = {'dmace_torque_eval1.txt', 'MACE Torque1', 2000};
@@ -24,9 +24,9 @@ files{end + 1} = {'gps_eval.txt', 'GPS', 1000};
 %files{end + 1} = {'dmace_torque_eval2.txt', 'MACE Torque2', 2000};
 %files{end + 1} = {'dmace_pd_eval2.txt', 'MACE PD2', 2000};
 
-%files{end + 1} = {'dmace_td_eval.txt', 'DMACE TD', 2000};
-%files{end + 1} = {'dmace_ptd_eval.txt', 'DMACE PTD', 2000};
-files{end + 1} = {'dmace_cacla_eval.txt', 'DMACE CACLA', 2000};
+%files{end + 1} = {'dmace_td_eval.txt', 'Mixture TD-AC', 2000};
+%files{end + 1} = {'dmace_ptd_eval.txt', 'Mixture PTD-AC', 2000};
+files{end + 1} = {'dmace_cacla_eval.txt', 'Mixture CACLA', 2000};
 
 %files{end + 1} = {'td_eval.txt', 'TD', 2000};
 %files{end + 1} = {'ptd_eval.txt', 'PTD', 2000};
@@ -64,7 +64,7 @@ hold off;
 xlabel('Iterations');
 ylabel('Average Tracking Error (m)');
 title('Performance vs Training Iterations');
-%xlim([0, 50000]);
+xlim([0, 300000]);
 ylim([0, 1.8]);
 
 legend(names);

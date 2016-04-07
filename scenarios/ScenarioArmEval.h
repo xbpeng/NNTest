@@ -36,11 +36,27 @@ protected:
 	FILE* mActionFile;
 	bool mOutputData;
 
+	bool mRecordActions;
+	std::string mActionOutputFile;
+	bool mRecordActionIDState;
+	std::string mActionIDStateOutputFile;
+
+	virtual void UpdateCharacter(double time_step);
+
 	virtual void UpdateTrackError();
 	virtual void GetRandTargetMinMaxTime(double& out_min, double& out_max) const;
 	virtual void GetRandPoseMinMaxTime(double& out_min, double& out_max) const;
 	virtual double GetRandTargetMaxDist() const;
+	virtual std::shared_ptr<cArmNNController> GetController() const;
 
 	virtual void OutputResult(const std::string& filename) const;
 	virtual void OutputData() const;
+
+	virtual void InitActionRecord(const std::string& out_file) const;
+	virtual bool EnableRecordActions() const;
+	virtual void RecordAction(const std::string& out_file);
+	
+	virtual void InitActionIDStateRecord(const std::string& out_file) const;
+	virtual bool EnableRecordActionIDState() const;
+	virtual void RecordActionIDState(const std::string& out_file);
 };
