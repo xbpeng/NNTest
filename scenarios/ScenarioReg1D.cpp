@@ -11,7 +11,8 @@ cScenarioReg1D::~cScenarioReg1D()
 
 void cScenarioReg1D::Init()
 {
-	SetupNet();
+	InitTrainer();
+	InitLearner();
 }
 
 void cScenarioReg1D::ParseArgs(const cArgParser& parser)
@@ -26,7 +27,7 @@ void cScenarioReg1D::Reset()
 {
 	mPts.clear();
 	mEvalPts.clear();
-	SetupNet();
+	mTrainer->Reset();
 }
 
 void cScenarioReg1D::Clear()
@@ -34,7 +35,7 @@ void cScenarioReg1D::Clear()
 	mSolverFile = "";
 	mNetFile = "";
 	mPts.clear();
-	mNet.Clear();
+	mTrainer.reset();
 	mEvalPts.clear();
 	mNumEvalPts = 100;
 	mPassesPerStep = 100;
@@ -57,6 +58,9 @@ const tVector& cScenarioReg1D::GetPt(int i) const
 void cScenarioReg1D::AddPt(const tVector& pt)
 {
 	mPts.push_back(pt);
+	tExpTuple tuple;
+	BuildTuple(pt, tuple);
+	mTrainer->AddTuple(tuple);
 }
 
 const std::vector<tVector, Eigen::aligned_allocator<tVector>>& cScenarioReg1D::GetEvalPts() const
@@ -66,19 +70,8 @@ const std::vector<tVector, Eigen::aligned_allocator<tVector>>& cScenarioReg1D::G
 
 void cScenarioReg1D::TrainNet()
 {
-	if (GetNumPts() > 0)
-	{
-		cNeuralNet::tProblem prob;
-		BuildProb(prob);
-
-		Eigen::VectorXd offset;
-		Eigen::VectorXd scale;
-		mNet.CalcOffsetScale(prob.mX, offset, scale);
-		mNet.SetInputOffsetScale(offset, scale);
-
-		mNet.Train(prob);
-		EvalNet();
-	}
+	mTrainer->Train();
+	EvalNet();
 }
 
 std::string cScenarioReg1D::GetName() const
@@ -86,32 +79,61 @@ std::string cScenarioReg1D::GetName() const
 	return "Regression 1D";
 }
 
-void cScenarioReg1D::SetupNet()
+void cScenarioReg1D::InitTrainer()
 {
-	mNet.Clear();
-	mNet.LoadNet(mNetFile);
-	mNet.LoadSolver(mSolverFile);
+	mTrainer = std::shared_ptr<cNeuralNetTrainer>(new cNeuralNetTrainer());
+
+	cNeuralNetTrainer::tParams trainer_params;
+	trainer_params.mNetFile = mNetFile;
+	trainer_params.mSolverFile = mSolverFile;
+	trainer_params.mPlaybackMemSize = 10000;
+	trainer_params.mPoolSize = 1;
+	trainer_params.mNumInitSamples = 0;
+	trainer_params.mInitInputOffsetScale = false;
+
+	mTrainer->Init(trainer_params);
+	SetupScale();
 }
 
-void cScenarioReg1D::BuildProb(cNeuralNet::tProblem& out_prob) const
+void cScenarioReg1D::InitLearner()
 {
-	int num_data = GetNumPts();
-	const int x_size = mNet.GetInputSize();
-	const int y_size = mNet.GetOutputSize();
+	mTrainer->RequestLearner(mLearner);
+}
 
-	out_prob.mX.resize(num_data, x_size);
-	out_prob.mY.resize(num_data, y_size);
-	out_prob.mPassesPerStep = mPassesPerStep;
+void cScenarioReg1D::SetupScale()
+{
+	int state_size = mTrainer->GetStateSize();
+	int action_size = mTrainer->GetActionSize();
+	
+	Eigen::VectorXd offset = Eigen::VectorXd::Zero(state_size);
+	Eigen::VectorXd scale = Eigen::VectorXd::Ones(state_size);
+	mTrainer->SetInputOffsetScale(offset, scale);
 
-	for (int i = 0; i < num_data; ++i)
+	Eigen::VectorXd output_offset = Eigen::VectorXd::Zero(action_size);
+	Eigen::VectorXd output_scale = Eigen::VectorXd::Ones(action_size);
+	mTrainer->SetOutputOffsetScale(output_offset, output_scale);
+}
+
+void cScenarioReg1D::BuildTuple(const tVector& pt, tExpTuple& out_tuple) const
+{
+	int state_size = mTrainer->GetStateSize();
+	int action_size = mTrainer->GetActionSize();
+
+	out_tuple.mStateBeg.resize(state_size);
+	out_tuple.mAction.resize(action_size);
+
+	for (int i = 0; i < state_size; ++i)
 	{
-		const tVector& pt = GetPt(i);
-		auto curr_x = out_prob.mX.row(i);
-		auto curr_y = out_prob.mY.row(i);
-
-		curr_x(0) = pt(0);
-		curr_y(0) = pt(1);
+		out_tuple.mStateBeg[i] = cMathUtil::RandDouble(-1, 1);
 	}
+	for (int i = 0; i < action_size; ++i)
+	{
+		out_tuple.mAction[i] = cMathUtil::RandDouble(-1, 1);
+	}
+
+	out_tuple.mStateBeg[0] = pt[0];
+	out_tuple.mAction[0] = pt[1];
+	out_tuple.mStateEnd = out_tuple.mStateBeg;
 }
 
 void cScenarioReg1D::EvalNet()
@@ -126,13 +148,15 @@ void cScenarioReg1D::EvalNet()
 		max_x += pad;
 
 		mEvalPts.resize(mNumEvalPts);
-		Eigen::VectorXd x = Eigen::VectorXd::Zero(mNet.GetInputSize());
-		Eigen::VectorXd y = Eigen::VectorXd::Zero(mNet.GetOutputSize());
+
+		const auto& net = GetNet();
+		Eigen::VectorXd x = Eigen::VectorXd::Zero(net->GetInputSize());
+		Eigen::VectorXd y = Eigen::VectorXd::Zero(net->GetOutputSize());
 
 		for (int i = 0; i < mNumEvalPts; ++i)
 		{
 			x(0) = static_cast<double>(i) / (mNumEvalPts - 1) * (max_x - min_x) + min_x;
-			mNet.Eval(x, y);
+			net->Eval(x, y);
 			mEvalPts[i] = tVector(x(0), y(0), 0, 0);
 		}
 	}
@@ -162,4 +186,9 @@ void cScenarioReg1D::FindMinMaxX(double& out_min_x, double& out_max_x) const
 		out_min_x = 0;
 		out_max_x = 0;
 	}
+}
+
+const std::unique_ptr<cNeuralNet>& cScenarioReg1D::GetNet() const
+{
+	return mTrainer->GetNet();
 }

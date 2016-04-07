@@ -464,12 +464,6 @@
     <ClCompile Include="..\TerrainRL\learning\NeuralNetTrainer.cpp">
       <Filter>Source Files\util</Filter>
     </ClCompile>
-    <ClCompile Include="scenarios\ScenarioReg1DTrainer.cpp">
-      <Filter>Source Files\scenarios</Filter>
-    </ClCompile>
-    <ClCompile Include="scenarios\DrawScenarioReg1DTrainer.cpp">
-      <Filter>Source Files\scenarios</Filter>
-    </ClCompile>
     <ClCompile Include="stuff\ArmPDQPController.cpp">
       <Filter>Source Files\stuff</Filter>
     </ClCompile>
@@ -924,12 +918,6 @@
     </ClInclude>
     <ClInclude Include="..\TerrainRL\learning\NeuralNetTrainer.h">
       <Filter>Source Files\util</Filter>
-    </ClInclude>
-    <ClInclude Include="scenarios\ScenarioReg1DTrainer.h">
-      <Filter>Source Files\scenarios</Filter>
-    </ClInclude>
-    <ClInclude Include="scenarios\DrawScenarioReg1DTrainer.h">
-      <Filter>Source Files\scenarios</Filter>
     </ClInclude>
     <ClInclude Include="stuff\ArmPDQPController.h">
       <Filter>Source Files\stuff</Filter>

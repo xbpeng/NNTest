@@ -19,12 +19,20 @@ files = {};
 files{end + 1} = {'gps_eval.txt', 'GPS', 1000};
 %files{end + 1} = {'dmace_torque_eval.txt', 'MACE Torque', 2000};
 %files{end + 1} = {'dmace_pd_eval.txt', 'MACE PD', 2000};
-files{end + 1} = {'dmace_torque_eval1.txt', 'MACE Torque1', 2000};
-files{end + 1} = {'dmace_pd_eval1.txt', 'MACE PD1', 2000};
-files{end + 1} = {'dmace_torque_eval2.txt', 'MACE Torque2', 2000};
-files{end + 1} = {'dmace_pd_eval2.txt', 'MACE PD2', 2000};
+%files{end + 1} = {'dmace_torque_eval1.txt', 'MACE Torque1', 2000};
+%files{end + 1} = {'dmace_pd_eval1.txt', 'MACE PD1', 2000};
+%files{end + 1} = {'dmace_torque_eval2.txt', 'MACE Torque2', 2000};
+%files{end + 1} = {'dmace_pd_eval2.txt', 'MACE PD2', 2000};
 
-lines = {'b-', 'r-', 'm-', 'k-'};
+%files{end + 1} = {'dmace_td_eval.txt', 'DMACE TD', 2000};
+%files{end + 1} = {'dmace_ptd_eval.txt', 'DMACE PTD', 2000};
+files{end + 1} = {'dmace_cacla_eval.txt', 'DMACE CACLA', 2000};
+
+%files{end + 1} = {'td_eval.txt', 'TD', 2000};
+%files{end + 1} = {'ptd_eval.txt', 'PTD', 2000};
+files{end + 1} = {'cacla_eval.txt', 'CACLA', 2000};
+
+lines = {'b-', 'r-', 'm-', 'k-', 'b--', 'r--', 'm--', 'k--'};
 
 data = {};
 

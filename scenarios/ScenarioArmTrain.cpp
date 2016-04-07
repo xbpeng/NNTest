@@ -297,8 +297,8 @@ void cScenarioArmTrain::BuildTrainer(std::shared_ptr<cNeuralNetTrainer>& out_tra
 {
 	auto trainer = std::shared_ptr<cCaclaTrainer>(new cCaclaTrainer());
 	trainer->SetActorFiles(mActorSolverFile, mActorNetFile);
-	trainer->SetMode(cCaclaTrainer::eModeCacla);
-	trainer->SetTDScale(10);
+	trainer->SetMode(cCaclaTrainer::eModeTD);
+	trainer->SetTDScale(20);
 	out_trainer = trainer;
 }
 

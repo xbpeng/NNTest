@@ -1,0 +1,6 @@
+-scenario= reg_1d
+-solver_file= data/reg1D/reg1D_solver.prototxt
+-net_file= data/reg1D/reg1D_deploy.prototxt
+-pases_per_step= 20
+
+-num_evals_pts= 200

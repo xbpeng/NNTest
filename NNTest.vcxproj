@@ -356,7 +356,6 @@
     <ClCompile Include="scenarios\DrawScenarioBallRLMACE.cpp" />
     <ClCompile Include="scenarios\DrawScenarioBallRLMACEDPG.cpp" />
     <ClCompile Include="scenarios\DrawScenarioReg1D.cpp" />
-    <ClCompile Include="scenarios\DrawScenarioReg1DTrainer.cpp" />
     <ClCompile Include="scenarios\ScenarioArm.cpp" />
     <ClCompile Include="scenarios\ScenarioArmEval.cpp" />
     <ClCompile Include="scenarios\ScenarioArmRL.cpp" />
@@ -372,7 +371,6 @@
     <ClCompile Include="scenarios\ScenarioBallRLMACE.cpp" />
     <ClCompile Include="scenarios\ScenarioBallRLMACEDPG.cpp" />
     <ClCompile Include="scenarios\ScenarioReg1D.cpp" />
-    <ClCompile Include="scenarios\ScenarioReg1DTrainer.cpp" />
     <ClCompile Include="stuff\ArmController.cpp" />
     <ClCompile Include="stuff\ArmControllerMACE.cpp" />
     <ClCompile Include="stuff\ArmNNController.cpp" />
@@ -512,7 +510,6 @@
     <ClInclude Include="scenarios\DrawScenarioBallRLMACE.h" />
     <ClInclude Include="scenarios\DrawScenarioBallRLMACEDPG.h" />
     <ClInclude Include="scenarios\DrawScenarioReg1D.h" />
-    <ClInclude Include="scenarios\DrawScenarioReg1DTrainer.h" />
     <ClInclude Include="scenarios\ScenarioArm.h" />
     <ClInclude Include="scenarios\ScenarioArmEval.h" />
     <ClInclude Include="scenarios\ScenarioArmRL.h" />
@@ -528,7 +525,6 @@
     <ClInclude Include="scenarios\ScenarioBallRLMACE.h" />
     <ClInclude Include="scenarios\ScenarioBallRLMACEDPG.h" />
     <ClInclude Include="scenarios\ScenarioReg1D.h" />
-    <ClInclude Include="scenarios\ScenarioReg1DTrainer.h" />
     <ClInclude Include="stuff\ArmController.h" />
     <ClInclude Include="stuff\ArmControllerMACE.h" />
     <ClInclude Include="stuff\ArmNNController.h" />
