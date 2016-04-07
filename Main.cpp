@@ -11,6 +11,7 @@
 #include "util/ArgParser.h"
 #include "scenarios/DrawScenario.h"
 #include "scenarios/DrawScenarioReg1D.h"
+#include "scenarios/DrawScenarioRegVar1D.h"
 #include "scenarios/DrawScenarioBallRL.h"
 #include "scenarios/DrawScenarioBallRLCacla.h"
 #include "scenarios/DrawScenarioBallRLMACE.h"
@@ -99,6 +100,10 @@ void SetupScenario()
 	if (scenario_name == "reg_1d")
 	{
 		gScenario = std::shared_ptr<cDrawScenarioReg1D>(new cDrawScenarioReg1D(gCamera));
+	}
+	else if (scenario_name == "reg_var_1d")
+	{
+		gScenario = std::shared_ptr<cDrawScenarioRegVar1D>(new cDrawScenarioRegVar1D(gCamera));
 	}
 	else if (scenario_name == "ball_rl")
 	{

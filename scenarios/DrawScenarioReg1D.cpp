@@ -10,6 +10,7 @@ cDrawScenarioReg1D::cDrawScenarioReg1D(cCamera& cam)
 	cam.TranslatePos(gCamPos0);
 	mMousePos.setZero();
 	mMousePressed = false;
+	mAutoTrainer = false;
 }
 
 cDrawScenarioReg1D::~cDrawScenarioReg1D()
@@ -22,6 +23,7 @@ void cDrawScenarioReg1D::Init()
 	mScene->ParseArgs(mArgParser);
 	mScene->Init();
 	mMousePressed = false;
+	mAutoTrainer = false;
 }
 
 void cDrawScenarioReg1D::ParseArgs(const cArgParser& parser)
@@ -34,6 +36,7 @@ void cDrawScenarioReg1D::Reset()
 {
 	mScene->Reset();
 	mMousePressed = false;
+	mAutoTrainer = false;
 }
 
 void cDrawScenarioReg1D::Clear()
@@ -44,6 +47,10 @@ void cDrawScenarioReg1D::Clear()
 void cDrawScenarioReg1D::Update(double time_elapsed)
 {
 	mScene->Update(time_elapsed);
+	if (mAutoTrainer)
+	{
+		TrainNet();
+	}
 }
 
 void cDrawScenarioReg1D::Keyboard(unsigned char key, int x, int y)
@@ -54,6 +61,9 @@ void cDrawScenarioReg1D::Keyboard(unsigned char key, int x, int y)
 	{
 	case '\r':
 		TrainNet();
+		break;
+	case 't':
+		mAutoTrainer = !mAutoTrainer;
 		break;
 	default:
 		break;

@@ -731,6 +731,15 @@
     <ClCompile Include="..\TerrainRL\learning\AsyncMACEDPGTrainer.cpp">
       <Filter>Source Files\util</Filter>
     </ClCompile>
+    <ClCompile Include="scenarios\ScenarioRegVar1D.cpp">
+      <Filter>Source Files\scenarios</Filter>
+    </ClCompile>
+    <ClCompile Include="scenarios\DrawScenarioRegVar1D.cpp">
+      <Filter>Source Files\scenarios</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\learning\VarNetTrainer.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\TerrainRL\util\Rand.h">
@@ -1187,6 +1196,15 @@
       <Filter>Source Files\util</Filter>
     </ClInclude>
     <ClInclude Include="..\TerrainRL\learning\AsyncMACEDPGTrainer.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="scenarios\ScenarioRegVar1D.h">
+      <Filter>Source Files\scenarios</Filter>
+    </ClInclude>
+    <ClInclude Include="scenarios\DrawScenarioRegVar1D.h">
+      <Filter>Source Files\scenarios</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\learning\VarNetTrainer.h">
       <Filter>Source Files\util</Filter>
     </ClInclude>
   </ItemGroup>

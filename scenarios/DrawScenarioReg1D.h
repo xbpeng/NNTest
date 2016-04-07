@@ -29,6 +29,7 @@ protected:
 	std::unique_ptr<cScenarioReg1D> mScene;
 	tVector mMousePos;
 	bool mMousePressed;
+	bool mAutoTrainer;
 
 	virtual void BuildScene(std::unique_ptr<cScenarioReg1D>& out_scene);
 	virtual void DrawScene();

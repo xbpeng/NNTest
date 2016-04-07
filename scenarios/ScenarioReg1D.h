@@ -39,14 +39,14 @@ protected:
 	std::vector<tVector, Eigen::aligned_allocator<tVector>> mEvalPts;
 
 	std::shared_ptr<cNeuralNetTrainer> mTrainer;
-	std::shared_ptr<cNeuralNetLearner> mLearner;
 
 	virtual void InitTrainer();
-	virtual void InitLearner();
+	virtual void BuildTrainer(std::shared_ptr<cNeuralNetTrainer>& out_trainer);
 	virtual void SetupScale();
 	virtual void EvalNet();
 	virtual void FindMinMaxX(double& out_min_x, double& out_max_x) const;
 	virtual void BuildTuple(const tVector& pt, tExpTuple& out_tuple) const;
+	virtual tVector BuildPt(const Eigen::VectorXd& x, const Eigen::VectorXd& y) const;
 
 	virtual const std::unique_ptr<cNeuralNet>& GetNet() const;
 };

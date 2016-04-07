@@ -91,3 +91,79 @@ layer {
     }
   }
 }
+
+
+
+layer {
+  name: "var_ip0"
+  type: "InnerProduct"
+  bottom: "relu0"
+  top: "var_ip0"
+  param {
+    lr_mult: 1
+	decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+	decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 128
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+layer {
+  name: "var_relu0"
+  type: "ReLU"
+  bottom: "var_ip0"
+  top: "var_relu0"
+}
+
+layer {
+  name: "var_ip1"
+  type: "InnerProduct"
+  bottom: "var_relu0"
+  top: "var_ip1"
+  param {
+    lr_mult: 1
+	decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+	decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+layer {
+  name: "var_bnll"
+  type: "BNLL"
+  bottom: "var_ip1"
+  top: "var_bnll"
+}
+
+
+layer {
+	name: "output"
+	type: "Concat"
+	bottom: "ip2"
+	bottom: "var_bnll"
+	top: "output"
+	concat_param {
+		axis: 1
+	}
+}

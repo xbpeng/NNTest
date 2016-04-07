@@ -12,7 +12,6 @@ cScenarioReg1D::~cScenarioReg1D()
 void cScenarioReg1D::Init()
 {
 	InitTrainer();
-	InitLearner();
 }
 
 void cScenarioReg1D::ParseArgs(const cArgParser& parser)
@@ -70,7 +69,11 @@ const std::vector<tVector, Eigen::aligned_allocator<tVector>>& cScenarioReg1D::G
 
 void cScenarioReg1D::TrainNet()
 {
-	mTrainer->Train();
+	for (int i = 0; i < mPassesPerStep; ++i)
+	{
+		mTrainer->Train();
+	}
+	
 	EvalNet();
 }
 
@@ -81,7 +84,7 @@ std::string cScenarioReg1D::GetName() const
 
 void cScenarioReg1D::InitTrainer()
 {
-	mTrainer = std::shared_ptr<cNeuralNetTrainer>(new cNeuralNetTrainer());
+	BuildTrainer(mTrainer);
 
 	cNeuralNetTrainer::tParams trainer_params;
 	trainer_params.mNetFile = mNetFile;
@@ -95,22 +98,22 @@ void cScenarioReg1D::InitTrainer()
 	SetupScale();
 }
 
-void cScenarioReg1D::InitLearner()
+void cScenarioReg1D::BuildTrainer(std::shared_ptr<cNeuralNetTrainer>& out_trainer)
 {
-	mTrainer->RequestLearner(mLearner);
+	out_trainer = std::shared_ptr<cNeuralNetTrainer>(new cNeuralNetTrainer());
 }
 
 void cScenarioReg1D::SetupScale()
 {
-	int state_size = mTrainer->GetStateSize();
-	int action_size = mTrainer->GetActionSize();
+	int input_size = mTrainer->GetInputSize();
+	int output_size = mTrainer->GetOutputSize();
 	
-	Eigen::VectorXd offset = Eigen::VectorXd::Zero(state_size);
-	Eigen::VectorXd scale = Eigen::VectorXd::Ones(state_size);
+	Eigen::VectorXd offset = Eigen::VectorXd::Zero(input_size);
+	Eigen::VectorXd scale = Eigen::VectorXd::Ones(input_size);
 	mTrainer->SetInputOffsetScale(offset, scale);
 
-	Eigen::VectorXd output_offset = Eigen::VectorXd::Zero(action_size);
-	Eigen::VectorXd output_scale = Eigen::VectorXd::Ones(action_size);
+	Eigen::VectorXd output_offset = Eigen::VectorXd::Zero(output_size);
+	Eigen::VectorXd output_scale = Eigen::VectorXd::Ones(output_size);
 	mTrainer->SetOutputOffsetScale(output_offset, output_scale);
 }
 
@@ -136,6 +139,11 @@ void cScenarioReg1D::BuildTuple(const tVector& pt, tExpTuple& out_tuple) const
 	out_tuple.mStateEnd = out_tuple.mStateBeg;
 }
 
+tVector cScenarioReg1D::BuildPt(const Eigen::VectorXd& x, const Eigen::VectorXd& y) const
+{
+	return tVector(x[0], y[0], 0, 0);
+}
+
 void cScenarioReg1D::EvalNet()
 {
 	const double pad = 0.2;
@@ -157,7 +165,7 @@ void cScenarioReg1D::EvalNet()
 		{
 			x(0) = static_cast<double>(i) / (mNumEvalPts - 1) * (max_x - min_x) + min_x;
 			net->Eval(x, y);
-			mEvalPts[i] = tVector(x(0), y(0), 0, 0);
+			mEvalPts[i] = BuildPt(x, y);
 		}
 	}
 	else
