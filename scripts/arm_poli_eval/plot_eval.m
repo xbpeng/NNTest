@@ -26,10 +26,10 @@ files = {};
 
 %files{end + 1} = {'dmace_td_eval.txt', 'Mixture TD-AC', 2000};
 %files{end + 1} = {'dmace_ptd_eval.txt', 'Mixture PTD-AC', 2000};
-files{end + 1} = {'dmace_cacla_eval.txt', 'Mixture CACLA', 2000};
+%files{end + 1} = {'dmace_cacla_eval.txt', 'Mixture CACLA', 2000};
 
-%files{end + 1} = {'td_eval.txt', 'TD', 2000};
-%files{end + 1} = {'ptd_eval.txt', 'PTD', 2000};
+files{end + 1} = {'td_eval.txt', 'TD', 2000};
+files{end + 1} = {'ptd_eval.txt', 'PTD', 2000};
 files{end + 1} = {'cacla_eval.txt', 'CACLA', 2000};
 
 lines = {'b-', 'r-', 'm-', 'k-', 'b--', 'r--', 'm--', 'k--'};

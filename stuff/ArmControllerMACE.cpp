@@ -98,6 +98,7 @@ void cArmControllerMACE::BuildActorBias(int a_id, Eigen::VectorXd& out_bias) con
 		double lerp = 1 - a_id / (num_actors - 1.0);
 		out_bias *= lerp * (max - min) + min;
 	}
+	out_bias *= 0; // hack
 	/*
 	cRand rand;
 	rand.Seed(a_id);
