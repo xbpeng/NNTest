@@ -14,6 +14,7 @@
 #include "scenarios/DrawScenarioRegVar1D.h"
 #include "scenarios/DrawScenarioBallRL.h"
 #include "scenarios/DrawScenarioBallRLCacla.h"
+#include "scenarios/DrawScenarioBallRLVarCacla.h"
 #include "scenarios/DrawScenarioBallRLMACE.h"
 #include "scenarios/DrawScenarioBallRLDPG.h"
 #include "scenarios/DrawScenarioBallRLMACEDPG.h"
@@ -112,6 +113,10 @@ void SetupScenario()
 	else if (scenario_name == "ball_rl_cacla")
 	{
 		gScenario = std::shared_ptr<cDrawScenarioBallRLCacla>(new cDrawScenarioBallRLCacla(gCamera));
+	}
+	else if (scenario_name == "ball_rl_var_cacla")
+	{
+		gScenario = std::shared_ptr<cDrawScenarioBallRLVarCacla>(new cDrawScenarioBallRLVarCacla(gCamera));
 	}
 	else if (scenario_name == "ball_rl_mace")
 	{

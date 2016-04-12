@@ -13,7 +13,7 @@
 -critic_model_file= data/arm_rl/models/arm_reduced_dmace_cacla_critic_model.h5
 
 -arm_ctrl_type= mace
--eval_max_samples= 5000
+-eval_max_samples= 10000
 
 -record_actions= true
 -action_output_file= output/arm_poli_actions.txt

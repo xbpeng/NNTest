@@ -1,6 +1,6 @@
 addpath 'C:\Users\Jason\Documents\compsci_stuff\matlab\tsne';
 
-action_dir = 'action_data\';
+action_dir = 'state_data\';
 iter_mult = 10000;
 
 dir_list = dir(action_dir);

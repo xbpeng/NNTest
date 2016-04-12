@@ -310,7 +310,7 @@ void cScenarioArmTrain::InitTrainer()
 	mTrainerParams.mPoolSize = 1;
 	mTrainerParams.mInitInputOffsetScale = false;
 	mTrainerParams.mNumInitSamples = 20000;
-	mTrainerParams.mFreezeTargetIters = 200;
+	//mTrainerParams.mFreezeTargetIters = 200;
 	//mTrainerParams.mFreezeTargetIters = 5;
 
 	//mTrainerParams.mRewardMode = cTrainerInterface::eRewardModeAvg;
