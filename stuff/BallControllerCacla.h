@@ -27,6 +27,7 @@ public:
 	virtual void CopyActorNet(const cNeuralNet& net);
 	virtual void CopyCriticNet(const cNeuralNet& net);
 
+	virtual int GetNetOutputSize() const;
 	virtual int GetActorInputSize() const;
 	virtual int GetActorOutputSize() const;
 	virtual int GetCriticInputSize() const;

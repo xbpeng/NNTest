@@ -1,4 +1,5 @@
 #include "ScenarioBallRLVarCacla.h"
+#include "learning/VarCaclaTrainer.h"
 
 const int gTrainerPlaybackMemSize = 20000;
 
@@ -17,12 +18,12 @@ std::string cScenarioBallRLVarCacla::GetName() const
 
 void cScenarioBallRLVarCacla::BuildController(std::shared_ptr<cBallController>& out_ctrl)
 {
-	out_ctrl = std::shared_ptr<cBallController>(new cBallControllerCacla(mBall));
+	out_ctrl = std::shared_ptr<cBallController>(new cBallControllerVarCacla(mBall));
 }
 
 void cScenarioBallRLVarCacla::InitTrainer()
 {
-	auto trainer = std::shared_ptr<cCaclaTrainer>(new cCaclaTrainer());
+	auto trainer = std::shared_ptr<cVarCaclaTrainer>(new cVarCaclaTrainer());
 	
 	mTrainerParams.mNetFile = mCriticNetFile;
 	mTrainerParams.mSolverFile = mCriticSolverFile;
@@ -54,5 +55,10 @@ void cScenarioBallRLVarCacla::InitTrainer()
 	BuildActorOutputOffsetScale(actor_output_offset, actor_output_scale);
 	trainer->SetActorOutputOffsetScale(actor_output_offset, actor_output_scale);
 	
+	Eigen::VectorXd action_min;
+	Eigen::VectorXd action_max;
+	BuildActionBounds(action_min, action_max);
+	trainer->SetActionBounds(action_min, action_max);
+
 	mTrainer = trainer;
 }

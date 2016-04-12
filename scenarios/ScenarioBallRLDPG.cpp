@@ -62,10 +62,9 @@ void cScenarioBallRLDPG::InitTrainer()
 	BuildActorOutputOffsetScale(actor_output_offset, actor_output_scale);
 	trainer->SetActorOutputOffsetScale(actor_output_offset, actor_output_scale);
 	
-	const auto& ctrl = mBall.GetController();
-	int action_size = ctrl->GetActionSize();
-	Eigen::VectorXd action_min = ctrl->gMinDist * Eigen::VectorXd::Ones(action_size);
-	Eigen::VectorXd action_max = ctrl->gMaxDist * Eigen::VectorXd::Ones(action_size);
+	Eigen::VectorXd action_min;
+	Eigen::VectorXd action_max;
+	BuildActionBounds(action_min, action_max);
 	trainer->SetActionBounds(action_min, action_max);
 
 	mTrainer = trainer;

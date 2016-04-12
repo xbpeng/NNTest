@@ -31,4 +31,6 @@ protected:
 	
 	virtual void RecordBegFlags(tExpTuple& out_tuple) const;
 	virtual bool CheckOffPolicy() const;
+
+	virtual void BuildActionBounds(Eigen::VectorXd& out_min, Eigen::VectorXd& out_max) const;
 };

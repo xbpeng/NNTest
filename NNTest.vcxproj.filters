@@ -623,9 +623,6 @@
     <ClCompile Include="..\TerrainRL\learning\MACEDPGTrainer.cpp">
       <Filter>Source Files\util</Filter>
     </ClCompile>
-    <ClCompile Include="stuff\BallControllerCacla.cpp">
-      <Filter>Source Files\stuff</Filter>
-    </ClCompile>
     <ClCompile Include="..\TerrainRL\sim\DogControllerDPG.cpp">
       <Filter>Source Files\util</Filter>
     </ClCompile>
@@ -745,6 +742,18 @@
     </ClCompile>
     <ClCompile Include="scenarios\DrawScenarioBallRLVarCacla.cpp">
       <Filter>Source Files\scenarios</Filter>
+    </ClCompile>
+    <ClCompile Include="stuff\BallControllerVarCacla.cpp">
+      <Filter>Source Files\stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="stuff\BallControllerCacla.cpp">
+      <Filter>Source Files\stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="stuff\BallControllerCacla.cpp">
+      <Filter>Source Files\stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\learning\VarCaclaTrainer.cpp">
+      <Filter>Source Files\util</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1093,9 +1102,6 @@
     <ClInclude Include="..\TerrainRL\learning\MACEDPGTrainer.h">
       <Filter>Source Files\util</Filter>
     </ClInclude>
-    <ClInclude Include="stuff\BallControllerCacla.h">
-      <Filter>Source Files\stuff</Filter>
-    </ClInclude>
     <ClInclude Include="..\TerrainRL\sim\DogControllerDPG.h">
       <Filter>Source Files\util</Filter>
     </ClInclude>
@@ -1218,6 +1224,18 @@
     </ClInclude>
     <ClInclude Include="scenarios\DrawScenarioBallRLVarCacla.h">
       <Filter>Source Files\scenarios</Filter>
+    </ClInclude>
+    <ClInclude Include="stuff\BallControllerVarCacla.h">
+      <Filter>Source Files\stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="stuff\BallControllerCacla.h">
+      <Filter>Source Files\stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="stuff\BallControllerCacla.h">
+      <Filter>Source Files\stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\learning\VarCaclaTrainer.h">
+      <Filter>Source Files\util</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

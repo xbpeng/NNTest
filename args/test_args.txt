@@ -1,4 +1,4 @@
--scenario= ball_rl_cacla
+-scenario= ball_rl_var_cacla
 -playback_speed= 60
 
 -character_file= data/arm_rl/arm.txt
@@ -7,8 +7,8 @@
 //-net_file= data/ball_rl/nets/balL_rl_test.prototxt
 //-model_file= data/ball_rl/models/ball_rl_test_model.h5
 
--solver_file= data/ball_rl/nets/ball_rl_actor_solver.prototxt
--net_file= data/ball_rl/nets/balL_rl_actor_deploy.prototxt
+-solver_file= data/ball_rl/nets/ball_rl_var_actor_solver.prototxt
+-net_file= data/ball_rl/nets/balL_rl_var_actor_deploy.prototxt
 //-model_file= data/ball_rl/models/ball_rl_dpg_actor_init_model.h5
 //-model_file= data/ball_rl/models/ball_rl_dpg_actor_model.h5
 

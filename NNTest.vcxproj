@@ -271,6 +271,7 @@
     <ClCompile Include="..\TerrainRL\learning\ParamServer.cpp" />
     <ClCompile Include="..\TerrainRL\learning\QNetTrainer.cpp" />
     <ClCompile Include="..\TerrainRL\learning\TrainerInterface.cpp" />
+    <ClCompile Include="..\TerrainRL\learning\VarCaclaTrainer.cpp" />
     <ClCompile Include="..\TerrainRL\learning\VarNetTrainer.cpp" />
     <ClCompile Include="..\TerrainRL\optimizer\opt\QL.c" />
     <ClCompile Include="..\TerrainRL\optimizer\opt\QuadProg.cpp" />
@@ -395,6 +396,7 @@
     <ClCompile Include="stuff\BallControllerDPG.cpp" />
     <ClCompile Include="stuff\BallControllerMACE.cpp" />
     <ClCompile Include="stuff\BallControllerMACEDPG.cpp" />
+    <ClCompile Include="stuff\BallControllerVarCacla.cpp" />
     <ClCompile Include="stuff\DrawBall.cpp" />
     <ClCompile Include="stuff\DrawPenaltyGround.cpp" />
     <ClCompile Include="stuff\PenaltyGround.cpp" />
@@ -431,6 +433,7 @@
     <ClInclude Include="..\TerrainRL\learning\ParamServer.h" />
     <ClInclude Include="..\TerrainRL\learning\QNetTrainer.h" />
     <ClInclude Include="..\TerrainRL\learning\TrainerInterface.h" />
+    <ClInclude Include="..\TerrainRL\learning\VarCaclaTrainer.h" />
     <ClInclude Include="..\TerrainRL\learning\VarNetTrainer.h" />
     <ClInclude Include="..\TerrainRL\optimizer\opt\QuadProg.h" />
     <ClInclude Include="..\TerrainRL\render\Camera.h" />
@@ -554,6 +557,7 @@
     <ClInclude Include="stuff\BallControllerDPG.h" />
     <ClInclude Include="stuff\BallControllerMACE.h" />
     <ClInclude Include="stuff\BallControllerMACEDPG.h" />
+    <ClInclude Include="stuff\BallControllerVarCacla.h" />
     <ClInclude Include="stuff\DrawBall.h" />
     <ClInclude Include="stuff\DrawPenaltyGround.h" />
     <ClInclude Include="stuff\PenaltyGround.h" />

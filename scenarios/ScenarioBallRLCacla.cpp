@@ -94,6 +94,11 @@ void cScenarioBallRLCacla::InitTrainer()
 	BuildActorOutputOffsetScale(actor_output_offset, actor_output_scale);
 	trainer->SetActorOutputOffsetScale(actor_output_offset, actor_output_scale);
 	
+	Eigen::VectorXd action_min;
+	Eigen::VectorXd action_max;
+	BuildActionBounds(action_min, action_max);
+	trainer->SetActionBounds(action_min, action_max);
+
 	mTrainer = trainer;
 }
 
@@ -119,4 +124,10 @@ bool cScenarioBallRLCacla::CheckOffPolicy() const
 {
 	const auto& ctrl = mBall.GetController();
 	return ctrl->IsOffPolicy();
+}
+
+void cScenarioBallRLCacla::BuildActionBounds(Eigen::VectorXd& out_min, Eigen::VectorXd& out_max) const
+{
+	const auto& ctrl = mBall.GetController();
+	ctrl->BuildActionBounds(out_min, out_max);
 }

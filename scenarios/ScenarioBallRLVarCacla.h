@@ -1,6 +1,7 @@
 #pragma once
 
 #include "scenarios/ScenarioBallRLCacla.h"
+#include "stuff/BallControllerVarCacla.h"
 
 class cScenarioBallRLVarCacla : public cScenarioBallRLCacla
 {

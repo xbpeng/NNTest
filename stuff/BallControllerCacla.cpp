@@ -112,6 +112,11 @@ void cBallControllerCacla::CopyCriticNet(const cNeuralNet& net)
 	mCriticNet.CopyModel(net);
 }
 
+int cBallControllerCacla::GetNetOutputSize() const
+{
+	return GetActorOutputSize();
+}
+
 int cBallControllerCacla::GetActorInputSize() const
 {
 	return GetStateSize();

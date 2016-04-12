@@ -371,6 +371,13 @@ void cBallController::BuildNNOutputOffsetScale(Eigen::VectorXd& out_offset, Eige
 	out_scale = 2 * Eigen::VectorXd::Ones(output_size);
 }
 
+void cBallController::BuildActionBounds(Eigen::VectorXd& out_min, Eigen::VectorXd& out_max) const
+{
+	int action_size = GetActionSize();
+	out_min = gMinDist * Eigen::VectorXd::Ones(action_size);
+	out_max = gMaxDist * Eigen::VectorXd::Ones(action_size);
+}
+
 cNeuralNet& cBallController::GetNet()
 {
 	return mNet;
