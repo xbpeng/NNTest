@@ -30,6 +30,9 @@
     <Filter Include="Source Files\stuff">
       <UniqueIdentifier>{d23a5663-7ac7-43f7-ae75-4aaea60390f0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\caffe\solvers">
+      <UniqueIdentifier>{e7bd78c6-7b26-4d5f-8ce1-63f34d093941}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -515,9 +518,6 @@
     <ClCompile Include="..\library\caffe\src\caffe\blob.cpp">
       <Filter>Source Files\caffe</Filter>
     </ClCompile>
-    <ClCompile Include="..\library\caffe\src\caffe\net.cpp">
-      <Filter>Source Files\caffe</Filter>
-    </ClCompile>
     <ClCompile Include="..\library\caffe\src\caffe\parallel.cpp">
       <Filter>Source Files\caffe</Filter>
     </ClCompile>
@@ -545,14 +545,8 @@
     <ClCompile Include="..\library\caffe\src\caffe\layer_factory.cpp">
       <Filter>Source Files\caffe</Filter>
     </ClCompile>
-    <ClCompile Include="..\library\caffe\src\caffe\util\insert_splits.cpp">
-      <Filter>Source Files\caffe\util</Filter>
-    </ClCompile>
-    <ClCompile Include="..\library\caffe\src\caffe\util\io.cpp">
-      <Filter>Source Files\caffe\util</Filter>
-    </ClCompile>
-    <ClCompile Include="..\library\caffe\src\caffe\util\math_functions.cpp">
-      <Filter>Source Files\caffe\util</Filter>
+    <ClCompile Include="..\library\caffe\src\caffe\net.cpp">
+      <Filter>Source Files\caffe</Filter>
     </ClCompile>
     <ClCompile Include="..\library\caffe\src\caffe\util\upgrade_proto.cpp">
       <Filter>Source Files\caffe\util</Filter>
@@ -581,8 +575,38 @@
     <ClCompile Include="..\library\caffe\src\caffe\util\im2col.cpp">
       <Filter>Source Files\caffe\util</Filter>
     </ClCompile>
-    <ClCompile Include="..\library\caffe\src\caffe\layers\tanh_layer.cpp">
-      <Filter>Source Files\caffe\layers</Filter>
+    <ClCompile Include="..\library\caffe\src\caffe\util\insert_splits.cpp">
+      <Filter>Source Files\caffe\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\util\io.cpp">
+      <Filter>Source Files\caffe\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\util\math_functions.cpp">
+      <Filter>Source Files\caffe\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\solvers\nesterov_solver.cpp">
+      <Filter>Source Files\caffe\solvers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\solvers\rmsprop_solver.cpp">
+      <Filter>Source Files\caffe\solvers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\solvers\sgd_solver.cpp">
+      <Filter>Source Files\caffe\solvers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\solvers\adadelta_solver.cpp">
+      <Filter>Source Files\caffe\solvers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\solvers\adagrad_solver.cpp">
+      <Filter>Source Files\caffe\solvers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\solvers\adam_solver.cpp">
+      <Filter>Source Files\caffe\solvers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\proto\caffe.pb.cc">
+      <Filter>Source Files\caffe\proto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\proto\caffe_pretty_print.pb.cc">
+      <Filter>Source Files\caffe\proto</Filter>
     </ClCompile>
     <ClCompile Include="..\library\caffe\src\caffe\layers\threshold_layer.cpp">
       <Filter>Source Files\caffe\layers</Filter>
@@ -608,6 +632,15 @@
     <ClCompile Include="..\library\caffe\src\caffe\layers\base_data_layer.cpp">
       <Filter>Source Files\caffe\layers</Filter>
     </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\batch_norm_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\batch_reindex_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\bias_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
     <ClCompile Include="..\library\caffe\src\caffe\layers\bnll_layer.cpp">
       <Filter>Source Files\caffe\layers</Filter>
     </ClCompile>
@@ -620,7 +653,16 @@
     <ClCompile Include="..\library\caffe\src\caffe\layers\conv_layer.cpp">
       <Filter>Source Files\caffe\layers</Filter>
     </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\crop_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
     <ClCompile Include="..\library\caffe\src\caffe\layers\cudnn_conv_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\cudnn_lcn_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\cudnn_lrn_layer.cpp">
       <Filter>Source Files\caffe\layers</Filter>
     </ClCompile>
     <ClCompile Include="..\library\caffe\src\caffe\layers\cudnn_pooling_layer.cpp">
@@ -651,6 +693,9 @@
       <Filter>Source Files\caffe\layers</Filter>
     </ClCompile>
     <ClCompile Include="..\library\caffe\src\caffe\layers\eltwise_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\elu_layer.cpp">
       <Filter>Source Files\caffe\layers</Filter>
     </ClCompile>
     <ClCompile Include="..\library\caffe\src\caffe\layers\embed_layer.cpp">
@@ -689,6 +734,9 @@
     <ClCompile Include="..\library\caffe\src\caffe\layers\inner_product_layer.cpp">
       <Filter>Source Files\caffe\layers</Filter>
     </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\input_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
     <ClCompile Include="..\library\caffe\src\caffe\layers\log_layer.cpp">
       <Filter>Source Files\caffe\layers</Filter>
     </ClCompile>
@@ -696,6 +744,12 @@
       <Filter>Source Files\caffe\layers</Filter>
     </ClCompile>
     <ClCompile Include="..\library\caffe\src\caffe\layers\lrn_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\lstm_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\lstm_unit_layer.cpp">
       <Filter>Source Files\caffe\layers</Filter>
     </ClCompile>
     <ClCompile Include="..\library\caffe\src\caffe\layers\memory_data_layer.cpp">
@@ -719,6 +773,9 @@
     <ClCompile Include="..\library\caffe\src\caffe\layers\prelu_layer.cpp">
       <Filter>Source Files\caffe\layers</Filter>
     </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\recurrent_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
     <ClCompile Include="..\library\caffe\src\caffe\layers\reduction_layer.cpp">
       <Filter>Source Files\caffe\layers</Filter>
     </ClCompile>
@@ -726,6 +783,12 @@
       <Filter>Source Files\caffe\layers</Filter>
     </ClCompile>
     <ClCompile Include="..\library\caffe\src\caffe\layers\reshape_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\rnn_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\scale_layer.cpp">
       <Filter>Source Files\caffe\layers</Filter>
     </ClCompile>
     <ClCompile Include="..\library\caffe\src\caffe\layers\sigmoid_cross_entropy_loss_layer.cpp">
@@ -750,6 +813,9 @@
       <Filter>Source Files\caffe\layers</Filter>
     </ClCompile>
     <ClCompile Include="..\library\caffe\src\caffe\layers\spp_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\tanh_layer.cpp">
       <Filter>Source Files\caffe\layers</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1233,6 +1299,9 @@
     </ClInclude>
     <ClInclude Include="..\TerrainRL\learning\VarCaclaTrainer.h">
       <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\library\caffe\src\caffe\proto\caffe_pretty_print.pb.h">
+      <Filter>Source Files\caffe\proto</Filter>
     </ClInclude>
     <ClInclude Include="..\library\caffe\src\caffe\proto\caffe.pb.h">
       <Filter>Source Files\caffe\proto</Filter>

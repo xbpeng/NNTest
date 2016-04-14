@@ -106,13 +106,13 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;CPU_ONLY;GOOGLE_GLOG_DLL_DECL=;ENABLE_DEBUG_PRINT;_USE_MATH_DEFINES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\library\caffe_rnn\include\;C:\Program Files (x86)\boost\boost_1_58_0\;..\library\caffe_rnn\3rdparty\include\hdf5;..\library\caffe_rnn\3rdparty\include\;..\library\caffe_rnn\3rdparty\include\openblas;..\library\caffe_rnn\3rdparty\include\lmdb;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.5\include\;..\library\OpenCV\include;..\library\caffe_rnn\src\;..\library\;..\TerrainRL\;..\library\Json_cpp;$(ProjectDir);..\TerrainRL\optimizer\opt;..\library\Libf2c;..\library\Bullet\include;..\TerrainRL\optimizer\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\library\caffe\include\;C:\Program Files (x86)\boost\boost_1_58_0\;..\library\caffe\3rdparty\include\hdf5;..\library\caffe\3rdparty\include\;..\library\caffe\3rdparty\include\openblas;..\library\caffe\3rdparty\include\lmdb;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.5\include\;..\library\OpenCV\include;..\library\caffe\src\;..\library\;..\TerrainRL\;..\library\Json_cpp;$(ProjectDir);..\TerrainRL\optimizer\opt;..\library\Libf2c;..\library\Bullet\include;..\TerrainRL\optimizer\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\library\caffe\lib\;C:\Program Files (x86)\boost\boost_1_58_0\stage\lib;C:\Program Files (x86)\boost\boost_1_58_0\libs;..\library\caffe_rnn\3rdparty\lib\;..\library\OpenCV\x64\vc12\staticlib;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.5\lib\x64;..\library\Json_cpp\x64;..\library\Libf2c\x64;..\library\Bullet\Debug\x64</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\library\caffe\lib\;C:\Program Files (x86)\boost\boost_1_58_0\stage\lib;C:\Program Files (x86)\boost\boost_1_58_0\libs;..\library\caffe\3rdparty\lib\;..\library\OpenCV\x64\vc12\staticlib;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.5\lib\x64;..\library\Json_cpp\x64;..\library\Libf2c\x64;..\library\Bullet\Debug\x64</AdditionalLibraryDirectories>
       <AdditionalDependencies>opencv_core300d.lib;opencv_calib3d300d.lib;opencv_flann300d.lib;opencv_highgui300d.lib;opencv_imgproc300d.lib;opencv_imgcodecs300d.lib;opencv_ml300d.lib;opencv_objdetect300d.lib;opencv_photo300d.lib;opencv_features2d300d.lib;opencv_stitching300d.lib;opencv_video300d.lib;opencv_videostab300d.lib;opencv_hal300d.lib;libjpegd.lib;libjasperd.lib;libpngd.lib;IlmImfd.lib;libtiffd.lib;libwebpd.lib;cudart.lib;cuda.lib;nppi.lib;cufft.lib;cublas.lib;curand.lib;gflagsd.lib;libglogd.lib;libprotobufd.lib;libprotocd.lib;leveldbd.lib;lmdbd.lib;libhdf5_D.lib;libhdf5_hl_D.lib;Shlwapi.lib;zlibd.lib;libopenblas.dll.a;opengl32.lib;glu32.lib;jsoncpp_Debug.lib;libf2cd.lib;BulletDynamics_Debug.lib;BulletCollision_Debug.lib;LinearMath_Debug.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -172,11 +172,17 @@
     <ClCompile Include="..\library\caffe\src\caffe\layers\argmax_layer.cpp" />
     <ClCompile Include="..\library\caffe\src\caffe\layers\base_conv_layer.cpp" />
     <ClCompile Include="..\library\caffe\src\caffe\layers\base_data_layer.cpp" />
+    <ClCompile Include="..\library\caffe\src\caffe\layers\batch_norm_layer.cpp" />
+    <ClCompile Include="..\library\caffe\src\caffe\layers\batch_reindex_layer.cpp" />
+    <ClCompile Include="..\library\caffe\src\caffe\layers\bias_layer.cpp" />
     <ClCompile Include="..\library\caffe\src\caffe\layers\bnll_layer.cpp" />
     <ClCompile Include="..\library\caffe\src\caffe\layers\concat_layer.cpp" />
     <ClCompile Include="..\library\caffe\src\caffe\layers\contrastive_loss_layer.cpp" />
     <ClCompile Include="..\library\caffe\src\caffe\layers\conv_layer.cpp" />
+    <ClCompile Include="..\library\caffe\src\caffe\layers\crop_layer.cpp" />
     <ClCompile Include="..\library\caffe\src\caffe\layers\cudnn_conv_layer.cpp" />
+    <ClCompile Include="..\library\caffe\src\caffe\layers\cudnn_lcn_layer.cpp" />
+    <ClCompile Include="..\library\caffe\src\caffe\layers\cudnn_lrn_layer.cpp" />
     <ClCompile Include="..\library\caffe\src\caffe\layers\cudnn_pooling_layer.cpp" />
     <ClCompile Include="..\library\caffe\src\caffe\layers\cudnn_relu_layer.cpp" />
     <ClCompile Include="..\library\caffe\src\caffe\layers\cudnn_sigmoid_layer.cpp" />
@@ -187,6 +193,7 @@
     <ClCompile Include="..\library\caffe\src\caffe\layers\dropout_layer.cpp" />
     <ClCompile Include="..\library\caffe\src\caffe\layers\dummy_data_layer.cpp" />
     <ClCompile Include="..\library\caffe\src\caffe\layers\eltwise_layer.cpp" />
+    <ClCompile Include="..\library\caffe\src\caffe\layers\elu_layer.cpp" />
     <ClCompile Include="..\library\caffe\src\caffe\layers\embed_layer.cpp" />
     <ClCompile Include="..\library\caffe\src\caffe\layers\euclidean_loss_layer.cpp" />
     <ClCompile Include="..\library\caffe\src\caffe\layers\exp_layer.cpp" />
@@ -199,9 +206,12 @@
     <ClCompile Include="..\library\caffe\src\caffe\layers\image_data_layer.cpp" />
     <ClCompile Include="..\library\caffe\src\caffe\layers\infogain_loss_layer.cpp" />
     <ClCompile Include="..\library\caffe\src\caffe\layers\inner_product_layer.cpp" />
+    <ClCompile Include="..\library\caffe\src\caffe\layers\input_layer.cpp" />
     <ClCompile Include="..\library\caffe\src\caffe\layers\log_layer.cpp" />
     <ClCompile Include="..\library\caffe\src\caffe\layers\loss_layer.cpp" />
     <ClCompile Include="..\library\caffe\src\caffe\layers\lrn_layer.cpp" />
+    <ClCompile Include="..\library\caffe\src\caffe\layers\lstm_layer.cpp" />
+    <ClCompile Include="..\library\caffe\src\caffe\layers\lstm_unit_layer.cpp" />
     <ClCompile Include="..\library\caffe\src\caffe\layers\memory_data_layer.cpp" />
     <ClCompile Include="..\library\caffe\src\caffe\layers\multinomial_logistic_loss_layer.cpp" />
     <ClCompile Include="..\library\caffe\src\caffe\layers\mvn_layer.cpp" />
@@ -209,9 +219,12 @@
     <ClCompile Include="..\library\caffe\src\caffe\layers\pooling_layer.cpp" />
     <ClCompile Include="..\library\caffe\src\caffe\layers\power_layer.cpp" />
     <ClCompile Include="..\library\caffe\src\caffe\layers\prelu_layer.cpp" />
+    <ClCompile Include="..\library\caffe\src\caffe\layers\recurrent_layer.cpp" />
     <ClCompile Include="..\library\caffe\src\caffe\layers\reduction_layer.cpp" />
     <ClCompile Include="..\library\caffe\src\caffe\layers\relu_layer.cpp" />
     <ClCompile Include="..\library\caffe\src\caffe\layers\reshape_layer.cpp" />
+    <ClCompile Include="..\library\caffe\src\caffe\layers\rnn_layer.cpp" />
+    <ClCompile Include="..\library\caffe\src\caffe\layers\scale_layer.cpp" />
     <ClCompile Include="..\library\caffe\src\caffe\layers\sigmoid_cross_entropy_loss_layer.cpp" />
     <ClCompile Include="..\library\caffe\src\caffe\layers\sigmoid_layer.cpp" />
     <ClCompile Include="..\library\caffe\src\caffe\layers\silence_layer.cpp" />
@@ -227,7 +240,15 @@
     <ClCompile Include="..\library\caffe\src\caffe\layer_factory.cpp" />
     <ClCompile Include="..\library\caffe\src\caffe\net.cpp" />
     <ClCompile Include="..\library\caffe\src\caffe\parallel.cpp" />
+    <ClCompile Include="..\library\caffe\src\caffe\proto\caffe.pb.cc" />
+    <ClCompile Include="..\library\caffe\src\caffe\proto\caffe_pretty_print.pb.cc" />
     <ClCompile Include="..\library\caffe\src\caffe\solver.cpp" />
+    <ClCompile Include="..\library\caffe\src\caffe\solvers\adadelta_solver.cpp" />
+    <ClCompile Include="..\library\caffe\src\caffe\solvers\adagrad_solver.cpp" />
+    <ClCompile Include="..\library\caffe\src\caffe\solvers\adam_solver.cpp" />
+    <ClCompile Include="..\library\caffe\src\caffe\solvers\nesterov_solver.cpp" />
+    <ClCompile Include="..\library\caffe\src\caffe\solvers\rmsprop_solver.cpp" />
+    <ClCompile Include="..\library\caffe\src\caffe\solvers\sgd_solver.cpp" />
     <ClCompile Include="..\library\caffe\src\caffe\syncedmem.cpp" />
     <ClCompile Include="..\library\caffe\src\caffe\util\benchmark.cpp" />
     <ClCompile Include="..\library\caffe\src\caffe\util\blocking_queue.cpp" />
@@ -403,6 +424,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\library\caffe\src\caffe\proto\caffe.pb.h" />
+    <ClInclude Include="..\library\caffe\src\caffe\proto\caffe_pretty_print.pb.h" />
     <ClInclude Include="..\library\LodePNG\lodepng.h" />
     <ClInclude Include="..\library\LodePNG\lodepng_util.h" />
     <ClInclude Include="..\TerrainRL\anim\Character.h" />
