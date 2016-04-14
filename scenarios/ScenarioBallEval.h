@@ -6,7 +6,7 @@
 #include "scenarios/ScenarioBallRLMACEDPG.h"
 #include "scenarios/ScenarioBallRLVarCacla.h"
 
-#define BALL_EVAL_BASE cScenarioBallRLVarCacla
+#define BALL_EVAL_BASE cScenarioBallRLCacla
 
 class cScenarioBallEval : public BALL_EVAL_BASE
 {

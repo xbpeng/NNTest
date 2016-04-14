@@ -20,8 +20,9 @@ files{end + 1} = {'q_learning.txt', 'Q-Learning'};
 %files{end + 1} = {'ace_boltz_local.txt', 'ACE Boltz Local'};
 files{end + 1} = {'mace2.txt', 'MACE2'};
 
-files{end + 1} = {'cacla1.txt', 'Cacla'};
+%files{end + 1} = {'cacla1.txt', 'Cacla'};
 files{end + 1} = {'cacla2.txt', 'Cacla2'};
+files{end + 1} = {'cacla3.txt', 'Cacla3'};
 %files{end + 1} = {'dpg.txt', 'DPG'};
 %files{end + 1} = {'dpg_no_target.txt', 'DPG Vanilla'};
 %files{end + 1} = {'dpg_target.txt', 'DPG Target'};
@@ -33,6 +34,8 @@ files{end + 1} = {'cacla2.txt', 'Cacla2'};
 %files{end + 1} = {'dpg_l2.txt', 'DPG + L2'};
 %files{end + 1} = {'mace2_dpg.txt', 'MACE2 DPG'};
 %files{end + 1} = {'mace2_dpg_l2.txt', 'MACE2 DPG + L2'};
+
+files{end + 1} = {'cacla_var_eval.txt', 'Cacla Var'};
 
 lines = {'b-', 'r-', 'm-', 'k-', 'g-', 'c-', 'k--', 'r--'};
 iter_step = 500 / 1000;

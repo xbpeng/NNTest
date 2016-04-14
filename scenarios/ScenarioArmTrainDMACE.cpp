@@ -49,7 +49,7 @@ void cScenarioArmTrainDMACE::InitTrainer()
 	trainer->SetActorFiles(mActorSolverFile, mActorNetFile);
 	trainer->SetMode(cCaclaTrainer::eModePTD);
 	trainer->SetTDScale(20);
-	trainer->SetGateScale(1);
+	trainer->SetGateScale(0.1);
 
 	trainer->Init(mTrainerParams);
 

@@ -106,13 +106,13 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;CPU_ONLY;GOOGLE_GLOG_DLL_DECL=;ENABLE_DEBUG_PRINT;_USE_MATH_DEFINES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\library\caffe\include\;C:\Program Files (x86)\boost\boost_1_58_0\;..\library\caffe\3rdparty\include\hdf5;..\library\caffe\3rdparty\include\;..\library\caffe\3rdparty\include\openblas;..\library\caffe\3rdparty\include\lmdb;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.5\include\;..\library\OpenCV\include;..\library\caffe\src\;..\library\;..\TerrainRL\;..\library\Json_cpp;$(ProjectDir);..\TerrainRL\optimizer\opt;..\library\Libf2c;..\library\Bullet\include;..\TerrainRL\optimizer\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\library\caffe_rnn\include\;C:\Program Files (x86)\boost\boost_1_58_0\;..\library\caffe_rnn\3rdparty\include\hdf5;..\library\caffe_rnn\3rdparty\include\;..\library\caffe_rnn\3rdparty\include\openblas;..\library\caffe_rnn\3rdparty\include\lmdb;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.5\include\;..\library\OpenCV\include;..\library\caffe_rnn\src\;..\library\;..\TerrainRL\;..\library\Json_cpp;$(ProjectDir);..\TerrainRL\optimizer\opt;..\library\Libf2c;..\library\Bullet\include;..\TerrainRL\optimizer\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\library\caffe\lib\;C:\Program Files (x86)\boost\boost_1_58_0\stage\lib;C:\Program Files (x86)\boost\boost_1_58_0\libs;..\library\caffe\3rdparty\lib\;..\library\OpenCV\x64\vc12\staticlib;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.5\lib\x64;..\library\Json_cpp\x64;..\library\Libf2c\x64;..\library\Bullet\Debug\x64</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\library\caffe\lib\;C:\Program Files (x86)\boost\boost_1_58_0\stage\lib;C:\Program Files (x86)\boost\boost_1_58_0\libs;..\library\caffe_rnn\3rdparty\lib\;..\library\OpenCV\x64\vc12\staticlib;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.5\lib\x64;..\library\Json_cpp\x64;..\library\Libf2c\x64;..\library\Bullet\Debug\x64</AdditionalLibraryDirectories>
       <AdditionalDependencies>opencv_core300d.lib;opencv_calib3d300d.lib;opencv_flann300d.lib;opencv_highgui300d.lib;opencv_imgproc300d.lib;opencv_imgcodecs300d.lib;opencv_ml300d.lib;opencv_objdetect300d.lib;opencv_photo300d.lib;opencv_features2d300d.lib;opencv_stitching300d.lib;opencv_video300d.lib;opencv_videostab300d.lib;opencv_hal300d.lib;libjpegd.lib;libjasperd.lib;libpngd.lib;IlmImfd.lib;libtiffd.lib;libwebpd.lib;cudart.lib;cuda.lib;nppi.lib;cufft.lib;cublas.lib;curand.lib;gflagsd.lib;libglogd.lib;libprotobufd.lib;libprotocd.lib;leveldbd.lib;lmdbd.lib;libhdf5_D.lib;libhdf5_hl_D.lib;Shlwapi.lib;zlibd.lib;libopenblas.dll.a;opengl32.lib;glu32.lib;jsoncpp_Debug.lib;libf2cd.lib;BulletDynamics_Debug.lib;BulletCollision_Debug.lib;LinearMath_Debug.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -227,7 +227,6 @@
     <ClCompile Include="..\library\caffe\src\caffe\layer_factory.cpp" />
     <ClCompile Include="..\library\caffe\src\caffe\net.cpp" />
     <ClCompile Include="..\library\caffe\src\caffe\parallel.cpp" />
-    <ClCompile Include="..\library\caffe\src\caffe\proto\caffe.pb.cc" />
     <ClCompile Include="..\library\caffe\src\caffe\solver.cpp" />
     <ClCompile Include="..\library\caffe\src\caffe\syncedmem.cpp" />
     <ClCompile Include="..\library\caffe\src\caffe\util\benchmark.cpp" />
@@ -403,6 +402,7 @@
     <ClCompile Include="stuff\SimArm.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\library\caffe\src\caffe\proto\caffe.pb.h" />
     <ClInclude Include="..\library\LodePNG\lodepng.h" />
     <ClInclude Include="..\library\LodePNG\lodepng_util.h" />
     <ClInclude Include="..\TerrainRL\anim\Character.h" />
