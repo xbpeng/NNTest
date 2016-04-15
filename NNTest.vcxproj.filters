@@ -818,6 +818,12 @@
     <ClCompile Include="..\library\caffe\src\caffe\layers\tanh_layer.cpp">
       <Filter>Source Files\caffe\layers</Filter>
     </ClCompile>
+    <ClCompile Include="..\TerrainRL\sim\BaseControllerDMACE.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\sim\DogControllerDMACE.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\TerrainRL\util\Rand.h">
@@ -1305,6 +1311,12 @@
     </ClInclude>
     <ClInclude Include="..\library\caffe\src\caffe\proto\caffe.pb.h">
       <Filter>Source Files\caffe\proto</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\sim\BaseControllerDMACE.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\sim\DogControllerDMACE.h">
+      <Filter>Source Files\util</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
