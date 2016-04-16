@@ -63,9 +63,10 @@ void cScenarioRNN::AddPt(const tVector& pt)
 	{
 		tExpTuple tuple;
 		bool is_start = mPts.size() == 2;
+		tVector curr_pt = mPts[num_pts - 1];
 		tVector prev_pt = mPts[num_pts - 2];
 
-		BuildTuple(prev_pt, pt, is_start, tuple);
+		BuildTuple(prev_pt, curr_pt, is_start, tuple);
 		mTrainer->AddTuple(tuple);
 	}
 }
@@ -87,7 +88,7 @@ void cScenarioRNN::TrainNet()
 
 std::string cScenarioRNN::GetName() const
 {
-	return "Regression 1D";
+	return "Regression RNN";
 }
 
 void cScenarioRNN::InitTrainer()
@@ -147,12 +148,6 @@ void cScenarioRNN::EvalNet()
 	int num_pts = GetNumPts();
 	if (num_pts > 0)
 	{
-		double min_x = 0;
-		double max_x = 0;
-		FindMinMaxX(min_x, max_x);
-		min_x -= pad;
-		max_x += pad;
-
 		mEvalPts.resize(num_pts);
 
 		const auto& net = GetNet();
@@ -162,7 +157,7 @@ void cScenarioRNN::EvalNet()
 		mEvalPts[0] = mPts[0];
 		for (int i = 1; i < num_pts; ++i)
 		{
-			bool is_start = i == 1;
+			bool is_start = i == 0;
 			const tVector& prev_pt = mPts[i - 1];
 			const tVector& curr_pt = mPts[i];
 
@@ -208,10 +203,26 @@ void cScenarioRNN::GenPoints()
 	const double y_amp = 0.25;
 	const double period = 1;
 
+	double curr_y = 0;
 	for (int i = 0; i < num_pts; ++i)
 	{
 		double x = min_x + i * (max_x - min_x) / (num_pts - 1);
 		double y = y_amp * std::sin(2 * M_PI / period * x);
+		//y += 0.1 * std::sin(4 * M_PI / period * x);
+		//y += 0.1 * std::sin(8 * M_PI / period * x);
+		//y = (i % 10 < 5) ? -0.5 : 0.5;
+		//y *= i / (num_pts - 1.0);
+		//y = curr_y;
+		//curr_y += cMathUtil::RandDoubleNorm(0, 0.05);
+		// y = 0.5 * x * x - 0.3;
+
+		//int idx = i % 20;
+		//y = 0.25 * idx / 19;
+
+		//y = i / (num_pts - 1.0);
+		//y -= 0.5;
+		//y = std::abs(y);
+
 		AddPt(tVector(x, y, 0, 0));
 	}
 }
