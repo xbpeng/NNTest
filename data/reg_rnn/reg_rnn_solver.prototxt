@@ -1,8 +1,7 @@
 net: "data/reg_rnn/reg_rnn_train.prototxt"
 
-base_lr: 0.01
+base_lr: 0.001
 momentum: 0.9
-weight_decay: 0.0005
 
 lr_policy: "fixed"
 display: 1

@@ -1,5 +1,7 @@
 #include "ScenarioRNN.h"
 
+const double gDefaultInput = 1;
+
 cScenarioRNN::cScenarioRNN()
 {
 	Clear();
@@ -59,16 +61,12 @@ void cScenarioRNN::AddPt(const tVector& pt)
 	mPts.push_back(pt);
 	int num_pts = GetNumPts();
 
-	if (num_pts > 1)
-	{
-		tExpTuple tuple;
-		bool is_start = mPts.size() == 2;
-		tVector curr_pt = mPts[num_pts - 1];
-		tVector prev_pt = mPts[num_pts - 2];
+	tExpTuple tuple;
+	bool is_start = mPts.size() == 1;
+	tVector curr_pt = mPts[num_pts - 1];
 
-		BuildTuple(prev_pt, curr_pt, is_start, tuple);
-		mTrainer->AddTuple(tuple);
-	}
+	BuildTuple(curr_pt, is_start, tuple);
+	mTrainer->AddTuple(tuple);
 }
 
 const std::vector<tVector, Eigen::aligned_allocator<tVector>>& cScenarioRNN::GetEvalPts() const
@@ -126,7 +124,7 @@ void cScenarioRNN::SetupScale()
 	mTrainer->SetOutputOffsetScale(output_offset, output_scale);
 }
 
-void cScenarioRNN::BuildTuple(const tVector& pt0, const tVector& pt1, bool is_start, tExpTuple& out_tuple) const
+void cScenarioRNN::BuildTuple(const tVector& pt, bool is_start, tExpTuple& out_tuple) const
 {
 	int state_size = mTrainer->GetStateSize();
 	int action_size = mTrainer->GetActionSize();
@@ -137,9 +135,8 @@ void cScenarioRNN::BuildTuple(const tVector& pt0, const tVector& pt1, bool is_st
 	out_tuple.ClearFlags();
 	out_tuple.SetFlag(is_start, cRNNTrainer::eFlagStart);
 
-	out_tuple.mStateBeg[0] = pt0[1];
-	out_tuple.mAction[0] = pt1[1];
-	out_tuple.mStateEnd = out_tuple.mStateBeg;
+	out_tuple.mStateBeg[0] = gDefaultInput;
+	out_tuple.mAction[0] = pt[1];
 }
 
 void cScenarioRNN::EvalNet()
@@ -154,14 +151,12 @@ void cScenarioRNN::EvalNet()
 		Eigen::VectorXd x = Eigen::VectorXd::Zero(net->GetInputSize());
 		Eigen::VectorXd y = Eigen::VectorXd::Zero(net->GetOutputSize());
 
-		mEvalPts[0] = mPts[0];
-		for (int i = 1; i < num_pts; ++i)
+		for (int i = 0; i < num_pts; ++i)
 		{
-			bool is_start = i == 0;
-			const tVector& prev_pt = mPts[i - 1];
+			bool is_start = (i == 0);
 			const tVector& curr_pt = mPts[i];
 
-			x[0] = prev_pt[1];
+			x[0] = gDefaultInput;
 			net->Eval(x, is_start, y);
 
 			mEvalPts[i] = tVector(curr_pt[0], y[0], 0, 0);
@@ -208,9 +203,9 @@ void cScenarioRNN::GenPoints()
 	{
 		double x = min_x + i * (max_x - min_x) / (num_pts - 1);
 		double y = y_amp * std::sin(2 * M_PI / period * x);
-		//y += 0.1 * std::sin(4 * M_PI / period * x);
-		//y += 0.1 * std::sin(8 * M_PI / period * x);
-		//y = (i % 10 < 5) ? -0.5 : 0.5;
+		y += 0.1 * std::sin(4 * M_PI / period * x);
+		y += 0.1 * std::sin(8 * M_PI / period * x);
+		//y = (i % 4 < 3) ? -0.5 : 0.5;
 		//y *= i / (num_pts - 1.0);
 		//y = curr_y;
 		//curr_y += cMathUtil::RandDoubleNorm(0, 0.05);

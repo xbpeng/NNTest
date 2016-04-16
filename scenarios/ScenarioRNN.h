@@ -43,7 +43,7 @@ protected:
 	virtual void SetupScale();
 	virtual void EvalNet();
 	virtual void FindMinMaxX(double& out_min_x, double& out_max_x) const;
-	virtual void BuildTuple(const tVector& pt0, const tVector& pt1, bool is_start, tExpTuple& out_tuple) const;
+	virtual void BuildTuple(const tVector& pt, bool is_start, tExpTuple& out_tuple) const;
 	
 	virtual void GenPoints();
 	virtual cRecurrentNet* GetNet() const;

@@ -7,7 +7,7 @@ layer {
   top: "label"
 
   memory_data_param {
-    batch_size: 8
+    batch_size: 32
 	channels: 1
 	height: 2
 	width: 1
@@ -49,13 +49,11 @@ layer {
   recurrent_param {
     num_output: 64
     weight_filler {
-      type: "uniform"
-      min: -0.08
-      max: 0.08
+      type: "xavier"
     }
     bias_filler {
       type: "constant"
-      value: 0
+	  value: 0
     }
   }
 }
@@ -84,6 +82,7 @@ layer {
 	axis: 2
   }
 }
+
 
 
 layer {
