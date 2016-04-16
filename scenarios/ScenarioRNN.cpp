@@ -1,73 +1,81 @@
-#include "ScenarioReg1D.h"
+#include "ScenarioRNN.h"
 
-cScenarioReg1D::cScenarioReg1D()
+cScenarioRNN::cScenarioRNN()
 {
 	Clear();
 }
 
-cScenarioReg1D::~cScenarioReg1D()
+cScenarioRNN::~cScenarioRNN()
 {
 }
 
-void cScenarioReg1D::Init()
+void cScenarioRNN::Init()
 {
 	InitTrainer();
+	GenPoints();
 }
 
-void cScenarioReg1D::ParseArgs(const cArgParser& parser)
+void cScenarioRNN::ParseArgs(const cArgParser& parser)
 {
 	parser.ParseString("solver_file", mSolverFile);
 	parser.ParseString("net_file", mNetFile);
-	parser.ParseInt("num_evals_pts", mNumEvalPts);
 	parser.ParseInt("pases_per_step", mPassesPerStep);
 }
 
-void cScenarioReg1D::Reset()
+void cScenarioRNN::Reset()
 {
 	mPts.clear();
 	mEvalPts.clear();
 	mTrainer->Reset();
+	GenPoints();
 }
 
-void cScenarioReg1D::Clear()
+void cScenarioRNN::Clear()
 {
 	mSolverFile = "";
 	mNetFile = "";
 	mPts.clear();
 	mTrainer.reset();
 	mEvalPts.clear();
-	mNumEvalPts = 100;
 	mPassesPerStep = 100;
 }
 
-void cScenarioReg1D::Update(double time_elapsed)
+void cScenarioRNN::Update(double time_elapsed)
 {
 }
 
-int cScenarioReg1D::GetNumPts() const
+int cScenarioRNN::GetNumPts() const
 {
 	return static_cast<int>(mPts.size());
 }
 
-const tVector& cScenarioReg1D::GetPt(int i) const
+const tVector& cScenarioRNN::GetPt(int i) const
 {
 	return mPts[i];
 }
 
-void cScenarioReg1D::AddPt(const tVector& pt)
+void cScenarioRNN::AddPt(const tVector& pt)
 {
 	mPts.push_back(pt);
-	tExpTuple tuple;
-	BuildTuple(pt, tuple);
-	mTrainer->AddTuple(tuple);
+	int num_pts = GetNumPts();
+
+	if (num_pts > 1)
+	{
+		tExpTuple tuple;
+		bool is_start = mPts.size() == 2;
+		tVector prev_pt = mPts[num_pts - 2];
+
+		BuildTuple(prev_pt, pt, is_start, tuple);
+		mTrainer->AddTuple(tuple);
+	}
 }
 
-const std::vector<tVector, Eigen::aligned_allocator<tVector>>& cScenarioReg1D::GetEvalPts() const
+const std::vector<tVector, Eigen::aligned_allocator<tVector>>& cScenarioRNN::GetEvalPts() const
 {
 	return mEvalPts;
 }
 
-void cScenarioReg1D::TrainNet()
+void cScenarioRNN::TrainNet()
 {
 	for (int i = 0; i < mPassesPerStep; ++i)
 	{
@@ -77,12 +85,12 @@ void cScenarioReg1D::TrainNet()
 	EvalNet();
 }
 
-std::string cScenarioReg1D::GetName() const
+std::string cScenarioRNN::GetName() const
 {
 	return "Regression 1D";
 }
 
-void cScenarioReg1D::InitTrainer()
+void cScenarioRNN::InitTrainer()
 {
 	BuildTrainer(mTrainer);
 
@@ -98,12 +106,12 @@ void cScenarioReg1D::InitTrainer()
 	SetupScale();
 }
 
-void cScenarioReg1D::BuildTrainer(std::shared_ptr<cNeuralNetTrainer>& out_trainer)
+void cScenarioRNN::BuildTrainer(std::shared_ptr<cNeuralNetTrainer>& out_trainer)
 {
-	out_trainer = std::shared_ptr<cNeuralNetTrainer>(new cNeuralNetTrainer());
+	out_trainer = std::shared_ptr<cRNNTrainer>(new cRNNTrainer());
 }
 
-void cScenarioReg1D::SetupScale()
+void cScenarioRNN::SetupScale()
 {
 	int input_size = mTrainer->GetInputSize();
 	int output_size = mTrainer->GetOutputSize();
@@ -117,7 +125,7 @@ void cScenarioReg1D::SetupScale()
 	mTrainer->SetOutputOffsetScale(output_offset, output_scale);
 }
 
-void cScenarioReg1D::BuildTuple(const tVector& pt, tExpTuple& out_tuple) const
+void cScenarioRNN::BuildTuple(const tVector& pt0, const tVector& pt1, bool is_start, tExpTuple& out_tuple) const
 {
 	int state_size = mTrainer->GetStateSize();
 	int action_size = mTrainer->GetActionSize();
@@ -125,20 +133,19 @@ void cScenarioReg1D::BuildTuple(const tVector& pt, tExpTuple& out_tuple) const
 	out_tuple.mStateBeg.resize(state_size);
 	out_tuple.mAction.resize(action_size);
 
-	out_tuple.mStateBeg[0] = pt[0];
-	out_tuple.mAction[0] = pt[1];
+	out_tuple.ClearFlags();
+	out_tuple.SetFlag(is_start, cRNNTrainer::eFlagStart);
+
+	out_tuple.mStateBeg[0] = pt0[1];
+	out_tuple.mAction[0] = pt1[1];
 	out_tuple.mStateEnd = out_tuple.mStateBeg;
 }
 
-tVector cScenarioReg1D::BuildPt(const Eigen::VectorXd& x, const Eigen::VectorXd& y) const
-{
-	return tVector(x[0], y[0], 0, 0);
-}
-
-void cScenarioReg1D::EvalNet()
+void cScenarioRNN::EvalNet()
 {
 	const double pad = 0.2;
-	if (GetNumPts() > 0)
+	int num_pts = GetNumPts();
+	if (num_pts > 0)
 	{
 		double min_x = 0;
 		double max_x = 0;
@@ -146,17 +153,23 @@ void cScenarioReg1D::EvalNet()
 		min_x -= pad;
 		max_x += pad;
 
-		mEvalPts.resize(mNumEvalPts);
+		mEvalPts.resize(num_pts);
 
 		const auto& net = GetNet();
 		Eigen::VectorXd x = Eigen::VectorXd::Zero(net->GetInputSize());
 		Eigen::VectorXd y = Eigen::VectorXd::Zero(net->GetOutputSize());
 
-		for (int i = 0; i < mNumEvalPts; ++i)
+		mEvalPts[0] = mPts[0];
+		for (int i = 1; i < num_pts; ++i)
 		{
-			x(0) = static_cast<double>(i) / (mNumEvalPts - 1) * (max_x - min_x) + min_x;
-			net->Eval(x, y);
-			mEvalPts[i] = BuildPt(x, y);
+			bool is_start = i == 1;
+			const tVector& prev_pt = mPts[i - 1];
+			const tVector& curr_pt = mPts[i];
+
+			x[0] = prev_pt[1];
+			net->Eval(x, is_start, y);
+
+			mEvalPts[i] = tVector(curr_pt[0], y[0], 0, 0);
 		}
 	}
 	else
@@ -165,7 +178,7 @@ void cScenarioReg1D::EvalNet()
 	}
 }
 
-void cScenarioReg1D::FindMinMaxX(double& out_min_x, double& out_max_x) const
+void cScenarioRNN::FindMinMaxX(double& out_min_x, double& out_max_x) const
 {
 	int num_pts = GetNumPts();
 	if (num_pts > 0)
@@ -187,7 +200,23 @@ void cScenarioReg1D::FindMinMaxX(double& out_min_x, double& out_max_x) const
 	}
 }
 
-const std::unique_ptr<cNeuralNet>& cScenarioReg1D::GetNet() const
+void cScenarioRNN::GenPoints()
 {
-	return mTrainer->GetNet();
+	const int num_pts = 100;
+	const double min_x = -1.5;
+	const double max_x = 1.5;
+	const double y_amp = 0.25;
+	const double period = 1;
+
+	for (int i = 0; i < num_pts; ++i)
+	{
+		double x = min_x + i * (max_x - min_x) / (num_pts - 1);
+		double y = y_amp * std::sin(2 * M_PI / period * x);
+		AddPt(tVector(x, y, 0, 0));
+	}
+}
+
+cRecurrentNet* cScenarioRNN::GetNet() const
+{
+	return static_cast<cRecurrentNet*>((mTrainer->GetNet()).get());
 }

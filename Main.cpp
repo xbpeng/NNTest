@@ -12,6 +12,7 @@
 #include "scenarios/DrawScenario.h"
 #include "scenarios/DrawScenarioReg1D.h"
 #include "scenarios/DrawScenarioRegVar1D.h"
+#include "scenarios/DrawScenarioRNN.h"
 #include "scenarios/DrawScenarioBallRL.h"
 #include "scenarios/DrawScenarioBallRLCacla.h"
 #include "scenarios/DrawScenarioBallRLVarCacla.h"
@@ -105,6 +106,10 @@ void SetupScenario()
 	else if (scenario_name == "reg_var_1d")
 	{
 		gScenario = std::shared_ptr<cDrawScenarioRegVar1D>(new cDrawScenarioRegVar1D(gCamera));
+	}
+	if (scenario_name == "reg_rnn")
+	{
+		gScenario = std::shared_ptr<cDrawScenarioRNN>(new cDrawScenarioRNN(gCamera));
 	}
 	else if (scenario_name == "ball_rl")
 	{

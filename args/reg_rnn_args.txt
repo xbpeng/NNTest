@@ -1,0 +1,6 @@
+-scenario= reg_rnn
+-solver_file= data/reg_rnn/reg_rnn_solver.prototxt
+-net_file= data/reg_rnn/reg_rnn_deploy.prototxt
+-pases_per_step= 20
+
+-num_evals_pts= 200

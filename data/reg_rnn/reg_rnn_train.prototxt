@@ -1,0 +1,158 @@
+name: "Reg_RNN"
+
+layer {
+  name: "data"
+  type: "MemoryData"
+  top: "data"
+  top: "label"
+
+  memory_data_param {
+    batch_size: 8
+	channels: 1
+	height: 2
+	width: 1
+	label_size: 1
+  }
+}
+
+layer {
+	name: "slice0"
+	type: "Slice"
+	bottom: "data"
+	top: "input_data"
+	top: "cont_data_raw"
+	slice_param {
+		axis: 2
+		slice_point: 1
+	}
+}
+
+layer {
+	name: "reshape_cont_data"
+    type: "Reshape"
+    bottom: "cont_data_raw"
+    top: "cont_data"
+    reshape_param {
+		shape {
+			dim: 0
+			dim: -1
+		}
+	}
+}
+
+layer {
+  name: "ip0"
+  type: "InnerProduct"
+  bottom: "input_data"
+  top: "ip0"
+  param {
+    lr_mult: 1
+	decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+	decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 64
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+	axis: 2
+  }
+}
+
+layer {
+  name: "relu0"
+  type: "ReLU"
+  bottom: "ip0"
+  top: "relu0"
+}
+
+layer {
+  name: "lstm0"
+  type: "LSTM"
+  bottom: "relu0"
+  bottom: "cont_data"
+  top: "lstm0"
+  recurrent_param {
+    num_output: 32
+    weight_filler {
+      type: "uniform"
+      min: -0.08
+      max: 0.08
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+
+layer {
+  name: "ip1"
+  type: "InnerProduct"
+  bottom: "lstm0"
+  top: "ip1"
+  param {
+    lr_mult: 1
+	decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+	decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 32
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+	axis: 2
+  }
+}
+
+layer {
+  name: "relu1"
+  type: "ReLU"
+  bottom: "ip1"
+  top: "relu1"
+}
+
+layer {
+  name: "output"
+  type: "InnerProduct"
+  bottom: "relu1"
+  top: "output"
+  param {
+    lr_mult: 1
+	decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+	decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+	axis: 2
+  }
+}
+
+layer {
+  name: "loss"
+  type: "EuclideanLoss"
+  bottom: "output"
+  bottom: "label"
+  top: "loss"
+}

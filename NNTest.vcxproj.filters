@@ -824,6 +824,18 @@
     <ClCompile Include="..\TerrainRL\sim\DogControllerDMACE.cpp">
       <Filter>Source Files\util</Filter>
     </ClCompile>
+    <ClCompile Include="scenarios\ScenarioRNN.cpp">
+      <Filter>Source Files\scenarios</Filter>
+    </ClCompile>
+    <ClCompile Include="scenarios\DrawScenarioRNN.cpp">
+      <Filter>Source Files\scenarios</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\learning\RecurrentNet.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\learning\RNNTrainer.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\TerrainRL\util\Rand.h">
@@ -1316,6 +1328,18 @@
       <Filter>Source Files\util</Filter>
     </ClInclude>
     <ClInclude Include="..\TerrainRL\sim\DogControllerDMACE.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="scenarios\ScenarioRNN.h">
+      <Filter>Source Files\scenarios</Filter>
+    </ClInclude>
+    <ClInclude Include="scenarios\DrawScenarioRNN.h">
+      <Filter>Source Files\scenarios</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\learning\RecurrentNet.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\learning\RNNTrainer.h">
       <Filter>Source Files\util</Filter>
     </ClInclude>
   </ItemGroup>
