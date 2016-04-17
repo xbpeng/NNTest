@@ -36,4 +36,6 @@ protected:
 	virtual void DrawPoints() const;
 	virtual void DrawNetEval() const;
 	virtual void TrainNet();
+
+	virtual void OutputPoints() const;
 };

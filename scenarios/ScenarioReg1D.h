@@ -5,6 +5,7 @@
 #include "scenarios/Scenario.h"
 #include "learning/NeuralNet.h"
 #include "learning/NeuralNetTrainer.h"
+#include "util/JsonUtil.h"
 
 class cScenarioReg1D : public cScenario
 {
@@ -25,18 +26,24 @@ public:
 	virtual const std::vector<tVector, Eigen::aligned_allocator<tVector>>& GetEvalPts() const;
 
 	virtual void TrainNet();
+	virtual void LoadPoints(const std::string& filename);
+	virtual void OutputPoints(const std::string& filename) const;
+	virtual void OutputPoints() const;
 
 	virtual std::string GetName() const;
 	
 protected:
 	std::string mSolverFile;
 	std::string mNetFile;
+	std::string mInputFile;
+	std::string mOutputFile;
+
 	int mPassesPerStep;
 
 	int mNumEvalPts;
 
-	std::vector<tVector, Eigen::aligned_allocator<tVector>> mPts;
-	std::vector<tVector, Eigen::aligned_allocator<tVector>> mEvalPts;
+	tVectorArr mPts;
+	tVectorArr mEvalPts;
 
 	std::shared_ptr<cNeuralNetTrainer> mTrainer;
 
@@ -49,4 +56,6 @@ protected:
 	virtual tVector BuildPt(const Eigen::VectorXd& x, const Eigen::VectorXd& y) const;
 
 	virtual const std::unique_ptr<cNeuralNet>& GetNet() const;
+	virtual std::string BuildPtJson(const tVector& pt) const;
+	virtual bool ParsePoints(const Json::Value& root, tVectorArr& out_points) const;
 };

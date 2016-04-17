@@ -1,4 +1,7 @@
 #include "ScenarioReg1D.h"
+#include "util/FileUtil.h"
+
+const std::string gPointsKey = "Points";
 
 cScenarioReg1D::cScenarioReg1D()
 {
@@ -12,21 +15,33 @@ cScenarioReg1D::~cScenarioReg1D()
 void cScenarioReg1D::Init()
 {
 	InitTrainer();
+	if (mInputFile != "")
+	{
+		LoadPoints(mInputFile);
+	}
 }
 
 void cScenarioReg1D::ParseArgs(const cArgParser& parser)
 {
 	parser.ParseString("solver_file", mSolverFile);
 	parser.ParseString("net_file", mNetFile);
+	parser.ParseString("input_file", mInputFile);
+	parser.ParseString("output_file", mOutputFile);
+
 	parser.ParseInt("num_evals_pts", mNumEvalPts);
 	parser.ParseInt("pases_per_step", mPassesPerStep);
 }
 
 void cScenarioReg1D::Reset()
 {
-	mPts.clear();
-	mEvalPts.clear();
 	mTrainer->Reset();
+	mEvalPts.clear();
+	mPts.clear();
+	
+	if (mInputFile != "")
+	{
+		LoadPoints(mInputFile);
+	}
 }
 
 void cScenarioReg1D::Clear()
@@ -75,6 +90,66 @@ void cScenarioReg1D::TrainNet()
 	}
 	
 	EvalNet();
+}
+
+void cScenarioReg1D::LoadPoints(const std::string& filename)
+{
+	std::ifstream f_stream(filename);
+	Json::Reader reader;
+	Json::Value root;
+	bool succ = reader.parse(f_stream, root);
+	f_stream.close();
+
+	if (succ)
+	{
+		const Json::Value& points_json = root[gPointsKey];
+		succ = ParsePoints(points_json, mPts);
+	}
+	
+	if (!succ)
+	{
+		printf("Failed to parse %s\n", filename.c_str());
+		assert(false);
+	}
+}
+
+void cScenarioReg1D::OutputPoints(const std::string& filename) const
+{
+	FILE* f = cFileUtil::OpenFile(filename, "w");
+	if (f != nullptr)
+	{
+		fprintf(f,"{\n\"%s\":[\n", gPointsKey.c_str());
+		for (int i = 0; i < GetNumPts(); ++i)
+		{
+			if (i != 0)
+			{
+				fprintf(f, ",\n");
+			}
+			const tVector& pt = GetPt(i);
+			std::string json = BuildPtJson(pt);
+			fprintf(f, "%s", json.c_str());
+		}
+		fprintf(f, "\n]}");
+		cFileUtil::CloseFile(f);
+	}
+	else
+	{
+		printf("Failed to write data to %s\n", filename.c_str());
+		assert(false);
+	}
+}
+
+void cScenarioReg1D::OutputPoints() const
+{
+	if (mOutputFile != "")
+	{
+		OutputPoints(mOutputFile);
+	}
+	else
+	{
+		printf("No output file specified\n");
+		assert(false);
+	}
 }
 
 std::string cScenarioReg1D::GetName() const
@@ -190,4 +265,33 @@ void cScenarioReg1D::FindMinMaxX(double& out_min_x, double& out_max_x) const
 const std::unique_ptr<cNeuralNet>& cScenarioReg1D::GetNet() const
 {
 	return mTrainer->GetNet();
+}
+
+std::string cScenarioReg1D::BuildPtJson(const tVector& pt) const
+{
+	return cJsonUtil::BuildVectorJson(pt);
+}
+
+bool cScenarioReg1D::ParsePoints(const Json::Value& root, tVectorArr& out_points) const
+{
+	bool succ = true;
+	if (!root.isNull() && root.isArray())
+	{
+		int num_vals = root.size();
+		out_points.clear();
+		out_points.reserve(num_vals);
+
+		for (int i = 0; i < num_vals; ++i)
+		{
+			const Json::Value& pt_json = root.get(i, 0);;
+			tVector point;
+			cJsonUtil::ReadVectorJson(pt_json, point);
+			out_points.push_back(point);
+		}
+	}
+	else
+	{
+		succ = false;
+	}
+	return succ;
 }

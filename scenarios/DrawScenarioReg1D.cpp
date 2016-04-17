@@ -65,6 +65,9 @@ void cDrawScenarioReg1D::Keyboard(unsigned char key, int x, int y)
 	case 't':
 		mAutoTrainer = !mAutoTrainer;
 		break;
+	case 's':
+		OutputPoints();
+		break;
 	default:
 		break;
 	}
@@ -158,4 +161,9 @@ void cDrawScenarioReg1D::DrawNetEval() const
 void cDrawScenarioReg1D::TrainNet()
 {
 	mScene->TrainNet();
+}
+
+void cDrawScenarioReg1D::OutputPoints() const
+{
+	mScene->OutputPoints();
 }
