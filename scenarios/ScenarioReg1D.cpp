@@ -77,7 +77,7 @@ void cScenarioReg1D::AddPt(const tVector& pt)
 	mTrainer->AddTuple(tuple);
 }
 
-const std::vector<tVector, Eigen::aligned_allocator<tVector>>& cScenarioReg1D::GetEvalPts() const
+const tVectorArr& cScenarioReg1D::GetEvalPts() const
 {
 	return mEvalPts;
 }

@@ -23,7 +23,7 @@ public:
 	virtual int GetNumPts() const;
 	virtual const tVector& GetPt(int i) const;
 	virtual void AddPt(const tVector& pt);
-	virtual const std::vector<tVector, Eigen::aligned_allocator<tVector>>& GetEvalPts() const;
+	virtual const tVectorArr& GetEvalPts() const;
 
 	virtual void TrainNet();
 	virtual void LoadPoints(const std::string& filename);

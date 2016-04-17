@@ -107,7 +107,7 @@ void SetupScenario()
 	{
 		gScenario = std::shared_ptr<cDrawScenarioRegVar1D>(new cDrawScenarioRegVar1D(gCamera));
 	}
-	if (scenario_name == "reg_rnn")
+	else if (scenario_name == "reg_rnn")
 	{
 		gScenario = std::shared_ptr<cDrawScenarioRNN>(new cDrawScenarioRNN(gCamera));
 	}
