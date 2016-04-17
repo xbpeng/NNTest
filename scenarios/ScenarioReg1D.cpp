@@ -6,6 +6,7 @@ const std::string gPointsKey = "Points";
 cScenarioReg1D::cScenarioReg1D()
 {
 	Clear();
+	mAutoGenPoints = false;
 }
 
 cScenarioReg1D::~cScenarioReg1D()
@@ -19,6 +20,10 @@ void cScenarioReg1D::Init()
 	{
 		LoadPoints(mInputFile);
 	}
+	else if (mAutoGenPoints)
+	{
+		GenPoints();
+	}
 }
 
 void cScenarioReg1D::ParseArgs(const cArgParser& parser)
@@ -30,6 +35,8 @@ void cScenarioReg1D::ParseArgs(const cArgParser& parser)
 
 	parser.ParseInt("num_evals_pts", mNumEvalPts);
 	parser.ParseInt("pases_per_step", mPassesPerStep);
+
+	parser.ParseBool("auto_gen_pts", mAutoGenPoints);
 }
 
 void cScenarioReg1D::Reset()
@@ -41,6 +48,10 @@ void cScenarioReg1D::Reset()
 	if (mInputFile != "")
 	{
 		LoadPoints(mInputFile);
+	}
+	else if (mAutoGenPoints)
+	{
+		GenPoints();
 	}
 }
 
@@ -103,7 +114,7 @@ void cScenarioReg1D::LoadPoints(const std::string& filename)
 	if (succ)
 	{
 		const Json::Value& points_json = root[gPointsKey];
-		succ = ParsePoints(points_json, mPts);
+		succ = ParsePoints(points_json);
 	}
 	
 	if (!succ)
@@ -272,21 +283,24 @@ std::string cScenarioReg1D::BuildPtJson(const tVector& pt) const
 	return cJsonUtil::BuildVectorJson(pt);
 }
 
-bool cScenarioReg1D::ParsePoints(const Json::Value& root, tVectorArr& out_points) const
+bool cScenarioReg1D::ParsePoints(const Json::Value& root)
 {
 	bool succ = true;
 	if (!root.isNull() && root.isArray())
 	{
 		int num_vals = root.size();
-		out_points.clear();
-		out_points.reserve(num_vals);
+		mPts.clear();
 
 		for (int i = 0; i < num_vals; ++i)
 		{
 			const Json::Value& pt_json = root.get(i, 0);;
 			tVector point;
-			cJsonUtil::ReadVectorJson(pt_json, point);
-			out_points.push_back(point);
+			bool valid_pt = cJsonUtil::ReadVectorJson(pt_json, point);
+
+			if (valid_pt)
+			{
+				AddPt(point);
+			}
 		}
 	}
 	else
@@ -294,4 +308,9 @@ bool cScenarioReg1D::ParsePoints(const Json::Value& root, tVectorArr& out_points
 		succ = false;
 	}
 	return succ;
+}
+
+
+void cScenarioReg1D::GenPoints()
+{
 }

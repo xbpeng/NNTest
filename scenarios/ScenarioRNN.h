@@ -12,8 +12,6 @@ public:
 	cScenarioRNN();
 	virtual ~cScenarioRNN();
 
-	virtual void Init();
-	virtual void Reset();
 	virtual void AddPt(const tVector& pt);
 
 	virtual std::string GetName() const;

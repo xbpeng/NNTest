@@ -10,19 +10,6 @@ cScenarioRNN::~cScenarioRNN()
 {
 }
 
-void cScenarioRNN::Init()
-{
-	cScenarioReg1D::Init();
-	GenPoints();
-}
-
-
-void cScenarioRNN::Reset()
-{
-	cScenarioReg1D::Reset();
-	GenPoints();
-}
-
 void cScenarioRNN::AddPt(const tVector& pt)
 {
 	mPts.push_back(pt);

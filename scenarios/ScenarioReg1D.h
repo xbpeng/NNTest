@@ -38,8 +38,8 @@ protected:
 	std::string mInputFile;
 	std::string mOutputFile;
 
+	bool mAutoGenPoints;
 	int mPassesPerStep;
-
 	int mNumEvalPts;
 
 	tVectorArr mPts;
@@ -57,5 +57,7 @@ protected:
 
 	virtual const std::unique_ptr<cNeuralNet>& GetNet() const;
 	virtual std::string BuildPtJson(const tVector& pt) const;
-	virtual bool ParsePoints(const Json::Value& root, tVectorArr& out_points) const;
+	virtual bool ParsePoints(const Json::Value& root);
+
+	virtual void GenPoints();
 };

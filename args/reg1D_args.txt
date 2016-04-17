@@ -8,3 +8,4 @@
 -pases_per_step= 20
 
 -num_evals_pts= 200
+//-auto_gen_pts= true
