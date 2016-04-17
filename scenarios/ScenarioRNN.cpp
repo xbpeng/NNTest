@@ -203,16 +203,16 @@ void cScenarioRNN::GenPoints()
 	{
 		double x = min_x + i * (max_x - min_x) / (num_pts - 1);
 		double y = y_amp * std::sin(2 * M_PI / period * x);
-		//y += 0.1 * std::sin(4 * M_PI / period * x);
-		//y += 0.1 * std::sin(8 * M_PI / period * x);
-		//y = (i % 4 < 3) ? -0.5 : 0.5;
-		y *= 1 - i / (num_pts - 1.0);
+		y += 0.1 * std::sin(4 * M_PI / period * x);
+		y += 0.1 * std::sin(8 * M_PI / period * x);
+		//y = (i % 9 < 6) ? -0.2 : 0.2;
+		//y *= 1 - i / (num_pts - 1.0);
 		//y = curr_y;
 		//curr_y += cMathUtil::RandDoubleNorm(0, 0.05);
 		// y = 0.5 * x * x - 0.3;
 
 		//int idx = i % 20;
-		//y = 0.25 * idx / 19;
+		//y = 0.2 * idx / 19;
 
 		//y = i / (num_pts - 1.0);
 		//y -= 0.5;
