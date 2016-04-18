@@ -81,7 +81,7 @@ void cDrawScenarioReg1D::MouseClick(int button, int state, double x, double y)
 	{
 		mMousePressed = true;
 		tVector pos = mCam.ScreenToWorldPos(tVector(x, y, 0, 0));
-		mScene->AddPt(pos);
+		AddPt(pos);
 		mMousePos = pos;
 	}
 	else if (state == GLUT_UP)
@@ -99,7 +99,7 @@ void cDrawScenarioReg1D::MouseMove(double x, double y)
 		double dist = (mMousePos - curr_pos).squaredNorm();
 		if (dist > dist_threshold)
 		{
-			mScene->AddPt(curr_pos);
+			AddPt(curr_pos);
 			mMousePos = curr_pos;
 		}
 	}
@@ -166,4 +166,9 @@ void cDrawScenarioReg1D::TrainNet()
 void cDrawScenarioReg1D::OutputPoints() const
 {
 	mScene->OutputPoints();
+}
+
+void cDrawScenarioReg1D::AddPt(const tVector& pt)
+{
+	mScene->AddPt(pt);
 }

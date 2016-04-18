@@ -41,7 +41,7 @@ layer {
 
 layer {
   name: "relu0"
-  type: "ReLU"
+  type: "ELU"
   bottom: "ip0"
   top: "relu0"
 }
@@ -72,7 +72,7 @@ layer {
 
 layer {
   name: "relu1"
-  type: "ReLU"
+  type: "ELU"
   bottom: "ip1"
   top: "relu1"
 }
@@ -129,7 +129,7 @@ layer {
 
 layer {
   name: "var_relu0"
-  type: "ReLU"
+  type: "ELU"
   bottom: "var_ip0"
   top: "var_relu0"
 }

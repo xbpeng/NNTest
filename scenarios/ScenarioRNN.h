@@ -12,11 +12,15 @@ public:
 	cScenarioRNN();
 	virtual ~cScenarioRNN();
 
+	virtual void Init();
+	virtual void Reset();
 	virtual void AddPt(const tVector& pt);
+	virtual void AddPt(const tVector& pt, bool is_start);
 
 	virtual std::string GetName() const;
 	
 protected:
+	int mPrevID;
 
 	virtual void BuildTrainer(std::shared_ptr<cNeuralNetTrainer>& out_trainer);
 	virtual void EvalNet();
@@ -24,4 +28,5 @@ protected:
 	
 	virtual void GenPoints();
 	virtual cRecurrentNet* GetRNN() const;
+	virtual std::shared_ptr<cRNNTrainer> GetRNNTrainer() const;
 };

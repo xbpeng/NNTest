@@ -4,23 +4,47 @@ const double gDefaultInput = 1;
 
 cScenarioRNN::cScenarioRNN()
 {
+	mPrevID = gInvalidIdx;
 }
 
 cScenarioRNN::~cScenarioRNN()
 {
 }
 
+void cScenarioRNN::Init()
+{
+	cScenarioReg1D::Init();
+	mPrevID = gInvalidIdx;
+}
+
+void cScenarioRNN::Reset()
+{
+	cScenarioReg1D::Reset();
+	mPrevID = gInvalidIdx;
+}
+
 void cScenarioRNN::AddPt(const tVector& pt)
+{
+	bool is_start = mPts.size() == 0;
+	AddPt(pt, is_start);
+}
+
+void cScenarioRNN::AddPt(const tVector& pt, bool is_start)
 {
 	mPts.push_back(pt);
 	int num_pts = GetNumPts();
 
 	tExpTuple tuple;
-	bool is_start = mPts.size() == 1;
 	tVector curr_pt = mPts[num_pts - 1];
 
 	BuildTuple(curr_pt, is_start, tuple);
-	mTrainer->AddTuple(tuple);
+	int prev_id = (is_start) ? gInvalidIdx : mPrevID;
+
+	auto trainer = GetRNNTrainer();
+	int curr_id = trainer->AddTuple(tuple, prev_id);
+	mPrevID = curr_id;
+
+	printf("Is start: %s\n", (is_start) ? "true" : "false");
 }
 
 std::string cScenarioRNN::GetName() const
@@ -112,4 +136,9 @@ void cScenarioRNN::GenPoints()
 cRecurrentNet* cScenarioRNN::GetRNN() const
 {
 	return static_cast<cRecurrentNet*>((mTrainer->GetNet()).get());
+}
+
+std::shared_ptr<cRNNTrainer> cScenarioRNN::GetRNNTrainer() const
+{
+	return std::static_pointer_cast<cRNNTrainer>(mTrainer);
 }

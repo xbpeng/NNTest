@@ -47,9 +47,41 @@ layer {
 }
 
 layer {
-  name: "output"
+  name: "ip0"
   type: "InnerProduct"
   bottom: "lstm0"
+  top: "ip0"
+  param {
+    lr_mult: 1
+	decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+	decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 128
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+	axis: 2
+  }
+}
+
+layer {
+  name: "relu0"
+  type: "ReLU"
+  bottom: "ip0"
+  top: "relu0"
+}
+
+layer {
+  name: "output"
+  type: "InnerProduct"
+  bottom: "relu0"
   top: "output"
   param {
     lr_mult: 1
@@ -67,6 +99,5 @@ layer {
     bias_filler {
       type: "constant"
     }
-	axis: 2
   }
 }

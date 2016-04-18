@@ -38,4 +38,5 @@ protected:
 	virtual void TrainNet();
 
 	virtual void OutputPoints() const;
+	virtual void AddPt(const tVector& pt);
 };

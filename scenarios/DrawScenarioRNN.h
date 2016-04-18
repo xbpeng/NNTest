@@ -12,7 +12,16 @@ public:
 	cDrawScenarioRNN(cCamera& cam);
 	virtual ~cDrawScenarioRNN();
 
+	virtual void Init();
+	virtual void Reset();
+
+	virtual void MouseClick(int button, int state, double x, double y);
+	virtual void MouseMove(double x, double y);
+
 protected:
 
+	bool mNewSeq;
+
 	virtual void BuildScene(std::unique_ptr<cScenarioReg1D>& out_scene);
+	virtual void AddPt(const tVector& pt);
 };
