@@ -120,18 +120,26 @@ void cScenarioRNN::EvalNet()
 void cScenarioRNN::GenPoints()
 {
 	int num_seqs = 2;
+	int max_pts = 100;
 	for (int i = 0; i < num_seqs; ++i)
 	{
-		const int num_pts = 100;
+		double len_lerp = i / (num_seqs - 1.0);
+		len_lerp *= 0.25;
+		len_lerp = 1 - len_lerp;
+
+		const int num_pts = max_pts * len_lerp;
 		const double min_x = -1.5;
 		const double max_x = 1.5;
 		const double y_amp = 0.25;
 		const double period = 1;
 
+		double x_bias = 0;// i / (num_seqs - 1.0) * 0.01;
 		double curr_y = 0;
 		for (int i = 0; i < num_pts; ++i)
 		{
-			double x = min_x + i * (max_x - min_x) / (num_pts - 1);
+			double x = min_x + i * (max_x - min_x) / (max_pts - 1);
+			x += x_bias;
+
 			double y = y_amp * std::sin(2 * M_PI / period * x);
 			y += 0.1 * std::sin(4 * M_PI / period * x);
 			y += 0.1 * std::sin(8 * M_PI / period * x);

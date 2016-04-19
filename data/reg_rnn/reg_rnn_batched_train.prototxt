@@ -9,9 +9,9 @@ layer {
   memory_data_param {
     batch_size: 32
 	channels: 1
-	height: 2
+	height: 4
 	width: 1
-	label_size: 1
+	label_size: 2
   }
 }
 
@@ -23,7 +23,7 @@ layer {
 	top: "input_data_raw"
 	slice_param {
 		axis: 2
-		slice_point: 1
+		slice_point: 2
 	}
 }
 
@@ -48,7 +48,7 @@ layer {
     reshape_param {
 		shape {
 			dim: 0
-			dim: 1
+			dim: 2
 			dim: -1
 			dim: 0
 		}
@@ -126,6 +126,7 @@ layer {
     bias_filler {
       type: "constant"
     }
+	axis: 2
   }
 }
 
