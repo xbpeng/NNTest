@@ -52,6 +52,22 @@ std::string cScenarioRNN::GetName() const
 	return "Regression RNN";
 }
 
+void cScenarioRNN::InitTrainer()
+{
+	BuildTrainer(mTrainer);
+
+	cNeuralNetTrainer::tParams trainer_params;
+	trainer_params.mNetFile = mNetFile;
+	trainer_params.mSolverFile = mSolverFile;
+	trainer_params.mPlaybackMemSize = 200;
+	trainer_params.mPoolSize = 1;
+	trainer_params.mNumInitSamples = 0;
+	trainer_params.mInitInputOffsetScale = false;
+
+	mTrainer->Init(trainer_params);
+	SetupScale();
+}
+
 void cScenarioRNN::BuildTrainer(std::shared_ptr<cNeuralNetTrainer>& out_trainer)
 {
 	out_trainer = std::shared_ptr<cRNNTrainer>(new cRNNTrainer());

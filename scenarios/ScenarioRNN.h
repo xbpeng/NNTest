@@ -22,6 +22,7 @@ public:
 protected:
 	int mPrevID;
 
+	virtual void InitTrainer();
 	virtual void BuildTrainer(std::shared_ptr<cNeuralNetTrainer>& out_trainer);
 	virtual void EvalNet();
 	virtual void BuildTuple(const tVector& pt, bool is_start, tExpTuple& out_tuple) const;

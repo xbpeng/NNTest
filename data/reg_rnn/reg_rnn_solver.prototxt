@@ -1,15 +1,13 @@
 net: "data/reg_rnn/reg_rnn_train.prototxt"
 
-base_lr: 0.001
+solver_mode: CPU
+
+base_lr: 0.0005
 momentum: 0.9
 weight_decay: 0.0005
 
 lr_policy: "fixed"
+
 display: 1
 max_iter: 100000000
-
-solver_mode: CPU
 snapshot: 0
-
-average_loss: 100
-clip_gradients: 10
