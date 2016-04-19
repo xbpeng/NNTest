@@ -9,4 +9,4 @@
 
 -num_evals_pts= 200
 
--auto_gen_pts= true
+//-auto_gen_pts= true

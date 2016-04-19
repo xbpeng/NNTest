@@ -127,7 +127,7 @@ void cScenarioRNN::GenPoints()
 		len_lerp *= 0.25;
 		len_lerp = 1 - len_lerp;
 
-		const int num_pts = max_pts * len_lerp;
+		const int num_pts = static_cast<int>(max_pts * len_lerp);
 		const double min_x = -1.5;
 		const double max_x = 1.5;
 		const double y_amp = 0.25;
@@ -141,10 +141,10 @@ void cScenarioRNN::GenPoints()
 			x += x_bias;
 
 			double y = y_amp * std::sin(2 * M_PI / period * x);
-			//y += 0.1 * std::sin(4 * M_PI / period * x);
-			//y += 0.1 * std::sin(8 * M_PI / period * x);
+			y += 0.1 * std::sin(4 * M_PI / period * x);
+			y += 0.1 * std::sin(8 * M_PI / period * x);
 			//y = (i % 9 < 6) ? -0.2 : 0.2;
-			y *= i / (num_pts - 1.0);
+			//y *= i / (max_pts - 1.0);
 			//y = curr_y;
 			//curr_y += cMathUtil::RandDoubleNorm(0, 0.05);
 			// y = 0.5 * x * x - 0.3;
