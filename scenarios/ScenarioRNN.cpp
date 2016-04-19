@@ -1,6 +1,6 @@
 #include "ScenarioRNN.h"
 
-const double gDefaultInput = 1;
+const double gDefaultInput = 0;
 
 cScenarioRNN::cScenarioRNN()
 {
@@ -59,7 +59,7 @@ void cScenarioRNN::InitTrainer()
 	cNeuralNetTrainer::tParams trainer_params;
 	trainer_params.mNetFile = mNetFile;
 	trainer_params.mSolverFile = mSolverFile;
-	trainer_params.mPlaybackMemSize = 200;
+	trainer_params.mPlaybackMemSize = 10000;
 	trainer_params.mPoolSize = 1;
 	trainer_params.mNumInitSamples = 0;
 	trainer_params.mInitInputOffsetScale = false;
@@ -102,7 +102,7 @@ void cScenarioRNN::EvalNet()
 
 		for (int i = 0; i < num_pts; ++i)
 		{
-			int idx = i % 100;
+			int idx = i;
 			const tVector& curr_pt = mPts[idx];
 			bool is_start = (curr_pt[3] != 0);
 			x[0] = gDefaultInput;
