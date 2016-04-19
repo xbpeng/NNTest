@@ -154,7 +154,7 @@ void cDrawScenarioReg1D::DrawNetEval() const
 
 	const auto& eval_pts = mScene->GetEvalPts();
 	glColor4d(col[0], col[1], col[2], col[3]);
-	glLineWidth(static_cast<float>(weight));
+	cDrawUtil::SetLineWidth(weight);
 	cDrawUtil::DrawLineStrip(eval_pts);
 }
 

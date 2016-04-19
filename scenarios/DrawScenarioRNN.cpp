@@ -55,3 +55,26 @@ void cDrawScenarioRNN::AddPt(const tVector& pt)
 	auto scene = static_cast<cScenarioRNN*>(mScene.get());
 	scene->AddPt(pt, is_start);
 }
+
+void cDrawScenarioRNN::DrawNetEval() const
+{
+	const tVector col = tVector(0, 0, 1, 0.75);
+	const double weight = 3;
+
+	const auto& eval_pts = mScene->GetEvalPts();
+	glColor4d(col[0], col[1], col[2], col[3]);
+	cDrawUtil::SetLineWidth(weight);
+
+	const int num_pts = static_cast<int>(eval_pts.size());
+	for (int i = 0; i < num_pts - 1; ++i)
+	{
+		int idx = i;
+		const tVector& curr_pt = eval_pts[idx];
+		const tVector& next_pt = eval_pts[idx + 1];
+		bool is_end = next_pt[3] != 0;
+		if (!is_end)
+		{
+			cDrawUtil::DrawLine(curr_pt, next_pt);
+		}
+	}
+}

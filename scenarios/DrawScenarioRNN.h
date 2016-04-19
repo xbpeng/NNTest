@@ -24,4 +24,5 @@ protected:
 
 	virtual void BuildScene(std::unique_ptr<cScenarioReg1D>& out_scene);
 	virtual void AddPt(const tVector& pt);
+	virtual void DrawNetEval() const;
 };

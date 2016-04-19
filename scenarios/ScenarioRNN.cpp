@@ -31,12 +31,12 @@ void cScenarioRNN::AddPt(const tVector& pt)
 
 void cScenarioRNN::AddPt(const tVector& pt, bool is_start)
 {
-	mPts.push_back(pt);
+	tVector curr_pt = pt;
+	curr_pt[3] = (is_start) ? 1 : 0;
+	mPts.push_back(curr_pt);
 	int num_pts = GetNumPts();
 
 	tExpTuple tuple;
-	tVector curr_pt = mPts[num_pts - 1];
-
 	BuildTuple(curr_pt, is_start, tuple);
 	int prev_id = (is_start) ? gInvalidIdx : mPrevID;
 
@@ -102,13 +102,14 @@ void cScenarioRNN::EvalNet()
 
 		for (int i = 0; i < num_pts; ++i)
 		{
-			bool is_start = (i == 0);
-			const tVector& curr_pt = mPts[i];
-
+			int idx = i % 100;
+			const tVector& curr_pt = mPts[idx];
+			bool is_start = (curr_pt[3] != 0);
 			x[0] = gDefaultInput;
 			net->Eval(x, is_start, y);
+			net->Eval(x, is_start, y);
 
-			mEvalPts[i] = tVector(curr_pt[0], y[0], 0, 0);
+			mEvalPts[i] = tVector(curr_pt[0], y[0], 0, (is_start) ? 1 : 0);
 		}
 	}
 	else
@@ -119,33 +120,38 @@ void cScenarioRNN::EvalNet()
 
 void cScenarioRNN::GenPoints()
 {
-	const int num_pts = 100;
-	const double min_x = -1.5;
-	const double max_x = 1.5;
-	const double y_amp = 0.25;
-	const double period = 1;
-
-	double curr_y = 0;
-	for (int i = 0; i < num_pts; ++i)
+	int num_seqs = 2;
+	for (int i = 0; i < num_seqs; ++i)
 	{
-		double x = min_x + i * (max_x - min_x) / (num_pts - 1);
-		double y = y_amp * std::sin(2 * M_PI / period * x);
-		y += 0.1 * std::sin(4 * M_PI / period * x);
-		y += 0.1 * std::sin(8 * M_PI / period * x);
-		//y = (i % 9 < 6) ? -0.2 : 0.2;
-		//y *= 1 - i / (num_pts - 1.0);
-		//y = curr_y;
-		//curr_y += cMathUtil::RandDoubleNorm(0, 0.05);
-		// y = 0.5 * x * x - 0.3;
+		const int num_pts = 100;
+		const double min_x = -1.5;
+		const double max_x = 1.5;
+		const double y_amp = 0.25;
+		const double period = 1;
 
-		//int idx = i % 20;
-		//y = 0.2 * idx / 19;
+		double curr_y = 0;
+		for (int i = 0; i < num_pts; ++i)
+		{
+			double x = min_x + i * (max_x - min_x) / (num_pts - 1);
+			double y = y_amp * std::sin(2 * M_PI / period * x);
+			y += 0.1 * std::sin(4 * M_PI / period * x);
+			y += 0.1 * std::sin(8 * M_PI / period * x);
+			//y = (i % 9 < 6) ? -0.2 : 0.2;
+			//y *= 1 - i / (num_pts - 1.0);
+			//y = curr_y;
+			//curr_y += cMathUtil::RandDoubleNorm(0, 0.05);
+			// y = 0.5 * x * x - 0.3;
 
-		//y = i / (num_pts - 1.0);
-		//y -= 0.5;
-		//y = std::abs(y);
+			//int idx = i % 20;
+			//y = 0.2 * idx / 19;
 
-		AddPt(tVector(x, y, 0, 0));
+			//y = i / (num_pts - 1.0);
+			//y -= 0.5;
+			//y = std::abs(y);
+
+			bool is_start = (i == 0);
+			AddPt(tVector(x, y, 0, 0), is_start);
+		}
 	}
 }
 
