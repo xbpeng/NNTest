@@ -19,8 +19,8 @@ layer {
 	name: "slice0"
 	type: "Slice"
 	bottom: "data"
-	top: "input_data"
 	top: "cont_data_raw"
+	top: "input_data"
 	slice_param {
 		axis: 2
 		slice_point: 1

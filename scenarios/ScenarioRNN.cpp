@@ -107,7 +107,6 @@ void cScenarioRNN::EvalNet()
 			bool is_start = (curr_pt[3] != 0);
 			x[0] = gDefaultInput;
 			net->Eval(x, is_start, y);
-			net->Eval(x, is_start, y);
 
 			mEvalPts[i] = tVector(curr_pt[0], y[0], 0, (is_start) ? 1 : 0);
 		}
