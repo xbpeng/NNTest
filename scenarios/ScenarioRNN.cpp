@@ -119,7 +119,7 @@ void cScenarioRNN::EvalNet()
 
 void cScenarioRNN::GenPoints()
 {
-	int num_seqs = 2;
+	int num_seqs = 8;
 	int max_pts = 100;
 	for (int i = 0; i < num_seqs; ++i)
 	{
@@ -141,10 +141,10 @@ void cScenarioRNN::GenPoints()
 			x += x_bias;
 
 			double y = y_amp * std::sin(2 * M_PI / period * x);
-			y += 0.1 * std::sin(4 * M_PI / period * x);
-			y += 0.1 * std::sin(8 * M_PI / period * x);
+			//y += 0.1 * std::sin(4 * M_PI / period * x);
+			//y += 0.1 * std::sin(8 * M_PI / period * x);
 			//y = (i % 9 < 6) ? -0.2 : 0.2;
-			//y *= 1 - i / (num_pts - 1.0);
+			y *= i / (num_pts - 1.0);
 			//y = curr_y;
 			//curr_y += cMathUtil::RandDoubleNorm(0, 0.05);
 			// y = 0.5 * x * x - 0.3;

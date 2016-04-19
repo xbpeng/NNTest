@@ -20,7 +20,7 @@ layer {
 	type: "Slice"
 	bottom: "data"
 	top: "cont_data_raw"
-	top: "input_data_raw"
+	top: "input_data"
 	slice_param {
 		axis: 2
 		slice_point: 1
@@ -36,21 +36,6 @@ layer {
 		shape {
 			dim: 0
 			dim: -1
-		}
-	}
-}
-
-layer {
-	name: "reshape_input_data"
-    type: "Reshape"
-    bottom: "input_data_raw"
-    top: "input_data"
-    reshape_param {
-		shape {
-			dim: 0
-			dim: 1
-			dim: -1
-			dim: 0
 		}
 	}
 }

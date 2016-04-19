@@ -8,10 +8,10 @@ layer {
 
   memory_data_param {
     batch_size: 32
-	channels: 1
-	height: 4
+	channels: 16
+	height: 2
 	width: 1
-	label_size: 2
+	label_size: 16
   }
 }
 
@@ -20,10 +20,10 @@ layer {
 	type: "Slice"
 	bottom: "data"
 	top: "cont_data_raw"
-	top: "input_data_raw"
+	top: "input_data"
 	slice_param {
 		axis: 2
-		slice_point: 2
+		slice_point: 1
 	}
 }
 
@@ -36,21 +36,6 @@ layer {
 		shape {
 			dim: 0
 			dim: -1
-		}
-	}
-}
-
-layer {
-	name: "reshape_input_data"
-    type: "Reshape"
-    bottom: "input_data_raw"
-    top: "input_data"
-    reshape_param {
-		shape {
-			dim: 0
-			dim: 2
-			dim: -1
-			dim: 0
 		}
 	}
 }
