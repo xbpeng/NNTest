@@ -121,13 +121,10 @@ void cScenarioRNN::GenPoints()
 {
 	int num_seqs = 8;
 	int max_pts = 100;
+	int pt_del_mult = 1;
 	for (int i = 0; i < num_seqs; ++i)
 	{
-		double len_lerp = i / (num_seqs - 1.0);
-		len_lerp *= 0.25;
-		len_lerp = 1 - len_lerp;
-
-		const int num_pts = static_cast<int>(max_pts * len_lerp);
+		const int num_pts = max_pts - i * pt_del_mult;
 		const double min_x = -1.5;
 		const double max_x = 1.5;
 		const double y_amp = 0.25;

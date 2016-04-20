@@ -3,6 +3,9 @@
 
 const int gTrainerPlaybackMemSize = 25000;
 
+#define ENABLE_FIXED_TRAINER_TEMP
+const double gFixedTrainerTemp = 1;
+
 cScenarioArmTrainDMACE::cScenarioArmTrainDMACE()
 {
 }
@@ -47,7 +50,7 @@ void cScenarioArmTrainDMACE::InitTrainer()
 	trainer->SetNumActionFrags(ctrl->GetNumActionFrags());
 	trainer->SetActionFragSize(ctrl->GetActionFragSize());
 	trainer->SetActorFiles(mActorSolverFile, mActorNetFile);
-	trainer->SetMode(cCaclaTrainer::eModeCacla);
+	trainer->SetMode(cCaclaTrainer::eModeTD);
 	trainer->SetTDScale(20);
 	trainer->SetGateScale(1);
 
@@ -74,6 +77,11 @@ void cScenarioArmTrainDMACE::InitLearner()
 	double temp = CalcExpTemp();
 	auto trainer = std::static_pointer_cast<cDMACETrainer>(mTrainer);
 	auto learner = std::static_pointer_cast<cDMACELearner>(mLearner);
+
+#if defined(ENABLE_FIXED_TRAINER_TEMP)
+	temp = gFixedTrainerTemp;
+#endif
+
 	learner->SetTemp(temp);
 	trainer->SetTemp(temp);
 }
@@ -137,7 +145,9 @@ double cScenarioArmTrainDMACE::CalcExpTemp() const
 
 void cScenarioArmTrainDMACE::Train()
 {
+#if !defined(ENABLE_FIXED_TRAINER_TEMP)
 	auto learner = std::static_pointer_cast<cDMACELearner>(mLearner);
 	learner->SetTemp(CalcExpTemp());
+#endif
 	cScenarioArmTrainMACE::Train();
 }

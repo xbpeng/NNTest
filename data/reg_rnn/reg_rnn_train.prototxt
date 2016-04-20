@@ -8,10 +8,10 @@ layer {
 
   memory_data_param {
     batch_size: 32
-	channels: 1
+	channels: 16
 	height: 2
 	width: 1
-	label_size: 1
+	label_size: 16
   }
 }
 
@@ -111,6 +111,7 @@ layer {
     bias_filler {
       type: "constant"
     }
+	axis: 2
   }
 }
 
