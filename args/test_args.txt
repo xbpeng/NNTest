@@ -1,5 +1,5 @@
--scenario= arm_train_dmace
--playback_speed= 60
+-scenario= arm_eval
+-playback_speed= 1
 
 -character_file= data/arm_rl/arm.txt
 
@@ -27,6 +27,7 @@
 
 -solver_file= data/arm_rl/nets/arm_reduced_mace3_actor_solver.prototxt
 -net_file= data/arm_rl/nets/arm_reduced_mace3_actor_deploy.prototxt
+-model_file= data/arm_rl/models/arm_reduced_dmace_cacla_actor_model.h5
 
 //-critic_solver_file= data/arm_rl/nets/arm_reduced_mace3_critic_solver.prototxt
 //-critic_net_file= data/arm_rl/nets/arm_reduced_mace3_critic_deploy.prototxt

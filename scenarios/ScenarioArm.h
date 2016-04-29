@@ -91,6 +91,7 @@ protected:
 
 	virtual void BuildWorld();
 	virtual bool BuildController(std::shared_ptr<cCharController>& out_ctrl);
+	virtual bool BuildController(cTerrainRLCtrlFactory::eCharCtrl char_ctrl, std::shared_ptr<cSimCharacter>& character, std::shared_ptr<cCharController>& out_ctrl);
 	virtual bool BuildController(const std::shared_ptr<cSimCharacter>& character, eCtrlType ctrl_type, std::shared_ptr<cCharController>& out_ctrl);
 	virtual bool BuildNNController(eCtrlType ctrl_type, std::shared_ptr<cArmController>& out_ctrl);
 	

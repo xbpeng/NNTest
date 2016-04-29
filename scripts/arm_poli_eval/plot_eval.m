@@ -1,4 +1,5 @@
 qp_data = load('qp_eval.txt');
+line_width = 0.8;
 files = {};
 
 %files{1} = 'nn_torque_eval.txt';
@@ -24,13 +25,13 @@ files = {};
 %files{end + 1} = {'dmace_torque_eval2.txt', 'MACE Torque2', 2000};
 %files{end + 1} = {'dmace_pd_eval2.txt', 'MACE PD2', 2000};
 
-files{end + 1} = {'dmace_td_eval.txt', 'Mixture TD-AC', 2000};
+%files{end + 1} = {'dmace_td_eval.txt', 'Mixture TD-AC', 2000};
 files{end + 1} = {'dmace_ptd_eval.txt', 'Mixture PTD-AC', 2000};
-files{end + 1} = {'dmace_cacla_eval.txt', 'Mixture CACLA', 2000};
+%files{end + 1} = {'dmace_cacla_eval.txt', 'Mixture CACLA', 2000};
 
-files{end + 1} = {'td_eval.txt', 'TD', 2000};
+%files{end + 1} = {'td_eval.txt', 'TD', 2000};
 files{end + 1} = {'ptd_eval.txt', 'PTD', 2000};
-files{end + 1} = {'cacla_eval.txt', 'CACLA', 2000};
+%files{end + 1} = {'cacla_eval.txt', 'CACLA', 2000};
 
 lines = {'b-', 'r-', 'm-', 'k-', 'b--', 'r--', 'm--', 'k--'};
 
@@ -52,7 +53,7 @@ end
 
 qp_plot_vals = [qp_data(1), qp_data(1)];
 
-plot([0, max_iter], qp_plot_vals, 'k--');
+plot([0, max_iter], qp_plot_vals, 'k--', 'LineWidth', line_width);
 names{1}
 qp_plot_vals(end)
 
@@ -60,7 +61,7 @@ hold on;
 for i = 1:length(data)
    line = lines{mod((i - 1), length(lines)) + 1};
    xs = (0:(length(data{i}) - 1)) .* iter_mults(i);
-   plot(xs, data{i}, line);
+   plot(xs, data{i}, line, 'LineWidth', line_width);
    
    names{i+1}
    data{i}(end)

@@ -359,6 +359,7 @@
     <ClCompile Include="..\TerrainRL\sim\SpAlg.cpp" />
     <ClCompile Include="..\TerrainRL\sim\TerrainGen2D.cpp" />
     <ClCompile Include="..\TerrainRL\sim\TerrainRLCharController.cpp" />
+    <ClCompile Include="..\TerrainRL\sim\TerrainRLCtrlFactory.cpp" />
     <ClCompile Include="..\TerrainRL\sim\World.cpp" />
     <ClCompile Include="..\TerrainRL\util\ArgParser.cpp" />
     <ClCompile Include="..\TerrainRL\util\FileUtil.cpp" />
@@ -528,6 +529,7 @@
     <ClInclude Include="..\TerrainRL\sim\SpAlg.h" />
     <ClInclude Include="..\TerrainRL\sim\TerrainGen2D.h" />
     <ClInclude Include="..\TerrainRL\sim\TerrainRLCharController.h" />
+    <ClInclude Include="..\TerrainRL\sim\TerrainRLCtrlFactory.h" />
     <ClInclude Include="..\TerrainRL\sim\World.h" />
     <ClInclude Include="..\TerrainRL\util\ArgParser.h" />
     <ClInclude Include="..\TerrainRL\util\CircularBuffer.h" />

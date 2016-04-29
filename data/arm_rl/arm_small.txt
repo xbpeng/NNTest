@@ -12,7 +12,8 @@
 				"AttachZ": 0,		
 				"LinkStiffness": 1,
 				"LimLow": 1,
-				"LimHigh": 0
+				"LimHigh": 0,
+				"TorqueLim": 0
 			},
 			{
 				"Name": "link0",
@@ -23,7 +24,8 @@
 				"AttachZ": 0,		
 				"LinkStiffness": 1,
 				"LimLow": 1,
-				"LimHigh": 0
+				"LimHigh": 0,
+				"TorqueLim": 300
 			},
 			{
 				"Name": "end",
@@ -34,7 +36,8 @@
 				"AttachZ": 0,		
 				"LinkStiffness": 1,
 				"LimLow": 1,
-				"LimHigh": 0
+				"LimHigh": 0,
+				"TorqueLim": 300
 			}
 		]
 	},
@@ -97,7 +100,6 @@
 				"Name": "root",
 				"Kp": 0,
 				"Kd": 0,
-				"TorqueLim": 0,
 				"TargetTheta": 0,
 				"UseWorldCoord": 0
 			},
@@ -105,7 +107,6 @@
 				"Name": "link0",
 				"Kp": 100,
 				"Kd": 10,
-				"TorqueLim": 300,
 				"TargetTheta": 0,
 				"UseWorldCoord": 0
 			},
@@ -113,7 +114,6 @@
 				"Name": "end",
 				"Kp": 100,
 				"Kd": 10,
-				"TorqueLim": 300,
 				"TargetTheta": 0,
 				"UseWorldCoord": 0
 			}

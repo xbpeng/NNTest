@@ -190,6 +190,11 @@ bool cScenarioArm::BuildController(std::shared_ptr<cCharController>& out_ctrl)
 	return BuildController(mChar, mCtrlType, out_ctrl);
 }
 
+bool cScenarioArm::BuildController(cTerrainRLCtrlFactory::eCharCtrl char_ctrl, std::shared_ptr<cSimCharacter>& character, std::shared_ptr<cCharController>& out_ctrl)
+{
+	return BuildController(mChar, mCtrlType, out_ctrl); // hack
+}
+
 bool cScenarioArm::BuildController(const std::shared_ptr<cSimCharacter>& character, eCtrlType ctrl_type, std::shared_ptr<cCharController>& out_ctrl)
 {
 	bool succ = true;
