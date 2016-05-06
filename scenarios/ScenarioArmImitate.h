@@ -16,6 +16,7 @@ public:
 	virtual void Clear();
 
 	virtual const std::shared_ptr<cKinCharacter>& GetKinChar() const;
+	virtual void ToggleTraining();
 
 	virtual std::string GetName() const;
 
@@ -34,4 +35,5 @@ protected:
 	virtual void SyncCharacter();
 
 	virtual double CalcReward() const;
+	virtual void GetRandPoseMinMaxTime(double& out_min, double& out_max) const;
 };

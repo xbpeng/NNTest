@@ -42,6 +42,12 @@ const std::shared_ptr<cKinCharacter>& cScenarioArmImitate::GetKinChar() const
 	return mKinChar;
 }
 
+void cScenarioArmImitate::ToggleTraining()
+{
+	cScenarioArmTrain::ToggleTraining();
+	mEnableRandPose = EnableTraining();
+}
+
 std::string cScenarioArmImitate::GetName() const
 {
 	return "Arm Imitate";
@@ -66,7 +72,7 @@ void cScenarioArmImitate::InitTrainer()
 	mTrainerParams.mPlaybackMemSize = 25000;
 	mTrainerParams.mPoolSize = 1;
 	mTrainerParams.mInitInputOffsetScale = false;
-	mTrainerParams.mNumInitSamples = 20000;
+	mTrainerParams.mNumInitSamples = 200;
 
 	mTrainer->Init(mTrainerParams);
 	SetupScale();
@@ -158,4 +164,10 @@ double cScenarioArmImitate::CalcReward() const
 	}
 
 	return reward;
+}
+
+void cScenarioArmImitate::GetRandPoseMinMaxTime(double& out_min, double& out_max) const
+{
+	out_min = 0.1;
+	out_max = 0.2;
 }
