@@ -72,7 +72,7 @@ void cScenarioArmImitate::InitTrainer()
 	mTrainerParams.mPlaybackMemSize = 25000;
 	mTrainerParams.mPoolSize = 1;
 	mTrainerParams.mInitInputOffsetScale = false;
-	mTrainerParams.mNumInitSamples = 200;
+	mTrainerParams.mNumInitSamples = 20000;
 
 	mTrainer->Init(mTrainerParams);
 	SetupScale();
@@ -93,6 +93,15 @@ void cScenarioArmImitate::InitTrainer()
 void cScenarioArmImitate::UpdateCharacter(double time_step)
 {
 	mKinChar->Update(time_step);
+
+	// hack
+	double dur = mKinChar->GetMotionDuration();
+	double phase = mKinChar->GetTime() / dur;
+	phase -= static_cast<int>(phase);
+	tVector hacky_target = tVector::Zero();
+	hacky_target[0] = phase;
+	SetCtrlTargetPos(hacky_target);
+
 	cScenarioArmTrain::UpdateCharacter(time_step);
 }
 
