@@ -30,6 +30,7 @@ protected:
 	virtual void RandReset();
 	virtual void ResetKinChar();
 	virtual void RandResetKinChar();
+	virtual void ApplyRandPose();
 	virtual void SyncCharacter();
 
 	virtual double CalcReward() const;

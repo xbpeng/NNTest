@@ -93,8 +93,6 @@ void cScenarioArmImitate::UpdateCharacter(double time_step)
 void cScenarioArmImitate::RandReset()
 {
 	cScenarioArmTrain::RandReset();
-	RandResetKinChar();
-	SyncCharacter();
 }
 
 void cScenarioArmImitate::ResetKinChar()
@@ -109,6 +107,14 @@ void cScenarioArmImitate::RandResetKinChar()
 	double rand_time = cMathUtil::RandDouble(0, dur);
 	mKinChar->SetTime(rand_time);
 	mKinChar->Update(0);
+}
+
+void cScenarioArmImitate::ApplyRandPose()
+{
+	RandResetKinChar();
+	SyncCharacter();
+	ResetPoseCounter();
+	mValidSample = false;
 }
 
 void cScenarioArmImitate::SyncCharacter()
