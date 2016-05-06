@@ -1,12 +1,12 @@
 -scenario= reg_rnn
 
-//-input_file= data/reg1D/dataset/reg_data.txt
+//-input_file= data/reg_rnn/dataset/reg_data.txt
 -output_file= output/reg_data.txt
 
--solver_file= data/reg_rnn/reg_rnn_solver.prototxt
+-solver_file= data/reg_rnn/reg_rnn_solver_adam.prototxt
 -net_file= data/reg_rnn/reg_rnn_deploy.prototxt
 -pases_per_step= 20
 
 -num_evals_pts= 200
 
--auto_gen_pts= true
+//-auto_gen_pts= true

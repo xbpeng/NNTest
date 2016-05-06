@@ -265,7 +265,9 @@
     <ClCompile Include="..\library\LodePNG\lodepng.cpp" />
     <ClCompile Include="..\library\LodePNG\lodepng_util.cpp" />
     <ClCompile Include="..\TerrainRL\anim\Character.cpp" />
+    <ClCompile Include="..\TerrainRL\anim\KinCharacter.cpp" />
     <ClCompile Include="..\TerrainRL\anim\KinTree.cpp" />
+    <ClCompile Include="..\TerrainRL\anim\Motion.cpp" />
     <ClCompile Include="..\TerrainRL\learning\ACLearner.cpp" />
     <ClCompile Include="..\TerrainRL\learning\ACTrainer.cpp" />
     <ClCompile Include="..\TerrainRL\learning\AsyncACTrainer.cpp" />
@@ -275,6 +277,7 @@
     <ClCompile Include="..\TerrainRL\learning\AsyncMACEDPGTrainer.cpp" />
     <ClCompile Include="..\TerrainRL\learning\AsyncMACETrainer.cpp" />
     <ClCompile Include="..\TerrainRL\learning\AsyncQNetTrainer.cpp" />
+    <ClCompile Include="..\TerrainRL\learning\AsyncRNNTrainer.cpp" />
     <ClCompile Include="..\TerrainRL\learning\AsyncTrainer.cpp" />
     <ClCompile Include="..\TerrainRL\learning\CaclaTrainer.cpp" />
     <ClCompile Include="..\TerrainRL\learning\DMACELearner.cpp" />
@@ -291,6 +294,7 @@
     <ClCompile Include="..\TerrainRL\learning\ParamServer.cpp" />
     <ClCompile Include="..\TerrainRL\learning\QNetTrainer.cpp" />
     <ClCompile Include="..\TerrainRL\learning\RecurrentNet.cpp" />
+    <ClCompile Include="..\TerrainRL\learning\RNNLearner.cpp" />
     <ClCompile Include="..\TerrainRL\learning\RNNTrainer.cpp" />
     <ClCompile Include="..\TerrainRL\learning\TrainerInterface.cpp" />
     <ClCompile Include="..\TerrainRL\learning\VarCaclaTrainer.cpp" />
@@ -322,6 +326,8 @@
     <ClCompile Include="..\TerrainRL\sim\CharTracer.cpp" />
     <ClCompile Include="..\TerrainRL\sim\ContactManager.cpp" />
     <ClCompile Include="..\TerrainRL\sim\Controller.cpp" />
+    <ClCompile Include="..\TerrainRL\sim\CtController.cpp" />
+    <ClCompile Include="..\TerrainRL\sim\CtRNNController.cpp" />
     <ClCompile Include="..\TerrainRL\sim\DogController.cpp" />
     <ClCompile Include="..\TerrainRL\sim\DogControllerCacla.cpp" />
     <ClCompile Include="..\TerrainRL\sim\DogControllerDMACE.cpp" />
@@ -370,6 +376,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="scenarios\DrawScenarioArm.cpp" />
     <ClCompile Include="scenarios\DrawScenarioArmEval.cpp" />
+    <ClCompile Include="scenarios\DrawScenarioArmImitate.cpp" />
     <ClCompile Include="scenarios\DrawScenarioArmRL.cpp" />
     <ClCompile Include="scenarios\DrawScenarioArmRLPretrain.cpp" />
     <ClCompile Include="scenarios\DrawScenarioArmTrain.cpp" />
@@ -388,6 +395,7 @@
     <ClCompile Include="scenarios\DrawScenarioRNN.cpp" />
     <ClCompile Include="scenarios\ScenarioArm.cpp" />
     <ClCompile Include="scenarios\ScenarioArmEval.cpp" />
+    <ClCompile Include="scenarios\ScenarioArmImitate.cpp" />
     <ClCompile Include="scenarios\ScenarioArmRL.cpp" />
     <ClCompile Include="scenarios\ScenarioArmRLPretrain.cpp" />
     <ClCompile Include="scenarios\ScenarioArmTrain.cpp" />
@@ -435,7 +443,9 @@
     <ClInclude Include="..\library\LodePNG\lodepng.h" />
     <ClInclude Include="..\library\LodePNG\lodepng_util.h" />
     <ClInclude Include="..\TerrainRL\anim\Character.h" />
+    <ClInclude Include="..\TerrainRL\anim\KinCharacter.h" />
     <ClInclude Include="..\TerrainRL\anim\KinTree.h" />
+    <ClInclude Include="..\TerrainRL\anim\Motion.h" />
     <ClInclude Include="..\TerrainRL\learning\ACLearner.h" />
     <ClInclude Include="..\TerrainRL\learning\ACTrainer.h" />
     <ClInclude Include="..\TerrainRL\learning\AsyncACTrainer.h" />
@@ -445,6 +455,7 @@
     <ClInclude Include="..\TerrainRL\learning\AsyncMACEDPGTrainer.h" />
     <ClInclude Include="..\TerrainRL\learning\AsyncMACETrainer.h" />
     <ClInclude Include="..\TerrainRL\learning\AsyncQNetTrainer.h" />
+    <ClInclude Include="..\TerrainRL\learning\AsyncRNNTrainer.h" />
     <ClInclude Include="..\TerrainRL\learning\AsyncSolver.h" />
     <ClInclude Include="..\TerrainRL\learning\AsyncTrainer.h" />
     <ClInclude Include="..\TerrainRL\learning\DMACELearner.h" />
@@ -462,6 +473,7 @@
     <ClInclude Include="..\TerrainRL\learning\ParamServer.h" />
     <ClInclude Include="..\TerrainRL\learning\QNetTrainer.h" />
     <ClInclude Include="..\TerrainRL\learning\RecurrentNet.h" />
+    <ClInclude Include="..\TerrainRL\learning\RNNLearner.h" />
     <ClInclude Include="..\TerrainRL\learning\RNNTrainer.h" />
     <ClInclude Include="..\TerrainRL\learning\TrainerInterface.h" />
     <ClInclude Include="..\TerrainRL\learning\VarCaclaTrainer.h" />
@@ -492,6 +504,8 @@
     <ClInclude Include="..\TerrainRL\sim\CharTracer.h" />
     <ClInclude Include="..\TerrainRL\sim\ContactManager.h" />
     <ClInclude Include="..\TerrainRL\sim\Controller.h" />
+    <ClInclude Include="..\TerrainRL\sim\CtController.h" />
+    <ClInclude Include="..\TerrainRL\sim\CtRNNController.h" />
     <ClInclude Include="..\TerrainRL\sim\DogController.h" />
     <ClInclude Include="..\TerrainRL\sim\DogControllerCacla.h" />
     <ClInclude Include="..\TerrainRL\sim\DogControllerDMACE.h" />
@@ -540,6 +554,7 @@
     <ClInclude Include="..\TerrainRL\util\Util.h" />
     <ClInclude Include="scenarios\DrawScenarioArm.h" />
     <ClInclude Include="scenarios\DrawScenarioArmEval.h" />
+    <ClInclude Include="scenarios\DrawScenarioArmImitate.h" />
     <ClInclude Include="scenarios\DrawScenarioArmRL.h" />
     <ClInclude Include="scenarios\DrawScenarioArmRLPretrain.h" />
     <ClInclude Include="scenarios\DrawScenarioArmTrain.h" />
@@ -558,6 +573,7 @@
     <ClInclude Include="scenarios\DrawScenarioRNN.h" />
     <ClInclude Include="scenarios\ScenarioArm.h" />
     <ClInclude Include="scenarios\ScenarioArmEval.h" />
+    <ClInclude Include="scenarios\ScenarioArmImitate.h" />
     <ClInclude Include="scenarios\ScenarioArmRL.h" />
     <ClInclude Include="scenarios\ScenarioArmRLPretrain.h" />
     <ClInclude Include="scenarios\ScenarioArmTrain.h" />

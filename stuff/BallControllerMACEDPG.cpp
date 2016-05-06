@@ -84,7 +84,7 @@ void cBallControllerMACEDPG::UpdateFragParams()
 
 void cBallControllerMACEDPG::CalcCriticVals(const Eigen::VectorXd& state, const Eigen::VectorXd& actions, Eigen::VectorXd& out_vals)
 {
-	cMACEDPGTrainer::CalcCriticVals(GetCritic(), state, actions, out_vals);
+	cMACEDPGTrainer::CalcCriticVals(&GetCritic(), state, actions, out_vals);
 }
 
 void cBallControllerMACEDPG::BuildActorAction(const Eigen::VectorXd& actions, int a_id, tAction& out_action) const

@@ -9,7 +9,7 @@ cArmController::cArmController()
 {
 	mTorqueLim = 300;
 	mUpdatePeriod = 1 / 60.0;
-	mUpdateCounter = mUpdatePeriod;
+	mUpdateCounter = std::numeric_limits<double>::infinity();
 	mTargetPos = tVector::Zero();
 }
 
@@ -30,7 +30,7 @@ void cArmController::Init(cSimCharacter* character)
 void cArmController::Reset()
 {
 	cCharController::Reset();
-	mUpdateCounter = mUpdatePeriod;
+	mUpdateCounter = std::numeric_limits<double>::infinity();
 	mPoliAction.mParams.setZero();
 	mPoliState.setZero();
 }

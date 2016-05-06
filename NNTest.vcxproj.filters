@@ -839,6 +839,30 @@
     <ClCompile Include="..\TerrainRL\sim\TerrainRLCtrlFactory.cpp">
       <Filter>Source Files\util</Filter>
     </ClCompile>
+    <ClCompile Include="..\TerrainRL\sim\CtRNNController.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\sim\CtController.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\learning\RNNLearner.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\learning\AsyncRNNTrainer.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="scenarios\ScenarioArmImitate.cpp">
+      <Filter>Source Files\scenarios</Filter>
+    </ClCompile>
+    <ClCompile Include="scenarios\DrawScenarioArmImitate.cpp">
+      <Filter>Source Files\scenarios</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\anim\KinCharacter.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\anim\Motion.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\TerrainRL\util\Rand.h">
@@ -1346,6 +1370,30 @@
       <Filter>Source Files\util</Filter>
     </ClInclude>
     <ClInclude Include="..\TerrainRL\sim\TerrainRLCtrlFactory.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\sim\CtController.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\sim\CtRNNController.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\learning\RNNLearner.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\learning\AsyncRNNTrainer.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="scenarios\ScenarioArmImitate.h">
+      <Filter>Source Files\scenarios</Filter>
+    </ClInclude>
+    <ClInclude Include="scenarios\DrawScenarioArmImitate.h">
+      <Filter>Source Files\scenarios</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\anim\KinCharacter.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\anim\Motion.h">
       <Filter>Source Files\util</Filter>
     </ClInclude>
   </ItemGroup>
