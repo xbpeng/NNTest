@@ -9,7 +9,7 @@ const tVector gFilLColor = tVector(0.6f, 0.65f, 0.675f, 1);
 const tVector gKinCharDrawOffset = tVector(0, 0, 0.5, 0);
 
 cDrawScenarioArmImitate::cDrawScenarioArmImitate(cCamera& cam)
-	: cDrawScenarioArm(cam)
+	: cDrawScenarioArmTrain(cam)
 {
 }
 
@@ -30,7 +30,7 @@ void cDrawScenarioArmImitate::SetTarget(const tVector& target)
 
 void cDrawScenarioArmImitate::DrawCharacter()
 {
-	cDrawScenarioArm::DrawCharacter();
+	cDrawScenarioArmTrain::DrawCharacter();
 	DrawKinChar();
 }
 

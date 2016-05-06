@@ -1,8 +1,8 @@
 #pragma once
-#include "ScenarioArm.h"
+#include "ScenarioArmTrain.h"
 #include "anim/KinCharacter.h"
 
-class cScenarioArmImitate : public cScenarioArm
+class cScenarioArmImitate : public cScenarioArmTrain
 {
 public:
 	EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -24,5 +24,13 @@ protected:
 	std::shared_ptr<cKinCharacter> mKinChar;
 
 	virtual void BuildKinCharacter();
+	virtual void InitTrainer();
+
 	virtual void UpdateCharacter(double time_step);
+	virtual void RandReset();
+	virtual void ResetKinChar();
+	virtual void RandResetKinChar();
+	virtual void SyncCharacter();
+
+	virtual double CalcReward() const;
 };

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "DrawScenarioArm.h"
+#include "DrawScenarioArmTrain.h"
 
-class cDrawScenarioArmImitate : public cDrawScenarioArm
+class cDrawScenarioArmImitate : public cDrawScenarioArmTrain
 {
 public:
 	cDrawScenarioArmImitate(cCamera& cam);

@@ -3,9 +3,12 @@
 
 -character_file= data/arm_rl/arm_small.txt
 
--solver_file= data/arm_rl/nets/arm_reduced_actor_small_small.prototxt
+-solver_file= data/arm_rl/nets/arm_reduced_actor_small_solver.prototxt
 -net_file= data/arm_rl/nets/arm_reduced_actor_small_deploy.prototxt
 -motion_file= data/arm_rl/motions/arm_small_wave.txt
+
+-critic_solver_file= data/arm_rl/nets/arm_reduced_cacla_critic_small_solver.prototxt
+-critic_net_file= data/arm_rl/nets/arm_reduced_cacla_critic_small_deploy.prototxt
 
 //-solver_file= data/arm_rl/nets/arm_reduced_mace3_small_solver.prototxt
 //-net_file= data/arm_rl/nets/arm_reduced_mace3_small_deploy.prototxt
