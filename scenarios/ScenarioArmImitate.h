@@ -10,6 +10,7 @@ public:
 	cScenarioArmImitate();
 	virtual ~cScenarioArmImitate();
 
+	virtual void ParseArgs(const cArgParser& parser);
 	virtual void Init();
 	virtual void Reset();
 	virtual void Clear();
@@ -19,8 +20,9 @@ public:
 	virtual std::string GetName() const;
 
 protected:
-	
+	std::string mMotionFile;
 	std::shared_ptr<cKinCharacter> mKinChar;
 
 	virtual void BuildKinCharacter();
+	virtual void UpdateCharacter(double time_step);
 };

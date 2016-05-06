@@ -5,6 +5,7 @@
 
 -solver_file= data/arm_rl/nets/arm_reduced_actor_small_small.prototxt
 -net_file= data/arm_rl/nets/arm_reduced_actor_small_deploy.prototxt
+-motion_file= data/arm_rl/motions/arm_small_wave.txt
 
 //-solver_file= data/arm_rl/nets/arm_reduced_mace3_small_solver.prototxt
 //-net_file= data/arm_rl/nets/arm_reduced_mace3_small_deploy.prototxt
