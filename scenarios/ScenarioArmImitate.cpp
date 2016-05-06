@@ -99,7 +99,7 @@ void cScenarioArmImitate::UpdateCharacter(double time_step)
 	double phase = mKinChar->GetTime() / dur;
 	phase -= static_cast<int>(phase);
 	tVector hacky_target = tVector::Zero();
-	hacky_target[0] = phase;
+	hacky_target[0] = phase * 2 - 1;
 	SetCtrlTargetPos(hacky_target);
 
 	cScenarioArmTrain::UpdateCharacter(time_step);
