@@ -167,8 +167,9 @@ double cScenarioArmImitate::CalcReward() const
 	const double vel_w = 0.1;
 	double pos_err = 0;
 	double vel_err = 0;
-
 	int num_joints = mChar->GetNumJoints();
+
+	/*
 	for (int j = 0; j < num_joints; ++j)
 	{
 		tVector joint_pos = mChar->CalcJointPos(j);
@@ -184,6 +185,37 @@ double cScenarioArmImitate::CalcReward() const
 
 	double pose_reward = exp(-5 * pos_err / num_joints);
 	double vel_reward = exp(-0.1 * vel_err / num_joints);
+	*/
+
+	Eigen::VectorXd pose;
+	Eigen::VectorXd vel;
+	Eigen::VectorXd kin_pose;
+	Eigen::VectorXd kin_vel;
+	mChar->BuildPose(pose);
+	mChar->BuildVel(vel);
+	mKinChar->BuildPose(kin_pose);
+	mKinChar->BuildVel(kin_vel);
+
+	Eigen::VectorXd pose_diff = kin_pose - pose;
+	Eigen::VectorXd vel_diff = kin_vel - vel;
+
+	for (int j = 0; j < num_joints; ++j)
+	{
+		if (j != 0)
+		{
+			int offset = mChar->GetParamOffset(j);
+			double curr_pose_err = std::abs(pose_diff[offset]);
+			double curr_vel_err = std::abs(vel_diff[offset]);
+			curr_pose_err = std::min(2 * M_PI - curr_pose_err, curr_pose_err);
+
+			pos_err += curr_pose_err * curr_pose_err;
+			vel_err += curr_vel_err * curr_vel_err;
+		}
+	}
+
+	double pose_reward = exp(-1 * pos_err / num_joints);
+	double vel_reward = exp(-0.01 * vel_err / num_joints);
+
 	double reward = pose_w * pose_reward + vel_w * vel_reward;
 
 	if (CheckFail())
