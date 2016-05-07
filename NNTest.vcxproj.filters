@@ -863,6 +863,9 @@
     <ClCompile Include="..\TerrainRL\anim\Motion.cpp">
       <Filter>Source Files\util</Filter>
     </ClCompile>
+    <ClCompile Include="..\TerrainRL\anim\MotionRecorder.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\TerrainRL\util\Rand.h">
@@ -1394,6 +1397,9 @@
       <Filter>Source Files\util</Filter>
     </ClInclude>
     <ClInclude Include="..\TerrainRL\anim\Motion.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\anim\MotionRecorder.h">
       <Filter>Source Files\util</Filter>
     </ClInclude>
   </ItemGroup>

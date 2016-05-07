@@ -268,6 +268,7 @@
     <ClCompile Include="..\TerrainRL\anim\KinCharacter.cpp" />
     <ClCompile Include="..\TerrainRL\anim\KinTree.cpp" />
     <ClCompile Include="..\TerrainRL\anim\Motion.cpp" />
+    <ClCompile Include="..\TerrainRL\anim\MotionRecorder.cpp" />
     <ClCompile Include="..\TerrainRL\learning\ACLearner.cpp" />
     <ClCompile Include="..\TerrainRL\learning\ACTrainer.cpp" />
     <ClCompile Include="..\TerrainRL\learning\AsyncACTrainer.cpp" />
@@ -446,6 +447,7 @@
     <ClInclude Include="..\TerrainRL\anim\KinCharacter.h" />
     <ClInclude Include="..\TerrainRL\anim\KinTree.h" />
     <ClInclude Include="..\TerrainRL\anim\Motion.h" />
+    <ClInclude Include="..\TerrainRL\anim\MotionRecorder.h" />
     <ClInclude Include="..\TerrainRL\learning\ACLearner.h" />
     <ClInclude Include="..\TerrainRL\learning\ACTrainer.h" />
     <ClInclude Include="..\TerrainRL\learning\AsyncACTrainer.h" />

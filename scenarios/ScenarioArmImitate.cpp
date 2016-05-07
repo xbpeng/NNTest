@@ -1,5 +1,7 @@
 #include "ScenarioArmImitate.h"
 
+#define ENABLE_RAND_KIN_RESET
+
 cScenarioArmImitate::cScenarioArmImitate()
 {
 	mEnableAutoTarget = false;
@@ -95,11 +97,17 @@ void cScenarioArmImitate::UpdateCharacter(double time_step)
 	mKinChar->Update(time_step);
 
 	// hack
+	tVector hacky_target = tVector::Zero();
+
 	double dur = mKinChar->GetMotionDuration();
 	double phase = mKinChar->GetTime() / dur;
 	phase -= static_cast<int>(phase);
-	tVector hacky_target = tVector::Zero();
-	hacky_target[0] = phase;
+	hacky_target[0] = phase * 2 - 1;
+
+	//Eigen::VectorXd kin_pose;
+	//mKinChar->BuildPose(kin_pose);
+	//hacky_target[0] = kin_pose[3];
+
 	SetCtrlTargetPos(hacky_target);
 
 	cScenarioArmTrain::UpdateCharacter(time_step);
@@ -118,10 +126,13 @@ void cScenarioArmImitate::ResetKinChar()
 void cScenarioArmImitate::RandResetKinChar()
 {
 	mKinChar->Reset();
+
+#if defined(ENABLE_RAND_KIN_RESET)
 	double dur = mKinChar->GetMotionDuration();
 	double rand_time = cMathUtil::RandDouble(0, dur);
 	mKinChar->SetTime(rand_time);
 	mKinChar->Update(0);
+#endif
 }
 
 void cScenarioArmImitate::ApplyRandPose()
