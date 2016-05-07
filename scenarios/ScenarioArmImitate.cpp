@@ -1,4 +1,5 @@
 #include "ScenarioArmImitate.h"
+#include "stuff/ArmNNTrackController.h"
 
 #define ENABLE_RAND_KIN_RESET
 
@@ -99,22 +100,29 @@ void cScenarioArmImitate::UpdateCharacter(double time_step)
 	// hack
 	tVector hacky_target = tVector::Zero();
 
-	double dur = mKinChar->GetMotionDuration();
-	double phase = mKinChar->GetTime() / dur;
-	phase -= static_cast<int>(phase);
-	hacky_target[0] = phase * 2 - 1;
+	//double dur = mKinChar->GetMotionDuration();
+	//double phase = mKinChar->GetTime() / dur;
+	//phase -= static_cast<int>(phase);
+	//hacky_target[0] = phase * 2 - 1;
 
-	//Eigen::VectorXd kin_pose;
-	//mKinChar->BuildPose(kin_pose);
-	//hacky_target[0] = kin_pose[3];
+	Eigen::VectorXd kin_pose;
+	mKinChar->BuildPose(kin_pose);
+	hacky_target[0] = kin_pose[3];
+	hacky_target[1] = kin_pose[4];
+	hacky_target[2] = kin_pose[5];
 
 	SetCtrlTargetPos(hacky_target);
 
+	if (mCtrlType == eCtrlNNTrack)
+	{
+		UpdateArmTrackController();
+	}
 	cScenarioArmTrain::UpdateCharacter(time_step);
 }
 
 void cScenarioArmImitate::RandReset()
 {
+	mKinChar->Reset();
 	cScenarioArmTrain::RandReset();
 }
 
@@ -189,5 +197,18 @@ double cScenarioArmImitate::CalcReward() const
 void cScenarioArmImitate::GetRandPoseMinMaxTime(double& out_min, double& out_max) const
 {
 	out_min = 0.1;
-	out_max = 0.2;
+	out_max = 0.5;
+	//out_min = 6;
+	//out_max = 8;
+}
+
+void cScenarioArmImitate::UpdateArmTrackController()
+{
+	assert(mCtrlType == eCtrlNNTrack);
+	auto track_ctrl = std::static_pointer_cast<cArmNNTrackController>(mChar->GetController());
+	Eigen::VectorXd pose;
+	Eigen::VectorXd vel;
+	mKinChar->BuildPose(pose);
+	mKinChar->BuildVel(vel);
+	track_ctrl->SetTargetPoseVel(pose, vel);
 }

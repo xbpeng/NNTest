@@ -36,4 +36,6 @@ protected:
 
 	virtual double CalcReward() const;
 	virtual void GetRandPoseMinMaxTime(double& out_min, double& out_max) const;
+
+	virtual void UpdateArmTrackController();
 };

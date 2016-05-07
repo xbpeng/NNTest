@@ -423,6 +423,7 @@
     <ClCompile Include="stuff\ArmPDNNPixelController.cpp" />
     <ClCompile Include="stuff\ArmPDQPController.cpp" />
     <ClCompile Include="stuff\ArmQPController.cpp" />
+    <ClCompile Include="stuff\ArmNNTrackController.cpp" />
     <ClCompile Include="stuff\ArmVelNNController.cpp" />
     <ClCompile Include="stuff\ArmVelNNPixelController.cpp" />
     <ClCompile Include="stuff\ArmVelQPController.cpp" />
@@ -602,6 +603,7 @@
     <ClInclude Include="stuff\ArmPDNNPixelController.h" />
     <ClInclude Include="stuff\ArmPDQPController.h" />
     <ClInclude Include="stuff\ArmQPController.h" />
+    <ClInclude Include="stuff\ArmNNTrackController.h" />
     <ClInclude Include="stuff\ArmVelNNController.h" />
     <ClInclude Include="stuff\ArmVelNNPixelController.h" />
     <ClInclude Include="stuff\ArmVelQPController.h" />

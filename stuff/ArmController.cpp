@@ -3,7 +3,7 @@
 
 #define ENABLE_MAX_COORD
 
-const int gPosDim = 2;
+const int cArmController::gPosDim = 2;
 
 cArmController::cArmController()
 {

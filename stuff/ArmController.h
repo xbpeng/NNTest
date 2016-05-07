@@ -40,6 +40,8 @@ public:
 	virtual int GetCurrActionID() const;
 
 protected:
+	static const int gPosDim;
+
 	double mTorqueLim;
 	double mUpdatePeriod;
 	double mUpdateCounter;
