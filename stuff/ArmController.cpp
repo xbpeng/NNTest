@@ -68,7 +68,7 @@ void cArmController::SetUpdatePeriod(double period)
 
 bool cArmController::NeedUpdate() const
 {
-	return mUpdateCounter >= mUpdatePeriod;
+	return mUpdateCounter >= (0.9999 * mUpdatePeriod);
 }
 
 int cArmController::GetPoliStateSize() const

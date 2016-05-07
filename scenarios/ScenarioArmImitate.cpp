@@ -196,10 +196,10 @@ double cScenarioArmImitate::CalcReward() const
 
 void cScenarioArmImitate::GetRandPoseMinMaxTime(double& out_min, double& out_max) const
 {
-	out_min = 0.1;
-	out_max = 0.5;
-	//out_min = 6;
-	//out_max = 8;
+	//out_min = 0.1;
+	//out_max = 0.5;
+	out_min = 6;
+	out_max = 8;
 }
 
 void cScenarioArmImitate::UpdateArmTrackController()
