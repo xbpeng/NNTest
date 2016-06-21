@@ -1,6 +1,6 @@
 name: "Ball_RL_Actor"
 
-input: "data"
+input: "input"
 input_dim:1
 input_dim:1
 input_dim:1
@@ -9,7 +9,7 @@ input_dim:100
 layer {
   name: "conv0"
   type: "Convolution"
-  bottom: "data"
+  bottom: "input"
   top: "conv0"
   param {
     lr_mult: 1

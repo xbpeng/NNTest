@@ -1,6 +1,6 @@
 name: "Arm_Pixel"
 
-input: "data"
+input: "input"
 input_dim:1
 input_dim:1
 input_dim:1
@@ -9,7 +9,7 @@ input_dim:16392
 layer {
 	name: "slice0"
 	type: "Slice"
-	bottom: "data"
+	bottom: "input"
 	top: "data_pixel"
 	top: "data_char"
 	slice_param {
@@ -21,7 +21,7 @@ layer {
 layer {
     name: "reshape0"
     type: "Reshape"
-    bottom: "data"
+    bottom: "input"
     top: "reshape0"
     reshape_param {
       shape {

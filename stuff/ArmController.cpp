@@ -66,6 +66,11 @@ void cArmController::SetUpdatePeriod(double period)
 	mUpdatePeriod = period;
 }
 
+double cArmController::GetUpdatePeriod() const
+{
+	return mUpdatePeriod;
+}
+
 bool cArmController::NeedUpdate() const
 {
 	return mUpdateCounter >= (0.9999 * mUpdatePeriod);
@@ -185,10 +190,8 @@ void cArmController::InitPoliAction()
 
 void cArmController::UpdatePoliState()
 {
-	Eigen::VectorXd pose;
-	Eigen::VectorXd vel;
-	mChar->BuildPose(pose);
-	mChar->BuildVel(vel);
+	const Eigen::VectorXd& pose = mChar->GetPose();
+	const Eigen::VectorXd& vel = mChar->GetVel();
 
 	int poli_state_size = static_cast<int>(mPoliState.size());
 	int root_size = mChar->GetParamSize(mChar->GetRootID());

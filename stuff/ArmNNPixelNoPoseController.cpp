@@ -35,8 +35,7 @@ void cArmNNPixelNoPoseController::BuildNNInputOffsetScale(Eigen::VectorXd& out_m
 
 void cArmNNPixelNoPoseController::UpdatePoliState()
 {
-	Eigen::VectorXd vel;
-	mChar->BuildVel(vel);
+	const Eigen::VectorXd& vel = mChar->GetVel();
 
 	int root_size = mChar->GetParamSize(mChar->GetRootID());
 	int param_size = static_cast<int>(vel.size()) - root_size;

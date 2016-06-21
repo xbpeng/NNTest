@@ -62,20 +62,16 @@ void cArmNNTrackController::SetTargetPoseVel(const Eigen::VectorXd& tar_pose, co
 
 void cArmNNTrackController::InitTargetPoseVel()
 {
-	mChar->BuildPose(mTargetPose);
-	mChar->BuildVel(mTargetVel);
+	mTargetPose = mChar->GetPose();
+	mTargetVel = mChar->GetPose();
 }
 
 void cArmNNTrackController::UpdatePoliState()
 {
-	Eigen::VectorXd pose;
-	Eigen::VectorXd vel;
-	mChar->BuildPose(pose);
-	mChar->BuildVel(vel);
+	const Eigen::VectorXd& pose = mChar->GetPose();
+	const Eigen::VectorXd& vel = mChar->GetVel();
 
 	int poli_state_size = static_cast<int>(mPoliState.size());
-	int root_size = mChar->GetParamSize(mChar->GetRootID());
-	int idx_beg = root_size;
 	int pose_size = (poli_state_size) / 4;
 	int num_joints = mChar->GetNumJoints();
 

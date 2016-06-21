@@ -183,10 +183,8 @@ double cScenarioArmTrain::CalcReward() const
 	tVector delta = mTargetPos - end_pos;
 	double tar_reward = exp(-2 * delta.squaredNorm());
 
-	Eigen::VectorXd pose;
-	Eigen::VectorXd vel;
-	mChar->BuildPose(pose);
-	mChar->BuildVel(vel);
+	Eigen::VectorXd pose = mChar->GetPose();
+	const Eigen::VectorXd& vel = mChar->GetVel();
 
 	// hack
 	if (pose.size() > 3 && tar_w > 0)
@@ -493,10 +491,8 @@ void cScenarioArmTrain::PrintInfo() const
 	}
 	printf("\n");
 
-	Eigen::VectorXd pose;
-	Eigen::VectorXd vel;
-	mChar->BuildPose(pose);
-	mChar->BuildVel(vel);
+	const Eigen::VectorXd& pose = mChar->GetPose();
+	const Eigen::VectorXd& vel = mChar->GetVel();
 
 	printf("Student Pose: ");
 	for (int i = 3; i < pose.size(); ++i)

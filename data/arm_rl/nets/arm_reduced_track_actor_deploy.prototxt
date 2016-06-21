@@ -1,6 +1,6 @@
 name: "Arm"
 
-input: "data"
+input: "input"
 input_dim:1
 input_dim:1
 input_dim:1
@@ -10,7 +10,7 @@ input_dim:32
 layer {
   name: "ip0"
   type: "InnerProduct"
-  bottom: "data"
+  bottom: "input"
   top: "ip0"
   param {
     lr_mult: 1
@@ -21,7 +21,7 @@ layer {
 	decay_mult: 0
   }
   inner_product_param {
-    num_output: 256
+    num_output: 512
     weight_filler {
       type: "xavier"
     }
@@ -52,7 +52,7 @@ layer {
 	decay_mult: 0
   }
   inner_product_param {
-    num_output: 128
+    num_output: 256
     weight_filler {
       type: "xavier"
     }

@@ -30,10 +30,8 @@ void cArmQPController::SetTorqueLimit(double torque_lim)
 
 void cArmQPController::UpdateRBDModel()
 {
-	Eigen::VectorXd pose;
-	Eigen::VectorXd vel;
-	mChar->BuildPose(pose);
-	mChar->BuildVel(vel);
+	const Eigen::VectorXd& pose = mChar->GetPose();
+	const Eigen::VectorXd& vel = mChar->GetVel();
 
 	mRBDModel.Update(pose, vel);
 	cRBDUtil::BuildJacobian(mRBDModel, mJacobian);
@@ -81,10 +79,8 @@ void cArmQPController::SetupQPTorqueLim(double torque_lim)
 
 void cArmQPController::BuildQPProb(const tVector& end_target, cQuadProg::tProb& out_prob)
 {
-	Eigen::VectorXd pose;
-	Eigen::VectorXd vel;
-	mChar->BuildPose(pose);
-	mChar->BuildVel(vel);
+	const Eigen::VectorXd& pose = mChar->GetPose();
+	const Eigen::VectorXd& vel = mChar->GetVel();
 
 	tVector clamped_target = end_target;
 	tVector root_pos = mChar->GetRootPos();

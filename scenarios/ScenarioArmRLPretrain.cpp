@@ -65,11 +65,8 @@ void cScenarioArmRLPretrain::SetNNViewFeatures()
 
 void cScenarioArmRLPretrain::SyncCharacters()
 {
-	Eigen::VectorXd pose;
-	Eigen::VectorXd vel;
-
-	mCoach->BuildPose(pose);
-	mCoach->BuildVel(vel);
+	const Eigen::VectorXd& pose = mCoach->GetPose();
+	const Eigen::VectorXd& vel = mCoach->GetVel();
 	mChar->SetPose(pose);
 	mChar->SetVel(vel);
 }

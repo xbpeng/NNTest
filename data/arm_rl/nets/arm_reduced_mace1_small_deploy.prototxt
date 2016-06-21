@@ -1,6 +1,6 @@
 name: "Arm"
 
-input: "data"
+input: "input"
 input_dim:1
 input_dim:1
 input_dim:1
@@ -10,7 +10,7 @@ input_dim:10
 layer {
   name: "val_ip0"
   type: "InnerProduct"
-  bottom: "data"
+  bottom: "input"
   top: "val_ip0"
   param {
     lr_mult: 1

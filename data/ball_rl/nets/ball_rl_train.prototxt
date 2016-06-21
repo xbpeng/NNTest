@@ -1,12 +1,13 @@
 name: "Ball_RL"
 
 layer {
-  name: "data"
-  type: "MemoryData"
-  top: "data"
+  name: "input"
+  type: "WeightedMemoryData"
+  top: "input"
   top: "label"
+  top: "weights"
 
-  memory_data_param {
+  weighted_memory_data_param {
     batch_size: 32
 	channels: 1
 	height: 1
@@ -18,7 +19,7 @@ layer {
 layer {
   name: "conv0"
   type: "Convolution"
-  bottom: "data"
+  bottom: "input"
   top: "conv0"
   param {
     lr_mult: 1
@@ -136,8 +137,9 @@ layer {
 
 layer {
   name: "loss"
-  type: "EuclideanLoss"
+  type: "WeightedEuclideanLoss"
   bottom: "output"
   bottom: "label"
+  bottom: "weights"
   top: "loss"
 }

@@ -23,6 +23,7 @@ public:
 
 	virtual void SetTorqueLimit(double torque_lim);
 	virtual void SetUpdatePeriod(double period);
+	virtual double GetUpdatePeriod() const;
 	virtual bool NeedUpdate() const;
 
 	virtual int GetPoliStateSize() const;

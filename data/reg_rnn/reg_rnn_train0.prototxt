@@ -1,12 +1,12 @@
 name: "Reg_RNN"
 
 layer {
-  name: "data"
-  type: "MemoryData"
-  top: "data"
+  name: "input"
+  type: "WeightedMemoryData"
+  top: "input"
   top: "label"
 
-  memory_data_param {
+  weighted_memory_data_param {
     batch_size: 32
 	channels: 1
 	height: 2
@@ -18,7 +18,7 @@ layer {
 layer {
 	name: "slice0"
 	type: "Slice"
-	bottom: "data"
+	bottom: "input"
 	top: "input_data"
 	top: "cont_data_raw"
 	slice_param {
@@ -87,8 +87,9 @@ layer {
 
 layer {
   name: "loss"
-  type: "EuclideanLoss"
+  type: "WeightedEuclideanLoss"
   bottom: "output"
   bottom: "label"
+  bottom: "weights"
   top: "loss"
 }

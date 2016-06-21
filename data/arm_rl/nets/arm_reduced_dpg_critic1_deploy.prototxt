@@ -1,6 +1,6 @@
 name: "Arm"
 
-input: "data"
+input: "input"
 input_dim:1
 input_dim:1
 input_dim:1
@@ -10,7 +10,7 @@ force_backward: true
 layer {
 	name: "slice0"
 	type: "Slice"
-	bottom: "data"
+	bottom: "input"
 	top: "data_state"
 	top: "data_action"
 	slice_param {

@@ -136,10 +136,8 @@ void cScenarioArmRL::ApplyRandPose()
 {
 	cScenarioArm::ApplyRandPose();
 
-	Eigen::VectorXd pose;
-	Eigen::VectorXd vel;
-	mChar->BuildPose(pose);
-	mChar->BuildVel(vel);
+	const Eigen::VectorXd& pose = mChar->GetPose();
+	const Eigen::VectorXd& vel = mChar->GetVel();
 
 	mCoach->SetPose(pose);
 	mCoach->SetVel(vel);
@@ -336,8 +334,8 @@ void cScenarioArmRL::SyncCharacters()
 	else
 	*/
 	{
-		mChar->BuildPose(pose);
-		mChar->BuildVel(vel);
+		pose = mChar->GetPose();
+		vel = mChar->GetVel();
 		mCoach->SetPose(pose);
 		mCoach->SetVel(vel);
 	}
@@ -371,10 +369,8 @@ void cScenarioArmRL::PrintInfo() const
 	}
 	printf("\n");
 
-	Eigen::VectorXd pose;
-	Eigen::VectorXd vel;
-	mChar->BuildPose(pose);
-	mChar->BuildVel(vel);
+	const Eigen::VectorXd& pose = mChar->GetPose();
+	const Eigen::VectorXd& vel = mChar->GetVel();
 
 	printf("Student Pose: ");
 	for (int i = 3; i < pose.size(); ++i)

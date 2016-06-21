@@ -391,8 +391,7 @@ bool cScenarioArm::HasExploded() const
 	bool exploded = false;
 	exploded |= mChar->HasExploded();
 
-	Eigen::VectorXd vel;
-	mChar->BuildVel(vel);
+	const Eigen::VectorXd& vel = mChar->GetVel();
 	double hack_test = vel.lpNorm<Eigen::Infinity>();
 	if (hack_test > 60)
 	{
@@ -419,10 +418,8 @@ void cScenarioArm::RandReset()
 
 void cScenarioArm::ApplyRandPose()
 {
-	Eigen::VectorXd pose;
-	Eigen::VectorXd vel;
-	mChar->BuildPose(pose);
-	mChar->BuildVel(vel);
+	Eigen::VectorXd pose = mChar->GetPose();
+	Eigen::VectorXd vel = mChar->GetVel();
 	
 	int pose_size = static_cast<int>(pose.size());
 	int root_id = mChar->GetRootID();

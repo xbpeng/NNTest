@@ -105,8 +105,7 @@ void cScenarioArmImitate::UpdateCharacter(double time_step)
 	//phase -= static_cast<int>(phase);
 	//hacky_target[0] = phase * 2 - 1;
 
-	Eigen::VectorXd kin_pose;
-	mKinChar->BuildPose(kin_pose);
+	const Eigen::VectorXd& kin_pose = mKinChar->GetPose();
 	hacky_target[0] = kin_pose[3];
 	hacky_target[1] = kin_pose[4];
 	hacky_target[2] = kin_pose[5];
@@ -153,10 +152,8 @@ void cScenarioArmImitate::ApplyRandPose()
 
 void cScenarioArmImitate::SyncCharacter()
 {
-	Eigen::VectorXd kin_pose;
-	Eigen::VectorXd kin_vel;
-	mKinChar->BuildPose(kin_pose);
-	mKinChar->BuildVel(kin_vel);
+	const Eigen::VectorXd& kin_pose = mKinChar->GetPose();
+	const Eigen::VectorXd& kin_vel = mKinChar->GetVel();
 	mChar->SetPose(kin_pose);
 	mChar->SetVel(kin_vel);
 }
@@ -172,29 +169,25 @@ double cScenarioArmImitate::CalcReward() const
 	/*
 	for (int j = 0; j < num_joints; ++j)
 	{
-		tVector joint_pos = mChar->CalcJointPos(j);
-		tVector kin_pos = mKinChar->CalcJointPos(j);
-		double curr_pos_err = (kin_pos - joint_pos).squaredNorm();
-		pos_err += curr_pos_err;
+	tVector joint_pos = mChar->CalcJointPos(j);
+	tVector kin_pos = mKinChar->CalcJointPos(j);
+	double curr_pos_err = (kin_pos - joint_pos).squaredNorm();
+	pos_err += curr_pos_err;
 
-		tVector joint_vel = mChar->CalcJointVel(j);
-		tVector kin_vel = mKinChar->CalcJointVel(j);
-		double curr_vel_err = (kin_vel - joint_vel).squaredNorm();
-		vel_err += curr_vel_err;
+	tVector joint_vel = mChar->CalcJointVel(j);
+	tVector kin_vel = mKinChar->CalcJointVel(j);
+	double curr_vel_err = (kin_vel - joint_vel).squaredNorm();
+	vel_err += curr_vel_err;
 	}
 
 	double pose_reward = exp(-5 * pos_err / num_joints);
 	double vel_reward = exp(-0.1 * vel_err / num_joints);
 	*/
 
-	Eigen::VectorXd pose;
-	Eigen::VectorXd vel;
-	Eigen::VectorXd kin_pose;
-	Eigen::VectorXd kin_vel;
-	mChar->BuildPose(pose);
-	mChar->BuildVel(vel);
-	mKinChar->BuildPose(kin_pose);
-	mKinChar->BuildVel(kin_vel);
+	const Eigen::VectorXd& pose = mChar->GetPose();
+	const Eigen::VectorXd& vel = mChar->GetVel();
+	const Eigen::VectorXd& kin_pose = mKinChar->GetPose();
+	const Eigen::VectorXd& kin_vel = mKinChar->GetVel();
 
 	Eigen::VectorXd pose_diff = kin_pose - pose;
 	Eigen::VectorXd vel_diff = kin_vel - vel;
@@ -213,7 +206,7 @@ double cScenarioArmImitate::CalcReward() const
 		}
 	}
 
-	double pose_reward = exp(-1 * pos_err / num_joints);
+	double pose_reward = exp(-0.5 * pos_err / num_joints);
 	double vel_reward = exp(-0.01 * vel_err / num_joints);
 
 	double reward = pose_w * pose_reward + vel_w * vel_reward;
@@ -240,7 +233,11 @@ void cScenarioArmImitate::UpdateArmTrackController()
 	auto track_ctrl = std::static_pointer_cast<cArmNNTrackController>(mChar->GetController());
 	Eigen::VectorXd pose;
 	Eigen::VectorXd vel;
-	mKinChar->BuildPose(pose);
-	mKinChar->BuildVel(vel);
+
+	double kin_time = mKinChar->GetTime();
+	double ctrl_period = track_ctrl->GetUpdatePeriod();
+	double next_time = kin_time;// +ctrl_period;
+	mKinChar->CalcPose(next_time, pose);
+	mKinChar->CalcVel(next_time, vel);
 	track_ctrl->SetTargetPoseVel(pose, vel);
 }

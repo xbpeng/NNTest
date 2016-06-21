@@ -53,10 +53,8 @@ void cArmNNPixelController::SetViewBuffer(const Eigen::VectorXd& view_buff)
 
 void cArmNNPixelController::UpdatePoliState()
 {
-	Eigen::VectorXd pose;
-	Eigen::VectorXd vel;
-	mChar->BuildPose(pose);
-	mChar->BuildVel(vel);
+	const Eigen::VectorXd& pose = mChar->GetPose();
+	const Eigen::VectorXd& vel = mChar->GetVel();
 
 	int root_size = mChar->GetParamSize(mChar->GetRootID());
 	int param_size = static_cast<int>(pose.size()) - root_size;

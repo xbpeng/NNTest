@@ -1,12 +1,13 @@
 name: "Arm"
 
 layer {
-  name: "data"
-  type: "MemoryData"
-  top: "data"
+  name: "input"
+  type: "WeightedMemoryData"
+  top: "input"
   top: "label"
+  top: "weights"
 
-  memory_data_param {
+  weighted_memory_data_param {
     batch_size: 32
 	channels: 1
 	height: 1
@@ -18,7 +19,7 @@ layer {
 layer {
   name: "ip0"
   type: "InnerProduct"
-  bottom: "data"
+  bottom: "input"
   top: "ip0"
   param {
     lr_mult: 1
@@ -29,7 +30,7 @@ layer {
 	decay_mult: 0
   }
   inner_product_param {
-    num_output: 256
+    num_output: 512
     weight_filler {
       type: "xavier"
     }
@@ -60,7 +61,7 @@ layer {
 	decay_mult: 0
   }
   inner_product_param {
-    num_output: 128
+    num_output: 256
     weight_filler {
       type: "xavier"
     }
@@ -103,8 +104,9 @@ layer {
 
 layer {
   name: "loss"
-  type: "EuclideanLoss"
+  type: "WeightedEuclideanLoss"
   bottom: "output"
   bottom: "label"
+  bottom: "weights"
   top: "loss"
 }
