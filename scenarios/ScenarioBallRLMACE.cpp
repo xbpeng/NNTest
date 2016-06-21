@@ -29,8 +29,8 @@ void cScenarioBallRLMACE::BuildController(std::shared_ptr<cBallController>& out_
 
 void cScenarioBallRLMACE::InitTrainer()
 {
-	//auto trainer = std::shared_ptr<cMACETrainer>(new cMACETrainer());
-	auto trainer = std::shared_ptr<cAsyncMACETrainer>(new cAsyncMACETrainer());
+	auto trainer = std::shared_ptr<cMACETrainer>(new cMACETrainer());
+	//auto trainer = std::shared_ptr<cAsyncMACETrainer>(new cAsyncMACETrainer());
 
 	mTrainerParams.mNetFile = mNetFile;
 	mTrainerParams.mSolverFile = mSolverFile;

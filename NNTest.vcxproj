@@ -198,6 +198,7 @@
     <ClCompile Include="..\library\caffe\src\caffe\layers\euclidean_loss_layer.cpp" />
     <ClCompile Include="..\library\caffe\src\caffe\layers\exp_layer.cpp" />
     <ClCompile Include="..\library\caffe\src\caffe\layers\filter_layer.cpp" />
+    <ClCompile Include="..\library\caffe\src\caffe\layers\fixed_euclidean_loss_layer.cpp" />
     <ClCompile Include="..\library\caffe\src\caffe\layers\flatten_layer.cpp" />
     <ClCompile Include="..\library\caffe\src\caffe\layers\hdf5_data_layer.cpp" />
     <ClCompile Include="..\library\caffe\src\caffe\layers\hdf5_output_layer.cpp" />
@@ -460,6 +461,7 @@
     <ClCompile Include="stuff\SimArm.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\library\caffe\include\caffe\layers\fixed_euclidean_loss_layer.hpp" />
     <ClInclude Include="..\library\caffe\src\caffe\proto\caffe.pb.h" />
     <ClInclude Include="..\library\caffe\src\caffe\proto\caffe_pretty_print.pb.h" />
     <ClInclude Include="..\library\LodePNG\lodepng.h" />

@@ -929,6 +929,9 @@
     <ClCompile Include="..\TerrainRL\sim\CtVelPhaseController.cpp">
       <Filter>Source Files\util</Filter>
     </ClCompile>
+    <ClCompile Include="..\library\caffe\src\caffe\layers\fixed_euclidean_loss_layer.cpp">
+      <Filter>Source Files\caffe\layers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\TerrainRL\util\Rand.h">
@@ -1521,6 +1524,9 @@
     </ClInclude>
     <ClInclude Include="..\TerrainRL\sim\CtVelController.h">
       <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\library\caffe\include\caffe\layers\fixed_euclidean_loss_layer.hpp">
+      <Filter>Source Files\caffe\layers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
