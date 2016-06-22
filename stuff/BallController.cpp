@@ -401,12 +401,12 @@ void cBallController::ApplyAction(const tAction& action)
 	noise *= mCtrlNoise;
 
 	double dist = action.mDist;
-	
 	dist = cMathUtil::Clamp(dist, gMinDist, gMaxDist);
-	dist *= 1 + noise;
+	double noisy_dist = dist * (1 + noise);
 
-	mPosEnd[0] += dist;
+	mPosEnd[0] += noisy_dist;
 	mCurrAction = action;
+	mCurrAction.mDist = dist;
 }
 
 void cBallController::UpdateDistTravelled()
