@@ -31,7 +31,7 @@ os.chdir(root_dir)
 
 
 for f in range(0, num_files):
-    command = root_dir + exe_name + ' ' + args
+    command = root_dir + '\\' + exe_path + ' ' + args
     command += ' ' + '-model_file=' + ' ' + poli_files_dir + actor_files[f] \
                + ' ' + '-critic_model_file=' + ' ' + poli_files_dir + critic_files[f]
     print(command + '\n')

@@ -13,13 +13,13 @@
 -exp_temp= 0.025
 -num_exp_anneal_iters= 10000
 
-//-trainer_int_iter= 500
-//-trainer_int_output= output/intermediate/trainer_int_model.h5
+-trainer_int_iter= 500
+-trainer_int_output= output/intermediate/trainer_int_model.h5
 
 -eval_max_samples= 5000
 -ball_eval_samples= 10
 
--output_net_file= output/ball_rl_q_model.h5
+-output_net_file= output/ball_rl_cacla_model.h5
 
 -ground_height= 0
 

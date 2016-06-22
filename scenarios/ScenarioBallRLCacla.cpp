@@ -67,13 +67,13 @@ void cScenarioBallRLCacla::InitTrainer()
 
 	mTrainerParams.mPlaybackMemSize = gTrainerPlaybackMemSize;
 	mTrainerParams.mPoolSize = 1;
-	mTrainerParams.mNumInitSamples = 10000;
-	//mTrainerParams.mNumInitSamples = 100;
+	//mTrainerParams.mNumInitSamples = 10000;
+	mTrainerParams.mNumInitSamples = 100;
 	//mTrainerParams.mFreezeTargetIters = 100;
 
 	trainer->SetMode(cCaclaTrainer::eModeTD);
 	trainer->SetActorFiles(mSolverFile, mNetFile);
-	trainer->SetTDScale(1);
+	trainer->SetAdvantageScale(1);
 	trainer->Init(mTrainerParams);
 
 	if (mModelFile != "")
