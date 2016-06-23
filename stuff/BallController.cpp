@@ -1,17 +1,18 @@
 #include "BallController.h"
 #include "Ball.h"
+#include "learning/ExpTuple.h"
 
 const double gDuration = 0.65;
 const cBallController::tAction gActions[] =
 {
-	{ 0, 0.4 },
-	{ 1, 0.6 },
-	{ 2, 0.8 },
-	{ 3, 1.1 },
-	{ 4, 1.4 },
-	{ 5, 1.7 },
-	{ 6, 2.0 },
-	{ 7, 2.3 },
+	{ 0, 0.4, tExpTuple::gInvalidLikelihood },
+	{ 1, 0.6, tExpTuple::gInvalidLikelihood },
+	{ 2, 0.8, tExpTuple::gInvalidLikelihood },
+	{ 3, 1.1, tExpTuple::gInvalidLikelihood },
+	{ 4, 1.4, tExpTuple::gInvalidLikelihood },
+	{ 5, 1.7, tExpTuple::gInvalidLikelihood },
+	{ 6, 2.0, tExpTuple::gInvalidLikelihood },
+	{ 7, 2.3, tExpTuple::gInvalidLikelihood },
 };
 const int gNumActions = sizeof(gActions) / sizeof(gActions[0]);
 const int gNumGroundSamples = 100;
@@ -19,6 +20,19 @@ const double gGroundSampleDist = 8;
 
 const double cBallController::gMinDist = 0.1;
 const double cBallController::gMaxDist = 2.5;
+
+
+cBallController::tAction::tAction()
+	: tAction(gInvalidIdx, 0, tExpTuple::gInvalidLikelihood)
+{
+}
+
+cBallController::tAction::tAction(int id, double dist, double likelihood)
+{
+	mID = id;
+	mDist = dist;
+	mLikelihood = likelihood;
+}
 
 cBallController::cBallController(cBall& ball) :
 	mBall(ball)
@@ -30,7 +44,7 @@ cBallController::cBallController(cBall& ball) :
 	mEnableExp = false;
 	mExpRate = 0.2;
 	mExpTemp = 0.5;
-	
+
 	Reset();
 }
 
@@ -299,6 +313,11 @@ const cBallController::tAction& cBallController::GetAction(int a) const
 const cBallController::tAction& cBallController::GetCurrAction() const
 {
 	return mCurrAction;
+}
+
+double cBallController::GetActionLikelihood() const
+{
+	return mCurrAction.mLikelihood;
 }
 
 cBallController::tAction cBallController::BuildActionFromParams(const Eigen::VectorXd& action_params) const

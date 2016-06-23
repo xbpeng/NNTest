@@ -1,5 +1,6 @@
 #include "BallControllerCacla.h"
 #include "Ball.h"
+#include "learning/ExpTuple.h"
 
 cBallControllerCacla::cBallControllerCacla(cBall& ball) :
 	cBallController(ball)
@@ -169,6 +170,8 @@ void cBallControllerCacla::CalcActionNet(tAction& out_action)
 	mNet.Eval(state, action);
 
 	out_action.mDist = action[0];
+	out_action.mLikelihood = tExpTuple::gInvalidLikelihood;
+
 	printf("action: %.5f\n", action[0], out_action.mDist);
 }
 
@@ -189,5 +192,9 @@ void cBallControllerCacla::ApplyExpNoise(tAction& out_action)
 	const double dist_stdev = mExpNoiseStd;
 
 	double rand_dist = cMathUtil::RandDoubleNorm(dist_mean, dist_stdev);
+	double likelihood_norm = 1 / (dist_stdev * std::sqrt(2 * M_PI));
+	double likelihood = likelihood_norm * std::exp(-(rand_dist * rand_dist) / (2 * dist_stdev * dist_stdev));
+
 	out_action.mDist += rand_dist;
+	out_action.mLikelihood = likelihood;
 }

@@ -76,6 +76,7 @@ protected:
 	virtual void RecordEndFlags(tExpTuple& out_tuple) const;
 	virtual void RecordState(Eigen::VectorXd& out_state) const;
 	virtual void RecordAction(Eigen::VectorXd& out_action) const;
+	virtual double GetActionLikelihood() const;
 	virtual double CalcReward(const tExpTuple& tuple) const;
 	virtual bool CheckFail() const;
 

@@ -229,6 +229,8 @@ void cScenarioBallRL::NewCycleUpdate()
 		// start recording new tuple
 		mCurrTuple.mStateBeg = mCurrTuple.mStateEnd;
 		RecordAction(mCurrTuple.mAction);
+		mCurrTuple.mActionLikelihood = GetActionLikelihood();
+
 		ClearFlags(mCurrTuple);
 		RecordBegFlags(mCurrTuple);
 
@@ -261,6 +263,12 @@ void cScenarioBallRL::RecordAction(Eigen::VectorXd& out_action) const
 {
 	const auto& ctrl = mBall.GetController();
 	ctrl->RecordAction(out_action);
+}
+
+double cScenarioBallRL::GetActionLikelihood() const
+{
+	const auto& ctrl = mBall.GetController();
+	return ctrl->GetActionLikelihood();
 }
 
 double cScenarioBallRL::CalcReward(const tExpTuple& tuple) const

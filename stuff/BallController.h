@@ -14,6 +14,10 @@ public:
 	{
 		int mID;
 		double mDist;
+		double mLikelihood;
+
+		tAction();
+		tAction(int id, double dist, double likelihood);
 	};
 
 	static const double gMinDist;
@@ -40,6 +44,7 @@ public:
 	virtual int GetActionSize() const;
 	virtual const tAction& GetAction(int a) const;
 	virtual const tAction& GetCurrAction() const;
+	virtual double GetActionLikelihood() const;
 	virtual tAction BuildActionFromParams(const Eigen::VectorXd& action_params) const;
 
 	virtual void RecordState(Eigen::VectorXd& out_state) const;
