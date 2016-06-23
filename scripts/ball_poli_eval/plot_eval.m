@@ -22,9 +22,12 @@ files{end + 1} = {'q_learning.txt', 'Q-Learning'};
 
 %files{end + 1} = {'cacla1.txt', 'Cacla'};
 %files{end + 1} = {'cacla2.txt', 'Cacla2'};
-files{end + 1} = {'cacla3.txt', 'Cacla3'};
+%files{end + 1} = {'cacla3.txt', 'Cacla3'};
 files{end + 1} = {'cacla4.txt', 'Cacla4'};
-files{end + 1} = {'cacla_hack.txt', 'Cacla Hack'};
+%files{end + 1} = {'cacla_hack.txt', 'Cacla Hack'};
+
+files{end + 1} = {'pg1.txt', 'PG 1'};
+files{end + 1} = {'pg10.txt', 'PG 10'};
 
 %files{end + 1} = {'dpg.txt', 'DPG'};
 %files{end + 1} = {'dpg_no_target.txt', 'DPG Vanilla'};
