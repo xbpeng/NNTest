@@ -101,6 +101,11 @@ void cScenarioBallRLCacla::InitTrainer()
 	BuildActionBounds(action_min, action_max);
 	trainer->SetActionBounds(action_min, action_max);
 
+	Eigen::VectorXd action_covar;
+	auto ctrl = std::static_pointer_cast<cBallControllerCacla>(mBall.GetController());
+	ctrl->GetActionExpCovar(action_covar);
+	trainer->SetActionCovar(action_covar);
+
 	mTrainer = trainer;
 }
 
