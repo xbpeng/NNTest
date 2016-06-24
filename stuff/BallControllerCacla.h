@@ -37,7 +37,7 @@ public:
 	virtual void BuildActorOutputOffsetScale(Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const;
 	virtual void BuildCriticOutputOffsetScale(Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const;
 	
-	virtual void GetActionExpCovar(Eigen::VectorXd& out_covar) const;
+	virtual void BuildActionExpCovar(Eigen::VectorXd& out_covar) const;
 
 protected:
 	cNeuralNet mCriticNet;

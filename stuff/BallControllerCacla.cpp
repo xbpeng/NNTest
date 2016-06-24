@@ -159,7 +159,7 @@ void cBallControllerCacla::BuildCriticOutputOffsetScale(Eigen::VectorXd& out_off
 	out_scale = 2 * Eigen::VectorXd::Ones(output_size);
 }
 
-void cBallControllerCacla::GetActionExpCovar(Eigen::VectorXd& out_covar) const
+void cBallControllerCacla::BuildActionExpCovar(Eigen::VectorXd& out_covar) const
 {
 	out_covar = Eigen::VectorXd::Ones(GetActionSize());
 	out_covar *= mExpNoiseStd * mExpNoiseStd;

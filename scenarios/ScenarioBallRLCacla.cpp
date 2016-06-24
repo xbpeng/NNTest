@@ -103,7 +103,7 @@ void cScenarioBallRLCacla::InitTrainer()
 
 	Eigen::VectorXd action_covar;
 	auto ctrl = std::static_pointer_cast<cBallControllerCacla>(mBall.GetController());
-	ctrl->GetActionExpCovar(action_covar);
+	ctrl->BuildActionExpCovar(action_covar);
 	trainer->SetActionCovar(action_covar);
 
 	mTrainer = trainer;
