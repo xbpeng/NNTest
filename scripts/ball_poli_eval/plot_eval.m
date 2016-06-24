@@ -8,6 +8,8 @@ files{end + 1} = {'cacla0.txt', 'Cacla 0'};
 files{end + 1} = {'cacla_off_poli.txt', 'Cacla Off Policy'};
 
 files{end + 1} = {'pg_off_poli.txt', 'PG Off Policy'};
+files{end + 1} = {'pg_on_poli.txt', 'PG On Policy'};
+files{end + 1} = {'pg_no_is.txt', 'PG No IS'};
 
 files{end + 1} = {'td_10.txt', 'PG No Importance Sampling'};
 
