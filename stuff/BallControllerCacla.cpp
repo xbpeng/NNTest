@@ -144,8 +144,8 @@ void cBallControllerCacla::BuildNNOutputOffsetScale(Eigen::VectorXd& out_offset,
 void cBallControllerCacla::BuildActorOutputOffsetScale(Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const
 {
 	int output_size = GetActionSize();
-	double min_dist = cBallControllerCacla::gMinDist;
-	double max_dist = cBallControllerCacla::gMaxDist;
+	double min_dist = gMinDist;
+	double max_dist = gMaxDist;
 	double offset = -0.5 * (max_dist + min_dist);
 	double scale = 2 / (max_dist - min_dist);
 	out_offset = offset * Eigen::VectorXd::Ones(output_size);
@@ -195,10 +195,15 @@ void cBallControllerCacla::ApplyExpNoise(tAction& out_action)
 	const double dist_mean = 0;
 	const double dist_stdev = mExpNoiseStd;
 
+	double old_dist = out_action.mDist;
 	double rand_dist = cMathUtil::RandDoubleNorm(dist_mean, dist_stdev);
+	double new_dist = old_dist + rand_dist;
+	new_dist = cMathUtil::Clamp(new_dist, gMinDist, gMaxDist);
+	rand_dist = new_dist - old_dist;
+
 	double likelihood_norm = 1 / (dist_stdev * std::sqrt(2 * M_PI));
 	double likelihood = likelihood_norm * std::exp(-(rand_dist * rand_dist) / (2 * dist_stdev * dist_stdev));
 
-	out_action.mDist += rand_dist;
+	out_action.mDist = new_dist;
 	out_action.mLikelihood = likelihood;
 }

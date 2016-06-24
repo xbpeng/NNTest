@@ -73,7 +73,7 @@ void cScenarioBallRLCacla::InitTrainer()
 
 	trainer->SetMode(cCaclaTrainer::eModeCacla);
 	trainer->SetActorFiles(mSolverFile, mNetFile);
-	trainer->SetAdvantageScale(1);
+	trainer->SetAdvantageScale(10);
 	trainer->Init(mTrainerParams);
 
 	if (mModelFile != "")

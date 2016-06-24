@@ -5,7 +5,7 @@ files{end + 1} = {'cacla0.txt', 'Cacla 0'};
 files{end + 1} = {'cacla1.txt', 'Cacla 1'};
 files{end + 1} = {'cacla2.txt', 'Cacla 2'};
 
-files{end + 1} = {'td_10.txt', 'TD Adv Scale 10'};
+files{end + 1} = {'cacla2.txt', 'TD 10'};
 
 lines = {'b-', 'r-', 'm-', 'k-', 'g-', 'c-', 'k--', 'r--'};
 iter_step = 500 / 1000;
