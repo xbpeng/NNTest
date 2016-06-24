@@ -1,18 +1,17 @@
 #include "BallController.h"
 #include "Ball.h"
-#include "learning/ExpTuple.h"
 
 const double gDuration = 0.65;
 const cBallController::tAction gActions[] =
 {
-	{ 0, 0.4, tExpTuple::gInvalidLikelihood },
-	{ 1, 0.6, tExpTuple::gInvalidLikelihood },
-	{ 2, 0.8, tExpTuple::gInvalidLikelihood },
-	{ 3, 1.1, tExpTuple::gInvalidLikelihood },
-	{ 4, 1.4, tExpTuple::gInvalidLikelihood },
-	{ 5, 1.7, tExpTuple::gInvalidLikelihood },
-	{ 6, 2.0, tExpTuple::gInvalidLikelihood },
-	{ 7, 2.3, tExpTuple::gInvalidLikelihood },
+	{ 0, 0.4, gInvalidLikelihood },
+	{ 1, 0.6, gInvalidLikelihood },
+	{ 2, 0.8, gInvalidLikelihood },
+	{ 3, 1.1, gInvalidLikelihood },
+	{ 4, 1.4, gInvalidLikelihood },
+	{ 5, 1.7, gInvalidLikelihood },
+	{ 6, 2.0, gInvalidLikelihood },
+	{ 7, 2.3, gInvalidLikelihood },
 };
 const int gNumActions = sizeof(gActions) / sizeof(gActions[0]);
 const int gNumGroundSamples = 100;
@@ -23,7 +22,7 @@ const double cBallController::gMaxDist = 2.5;
 
 
 cBallController::tAction::tAction()
-	: tAction(gInvalidIdx, 0, tExpTuple::gInvalidLikelihood)
+	: tAction(gInvalidIdx, 0, gInvalidLikelihood)
 {
 }
 

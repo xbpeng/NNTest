@@ -1,6 +1,5 @@
 #include "BallControllerCacla.h"
 #include "Ball.h"
-#include "learning/ExpTuple.h"
 
 cBallControllerCacla::cBallControllerCacla(cBall& ball) :
 	cBallController(ball)
@@ -175,7 +174,7 @@ void cBallControllerCacla::CalcActionNet(tAction& out_action)
 	mNet.Eval(state, action);
 
 	out_action.mDist = action[0];
-	out_action.mLikelihood = tExpTuple::gInvalidLikelihood;
+	out_action.mLikelihood = gInvalidLikelihood;
 
 	printf("action: %.5f\n", action[0], out_action.mDist);
 }
