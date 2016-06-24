@@ -71,7 +71,7 @@ void cScenarioBallRLCacla::InitTrainer()
 	//mTrainerParams.mNumInitSamples = 100;
 	//mTrainerParams.mFreezeTargetIters = 100;
 
-	trainer->SetMode(cCaclaTrainer::eModeCacla);
+	trainer->SetMode(cCaclaTrainer::eModeTD);
 	trainer->SetActorFiles(mSolverFile, mNetFile);
 	trainer->SetAdvantageScale(10);
 	trainer->Init(mTrainerParams);
