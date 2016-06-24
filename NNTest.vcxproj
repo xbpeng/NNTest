@@ -351,6 +351,7 @@
     <ClCompile Include="..\TerrainRL\sim\CtVelTrackController.cpp" />
     <ClCompile Include="..\TerrainRL\sim\DogController.cpp" />
     <ClCompile Include="..\TerrainRL\sim\DogControllerCacla.cpp" />
+    <ClCompile Include="..\TerrainRL\sim\DogControllerCaclaDQ.cpp" />
     <ClCompile Include="..\TerrainRL\sim\DogControllerDMACE.cpp" />
     <ClCompile Include="..\TerrainRL\sim\DogControllerDPG.cpp" />
     <ClCompile Include="..\TerrainRL\sim\DogControllerMACE.cpp" />
@@ -550,6 +551,7 @@
     <ClInclude Include="..\TerrainRL\sim\CtVelTrackController.h" />
     <ClInclude Include="..\TerrainRL\sim\DogController.h" />
     <ClInclude Include="..\TerrainRL\sim\DogControllerCacla.h" />
+    <ClInclude Include="..\TerrainRL\sim\DogControllerCaclaDQ.h" />
     <ClInclude Include="..\TerrainRL\sim\DogControllerDMACE.h" />
     <ClInclude Include="..\TerrainRL\sim\DogControllerDPG.h" />
     <ClInclude Include="..\TerrainRL\sim\DogControllerMACE.h" />
