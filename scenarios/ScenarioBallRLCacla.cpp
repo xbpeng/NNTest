@@ -71,9 +71,12 @@ void cScenarioBallRLCacla::InitTrainer()
 	//mTrainerParams.mNumInitSamples = 100;
 	//mTrainerParams.mFreezeTargetIters = 100;
 
-	trainer->SetMode(cCaclaTrainer::eModeTD);
+	mTrainerParams.mPGEnableImportanceSampling = true;
+	mTrainerParams.mPGEnableOnPolicy = false;
+	mTrainerParams.mPGMode = static_cast<int>(cCaclaTrainer::eModeTD); // hack
+	mTrainerParams.mPGAdvScale = 10;
+
 	trainer->SetActorFiles(mSolverFile, mNetFile);
-	trainer->SetAdvantageScale(10);
 	trainer->Init(mTrainerParams);
 
 	if (mModelFile != "")

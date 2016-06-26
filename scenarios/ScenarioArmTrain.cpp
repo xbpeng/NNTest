@@ -295,8 +295,6 @@ void cScenarioArmTrain::BuildTrainer(std::shared_ptr<cNeuralNetTrainer>& out_tra
 {
 	auto trainer = std::shared_ptr<cCaclaTrainer>(new cCaclaTrainer());
 	trainer->SetActorFiles(mActorSolverFile, mActorNetFile);
-	trainer->SetMode(cCaclaTrainer::eModeCacla);
-	trainer->SetAdvantageScale(20);
 	out_trainer = trainer;
 }
 
@@ -310,7 +308,8 @@ void cScenarioArmTrain::InitTrainer()
 	mTrainerParams.mNumInitSamples = 20000;
 	//mTrainerParams.mFreezeTargetIters = 200;
 	//mTrainerParams.mFreezeTargetIters = 5;
-
+	mTrainerParams.mPGMode = static_cast<int>(cCaclaTrainer::eModeCacla);
+	mTrainerParams.mPGAdvScale = 20;
 	//mTrainerParams.mRewardMode = cTrainerInterface::eRewardModeAvg;
 
 	mTrainer->Init(mTrainerParams);
