@@ -327,6 +327,8 @@
     <ClCompile Include="..\TerrainRL\sim\BaseControllerMACE.cpp" />
     <ClCompile Include="..\TerrainRL\sim\BaseControllerMACEDPG.cpp" />
     <ClCompile Include="..\TerrainRL\sim\BaseControllerQ.cpp" />
+    <ClCompile Include="..\TerrainRL\sim\BipedController.cpp" />
+    <ClCompile Include="..\TerrainRL\sim\BipedControllerQ.cpp" />
     <ClCompile Include="..\TerrainRL\sim\CharController.cpp" />
     <ClCompile Include="..\TerrainRL\sim\CharTracer.cpp" />
     <ClCompile Include="..\TerrainRL\sim\ContactManager.cpp" />
@@ -376,6 +378,7 @@
     <ClCompile Include="..\TerrainRL\sim\RaptorControllerQ.cpp" />
     <ClCompile Include="..\TerrainRL\sim\RBDModel.cpp" />
     <ClCompile Include="..\TerrainRL\sim\RBDUtil.cpp" />
+    <ClCompile Include="..\TerrainRL\sim\SimBiped.cpp" />
     <ClCompile Include="..\TerrainRL\sim\SimBox.cpp" />
     <ClCompile Include="..\TerrainRL\sim\SimCapsule.cpp" />
     <ClCompile Include="..\TerrainRL\sim\SimCharacter.cpp" />
@@ -527,6 +530,8 @@
     <ClInclude Include="..\TerrainRL\sim\BaseControllerMACE.h" />
     <ClInclude Include="..\TerrainRL\sim\BaseControllerMACEDPG.h" />
     <ClInclude Include="..\TerrainRL\sim\BaseControllerQ.h" />
+    <ClInclude Include="..\TerrainRL\sim\BipedController.h" />
+    <ClInclude Include="..\TerrainRL\sim\BipedControllerQ.h" />
     <ClInclude Include="..\TerrainRL\sim\CharController.h" />
     <ClInclude Include="..\TerrainRL\sim\CharTracer.h" />
     <ClInclude Include="..\TerrainRL\sim\ContactManager.h" />
@@ -576,6 +581,7 @@
     <ClInclude Include="..\TerrainRL\sim\RaptorControllerQ.h" />
     <ClInclude Include="..\TerrainRL\sim\RBDModel.h" />
     <ClInclude Include="..\TerrainRL\sim\RBDUtil.h" />
+    <ClInclude Include="..\TerrainRL\sim\SimBiped.h" />
     <ClInclude Include="..\TerrainRL\sim\SimBox.h" />
     <ClInclude Include="..\TerrainRL\sim\SimCapsule.h" />
     <ClInclude Include="..\TerrainRL\sim\SimCharacter.h" />

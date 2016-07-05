@@ -94,12 +94,12 @@ protected:
 	virtual bool BuildController(std::shared_ptr<cCharController>& out_ctrl);
 	virtual bool BuildController(cTerrainRLCtrlFactory::eCharCtrl char_ctrl, std::shared_ptr<cSimCharacter>& character, std::shared_ptr<cCharController>& out_ctrl);
 	virtual bool BuildController(const std::shared_ptr<cSimCharacter>& character, eCtrlType ctrl_type, std::shared_ptr<cCharController>& out_ctrl);
-	virtual bool BuildNNController(eCtrlType ctrl_type, std::shared_ptr<cArmController>& out_ctrl);
+	virtual bool BuildNNController(eCtrlType ctrl_type, std::shared_ptr<cCharController>& out_ctrl);
 	
 	virtual void BuildGround();
 
-	virtual void CreateCharacter(std::shared_ptr<cSimCharacter>& out_char) const;
-	virtual void InitCharacterPos(std::shared_ptr<cSimCharacter>& out_char) const;
+	virtual void CreateCharacter(eCharType char_type, std::shared_ptr<cSimCharacter>& out_char) const;
+	virtual void InitCharacterPos(const std::shared_ptr<cSimCharacter>& out_char) const;
 
 	virtual std::shared_ptr<cArmController> GetArmController() const;
 

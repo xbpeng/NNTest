@@ -308,7 +308,7 @@ void cScenarioArmTrain::InitTrainer()
 	mTrainerParams.mNumInitSamples = 20000;
 	//mTrainerParams.mFreezeTargetIters = 200;
 	//mTrainerParams.mFreezeTargetIters = 5;
-	mTrainerParams.mPGMode = static_cast<int>(cCaclaTrainer::eModeCacla);
+	mTrainerParams.mPGMode = cCaclaTrainer::ePGModeCacla;
 	mTrainerParams.mPGAdvScale = 20;
 	//mTrainerParams.mRewardMode = cTrainerInterface::eRewardModeAvg;
 

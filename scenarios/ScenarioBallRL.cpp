@@ -288,7 +288,7 @@ double cScenarioBallRL::CalcReward(const tExpTuple& tuple) const
 	double max_dist = cBallController::gMaxDist;
 	double gamma = (dist_err >= 0) ? (max_dist - tar_dist) : (tar_dist - min_dist);
 	//gamma /= 1.5;
-	gamma /= 2;
+	gamma /= 2.5;
 
 	gamma = 1 / gamma;
 	gamma *= gamma;

@@ -1,17 +1,19 @@
 files = {};
-files{end + 1} = {'q_learning.txt', 'Q-Learning'};
+%files{end + 1} = {'q_learning.txt', 'Q-Learning'};
 
-files{end + 1} = {'cacla0.txt', 'Cacla 0'};
+%files{end + 1} = {'cacla0.txt', 'Cacla 0'};
 %files{end + 1} = {'cacla1.txt', 'Cacla 1'};
 %files{end + 1} = {'cacla2.txt', 'Cacla 2'};
 %files{end + 1} = {'cacla3.txt', 'Cacla 3'};
-files{end + 1} = {'cacla_off_poli.txt', 'Cacla Off Policy'};
+%files{end + 1} = {'cacla_off_poli.txt', 'Cacla Off Policy'};
 
 files{end + 1} = {'pg_off_poli.txt', 'PG Off Policy'};
-files{end + 1} = {'pg_off_poli1.txt', 'PG Off Policy1'};
+%files{end + 1} = {'pg_off_poli1.txt', 'PG Off Policy1'};
 %files{end + 1} = {'pg_on_poli.txt', 'PG On Policy'};
 %files{end + 1} = {'pg_no_is.txt', 'PG No IS'};
 files{end + 1} = {'pg_trunc_iw.txt', 'PG Trunc IW'};
+files{end + 1} = {'pg_off_poli_trunc_20.txt', 'PG Trunc 20'};
+files{end + 1} = {'pg_off_poli_trunc_2.txt', 'PG Trunc 2'};
 
 %files{end + 1} = {'td_10.txt', 'PG No Importance Sampling'};
 

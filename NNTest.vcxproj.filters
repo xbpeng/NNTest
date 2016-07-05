@@ -935,6 +935,15 @@
     <ClCompile Include="..\TerrainRL\sim\DogControllerCaclaDQ.cpp">
       <Filter>Source Files\util</Filter>
     </ClCompile>
+    <ClCompile Include="..\TerrainRL\sim\SimBiped.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\sim\BipedControllerQ.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\sim\BipedController.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\TerrainRL\util\Rand.h">
@@ -1532,6 +1541,15 @@
       <Filter>Source Files\caffe\layers</Filter>
     </ClInclude>
     <ClInclude Include="..\TerrainRL\sim\DogControllerCaclaDQ.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\sim\SimBiped.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\sim\BipedController.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\sim\BipedControllerQ.h">
       <Filter>Source Files\util</Filter>
     </ClInclude>
   </ItemGroup>

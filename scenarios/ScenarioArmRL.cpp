@@ -94,7 +94,7 @@ bool cScenarioArmRL::BuildCoachController(std::shared_ptr<cCharController>& out_
 
 void cScenarioArmRL::BuildCoach()
 {
-	CreateCharacter(mCoach);
+	CreateCharacter(eCharNone, mCoach);
 
 	cSimCharacter::tParams char_params;
 	char_params.mPos = GetDefaultCharPos();

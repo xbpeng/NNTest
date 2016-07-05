@@ -50,7 +50,7 @@ void cScenarioArmTrainDMACE::InitTrainer()
 	trainer->SetNumActionFrags(ctrl->GetNumActionFrags());
 	trainer->SetActionFragSize(ctrl->GetActionFragSize());
 	trainer->SetActorFiles(mActorSolverFile, mActorNetFile);
-	mTrainerParams.mPGMode = static_cast<int>(cCaclaTrainer::eModeTD);
+	mTrainerParams.mPGMode = cCaclaTrainer::ePGModeTD;
 	mTrainerParams.mPGAdvScale = 20;
 	trainer->SetGateScale(1);
 

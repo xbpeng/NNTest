@@ -1,5 +1,6 @@
 #include "ScenarioArmImitate.h"
 #include "stuff/ArmNNTrackController.h"
+#include "sim/CtTrackController.h"
 
 #define ENABLE_RAND_KIN_RESET
 
@@ -112,10 +113,7 @@ void cScenarioArmImitate::UpdateCharacter(double time_step)
 
 	SetCtrlTargetPos(hacky_target);
 
-	if (mCtrlType == eCtrlNNTrack)
-	{
-		UpdateArmTrackController();
-	}
+	UpdateArmTrackController();
 	cScenarioArmTrain::UpdateCharacter(time_step);
 }
 
@@ -229,15 +227,18 @@ void cScenarioArmImitate::GetRandPoseMinMaxTime(double& out_min, double& out_max
 
 void cScenarioArmImitate::UpdateArmTrackController()
 {
-	assert(mCtrlType == eCtrlNNTrack);
-	auto track_ctrl = std::static_pointer_cast<cArmNNTrackController>(mChar->GetController());
-	Eigen::VectorXd pose;
-	Eigen::VectorXd vel;
+	auto track_ctrl = std::dynamic_pointer_cast<cArmNNTrackController>(mChar->GetController());
 
-	double kin_time = mKinChar->GetTime();
-	double ctrl_period = track_ctrl->GetUpdatePeriod();
-	double next_time = kin_time;// +ctrl_period;
-	mKinChar->CalcPose(next_time, pose);
-	mKinChar->CalcVel(next_time, vel);
-	track_ctrl->SetTargetPoseVel(pose, vel);
+	if (track_ctrl != nullptr)
+	{
+		Eigen::VectorXd pose;
+		Eigen::VectorXd vel;
+
+		double kin_time = mKinChar->GetTime();
+		double ctrl_period = track_ctrl->GetUpdatePeriod();
+		double next_time = kin_time;// +ctrl_period;
+		mKinChar->CalcPose(next_time, pose);
+		mKinChar->CalcVel(next_time, vel);
+		track_ctrl->SetTargetPoseVel(pose, vel);
+	}
 }
