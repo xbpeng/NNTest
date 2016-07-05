@@ -6,6 +6,7 @@
 #include "stuff/ArmControllerMACE.h"
 #include "stuff/ArmPDControllerMACE.h"
 #include "stuff/ArmNNTrackController.h"
+#include "stuff/ArmNNTrackMuscularController.h"
 #include "render/DrawUtil.h"
 #include "render/DrawSimCharacter.h"
 #include "util/FileUtil.h"
@@ -206,7 +207,7 @@ bool cScenarioArm::BuildController(const std::shared_ptr<cSimCharacter>& charact
 	else if (ctrl_type == eCtrlNN || ctrl_type == eCtrlPDNN || ctrl_type == eCtrlVelNN
 		|| ctrl_type == eCtrlNNPixel || ctrl_type == eCtrlPDNNPixel || ctrl_type == eCtrlVelNNPixel
 		|| ctrl_type == eCtrlNNPixelNoPose || ctrl_type == eCtrlMACE || ctrl_type == eCtrlPDMACE
-		|| ctrl_type == eCtrlNNTrack)
+		|| ctrl_type == eCtrlNNTrack || ctrl_type == eCtrlNNMuscularTrack)
 	{
 		succ = BuildNNController(ctrl_type, out_ctrl);
 	}
@@ -304,6 +305,12 @@ bool cScenarioArm::BuildNNController(eCtrlType ctrl_type, std::shared_ptr<cCharC
 	{
 		std::shared_ptr<cArmNNTrackController> curr_ctrl = std::shared_ptr<cArmNNTrackController>(new cArmNNTrackController());
 		curr_ctrl->Init(mChar.get());
+		out_ctrl = curr_ctrl;
+	}
+	else if (ctrl_type == eCtrlNNMuscularTrack)
+	{
+		std::shared_ptr<cArmNNTrackMuscularController> curr_ctrl = std::shared_ptr<cArmNNTrackMuscularController>(new cArmNNTrackMuscularController());
+		curr_ctrl->Init(mChar.get(), mCharacterFile);
 		out_ctrl = curr_ctrl;
 	}
 	else
@@ -666,6 +673,10 @@ void cScenarioArm::ParseCtrlType(const cArgParser& parser, const std::string& ke
 	else if (str == "nn_track")
 	{
 		out_ctrl = eCtrlNNTrack;
+	}
+	else if (str == "nn_track_muscular")
+	{
+		out_ctrl = eCtrlNNMuscularTrack;
 	}
 	else
 	{

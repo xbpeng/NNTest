@@ -66,6 +66,7 @@ protected:
 		eCtrlMACE,
 		eCtrlPDMACE,
 		eCtrlNNTrack,
+		eCtrlNNMuscularTrack,
 		eCtrlMax
 	};
 

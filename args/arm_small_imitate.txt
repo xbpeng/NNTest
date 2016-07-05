@@ -10,7 +10,7 @@
 -critic_solver_file= data/arm_rl/nets/arm_small_reduced_track_critic_solver.prototxt
 -critic_net_file= data/arm_rl/nets/arm_small_reduced_track_critic_deploy.prototxt
 
--arm_ctrl_type= nn_track_muscular
+-arm_ctrl_type= nn_track
 
 -exp_rate= 0.2
 -exp_temp= 0.25

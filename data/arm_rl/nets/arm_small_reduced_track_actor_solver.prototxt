@@ -1,7 +1,7 @@
-net: "data/arm_rl/nets/arm_reduced_track_critic_train.prototxt"
+net: "data/arm_rl/nets/arm_small_reduced_track_actor_train.prototxt"
 
 # The base learning rate, momentum and the weight decay of the network.
-base_lr: 0.01
+base_lr: 0.001
 momentum: 0.9
 weight_decay: 0.0005
 

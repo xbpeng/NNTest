@@ -97,22 +97,6 @@ void cScenarioArmImitate::InitTrainer()
 void cScenarioArmImitate::UpdateCharacter(double time_step)
 {
 	mKinChar->Update(time_step);
-
-	// hack
-	tVector hacky_target = tVector::Zero();
-
-	//double dur = mKinChar->GetMotionDuration();
-	//double phase = mKinChar->GetTime() / dur;
-	//phase -= static_cast<int>(phase);
-	//hacky_target[0] = phase * 2 - 1;
-
-	const Eigen::VectorXd& kin_pose = mKinChar->GetPose();
-	hacky_target[0] = kin_pose[3];
-	hacky_target[1] = kin_pose[4];
-	hacky_target[2] = kin_pose[5];
-
-	SetCtrlTargetPos(hacky_target);
-
 	UpdateArmTrackController();
 	cScenarioArmTrain::UpdateCharacter(time_step);
 }
@@ -228,7 +212,6 @@ void cScenarioArmImitate::GetRandPoseMinMaxTime(double& out_min, double& out_max
 void cScenarioArmImitate::UpdateArmTrackController()
 {
 	auto track_ctrl = std::dynamic_pointer_cast<cArmNNTrackController>(mChar->GetController());
-
 	if (track_ctrl != nullptr)
 	{
 		Eigen::VectorXd pose;

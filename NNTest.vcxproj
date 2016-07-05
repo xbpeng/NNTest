@@ -368,6 +368,7 @@
     <ClCompile Include="..\TerrainRL\sim\MonopedHopperControllerCacla.cpp" />
     <ClCompile Include="..\TerrainRL\sim\MonopedHopperControllerMACE.cpp" />
     <ClCompile Include="..\TerrainRL\sim\MonopedHopperControllerQ.cpp" />
+    <ClCompile Include="..\TerrainRL\sim\MusculotendonUnit.cpp" />
     <ClCompile Include="..\TerrainRL\sim\NNController.cpp" />
     <ClCompile Include="..\TerrainRL\sim\PDController.cpp" />
     <ClCompile Include="..\TerrainRL\sim\Perturb.cpp" />
@@ -443,6 +444,7 @@
     <ClCompile Include="stuff\ArmNNController.cpp" />
     <ClCompile Include="stuff\ArmNNPixelController.cpp" />
     <ClCompile Include="stuff\ArmNNPixelNoPoseController.cpp" />
+    <ClCompile Include="stuff\ArmNNTrackMuscularController.cpp" />
     <ClCompile Include="stuff\ArmPDControllerMACE.cpp" />
     <ClCompile Include="stuff\ArmPDNNController.cpp" />
     <ClCompile Include="stuff\ArmPDNNPixelController.cpp" />
@@ -571,6 +573,7 @@
     <ClInclude Include="..\TerrainRL\sim\MonopedHopperControllerCacla.h" />
     <ClInclude Include="..\TerrainRL\sim\MonopedHopperControllerMACE.h" />
     <ClInclude Include="..\TerrainRL\sim\MonopedHopperControllerQ.h" />
+    <ClInclude Include="..\TerrainRL\sim\MusculotendonUnit.h" />
     <ClInclude Include="..\TerrainRL\sim\NNController.h" />
     <ClInclude Include="..\TerrainRL\sim\PDController.h" />
     <ClInclude Include="..\TerrainRL\sim\Perturb.h" />
@@ -646,6 +649,7 @@
     <ClInclude Include="stuff\ArmNNController.h" />
     <ClInclude Include="stuff\ArmNNPixelController.h" />
     <ClInclude Include="stuff\ArmNNPixelNoPoseController.h" />
+    <ClInclude Include="stuff\ArmNNTrackMuscularController.h" />
     <ClInclude Include="stuff\ArmPDControllerMACE.h" />
     <ClInclude Include="stuff\ArmPDNNController.h" />
     <ClInclude Include="stuff\ArmPDNNPixelController.h" />

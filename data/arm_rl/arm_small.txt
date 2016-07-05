@@ -117,5 +117,27 @@
 				"TargetTheta": 0,
 				"UseWorldCoord": 0
 			}
+		],
+
+		"MusculotendonUnits":
+		[
+			{
+				"AttachPts":
+				[
+					{
+						"JointID": 0,
+						"LocalPos": [0, 0, 0, 0]
+					}
+				]
+			},
+			{
+				"AttachPts":
+				[
+					{
+						"JointID": 1,
+						"LocalPos": [0, 0, 0, 0]
+					}
+				]
+			}
 		]
 }
