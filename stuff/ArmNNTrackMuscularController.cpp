@@ -23,6 +23,22 @@ void cArmNNTrackMuscularController::Clear()
 	mMTUs.clear();
 }
 
+void cArmNNTrackMuscularController::Update(double time_step)
+{
+	cArmNNTrackController::Update(time_step);
+	UpdateMTUs(time_step);
+}
+
+int cArmNNTrackMuscularController::GetNumMTUs() const
+{
+	return static_cast<int>(mMTUs.size());
+}
+
+const cMusculotendonUnit& cArmNNTrackMuscularController::GetMTU(int id) const
+{
+	return mMTUs[id];
+}
+
 void cArmNNTrackMuscularController::BuildMTUs(const std::string& char_file)
 {
 	std::ifstream f_stream(char_file);
@@ -44,8 +60,36 @@ void cArmNNTrackMuscularController::BuildMTUs(const std::string& char_file)
 			for (int i = 0; i < num_mtus; ++i)
 			{
 				const Json::Value& mtu_json = mtus_arr.get(i, 0);
+				cMusculotendonUnit::tParams params;
+				bool param_succ = cMusculotendonUnit::ParseParams(mtu_json, params);
 
+				if (param_succ)
+				{
+					cMusculotendonUnit& curr_mtu = mMTUs[i];
+					curr_mtu.Init(mChar, params);
+				}
+				else
+				{
+					succ = false;
+					break;
+				}
 			}
 		}
+
+		if (!succ)
+		{
+			mMTUs.clear();
+			printf("Failed to part MTUParams from %s\n", char_file.c_str());
+			assert(false); // failed to parse MTU params
+		}
+	}
+}
+
+void cArmNNTrackMuscularController::UpdateMTUs(double time_step)
+{
+	int num_mtus = GetNumMTUs();
+	for (int i = 0; i < num_mtus; ++i)
+	{
+		mMTUs[i].Update(time_step);
 	}
 }

@@ -12,6 +12,7 @@
 #include "stuff/ArmPDNNPixelController.h"
 #include "stuff/ArmVelNNPixelController.h"
 #include "stuff/ArmNNPixelNoPoseController.h"
+#include "stuff/ArmNNTrackMuscularController.h"
 
 #include "render/TextureDesc.h"
 #include "render/camera.h"
@@ -43,7 +44,8 @@ public:
 	virtual void DrawCharacter() const;
 	virtual void DrawTarget() const;
 	virtual void DrawArm(const std::shared_ptr<cSimCharacter>& arm, const tVector& fill_tint, const tVector& line_col) const;
-	
+	virtual void DrawMTU(const std::shared_ptr<cArmNNTrackMuscularController>& ctrl) const;
+
 	virtual const std::unique_ptr<cTextureDesc>& GetViewRT() const;
 	virtual int GetEndEffectorID() const;
 

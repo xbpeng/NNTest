@@ -168,6 +168,37 @@ void cScenarioArm::DrawArm(const std::shared_ptr<cSimCharacter>& arm, const tVec
 	cDrawUtil::SetColor(line_col);
 	cDrawUtil::DrawBox(tVector::Zero(), tVector(0.1, 0.1, 0.12, 0), cDrawUtil::eDrawWire);
 	glPopMatrix();
+
+	auto mtu_ctrl = std::dynamic_pointer_cast<cArmNNTrackMuscularController>(mChar->GetController());
+	if (mtu_ctrl != nullptr)
+	{
+		glPushMatrix();
+		cDrawUtil::Translate(tVector(0, 0, 0.5, 0));
+		DrawMTU(mtu_ctrl);
+		glPopMatrix();
+	}
+}
+
+void cScenarioArm::DrawMTU(const std::shared_ptr<cArmNNTrackMuscularController>& ctrl) const
+{
+	int num_mtus = ctrl->GetNumMTUs();
+	for (int i = 0; i < num_mtus; ++i)
+	{
+		const cMusculotendonUnit& mtu = ctrl->GetMTU(i);
+		int num_pts = mtu.GetNumAttachPts();
+		if (num_pts > 1)
+		{
+			tVector prev_pos = mtu.CalcAttachPtWorldPos(0);
+			cDrawUtil::SetLineWidth(5);
+			cDrawUtil::SetColor(tVector(1, 0, 0, 0.5));
+			for (int p = 1; p < num_pts; ++p)
+			{
+				tVector pos = mtu.CalcAttachPtWorldPos(p);
+				cDrawUtil::DrawLine(prev_pos, pos);
+				prev_pos = pos;
+			}
+		}
+	}
 }
 
 const std::unique_ptr<cTextureDesc>& cScenarioArm::GetViewRT() const
