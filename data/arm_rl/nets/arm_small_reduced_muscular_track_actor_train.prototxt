@@ -11,7 +11,7 @@ layer {
     batch_size: 32
 	channels: 1
 	height: 1
-	width: 16
+	width: 20
 	label_size: 2
   }
 }
@@ -79,10 +79,10 @@ layer {
 }
 
 layer {
-  name: "ip2"
+  name: "output"
   type: "InnerProduct"
   bottom: "relu1"
-  top: "ip2"
+  top: "output"
   param {
     lr_mult: 1
 	decay_mult: 1
@@ -100,13 +100,6 @@ layer {
       type: "constant"
     }
   }
-}
-
-layer {
-  name: "output"
-  type: "BNLL"
-  bottom: "ip2"
-  top: "output"
 }
 
 layer {

@@ -11,8 +11,8 @@ layer {
     batch_size: 32
 	channels: 1
 	height: 1
-	width: 16
-	label_size: 2
+	width: 20
+	label_size: 1
   }
 }
 
@@ -92,7 +92,7 @@ layer {
 	decay_mult: 0
   }
   inner_product_param {
-    num_output: 2
+    num_output: 1
     weight_filler {
       type: "xavier"
     }

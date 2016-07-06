@@ -309,6 +309,7 @@
     <ClCompile Include="..\TerrainRL\render\Camera.cpp" />
     <ClCompile Include="..\TerrainRL\render\DrawCharacter.cpp" />
     <ClCompile Include="..\TerrainRL\render\DrawKinTree.cpp" />
+    <ClCompile Include="..\TerrainRL\render\DrawMusculotendonUnit.cpp" />
     <ClCompile Include="..\TerrainRL\render\DrawObj.cpp" />
     <ClCompile Include="..\TerrainRL\render\DrawPerturb.cpp" />
     <ClCompile Include="..\TerrainRL\render\DrawSimCharacter.cpp" />
@@ -514,6 +515,7 @@
     <ClInclude Include="..\TerrainRL\render\Camera.h" />
     <ClInclude Include="..\TerrainRL\render\DrawCharacter.h" />
     <ClInclude Include="..\TerrainRL\render\DrawKinTree.h" />
+    <ClInclude Include="..\TerrainRL\render\DrawMusculotendonUnit.h" />
     <ClInclude Include="..\TerrainRL\render\DrawObj.h" />
     <ClInclude Include="..\TerrainRL\render\DrawPerturb.h" />
     <ClInclude Include="..\TerrainRL\render\DrawSimCharacter.h" />

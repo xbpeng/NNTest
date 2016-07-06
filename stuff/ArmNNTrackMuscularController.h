@@ -16,7 +16,9 @@ public:
 	virtual void Update(double time_step);
 	virtual void Reset();
 
+	virtual int GetPoliStateSize() const;
 	virtual int GetPoliActionSize() const;
+	virtual void BuildNNInputOffsetScale(Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const;
 
 	virtual int GetNumMTUs() const;
 	virtual const cMusculotendonUnit& GetMTU(int id) const;
@@ -29,5 +31,7 @@ protected:
 	virtual void UpdateMTUs(double time_step);
 	virtual void ResetMTUs();
 
+	virtual void UpdatePoliState();
 	virtual void ApplyPoliAction(double time_step, const tAction& action);
+	virtual int GetMTUStateSize() const;
 };

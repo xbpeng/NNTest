@@ -950,6 +950,9 @@
     <ClCompile Include="..\TerrainRL\sim\MusculotendonUnit.cpp">
       <Filter>Source Files\util</Filter>
     </ClCompile>
+    <ClCompile Include="..\TerrainRL\render\DrawMusculotendonUnit.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\TerrainRL\util\Rand.h">
@@ -1562,6 +1565,9 @@
       <Filter>Source Files\stuff</Filter>
     </ClInclude>
     <ClInclude Include="..\TerrainRL\sim\MusculotendonUnit.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\render\DrawMusculotendonUnit.h">
       <Filter>Source Files\util</Filter>
     </ClInclude>
   </ItemGroup>

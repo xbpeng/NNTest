@@ -1,6 +1,8 @@
 #include "ArmNNTrackMuscularController.h"
 #include "sim/SimCharacter.h"
 
+#define ENABLE_MTU_STATE_FEATURES
+
 const std::string gMTUsKey = "MusculotendonUnits";
 
 cArmNNTrackMuscularController::cArmNNTrackMuscularController()
@@ -35,10 +37,47 @@ void cArmNNTrackMuscularController::Reset()
 	ResetMTUs();
 }
 
+int cArmNNTrackMuscularController::GetPoliStateSize() const
+{
+	int state_size = cArmNNTrackController::GetPoliStateSize();
+
+#if defined(ENABLE_MTU_STATE_FEATURES)
+	state_size += GetMTUStateSize();
+#endif // ENABLE_MTU_STATE_FEATURES
+
+	return state_size;
+}
+
 int cArmNNTrackMuscularController::GetPoliActionSize() const
 {
 	return GetNumMTUs();
 }
+
+void cArmNNTrackMuscularController::BuildNNInputOffsetScale(Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const
+{
+	cArmNNTrackController::BuildNNInputOffsetScale(out_offset, out_scale);
+
+#if defined(ENABLE_MTU_STATE_FEATURES)
+	int mtu_state_offset = cArmNNTrackController::GetPoliStateSize();
+	int mtu_state_size = GetMTUStateSize();
+	int num_mtus = GetNumMTUs();
+	out_offset.segment(mtu_state_offset, num_mtus) = -0.5 * Eigen::VectorXd::Ones(mtu_state_size);
+	out_scale.segment(mtu_state_offset, num_mtus) = 2 * Eigen::VectorXd::Ones(mtu_state_size);
+
+	const double activation_offset = -0.5;
+	const double activation_scale = 2;
+	for (int i = 0; i < num_mtus; ++i)
+	{
+		out_offset(mtu_state_offset + i) = activation_offset;
+		out_scale(mtu_state_offset + i) = activation_scale;
+
+		double len = mMTUs[i].GetOptCELength();
+		out_offset(mtu_state_offset + num_mtus + i) = -0.5 * len;
+		out_scale(mtu_state_offset + i) = 2 / len;
+	}
+#endif // ENABLE_MTU_STATE_FEATURES
+}
+
 
 int cArmNNTrackMuscularController::GetNumMTUs() const
 {
@@ -114,6 +153,24 @@ void cArmNNTrackMuscularController::ResetMTUs()
 	}
 }
 
+void cArmNNTrackMuscularController::UpdatePoliState()
+{
+	cArmNNTrackController::UpdatePoliState();
+
+#if defined(ENABLE_MTU_STATE_FEATURES)
+	int mtu_state_offset = cArmNNTrackController::GetPoliStateSize();
+	int mtu_state_size = GetMTUStateSize();
+	auto mtu_state = mPoliState.segment(mtu_state_offset, mtu_state_size);
+	int num_mtus = GetNumMTUs();
+	for (int i = 0; i < num_mtus; ++i)
+	{
+		const auto& mtu = mMTUs[i];
+		mtu_state(i) = mtu.GetActivation();
+		mtu_state(num_mtus + i) = mtu.GetCELength();
+	}
+#endif // ENABLE_MTU_STATE_FEATURES
+}
+
 void cArmNNTrackMuscularController::ApplyPoliAction(double time_step, const tAction& action)
 {
 	static double time = 0;
@@ -124,17 +181,12 @@ void cArmNNTrackMuscularController::ApplyPoliAction(double time_step, const tAct
 	for (int i = 0; i < num_mtus; ++i)
 	{
 		double u = action.mParams[i];
-		// hack
-		if (std::fmod(time, 1) < 0.5)
-		{
-			u = (i == 0) ? 1 : 0;
-		}
-		else
-		{
-			u = (i == 0) ? 0 : 1;
-		}
-
 		cMusculotendonUnit& mtu = mMTUs[i];
 		mtu.SetExcitation(u);
 	}
+}
+
+int cArmNNTrackMuscularController::GetMTUStateSize() const
+{
+	return 2 * GetNumMTUs();
 }

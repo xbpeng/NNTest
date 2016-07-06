@@ -9,6 +9,7 @@
 #include "stuff/ArmNNTrackMuscularController.h"
 #include "render/DrawUtil.h"
 #include "render/DrawSimCharacter.h"
+#include "render/DrawMusculotendonUnit.h"
 #include "util/FileUtil.h"
 
 const double gCamSize = 4;
@@ -181,53 +182,12 @@ void cScenarioArm::DrawArm(const std::shared_ptr<cSimCharacter>& arm, const tVec
 
 void cScenarioArm::DrawMTU(const std::shared_ptr<cArmNNTrackMuscularController>& ctrl) const
 {
-	const tVector tendon_col = tVector(0.5, 0.5, 0.5, 0.5);
-	const tVector ce_col0 = tVector(1, 0, 0, 0.5);
-	const tVector ce_col1 = tVector(0.5, 0, 0, 0.5);
-
+	const double width = 5;
 	int num_mtus = ctrl->GetNumMTUs();
 	for (int i = 0; i < num_mtus; ++i)
 	{
 		const cMusculotendonUnit& mtu = ctrl->GetMTU(i);
-		int num_pts = mtu.GetNumAttachPts();
-		if (num_pts > 1)
-		{
-			double u = mtu.GetExcitation();
-			tVector ce_col = (u > 0) ? ce_col0 : ce_col1;
-
-			tVector prev_pos = mtu.CalcAttachPtWorldPos(0);
-			cDrawUtil::SetLineWidth(5);
-
-			double total_len = mtu.CalcLength();
-			double ce_len = mtu.GetCELength();
-			double tendon_len = 0.5 * (total_len - ce_len);
-
-			double curr_len = 0;
-			for (int p = 1; p < num_pts; ++p)
-			{
-				tVector pos = mtu.CalcAttachPtWorldPos(p);
-				double len = (pos - prev_pos).norm();
-
-				double tendon_lerp0 = (tendon_len - curr_len) / (len);
-				tVector tendon_pos_beg0 = prev_pos;
-				tVector tendon_pos_end0 = tendon_pos_beg0 + tendon_lerp0 * (pos - prev_pos);
-				cDrawUtil::SetColor(tendon_col);
-				cDrawUtil::DrawLine(tendon_pos_beg0, tendon_pos_end0);
-				
-				double ce_lerp = (tendon_len + ce_len - curr_len) / (len);
-				tVector ce_pos_beg = tendon_pos_end0;
-				tVector ce_pos_end = prev_pos + ce_lerp * (pos - prev_pos);
-				cDrawUtil::SetColor(ce_col);
-				cDrawUtil::DrawLine(ce_pos_beg, ce_pos_end);
-
-				tVector tendon_pos_beg1 = ce_pos_end;
-				tVector tendon_pos_end1 = pos;
-				cDrawUtil::SetColor(tendon_col);
-				cDrawUtil::DrawLine(tendon_pos_beg1, tendon_pos_end1);
-
-				prev_pos = pos;
-			}
-		}
+		cDrawMusculotendonUnit::Draw(mtu, width);
 	}
 }
 
