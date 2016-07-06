@@ -116,13 +116,24 @@ void cArmNNTrackMuscularController::ResetMTUs()
 
 void cArmNNTrackMuscularController::ApplyPoliAction(double time_step, const tAction& action)
 {
+	static double time = 0;
+	time += time_step;
+
 	assert(action.mParams.size() == GetPoliActionSize());
 	int num_mtus = GetNumMTUs();
 	for (int i = 0; i < num_mtus; ++i)
 	{
 		double u = action.mParams[i];
 		// hack
-		u = 0.01;
+		if (std::fmod(time, 1) < 0.5)
+		{
+			u = (i == 0) ? 1 : 0;
+		}
+		else
+		{
+			u = (i == 0) ? 0 : 1;
+		}
+
 		cMusculotendonUnit& mtu = mMTUs[i];
 		mtu.SetExcitation(u);
 	}

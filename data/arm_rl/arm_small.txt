@@ -124,7 +124,7 @@
 			{
 				"OptCELength": 0.1,
 				"SlackLength": 0.4,
-				"ForceMax": 800,
+				"ForceMax": -800,
 				"AttachPts":
 				[
 					{"JointID": 0, "LocalPos": [0, 0.1, 0, 0]},
@@ -134,7 +134,7 @@
 			{
 				"OptCELength": 0.1,
 				"SlackLength": 0.4,
-				"ForceMax": 800,
+				"ForceMax": -800,
 				"AttachPts":
 				[
 					{"JointID": 0, "LocalPos": [0, -0.1, 0, 0]},
