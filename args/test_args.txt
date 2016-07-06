@@ -12,6 +12,8 @@
 
 -arm_ctrl_type= nn_track_muscular
 
+-num_update_steps= 20
+
 -exp_rate= 0.2
 -exp_temp= 0.25
 -init_exp_rate= 0.9

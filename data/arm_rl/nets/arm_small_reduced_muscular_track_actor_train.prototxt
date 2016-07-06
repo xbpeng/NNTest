@@ -79,10 +79,10 @@ layer {
 }
 
 layer {
-  name: "output"
+  name: "ip2"
   type: "InnerProduct"
   bottom: "relu1"
-  top: "output"
+  top: "ip2"
   param {
     lr_mult: 1
 	decay_mult: 1
@@ -100,6 +100,13 @@ layer {
       type: "constant"
     }
   }
+}
+
+layer {
+  name: "output"
+  type: "BNLL"
+  bottom: "ip2"
+  top: "output"
 }
 
 layer {

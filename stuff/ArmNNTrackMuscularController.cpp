@@ -29,6 +29,12 @@ void cArmNNTrackMuscularController::Update(double time_step)
 	UpdateMTUs(time_step);
 }
 
+void cArmNNTrackMuscularController::Reset()
+{
+	cArmNNTrackController::Reset();
+	ResetMTUs();
+}
+
 int cArmNNTrackMuscularController::GetPoliActionSize() const
 {
 	return GetNumMTUs();
@@ -96,5 +102,28 @@ void cArmNNTrackMuscularController::UpdateMTUs(double time_step)
 	for (int i = 0; i < num_mtus; ++i)
 	{
 		mMTUs[i].Update(time_step);
+	}
+}
+
+void cArmNNTrackMuscularController::ResetMTUs()
+{
+	int num_mtus = GetNumMTUs();
+	for (int i = 0; i < num_mtus; ++i)
+	{
+		mMTUs[i].Reset();
+	}
+}
+
+void cArmNNTrackMuscularController::ApplyPoliAction(double time_step, const tAction& action)
+{
+	assert(action.mParams.size() == GetPoliActionSize());
+	int num_mtus = GetNumMTUs();
+	for (int i = 0; i < num_mtus; ++i)
+	{
+		double u = action.mParams[i];
+		// hack
+		u = 0.01;
+		cMusculotendonUnit& mtu = mMTUs[i];
+		mtu.SetExcitation(u);
 	}
 }

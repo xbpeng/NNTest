@@ -14,6 +14,7 @@ public:
 	virtual void Init(cSimCharacter* character, const std::string& char_file);
 	virtual void Clear();
 	virtual void Update(double time_step);
+	virtual void Reset();
 
 	virtual int GetPoliActionSize() const;
 
@@ -23,6 +24,10 @@ public:
 protected:
 
 	std::vector<cMusculotendonUnit> mMTUs;
+
 	virtual void BuildMTUs(const std::string& char_file);
 	virtual void UpdateMTUs(double time_step);
+	virtual void ResetMTUs();
+
+	virtual void ApplyPoliAction(double time_step, const tAction& action);
 };

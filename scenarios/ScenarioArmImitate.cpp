@@ -134,6 +134,7 @@ void cScenarioArmImitate::ApplyRandPose()
 
 void cScenarioArmImitate::SyncCharacter()
 {
+	return; // hack
 	const Eigen::VectorXd& kin_pose = mKinChar->GetPose();
 	const Eigen::VectorXd& kin_vel = mKinChar->GetVel();
 	mChar->SetPose(kin_pose);
