@@ -4,11 +4,11 @@
 -character_file= data/arm_rl/arm_small.txt
 -motion_file= data/arm_rl/motions/arm_small_wave.txt
 
--solver_file= data/arm_rl/nets/arm_small_reduced_track_actor_solver.prototxt
--net_file= data/arm_rl/nets/arm_small_reduced_track_actor_deploy.prototxt
+-solver_file= data/arm_rl/nets/arm_small_reduced_muscular_track_actor_solver.prototxt
+-net_file= data/arm_rl/nets/arm_small_reduced_muscular_track_actor_deploy.prototxt
 
--critic_solver_file= data/arm_rl/nets/arm_small_reduced_track_critic_solver.prototxt
--critic_net_file= data/arm_rl/nets/arm_small_reduced_track_critic_deploy.prototxt
+-critic_solver_file= data/arm_rl/nets/arm_small_reduced_muscular_track_critic_solver.prototxt
+-critic_net_file= data/arm_rl/nets/arm_small_reduced_muscular_track_critic_deploy.prototxt
 
 -arm_ctrl_type= nn_track_muscular
 

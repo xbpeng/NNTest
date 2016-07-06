@@ -15,6 +15,8 @@ public:
 	virtual void Clear();
 	virtual void Update(double time_step);
 
+	virtual int GetPoliActionSize() const;
+
 	virtual int GetNumMTUs() const;
 	virtual const cMusculotendonUnit& GetMTU(int id) const;
 

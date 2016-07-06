@@ -52,6 +52,13 @@ void cArmNNTrackController::BuildNNInputOffsetScale(Eigen::VectorXd& out_offset,
 	out_scale.segment(pose_size * 2, pose_size * 2) = out_scale.segment(0, pose_size * 2);
 }
 
+void cArmNNTrackController::BuildNNOutputOffsetScale(Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const
+{
+	int output_size = GetPoliActionSize();
+	out_offset = Eigen::VectorXd::Zero(output_size);
+	out_scale = Eigen::VectorXd::Ones(output_size);
+}
+
 void cArmNNTrackController::SetTargetPoseVel(const Eigen::VectorXd& tar_pose, const Eigen::VectorXd& tar_vel)
 {
 	assert(tar_pose.size() == mChar->GetNumDof());
@@ -97,4 +104,10 @@ void cArmNNTrackController::UpdatePoliState()
 		mPoliState.segment(offset, gPosDim) = joint_pos.segment(0, gPosDim);
 		mPoliState.segment(offset + pose_size, gPosDim) = joint_vel.segment(0, gPosDim);
 	}
+}
+
+void cArmNNTrackController::ApplyPoliAction(double time_step, const tAction& action)
+{
+	int xx = 0;
+	++xx;
 }

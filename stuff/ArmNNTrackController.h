@@ -15,6 +15,7 @@ public:
 
 	virtual int GetPoliStateSize() const;
 	virtual void BuildNNInputOffsetScale(Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const;
+	virtual void BuildNNOutputOffsetScale(Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const;
 
 	virtual void SetTargetPoseVel(const Eigen::VectorXd& tar_pose, const Eigen::VectorXd& tar_vel);
 
@@ -24,4 +25,5 @@ protected:
 
 	virtual void InitTargetPoseVel();
 	virtual void UpdatePoliState();
+	virtual void ApplyPoliAction(double time_step, const tAction& action);
 };

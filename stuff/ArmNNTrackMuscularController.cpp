@@ -29,6 +29,11 @@ void cArmNNTrackMuscularController::Update(double time_step)
 	UpdateMTUs(time_step);
 }
 
+int cArmNNTrackMuscularController::GetPoliActionSize() const
+{
+	return GetNumMTUs();
+}
+
 int cArmNNTrackMuscularController::GetNumMTUs() const
 {
 	return static_cast<int>(mMTUs.size());
