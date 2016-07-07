@@ -12,6 +12,8 @@ public:
 	virtual ~cSimArm();
 
 	virtual bool IsEndEffector(int idx) const;
+	virtual void SetPose(const Eigen::VectorXd& pose);
+	virtual void SetVel(const Eigen::VectorXd& vel);
 
 protected:
 	virtual short GetPartColGroup(int part_id) const;

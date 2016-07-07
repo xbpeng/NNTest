@@ -31,7 +31,7 @@ void cSimArm::SetPose(const Eigen::VectorXd& pose)
 	cSimCharacter::SetPose(pose);
 	if (mController != nullptr)
 	{
-		//mController->Reset(); // hack
+		mController->Reset(); // hack
 	}
 }
 
@@ -40,6 +40,6 @@ void cSimArm::SetVel(const Eigen::VectorXd& vel)
 	cSimCharacter::SetVel(vel);
 	if (mController != nullptr)
 	{
-		//mController->Reset(); // hack
+		mController->Reset(); // hack
 	}
 }

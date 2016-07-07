@@ -17,6 +17,7 @@ void cArmNNTrackMuscularController::Init(cSimCharacter* character, const std::st
 {
 	cArmNNTrackController::Init(character);
 	BuildMTUs(char_file);
+	InitPoliState();
 }
 
 void cArmNNTrackMuscularController::Clear()
@@ -70,12 +71,20 @@ void cArmNNTrackMuscularController::BuildNNInputOffsetScale(Eigen::VectorXd& out
 		out_scale(mtu_state_offset + i) = activation_scale;
 
 		double len = mMTUs[i].GetOptCELength();
-		out_offset(mtu_state_offset + num_mtus + i) = -0.5 * len;
-		out_scale(mtu_state_offset + num_mtus + i) = 2 / len;
+		out_offset(mtu_state_offset + num_mtus + i) = -len;
+		out_scale(mtu_state_offset + num_mtus + i) = 1 / len;
 	}
 #endif // ENABLE_MTU_STATE_FEATURES
 }
 
+void cArmNNTrackMuscularController::BuildNNOutputOffsetScale(Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const
+{
+	const double activation_scale = 1;
+	const double activation_offset = 0;
+	int output_size = GetPoliActionSize();
+	out_offset = activation_offset * Eigen::VectorXd::Ones(output_size);
+	out_scale = activation_scale * Eigen::VectorXd::Ones(output_size);
+}
 
 int cArmNNTrackMuscularController::GetNumMTUs() const
 {

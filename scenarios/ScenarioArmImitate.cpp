@@ -7,7 +7,7 @@
 cScenarioArmImitate::cScenarioArmImitate()
 {
 	mEnableAutoTarget = false;
-	mTargetPos.setZero();
+	mTargetPos = tVector(1000, 1000, 0, 0);
 	mMotionFile = "";
 }
 
