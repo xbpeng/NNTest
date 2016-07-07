@@ -1,7 +1,7 @@
 #include "ArmNNTrackMuscularController.h"
 #include "sim/SimCharacter.h"
 
-#define ENABLE_MTU_STATE_FEATURES
+//#define ENABLE_MTU_STATE_FEATURES
 
 const std::string gMTUsKey = "MusculotendonUnits";
 
@@ -61,9 +61,7 @@ void cArmNNTrackMuscularController::BuildNNInputOffsetScale(Eigen::VectorXd& out
 	int mtu_state_offset = cArmNNTrackController::GetPoliStateSize();
 	int mtu_state_size = GetMTUStateSize();
 	int num_mtus = GetNumMTUs();
-	out_offset.segment(mtu_state_offset, num_mtus) = -0.5 * Eigen::VectorXd::Ones(mtu_state_size);
-	out_scale.segment(mtu_state_offset, num_mtus) = 2 * Eigen::VectorXd::Ones(mtu_state_size);
-
+	
 	const double activation_offset = -0.5;
 	const double activation_scale = 2;
 	for (int i = 0; i < num_mtus; ++i)
@@ -73,7 +71,7 @@ void cArmNNTrackMuscularController::BuildNNInputOffsetScale(Eigen::VectorXd& out
 
 		double len = mMTUs[i].GetOptCELength();
 		out_offset(mtu_state_offset + num_mtus + i) = -0.5 * len;
-		out_scale(mtu_state_offset + i) = 2 / len;
+		out_scale(mtu_state_offset + num_mtus + i) = 2 / len;
 	}
 #endif // ENABLE_MTU_STATE_FEATURES
 }
