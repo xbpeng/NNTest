@@ -105,9 +105,3 @@ void cArmNNTrackController::UpdatePoliState()
 		mPoliState.segment(offset + pose_size, gPosDim) = joint_vel.segment(0, gPosDim);
 	}
 }
-
-void cArmNNTrackController::ApplyPoliAction(double time_step, const tAction& action)
-{
-	int xx = 0;
-	++xx;
-}

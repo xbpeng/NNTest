@@ -25,5 +25,4 @@ protected:
 
 	virtual void InitTargetPoseVel();
 	virtual void UpdatePoliState();
-	virtual void ApplyPoliAction(double time_step, const tAction& action);
 };
