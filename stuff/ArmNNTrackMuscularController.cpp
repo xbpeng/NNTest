@@ -96,6 +96,18 @@ const cMusculotendonUnit& cArmNNTrackMuscularController::GetMTU(int id) const
 	return mMTUs[id];
 }
 
+void cArmNNTrackMuscularController::HandlePoseReset()
+{
+	cArmNNTrackController::HandlePoseReset();
+	ResetCEState();
+}
+
+void cArmNNTrackMuscularController::HandleVelReset()
+{
+	cArmNNTrackController::HandleVelReset();
+	ResetCEState();
+}
+
 void cArmNNTrackMuscularController::BuildMTUs(const std::string& char_file)
 {
 	std::ifstream f_stream(char_file);
@@ -157,6 +169,14 @@ void cArmNNTrackMuscularController::ResetMTUs()
 	for (int i = 0; i < num_mtus; ++i)
 	{
 		mMTUs[i].Reset();
+	}
+}
+
+void cArmNNTrackMuscularController::ResetCEState()
+{
+	for (int i = 0; i < GetNumMTUs(); ++i)
+	{
+		mMTUs[i].ResetCELength();
 	}
 }
 

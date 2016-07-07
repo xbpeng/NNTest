@@ -24,6 +24,9 @@ public:
 	virtual int GetNumMTUs() const;
 	virtual const cMusculotendonUnit& GetMTU(int id) const;
 
+	virtual void HandlePoseReset();
+	virtual void HandleVelReset();
+
 protected:
 
 	std::vector<cMusculotendonUnit> mMTUs;
@@ -31,6 +34,7 @@ protected:
 	virtual void BuildMTUs(const std::string& char_file);
 	virtual void UpdateMTUs(double time_step);
 	virtual void ResetMTUs();
+	virtual void ResetCEState();
 
 	virtual void UpdatePoliState();
 	virtual void ApplyPoliAction(double time_step, const tAction& action);

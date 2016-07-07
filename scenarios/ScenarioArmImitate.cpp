@@ -103,8 +103,9 @@ void cScenarioArmImitate::UpdateCharacter(double time_step)
 
 void cScenarioArmImitate::RandReset()
 {
-	mKinChar->Reset();
+	ResetKinChar();
 	cScenarioArmTrain::RandReset();
+	RandResetKinChar();
 }
 
 void cScenarioArmImitate::ResetKinChar()
