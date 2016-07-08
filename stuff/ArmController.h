@@ -57,6 +57,7 @@ protected:
 	virtual void UpdatePoliAction();
 	virtual void DecideAction();
 
+	virtual int GetStatePoseSize() const;
 	virtual void ApplyPoliAction(double time_step, const tAction& action);
 	virtual void ApplyTorqueLimit(double lim);
 };

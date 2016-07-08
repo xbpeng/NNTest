@@ -1,12 +1,13 @@
 #include "ArmNNTrackMuscularController.h"
 #include "sim/SimCharacter.h"
 
-//#define ENABLE_MTU_STATE_FEATURES
+#define ENABLE_MTU_STATE_FEATURES
 
 const std::string gMTUsKey = "MusculotendonUnits";
 
 cArmNNTrackMuscularController::cArmNNTrackMuscularController()
 {
+	mExpNoise = 0.2;
 }
 
 cArmNNTrackMuscularController::~cArmNNTrackMuscularController()
@@ -63,7 +64,7 @@ void cArmNNTrackMuscularController::BuildNNInputOffsetScale(Eigen::VectorXd& out
 	int mtu_state_size = GetMTUStateSize();
 	int num_mtus = GetNumMTUs();
 	
-	const double activation_offset = -0.5;
+	const double activation_offset = 0;
 	const double activation_scale = 2;
 	for (int i = 0; i < num_mtus; ++i)
 	{
@@ -79,7 +80,7 @@ void cArmNNTrackMuscularController::BuildNNInputOffsetScale(Eigen::VectorXd& out
 
 void cArmNNTrackMuscularController::BuildNNOutputOffsetScale(Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const
 {
-	const double activation_scale = 1;
+	const double activation_scale = 0.5;
 	const double activation_offset = 0;
 	int output_size = GetPoliActionSize();
 	out_offset = activation_offset * Eigen::VectorXd::Ones(output_size);
@@ -192,8 +193,8 @@ void cArmNNTrackMuscularController::UpdatePoliState()
 	for (int i = 0; i < num_mtus; ++i)
 	{
 		const auto& mtu = mMTUs[i];
-		mtu_state(i) = mtu.GetActivation();
-		mtu_state(num_mtus + i) = mtu.GetCELength();
+		mtu_state(i) = 0.5; // mtu.GetActivation(); // hack
+		mtu_state(num_mtus + i) = mtu.GetCELength(); // hack
 	}
 #endif // ENABLE_MTU_STATE_FEATURES
 }
@@ -208,6 +209,7 @@ void cArmNNTrackMuscularController::ApplyPoliAction(double time_step, const tAct
 	for (int i = 0; i < num_mtus; ++i)
 	{
 		double u = action.mParams[i];
+		//u = (i == 0) ? 1 : u; // hack
 		cMusculotendonUnit& mtu = mMTUs[i];
 		mtu.SetExcitation(u);
 	}

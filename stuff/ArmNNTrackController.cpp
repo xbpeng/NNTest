@@ -23,8 +23,7 @@ void cArmNNTrackController::Reset()
 
 int cArmNNTrackController::GetPoliStateSize() const
 {
-	int num_joints = mChar->GetNumJoints();
-	int pose_dim = (num_joints - 1) * gPosDim;
+	int pose_dim = GetStatePoseSize();
 	int state_size = 4 * pose_dim;
 	return state_size;
 }
@@ -36,9 +35,10 @@ void cArmNNTrackController::BuildNNInputOffsetScale(Eigen::VectorXd& out_offset,
 	out_offset = Eigen::VectorXd::Zero(state_size);
 	out_scale = Eigen::VectorXd::Ones(state_size);
 	int target_size = GetTargetPosSize();
-	int pose_size = state_size / 4;
+	int num_joints = mChar->GetNumJoints();
+	int pose_size = GetStatePoseSize();
 
-	for (int j = 1; j < mChar->GetNumJoints(); ++j)
+	for (int j = 1; j < num_joints; ++j)
 	{
 		double chain_len = mChar->CalcJointChainLength(j);
 		chain_len = std::max(chain_len, 0.01);
@@ -72,8 +72,7 @@ void cArmNNTrackController::UpdatePoliState()
 	const Eigen::VectorXd& vel = mChar->GetVel();
 
 	int num_joints = mChar->GetNumJoints();
-	int pose_size = (num_joints - 1) * gPosDim;
-
+	int pose_size = GetStatePoseSize();
 
 	tVector root_pos = mChar->GetRootPos();
 	for (int j = 1; j < num_joints; ++j)

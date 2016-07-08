@@ -11,7 +11,7 @@ layer {
     batch_size: 32
 	channels: 1
 	height: 1
-	width: 16
+	width: 20
 	label_size: 2
   }
 }

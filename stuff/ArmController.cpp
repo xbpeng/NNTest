@@ -80,8 +80,7 @@ int cArmController::GetPoliStateSize() const
 {
 	int target_size = GetTargetPosSize();
 #if defined(ENABLE_MAX_COORD)
-	int num_joints = mChar->GetNumJoints();
-	int pose_dim = (num_joints - 1) * gPosDim;
+	int pose_dim = GetStatePoseSize();
 	int state_size = target_size + 2 * pose_dim;
 #else
 	int num_dof = mChar->GetNumDof();
@@ -123,7 +122,7 @@ void cArmController::BuildNNInputOffsetScale(Eigen::VectorXd& out_offset, Eigen:
 	out_offset = Eigen::VectorXd::Zero(state_size);
 	out_scale = Eigen::VectorXd::Ones(state_size);
 	int target_size = GetTargetPosSize();
-	int pose_size = (state_size - target_size) / 2;
+	int pose_size = GetStatePoseSize();
 	
 	out_scale.segment(0, target_size) = (1 / pos_scale) * Eigen::VectorXd::Ones(target_size);
 	
@@ -247,6 +246,13 @@ void cArmController::ApplyPoliAction(double time_step, const tAction& action)
 		}
 	}
 	assert(idx == action.mParams.size());
+}
+
+int cArmController::GetStatePoseSize() const
+{
+	int num_joints = mChar->GetNumJoints();
+	int pose_size = (num_joints - 1) * gPosDim;
+	return pose_size;
 }
 
 void cArmController::ApplyTorqueLimit(double lim)
