@@ -11,8 +11,8 @@ layer {
     batch_size: 32
 	channels: 1
 	height: 1
-	width: 38
-	label_size: 1
+	width: 28
+	label_size: 4
   }
 }
 
@@ -30,7 +30,7 @@ layer {
 	decay_mult: 0
   }
   inner_product_param {
-    num_output: 512
+    num_output: 128
     weight_filler {
       type: "xavier"
     }
@@ -61,7 +61,7 @@ layer {
 	decay_mult: 0
   }
   inner_product_param {
-    num_output: 256
+    num_output: 64
     weight_filler {
       type: "xavier"
     }
@@ -79,10 +79,10 @@ layer {
 }
 
 layer {
-  name: "output"
+  name: "ip2"
   type: "InnerProduct"
   bottom: "relu1"
-  top: "output"
+  top: "ip2"
   param {
     lr_mult: 1
 	decay_mult: 1
@@ -92,7 +92,7 @@ layer {
 	decay_mult: 0
   }
   inner_product_param {
-    num_output: 1
+    num_output: 4
     weight_filler {
       type: "xavier"
     }
@@ -100,6 +100,13 @@ layer {
       type: "constant"
     }
   }
+}
+
+layer {
+  name: "output"
+  type: "ReLU"
+  bottom: "ip2"
+  top: "output"
 }
 
 layer {

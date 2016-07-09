@@ -182,12 +182,12 @@ void cScenarioArm::DrawArm(const std::shared_ptr<cSimCharacter>& arm, const tVec
 
 void cScenarioArm::DrawMTU(const std::shared_ptr<cArmNNTrackMuscularController>& ctrl) const
 {
-	const double width = 5;
+	const double r = 0.01;
 	int num_mtus = ctrl->GetNumMTUs();
 	for (int i = 0; i < num_mtus; ++i)
 	{
 		const cMusculotendonUnit& mtu = ctrl->GetMTU(i);
-		cDrawMusculotendonUnit::Draw(mtu, width);
+		cDrawMusculotendonUnit::Draw(mtu, r);
 	}
 }
 

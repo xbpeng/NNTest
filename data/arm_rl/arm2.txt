@@ -1,0 +1,208 @@
+{
+	"Skeleton": 
+	{
+		"Joints": 
+		[
+			{
+				"Name": "root",
+				"Type": 3,
+				"Parent": -1,
+				"AttachX": 0,
+				"AttachY": 0,
+				"AttachZ": 0,		
+				"LinkStiffness": 1,
+				"LimLow": 1,
+				"LimHigh": 0,
+				"TorqueLim": 0
+			},
+			{
+				"Name": "link0",
+				"Type": 0,
+				"Parent": 0,
+				"AttachX": 0,
+				"AttachY": 0,
+				"AttachZ": 0,		
+				"LinkStiffness": 1,
+				"LimLow": 1,
+				"LimHigh": 0,
+				"TorqueLim": 300
+			},
+			{
+				"Name": "link1",
+				"Type": 0,
+				"Parent": 1,
+				"AttachX": 0.5,
+				"AttachY": 0,
+				"AttachZ": 0,		
+				"LinkStiffness": 1,
+				"LimLow": 1,
+				"LimHigh": 0,
+				"TorqueLim": 300
+			},
+			{
+				"Name": "end",
+				"Type": 0,
+				"Parent": 2,
+				"AttachX": 0.5,
+				"AttachY": 0,
+				"AttachZ": 0,		
+				"LinkStiffness": 1,
+				"LimLow": 1,
+				"LimHigh": 0,
+				"TorqueLim": 300
+			}
+		]
+	},
+
+	"BodyDefs": 
+	[
+			{
+				"Name": "root",
+				"Shape": "box",
+				"Mass": 5.0,
+				"AttachX": 0,
+				"AttachY": 0,
+				"AttachZ": 0,
+				"Theta": 0,
+				"Param0": 0.2,
+				"Param1": 0.2,
+				"Param2": 0.14,
+				"ColorR": 0.6,
+				"ColorG": 0.65,
+				"ColorB": 0.675,
+				"ColorA": 1
+			},
+			{
+				"Name": "link0",
+				"Shape": "box",
+				"Mass": 5.0,
+				"AttachX": 0.25,
+				"AttachY": 0,
+				"AttachZ": 0,
+				"Theta": 0,
+				"Param0": 0.55,
+				"Param1": 0.1,
+				"Param2": 0.13,
+				"ColorR": 0.6,
+				"ColorG": 0.65,
+				"ColorB": 0.675,
+				"ColorA": 1
+			},
+			{
+				"Name": "link1",
+				"Shape": "box",
+				"Mass": 5.0,
+				"AttachX": 0.25,
+				"AttachY": 0,
+				"AttachZ": 0,
+				"Theta": 0,
+				"Param0": 0.55,
+				"Param1": 0.08,
+				"Param2": 0.12,
+				"ColorR": 0.6,
+				"ColorG": 0.65,
+				"ColorB": 0.675,
+				"ColorA": 1
+			},
+			{
+				"Name": "end",
+				"Shape": "null",
+				"Mass": 2.0,
+				"AttachX": 0,
+				"AttachY": 0,
+				"AttachZ": 0,
+				"Theta": 0,
+				"Param0": 0.1,
+				"Param1": 0.1,
+				"Param2": 0.12,
+				"ColorR": 0.6,
+				"ColorG": 0.65,
+				"ColorB": 0.675,
+				"ColorA": 1
+			}
+		],
+
+		"PDControllers": 
+		[
+			{
+				"Name": "root",
+				"Kp": 0,
+				"Kd": 0,
+				"TargetTheta": 0,
+				"UseWorldCoord": 0
+			},
+			{
+				"Name": "link0",
+				"Kp": 100,
+				"Kd": 10,
+				"TargetTheta": 0,
+				"UseWorldCoord": 0
+			},
+			{
+				"Name": "link1",
+				"Kp": 100,
+				"Kd": 10,
+				"TargetTheta": 0,
+				"UseWorldCoord": 0
+			},
+			{
+				"Name": "end",
+				"Kp": 100,
+				"Kd": 10,
+				"TargetTheta": 0,
+				"UseWorldCoord": 0
+			}
+		],
+
+		"MusculotendonUnits":
+		[
+			{
+				"Name": "0",
+				"OptCELength": 0.2,
+				"SlackLength": 0.3,
+				"ForceMax": -2000,
+				"AttachPts":
+				[
+					{"JointID": 0, "LocalPos": [0, 0.05, 0, 0]},
+					{"JointID": 1, "LocalPos": [0.2, 0.05, 0, 0]},
+					{"JointID": 1, "LocalPos": [0.5, 0.05, 0, 0]}
+				]
+			},
+			{
+				"Name": "1",
+				"OptCELength": 0.2,
+				"SlackLength": 0.3,
+				"ForceMax": -2000,
+				"AttachPts":
+				[
+					{"JointID": 0, "LocalPos": [0, -0.05, 0, 0]},
+					{"JointID": 1, "LocalPos": [0.2, -0.05, 0, 0]},
+					{"JointID": 1, "LocalPos": [0.5, -0.05, 0, 0]}
+				]
+			},
+			{
+				"Name": "2",
+				"OptCELength": 0.2,
+				"SlackLength": 0.3,
+				"ForceMax": -2000,
+				"AttachPts":
+				[
+					{"JointID": 1, "LocalPos": [0.5, 0.05, 0, 0]},
+					{"JointID": 2, "LocalPos": [0.2, 0.05, 0, 0]},
+					{"JointID": 2, "LocalPos": [0.5, 0.05, 0, 0]}
+				]
+			},
+			{
+				"Name": "3",
+				"OptCELength": 0.2,
+				"SlackLength": 0.3,
+				"ForceMax": -2000,
+				"AttachPts":
+				[
+					{"JointID": 1, "LocalPos": [0.5, -0.05, 0, 0]},
+					{"JointID": 2, "LocalPos": [0.2, -0.05, 0, 0]},
+					{"JointID": 2, "LocalPos": [0.5, -0.05, 0, 0]}
+				]
+			}
+		]
+}
