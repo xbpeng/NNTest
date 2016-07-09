@@ -80,7 +80,7 @@ void cArmNNTrackMuscularController::BuildNNInputOffsetScale(Eigen::VectorXd& out
 
 void cArmNNTrackMuscularController::BuildNNOutputOffsetScale(Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const
 {
-	const double activation_scale = 0.5;
+	const double activation_scale = 1;
 	const double activation_offset = 0;
 	int output_size = GetPoliActionSize();
 	out_offset = activation_offset * Eigen::VectorXd::Ones(output_size);
@@ -220,7 +220,7 @@ void cArmNNTrackMuscularController::DecideAction()
 {
 	cArmNNTrackController::DecideAction();
 
-	for (size_t i = 0; i < mPoliAction.mParams.size(); ++i)
+	for (int i = 0; i < static_cast<int>(mPoliAction.mParams.size()); ++i)
 	{
 		mPoliAction.mParams[i] = cMathUtil::Clamp(mPoliAction.mParams[i], 0.0, 1.0);
 	}
