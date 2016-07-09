@@ -64,16 +64,11 @@ void cArmNNTrackMuscularController::BuildNNInputOffsetScale(Eigen::VectorXd& out
 	int mtu_state_size = GetMTUStateSize();
 	int num_mtus = GetNumMTUs();
 	
-	const double activation_offset = 0;
-	const double activation_scale = 1;
 	for (int i = 0; i < num_mtus; ++i)
 	{
-		out_offset(mtu_state_offset + i) = activation_offset;
-		out_scale(mtu_state_offset + i) = activation_scale;
-
 		double len = mMTUs[i].GetOptCELength();
-		out_offset(mtu_state_offset + num_mtus + i) = -len;
-		out_scale(mtu_state_offset + num_mtus + i) = 1 / len;
+		out_offset(mtu_state_offset + i) = -len;
+		out_scale(mtu_state_offset + i) = 1 / len;
 	}
 #endif // ENABLE_MTU_STATE_FEATURES
 }
@@ -193,8 +188,7 @@ void cArmNNTrackMuscularController::UpdatePoliState()
 	for (int i = 0; i < num_mtus; ++i)
 	{
 		const auto& mtu = mMTUs[i];
-		mtu_state(i) = 0.5; // mtu.GetActivation(); // hack
-		mtu_state(num_mtus + i) = mtu.GetCELength(); // hack
+		mtu_state(i) = mtu.GetCELength();
 	}
 #endif // ENABLE_MTU_STATE_FEATURES
 }
@@ -213,7 +207,7 @@ void cArmNNTrackMuscularController::ApplyPoliAction(double time_step, const tAct
 
 int cArmNNTrackMuscularController::GetMTUStateSize() const
 {
-	return 2 * GetNumMTUs();
+	return GetNumMTUs();
 }
 
 void cArmNNTrackMuscularController::DecideAction()
