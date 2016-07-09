@@ -7,7 +7,7 @@ const std::string gMTUsKey = "MusculotendonUnits";
 
 cArmNNTrackMuscularController::cArmNNTrackMuscularController()
 {
-	mExpNoise = 0.2;
+	mExpNoise = 0.5;
 }
 
 cArmNNTrackMuscularController::~cArmNNTrackMuscularController()
@@ -65,7 +65,7 @@ void cArmNNTrackMuscularController::BuildNNInputOffsetScale(Eigen::VectorXd& out
 	int num_mtus = GetNumMTUs();
 	
 	const double activation_offset = 0;
-	const double activation_scale = 2;
+	const double activation_scale = 1;
 	for (int i = 0; i < num_mtus; ++i)
 	{
 		out_offset(mtu_state_offset + i) = activation_offset;
@@ -201,15 +201,11 @@ void cArmNNTrackMuscularController::UpdatePoliState()
 
 void cArmNNTrackMuscularController::ApplyPoliAction(double time_step, const tAction& action)
 {
-	static double time = 0;
-	time += time_step;
-
 	assert(action.mParams.size() == GetPoliActionSize());
 	int num_mtus = GetNumMTUs();
 	for (int i = 0; i < num_mtus; ++i)
 	{
 		double u = action.mParams[i];
-		//u = (i == 0) ? 1 : u; // hack
 		cMusculotendonUnit& mtu = mMTUs[i];
 		mtu.SetExcitation(u);
 	}
@@ -218,4 +214,14 @@ void cArmNNTrackMuscularController::ApplyPoliAction(double time_step, const tAct
 int cArmNNTrackMuscularController::GetMTUStateSize() const
 {
 	return 2 * GetNumMTUs();
+}
+
+void cArmNNTrackMuscularController::DecideAction()
+{
+	cArmNNTrackController::DecideAction();
+
+	for (size_t i = 0; i < mPoliAction.mParams.size(); ++i)
+	{
+		mPoliAction.mParams[i] = cMathUtil::Clamp(mPoliAction.mParams[i], 0.0, 1.0);
+	}
 }

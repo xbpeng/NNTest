@@ -145,6 +145,9 @@ double cScenarioArmImitate::CalcReward() const
 {
 	const double pose_w = 0.9;
 	const double vel_w = 0.1;
+	const double pose_scale = 2;
+	const double vel_scale = 0.005;
+
 	double pos_err = 0;
 	double vel_err = 0;
 	int num_joints = mChar->GetNumJoints();
@@ -189,8 +192,8 @@ double cScenarioArmImitate::CalcReward() const
 		}
 	}
 
-	double pose_reward = exp(-0.5 * pos_err / num_joints);
-	double vel_reward = exp(-0.01 * vel_err / num_joints);
+	double pose_reward = exp(-pose_scale * pos_err / num_joints);
+	double vel_reward = exp(-vel_scale * vel_err / num_joints);
 
 	double reward = pose_w * pose_reward + vel_w * vel_reward;
 

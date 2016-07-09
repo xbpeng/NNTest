@@ -48,6 +48,9 @@ void cDrawScenarioArm::Keyboard(unsigned char key, int x, int y)
 	case 'y':
 		ToggleTrace();
 		break;
+	case 'm':
+		ToggleRecordMotion();
+		break;
 	default:
 		break;
 	}
@@ -355,5 +358,20 @@ void cDrawScenarioArm::PostSubstepCallback(double time_elapsed)
 	if (mEnableTrace)
 	{
 		UpdateTrace(time_elapsed);
+	}
+}
+
+void cDrawScenarioArm::ToggleRecordMotion()
+{
+	bool enable = mScene->EnabledRecording();
+	mScene->EnableMotionRecording(!enable);
+
+	if (mScene->EnabledRecording())
+	{
+		printf("Start Motion Recording\n");
+	}
+	else
+	{
+		printf("End Motion Recording\n");
 	}
 }

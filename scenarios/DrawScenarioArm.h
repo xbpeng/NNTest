@@ -65,4 +65,6 @@ protected:
 
 	virtual void ResetCallback();
 	virtual void PostSubstepCallback(double time_elapsed);
+
+	virtual void ToggleRecordMotion();
 };

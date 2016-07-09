@@ -39,4 +39,6 @@ protected:
 	virtual void UpdatePoliState();
 	virtual void ApplyPoliAction(double time_step, const tAction& action);
 	virtual int GetMTUStateSize() const;
+
+	virtual void DecideAction();
 };
