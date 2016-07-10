@@ -41,4 +41,5 @@ protected:
 	virtual int GetMTUStateSize() const;
 
 	virtual void DecideAction();
+	virtual void ApplyExpNoise(tAction& out_action) const;
 };

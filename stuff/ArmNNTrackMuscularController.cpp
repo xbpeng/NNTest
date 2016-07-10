@@ -4,6 +4,9 @@
 #define ENABLE_MTU_STATE_FEATURES
 
 const std::string gMTUsKey = "MusculotendonUnits";
+const double gMinActivation = 0;
+const double gMaxActivation = 1;
+
 
 cArmNNTrackMuscularController::cArmNNTrackMuscularController()
 {
@@ -144,7 +147,7 @@ void cArmNNTrackMuscularController::BuildMTUs(const std::string& char_file)
 		if (!succ)
 		{
 			mMTUs.clear();
-			printf("Failed to part MTUParams from %s\n", char_file.c_str());
+			printf("Failed to parse MTUParams from %s\n", char_file.c_str());
 			assert(false); // failed to parse MTU params
 		}
 	}
@@ -216,6 +219,33 @@ void cArmNNTrackMuscularController::DecideAction()
 
 	for (int i = 0; i < static_cast<int>(mPoliAction.mParams.size()); ++i)
 	{
-		//mPoliAction.mParams[i] = cMathUtil::Clamp(mPoliAction.mParams[i], 0.0, 1.0);
+		//mPoliAction.mParams[i] = cMathUtil::Clamp(mPoliAction.mParams[i], gMinActivation, gMaxActivation);
 	}
+}
+
+void cArmNNTrackMuscularController::ApplyExpNoise(tAction& out_action) const
+{
+	cArmNNTrackController::ApplyExpNoise(out_action);
+	/*
+	Eigen::VectorXd noise_scale;
+	FetchExpNoiseScale(noise_scale);
+
+	for (int i = 0; i < out_action.mParams.size(); ++i)
+	{
+		double val = out_action.mParams[i];
+		val = cMathUtil::Clamp(val, gMinActivation, gMaxActivation);
+		double scale = noise_scale[i];
+
+		double noise = 0;
+		double new_val = 0;
+		do
+		{
+			noise = cMathUtil::RandDoubleNorm(0, mExpNoise);
+			noise *= scale;
+			new_val = val + noise;
+		} while (new_val < gMinActivation || new_val > gMaxActivation);
+		
+		out_action.mParams[i] = new_val;
+	}
+	*/
 }

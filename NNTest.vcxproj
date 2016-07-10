@@ -335,6 +335,8 @@
     <ClCompile Include="..\TerrainRL\sim\ContactManager.cpp" />
     <ClCompile Include="..\TerrainRL\sim\Controller.cpp" />
     <ClCompile Include="..\TerrainRL\sim\CtController.cpp" />
+    <ClCompile Include="..\TerrainRL\sim\CtMTUController.cpp" />
+    <ClCompile Include="..\TerrainRL\sim\CtMTUTrackController.cpp" />
     <ClCompile Include="..\TerrainRL\sim\CtNPDController.cpp" />
     <ClCompile Include="..\TerrainRL\sim\CtNPDTrackController.cpp" />
     <ClCompile Include="..\TerrainRL\sim\CtPDController.cpp" />
@@ -541,6 +543,8 @@
     <ClInclude Include="..\TerrainRL\sim\ContactManager.h" />
     <ClInclude Include="..\TerrainRL\sim\Controller.h" />
     <ClInclude Include="..\TerrainRL\sim\CtController.h" />
+    <ClInclude Include="..\TerrainRL\sim\CtMTUController.h" />
+    <ClInclude Include="..\TerrainRL\sim\CtMTUTrackController.h" />
     <ClInclude Include="..\TerrainRL\sim\CtNPDController.h" />
     <ClInclude Include="..\TerrainRL\sim\CtNPDTrackController.h" />
     <ClInclude Include="..\TerrainRL\sim\CtPDController.h" />
