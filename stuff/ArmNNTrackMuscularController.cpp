@@ -230,22 +230,26 @@ void cArmNNTrackMuscularController::ApplyExpNoise(tAction& out_action) const
 	Eigen::VectorXd noise_scale;
 	FetchExpNoiseScale(noise_scale);
 
-	for (int i = 0; i < out_action.mParams.size(); ++i)
+	int action_size = static_cast<int>(out_action.mParams.size());
+	Eigen::VectorXd exp_noise = Eigen::VectorXd::Zero(action_size);
+	for (int i = 0; i < action_size; ++i)
 	{
-		double val = out_action.mParams[i];
-		val = cMathUtil::Clamp(val, gMinActivation, gMaxActivation);
+		double noise = cMathUtil::RandDoubleNorm(0, mExpNoise);
 		double scale = noise_scale[i];
-
-		double noise = 0;
-		double new_val = 0;
-		do
-		{
-			noise = cMathUtil::RandDoubleNorm(0, mExpNoise);
-			noise *= scale;
-			new_val = val + noise;
-		} while (new_val < gMinActivation || new_val > gMaxActivation);
-		
-		out_action.mParams[i] = new_val;
+		noise *= scale;
+		exp_noise[i] = noise;
 	}
+
+	for (int i = 0; i < action_size / 2; ++i)
+	{
+		int curr_idx = i * 2 + 1;
+		int parent_idx = curr_idx - 1;
+		double curr_noise = exp_noise[curr_idx];
+		double parent_noise = exp_noise[parent_idx];
+		curr_noise = -cMathUtil::Sign(parent_noise)  * std::abs(curr_noise);
+		exp_noise[curr_idx] = curr_noise;
+	}
+
+	out_action.mParams += exp_noise;
 	*/
 }
