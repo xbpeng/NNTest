@@ -10,7 +10,7 @@ const double gMaxActivation = 1;
 
 cArmNNTrackMuscularController::cArmNNTrackMuscularController()
 {
-	mExpNoise = 0.5;
+	mExpNoise = 0.25;
 }
 
 cArmNNTrackMuscularController::~cArmNNTrackMuscularController()
@@ -203,6 +203,13 @@ void cArmNNTrackMuscularController::ApplyPoliAction(double time_step, const tAct
 	for (int i = 0; i < num_mtus; ++i)
 	{
 		double u = action.mParams[i];
+
+		// hack
+		u = 0;
+		if (i == 0)
+		{
+			u = 1;
+		}
 		cMusculotendonUnit& mtu = mMTUs[i];
 		mtu.SetExcitation(u);
 	}
@@ -219,12 +226,18 @@ void cArmNNTrackMuscularController::DecideAction()
 
 	for (int i = 0; i < static_cast<int>(mPoliAction.mParams.size()); ++i)
 	{
-		//mPoliAction.mParams[i] = cMathUtil::Clamp(mPoliAction.mParams[i], gMinActivation, gMaxActivation);
+		mPoliAction.mParams[i] = cMathUtil::Clamp(mPoliAction.mParams[i], gMinActivation, gMaxActivation);
 	}
 }
 
 void cArmNNTrackMuscularController::ApplyExpNoise(tAction& out_action) const
 {
+	// hack hack hack
+	int action_size = GetPoliActionSize();
+	Eigen::VectorXd bound_min = 0 * Eigen::VectorXd::Ones(action_size);
+	Eigen::VectorXd bound_max = 1 * Eigen::VectorXd::Ones(action_size);
+	out_action.mParams = out_action.mParams.cwiseMax(bound_min).cwiseMin(bound_max);
+	
 	cArmNNTrackController::ApplyExpNoise(out_action);
 	/*
 	Eigen::VectorXd noise_scale;
