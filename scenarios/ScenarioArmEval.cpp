@@ -122,6 +122,13 @@ void cScenarioArmEval::UpdateCharacter(double time_step)
 
 void cScenarioArmEval::UpdateTrackError()
 {
+	double err = CalcError();
+	mAvgErr = cMathUtil::AddAverage(mAvgErr, mErrSampleCount, err, 1);
+	++mErrSampleCount;
+}
+
+double cScenarioArmEval::CalcError() const
+{
 	auto arm_ctrl = GetArmController();
 	int end_id = arm_ctrl->GetEndEffectorID();
 	tVector end_pos = mChar->CalcJointPos(end_id);
@@ -129,9 +136,7 @@ void cScenarioArmEval::UpdateTrackError()
 	tVector delta = mTargetPos - end_pos;
 	delta[2] = 0;
 	double err = delta.norm();
-	
-	mAvgErr = cMathUtil::AddAverage(mAvgErr, mErrSampleCount, err, 1);
-	++mErrSampleCount;
+	return err;
 }
 
 void cScenarioArmEval::GetRandTargetMinMaxTime(double& out_min, double& out_max) const

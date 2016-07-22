@@ -44,6 +44,8 @@ protected:
 	virtual void UpdateCharacter(double time_step);
 
 	virtual void UpdateTrackError();
+	virtual double CalcError() const;
+
 	virtual void GetRandTargetMinMaxTime(double& out_min, double& out_max) const;
 	virtual void GetRandPoseMinMaxTime(double& out_min, double& out_max) const;
 	virtual double GetRandTargetMaxDist() const;

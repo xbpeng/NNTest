@@ -407,6 +407,7 @@
     <ClCompile Include="scenarios\DrawScenarioArm.cpp" />
     <ClCompile Include="scenarios\DrawScenarioArmEval.cpp" />
     <ClCompile Include="scenarios\DrawScenarioArmImitate.cpp" />
+    <ClCompile Include="scenarios\DrawScenarioArmImitateEval.cpp" />
     <ClCompile Include="scenarios\DrawScenarioArmRL.cpp" />
     <ClCompile Include="scenarios\DrawScenarioArmRLPretrain.cpp" />
     <ClCompile Include="scenarios\DrawScenarioArmTrain.cpp" />
@@ -426,6 +427,7 @@
     <ClCompile Include="scenarios\ScenarioArm.cpp" />
     <ClCompile Include="scenarios\ScenarioArmEval.cpp" />
     <ClCompile Include="scenarios\ScenarioArmImitate.cpp" />
+    <ClCompile Include="scenarios\ScenarioArmImitateEval.cpp" />
     <ClCompile Include="scenarios\ScenarioArmRL.cpp" />
     <ClCompile Include="scenarios\ScenarioArmRLPretrain.cpp" />
     <ClCompile Include="scenarios\ScenarioArmTrain.cpp" />
@@ -615,6 +617,7 @@
     <ClInclude Include="scenarios\DrawScenarioArm.h" />
     <ClInclude Include="scenarios\DrawScenarioArmEval.h" />
     <ClInclude Include="scenarios\DrawScenarioArmImitate.h" />
+    <ClInclude Include="scenarios\DrawScenarioArmImitateEval.h" />
     <ClInclude Include="scenarios\DrawScenarioArmRL.h" />
     <ClInclude Include="scenarios\DrawScenarioArmRLPretrain.h" />
     <ClInclude Include="scenarios\DrawScenarioArmTrain.h" />
@@ -634,6 +637,7 @@
     <ClInclude Include="scenarios\ScenarioArm.h" />
     <ClInclude Include="scenarios\ScenarioArmEval.h" />
     <ClInclude Include="scenarios\ScenarioArmImitate.h" />
+    <ClInclude Include="scenarios\ScenarioArmImitateEval.h" />
     <ClInclude Include="scenarios\ScenarioArmRL.h" />
     <ClInclude Include="scenarios\ScenarioArmRLPretrain.h" />
     <ClInclude Include="scenarios\ScenarioArmTrain.h" />

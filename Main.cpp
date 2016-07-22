@@ -23,6 +23,7 @@
 #include "scenarios/DrawScenarioArmRL.h"
 #include "scenarios/DrawScenarioArmRLPretrain.h"
 #include "scenarios/DrawScenarioArmEval.h"
+#include "scenarios/DrawScenarioArmImitateEval.h"
 #include "scenarios/DrawScenarioArmTrain.h"
 #include "scenarios/DrawScenarioArmTrainDPG.h"
 #include "scenarios/DrawScenarioArmTrainMACE.h"
@@ -151,6 +152,10 @@ void SetupScenario()
 	else if (scenario_name == "arm_eval")
 	{
 		gScenario = std::shared_ptr<cDrawScenarioArmEval>(new cDrawScenarioArmEval(gCamera));
+	}
+	else if (scenario_name == "arm_imitate_eval")
+	{
+		gScenario = std::shared_ptr<cDrawScenarioArmImitateEval>(new cDrawScenarioArmImitateEval(gCamera));
 	}
 	else if (scenario_name == "arm_train")
 	{

@@ -959,6 +959,12 @@
     <ClCompile Include="..\TerrainRL\sim\CtMTUController.cpp">
       <Filter>Source Files\util</Filter>
     </ClCompile>
+    <ClCompile Include="scenarios\ScenarioArmImitateEval.cpp">
+      <Filter>Source Files\scenarios</Filter>
+    </ClCompile>
+    <ClCompile Include="scenarios\DrawScenarioArmImitateEval.cpp">
+      <Filter>Source Files\scenarios</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\TerrainRL\util\Rand.h">
@@ -1581,6 +1587,12 @@
     </ClInclude>
     <ClInclude Include="..\TerrainRL\sim\CtMTUTrackController.h">
       <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="scenarios\ScenarioArmImitateEval.h">
+      <Filter>Source Files\scenarios</Filter>
+    </ClInclude>
+    <ClInclude Include="scenarios\DrawScenarioArmImitateEval.h">
+      <Filter>Source Files\scenarios</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

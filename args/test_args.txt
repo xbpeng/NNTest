@@ -1,5 +1,5 @@
--scenario= arm_imitate
--playback_speed= 60
+-scenario= arm_imitate_eval
+-playback_speed= 1
 
 -character_file= data/arm_rl/arm_small.txt
 -motion_file= data/arm_rl/motions/arm_small_wave.txt
