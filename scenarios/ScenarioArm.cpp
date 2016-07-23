@@ -59,6 +59,7 @@ void cScenarioArm::ParseArgs(const cArgParser& parser)
 	parser.ParseString("net_file", mNetFile);
 	parser.ParseStringArray("model_file", mModelFiles);
 	parser.ParseString("scale_file", mScaleFile);
+	parser.ParseBool("enable_rand_pose", mEnableRandPose);
 
 	ParseCtrlType(parser, "arm_ctrl_type", mCtrlType);
 }

@@ -133,7 +133,11 @@ void cScenarioArmImitateEval::RandReset()
 {
 	ResetKinChar();
 	cScenarioArmEval::RandReset();
-	RandResetKinChar();
+
+	if (mEnableRandPose)
+	{
+		RandResetKinChar();
+	}
 }
 
 void cScenarioArmImitateEval::ApplyRandPose()

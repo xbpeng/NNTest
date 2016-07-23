@@ -1,20 +1,16 @@
--scenario= arm_imitate_eval
--playback_speed= 1
+-scenario= arm_imitate
+-playback_speed= 60
 
 -character_file= data/arm_rl/arm_small.txt
 -motion_file= data/arm_rl/motions/arm_small_wave.txt
 
 -solver_file= data/arm_rl/nets/arm_small_reduced_muscular_track_actor_solver.prototxt
 -net_file= data/arm_rl/nets/arm_small_reduced_muscular_track_actor_deploy.prototxt
--model_file= data/arm_rl/models/trainer_int_model_0000133000.h5
 
 -critic_solver_file= data/arm_rl/nets/arm_small_reduced_muscular_track_critic_solver.prototxt
 -critic_net_file= data/arm_rl/nets/arm_small_reduced_muscular_track_critic_deploy.prototxt
 
 -arm_ctrl_type= nn_track_muscular
-
--num_update_steps= 20
--enable_rand_pose= true
 
 -exp_rate= 0.2
 -exp_temp= 0.25
@@ -22,7 +18,7 @@
 -init_exp_temp= 20
 -num_exp_anneal_iters= 200000
 
-//-trainer_int_iter= 2000
-//-trainer_int_output= output/intermediate/trainer_int_model.h5
+-trainer_int_iter= 1000
+-trainer_int_output= output/intermediate/trainer_int_model.h5
 
 -output_net_file= output/arm_small_imitate_model.h5

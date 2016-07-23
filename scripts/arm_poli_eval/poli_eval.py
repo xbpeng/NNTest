@@ -5,7 +5,7 @@ poli_files_dir = 'output/intermediate/'
 exe_name = 'NNTest.exe'
 root_dir = os.path.dirname(__file__)
 
-args = '-arg_file= args/ball_int_poli_eval.txt'
+args = '-arg_file= args/arm_int_poli_eval.txt'
 
 os.chdir(root_dir)
 files = os.listdir(poli_files_dir)

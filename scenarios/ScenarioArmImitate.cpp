@@ -105,7 +105,11 @@ void cScenarioArmImitate::RandReset()
 {
 	ResetKinChar();
 	cScenarioArmTrain::RandReset();
-	RandResetKinChar();
+	
+	if (mEnableRandPose)
+	{
+		RandResetKinChar();
+	}
 }
 
 void cScenarioArmImitate::ResetKinChar()

@@ -10,7 +10,7 @@ const double gMaxActivation = 1;
 
 cArmNNTrackMuscularController::cArmNNTrackMuscularController()
 {
-	mExpNoise = 0.25;
+	mExpNoise = 0.5;
 }
 
 cArmNNTrackMuscularController::~cArmNNTrackMuscularController()
@@ -205,10 +205,10 @@ void cArmNNTrackMuscularController::ApplyPoliAction(double time_step, const tAct
 		double u = action.mParams[i];
 
 		// hack
-		u = 0;
+		//u = 0;
 		if (i == 0)
 		{
-			u = 1;
+			//u = 1;
 		}
 		cMusculotendonUnit& mtu = mMTUs[i];
 		mtu.SetExcitation(u);

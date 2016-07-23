@@ -1,0 +1,13 @@
+-scenario= arm_imitate_eval
+-playback_speed= 60
+
+-character_file= data/arm_rl/arm_small.txt
+-motion_file= data/arm_rl/motions/arm_small_wave.txt
+
+-output_file= output/arm_int_imitate_eval.txt
+
+-net_file= data/arm_rl/nets/arm_small_reduced_muscular_track_actor_deploy.prototxt
+
+-arm_ctrl_type= nn_track_muscular
+-enable_rand_pose= true
+-eval_max_samples= 1000
