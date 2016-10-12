@@ -61,4 +61,5 @@ protected:
 	virtual void InitActionIDStateRecord(const std::string& out_file) const;
 	virtual bool EnableRecordActionIDState() const;
 	virtual void RecordActionIDState(const std::string& out_file);
+	virtual void PrintInfo() const;
 };

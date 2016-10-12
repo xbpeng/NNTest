@@ -43,13 +43,6 @@ protected:
 	double mInitExpTemp;
 	int mNumAnnealIters;
 
-	std::string mActorSolverFile;
-	std::string mActorNetFile;
-	std::string mActorModelFile;
-	std::string mCriticSolverFile;
-	std::string mCriticNetFile;
-	std::string mCriticModelFile;
-
 	std::shared_ptr<cNeuralNetTrainer> mTrainer;
 	std::shared_ptr<cNeuralNetLearner> mLearner;
 

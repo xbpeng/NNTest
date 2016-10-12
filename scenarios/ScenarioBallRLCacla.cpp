@@ -28,9 +28,9 @@ void cScenarioBallRLCacla::InitLearner()
 void cScenarioBallRLCacla::ParseArgs(const cArgParser& parser)
 {
 	cScenarioBallRL::ParseArgs(parser);
-	parser.ParseString("critic_solver_file", mCriticSolverFile);
-	parser.ParseString("critic_net_file", mCriticNetFile);
-	parser.ParseString("critic_model_file", mCriticModelFile);
+	parser.ParseString("critic_solver_file", mTrainerParams.mCriticSolverFile);
+	parser.ParseString("critic_net_file", mTrainerParams.mCriticNetFile);
+	parser.ParseString("critic_model_file", mTrainerParams.mCriticModelFile);
 }
 
 void cScenarioBallRLCacla::SaveCriticNet(const std::string& filename) const
@@ -60,11 +60,6 @@ void cScenarioBallRLCacla::InitTrainer()
 	auto trainer = std::shared_ptr<cCaclaTrainer>(new cCaclaTrainer());
 	//auto trainer = std::shared_ptr<cAsyncCaclaTrainer>(new cAsyncCaclaTrainer());
 
-	mTrainerParams.mNetFile = mCriticNetFile;
-	mTrainerParams.mSolverFile = mCriticSolverFile;
-	//mTrainerParams.mNetFile = mNetFile;
-	//mTrainerParams.mSolverFile = mSolverFile;
-
 	mTrainerParams.mPlaybackMemSize = gTrainerPlaybackMemSize;
 	mTrainerParams.mPoolSize = 1;
 	mTrainerParams.mNumInitSamples = 10000;
@@ -77,19 +72,8 @@ void cScenarioBallRLCacla::InitTrainer()
 	mTrainerParams.mPGAdvScale = 10;
 	mTrainerParams.mPGIWClip = 20;
 
-	trainer->SetActorFiles(mSolverFile, mNetFile);
 	trainer->Init(mTrainerParams);
 
-	if (mModelFile != "")
-	{
-		trainer->LoadActorModel(mModelFile);
-	}
-
-	if (mCriticModelFile != "")
-	{
-		trainer->LoadCriticModel(mCriticModelFile);
-	}
-	
 	Eigen::VectorXd critic_output_offset;
 	Eigen::VectorXd critic_output_scale;
 	BuildCriticOutputOffsetScale(critic_output_offset, critic_output_scale);

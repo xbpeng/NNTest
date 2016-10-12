@@ -117,6 +117,8 @@ void cScenarioArmEval::UpdateCharacter(double time_step)
 		{
 			RecordActionIDState(mActionIDStateOutputFile);
 		}
+
+		PrintInfo();
 	}
 }
 
@@ -292,4 +294,36 @@ void cScenarioArmEval::RecordActionIDState(const std::string& out_file)
 	data_str += "\n";
 
 	cFileUtil::AppendText(data_str, out_file);
+}
+
+void cScenarioArmEval::PrintInfo() const
+{
+	Eigen::VectorXd action;
+	auto ctrl = GetController();
+	ctrl->RecordPoliAction(action);
+
+	printf("Action: ");
+	for (int i = 0; i < action.size(); ++i)
+	{
+		printf("%.3f\t", action[i]);
+	}
+	printf("\n");
+
+	const Eigen::VectorXd& pose = mChar->GetPose();
+	const Eigen::VectorXd& vel = mChar->GetVel();
+
+	printf("Pose: ");
+	for (int i = 3; i < pose.size(); ++i)
+	{
+		printf("%.3f\t", pose[i]);
+	}
+	printf("\n");
+
+	printf("Vel: ");
+	for (int i = 3; i < vel.size(); ++i)
+	{
+		printf("%.3f\t", vel[i]);
+	}
+	printf("\n");
+	printf("\n");
 }

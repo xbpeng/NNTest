@@ -158,3 +158,9 @@ void cScenarioArmImitateEval::RandResetKinChar()
 	mKinChar->Update(0);
 #endif
 }
+
+void cScenarioArmImitateEval::GetRandPoseMinMaxTime(double& out_min, double& out_max) const
+{
+	out_min = 10;
+	out_max = 20;
+}

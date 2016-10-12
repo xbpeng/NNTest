@@ -35,4 +35,5 @@ protected:
 	virtual void RandReset();
 	virtual void ApplyRandPose();
 	virtual void RandResetKinChar();
+	virtual void GetRandPoseMinMaxTime(double& out_min, double& out_max) const;
 };

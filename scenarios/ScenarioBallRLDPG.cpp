@@ -28,9 +28,6 @@ void cScenarioBallRLDPG::InitTrainer()
 	auto trainer = std::shared_ptr<cDPGTrainer>(new cDPGTrainer());
 	//auto trainer = std::shared_ptr<cAsyncDPGTrainer>(new cAsyncDPGTrainer());
 	
-	mTrainerParams.mNetFile = mCriticNetFile;
-	mTrainerParams.mSolverFile = mCriticSolverFile;
-	
 	mTrainerParams.mPlaybackMemSize = gTrainerPlaybackMemSize;
 	mTrainerParams.mPoolSize = 1;
 	mTrainerParams.mNumInitSamples = 10000;
@@ -39,19 +36,8 @@ void cScenarioBallRLDPG::InitTrainer()
 	trainer->SetPretrainIters(5000);
 	trainer->SetDPGReg(0.1);
 	trainer->SetQDiff(4);
-	trainer->SetActorFiles(mSolverFile, mNetFile);
 	trainer->Init(mTrainerParams);
 
-	if (mModelFile != "")
-	{
-		trainer->LoadActorModel(mModelFile);
-	}
-
-	if (mCriticModelFile != "")
-	{
-		trainer->LoadCriticModel(mCriticModelFile);
-	}
-	
 	Eigen::VectorXd critic_output_offset;
 	Eigen::VectorXd critic_output_scale;
 	BuildCriticOutputOffsetScale(critic_output_offset, critic_output_scale);

@@ -57,16 +57,16 @@ void cScenarioArmTrain::ParseArgs(const cArgParser& parser)
 	parser.ParseDouble("init_exp_temp", mInitExpTemp);
 	parser.ParseInt("num_exp_anneal_iters", mNumAnnealIters);
 
-	parser.ParseString("critic_solver_file", mCriticSolverFile);
-	parser.ParseString("critic_net_file", mCriticNetFile);
-	parser.ParseString("critic_model_file", mCriticModelFile);
-	parser.ParseString("solver_file", mActorSolverFile);
+	parser.ParseString("critic_solver_file", mTrainerParams.mCriticSolverFile);
+	parser.ParseString("critic_net_file", mTrainerParams.mCriticNetFile);
+	parser.ParseString("critic_model_file", mTrainerParams.mCriticModelFile);
+	parser.ParseString("solver_file", mTrainerParams.mSolverFile);
 
-	mActorNetFile = mNetFile;
+	mTrainerParams.mNetFile = mNetFile;
 
 	if (mModelFiles.size() > 0)
 	{
-		mActorModelFile = mModelFiles[0];
+		mTrainerParams.mModelFile = mModelFiles[0];
 	}
 }
 
@@ -294,14 +294,11 @@ void cScenarioArmTrain::InitTupleBuffer()
 void cScenarioArmTrain::BuildTrainer(std::shared_ptr<cNeuralNetTrainer>& out_trainer) const
 {
 	auto trainer = std::shared_ptr<cCaclaTrainer>(new cCaclaTrainer());
-	trainer->SetActorFiles(mActorSolverFile, mActorNetFile);
 	out_trainer = trainer;
 }
 
 void cScenarioArmTrain::InitTrainer()
 {
-	mTrainerParams.mSolverFile = mCriticSolverFile;
-	mTrainerParams.mNetFile = mCriticNetFile;
 	mTrainerParams.mPlaybackMemSize = gTrainerPlaybackMemSize;
 	mTrainerParams.mPoolSize = 1;
 	mTrainerParams.mInitInputOffsetScale = false;
@@ -314,16 +311,6 @@ void cScenarioArmTrain::InitTrainer()
 
 	mTrainer->Init(mTrainerParams);
 	SetupScale();
-
-	if (mCriticModelFile != "")
-	{
-		mTrainer->LoadCriticModel(mCriticModelFile);
-	}
-
-	if (mActorModelFile != "")
-	{
-		mTrainer->LoadActorModel(mActorModelFile);
-	}
 
 	SetupActionBounds();
 }

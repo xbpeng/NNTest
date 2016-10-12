@@ -38,8 +38,6 @@ void cScenarioArmTrainDMACE::InitTrainer()
 {
 	auto trainer = std::static_pointer_cast<cDMACETrainer>(mTrainer);
 
-	mTrainerParams.mNetFile = mCriticNetFile;
-	mTrainerParams.mSolverFile = mCriticSolverFile;
 	mTrainerParams.mPlaybackMemSize = gTrainerPlaybackMemSize;
 	mTrainerParams.mPoolSize = 1;
 	mTrainerParams.mNumInitSamples = 20000;
@@ -49,22 +47,11 @@ void cScenarioArmTrainDMACE::InitTrainer()
 	auto ctrl = GetMACECtrl();
 	trainer->SetNumActionFrags(ctrl->GetNumActionFrags());
 	trainer->SetActionFragSize(ctrl->GetActionFragSize());
-	trainer->SetActorFiles(mActorSolverFile, mActorNetFile);
 	mTrainerParams.mPGMode = cCaclaTrainer::ePGModeTD;
 	mTrainerParams.mPGAdvScale = 20;
 	trainer->SetGateScale(1);
 
 	trainer->Init(mTrainerParams);
-
-	if (mCriticModelFile != "")
-	{
-		trainer->LoadCriticModel(mCriticModelFile);
-	}
-
-	if (mActorModelFile != "")
-	{
-		trainer->LoadActorModel(mActorModelFile);
-	}
 
 	SetupScale();
 	SetupActionBounds();

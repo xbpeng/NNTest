@@ -44,8 +44,6 @@ void cScenarioArmTrainMACE::InitTrainer()
 {
 	auto trainer = std::static_pointer_cast<cMACETrainer>(mTrainer);
 
-	mTrainerParams.mNetFile = mActorNetFile;
-	mTrainerParams.mSolverFile = mActorSolverFile;
 	mTrainerParams.mPlaybackMemSize = gTrainerPlaybackMemSize;
 	mTrainerParams.mPoolSize = 1;
 	mTrainerParams.mNumInitSamples = 20000;
@@ -56,11 +54,6 @@ void cScenarioArmTrainMACE::InitTrainer()
 	trainer->SetNumActionFrags(ctrl->GetNumActionFrags());
 	trainer->SetActionFragSize(ctrl->GetActionFragSize());
 	trainer->Init(mTrainerParams);
-
-	if (mActorModelFile != "")
-	{
-		trainer->LoadModel(mActorModelFile);
-	}
 
 	SetupScale();
 }

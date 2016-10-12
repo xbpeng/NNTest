@@ -28,9 +28,6 @@ void cScenarioBallRLMACEDPG::InitTrainer()
 	std::shared_ptr<cMACEDPGTrainer> trainer = std::shared_ptr<cMACEDPGTrainer>(new cMACEDPGTrainer());
 	mTrainer = trainer;
 
-	mTrainerParams.mNetFile = mCriticNetFile;
-	mTrainerParams.mSolverFile = mCriticSolverFile;
-	
 	mTrainerParams.mPlaybackMemSize = gTrainerPlaybackMemSize;
 	mTrainerParams.mPoolSize = 1;
 	mTrainerParams.mNumInitSamples = 10000;
@@ -43,18 +40,7 @@ void cScenarioBallRLMACEDPG::InitTrainer()
 	trainer->SetPretrainIters(5000);
 	trainer->SetDPGReg(0.1);
 	trainer->SetQDiff(0.1);
-	trainer->SetActorFiles(mSolverFile, mNetFile);
 	trainer->Init(mTrainerParams);
-
-	if (mModelFile != "")
-	{
-		trainer->LoadActorModel(mModelFile);
-	}
-
-	if (mCriticModelFile != "")
-	{
-		trainer->LoadCriticModel(mCriticModelFile);
-	}
 	
 	Eigen::VectorXd critic_output_offset;
 	Eigen::VectorXd critic_output_scale;
@@ -75,18 +61,18 @@ void cScenarioBallRLMACEDPG::SetupController()
 	cScenarioBallRLDPG::SetupController();
 	auto ctrl = std::static_pointer_cast<cBallControllerMACEDPG>(mBall.GetController());
 	
-	if (mCriticNetFile != "")
+	if (mTrainerParams.mCriticNetFile != "")
 	{
-		bool succ = ctrl->LoadCriticNet(mCriticNetFile);
+		bool succ = ctrl->LoadCriticNet(mTrainerParams.mCriticNetFile);
 		if (!succ)
 		{
-			printf("Failed to load network from %s\n", mCriticNetFile.c_str());
+			printf("Failed to load network from %s\n", mTrainerParams.mCriticNetFile.c_str());
 		}
 	}
 
-	if (mCriticModelFile != "")
+	if (mTrainerParams.mCriticModelFile != "")
 	{
-		ctrl->LoadCriticModel(mCriticModelFile);
+		ctrl->LoadCriticModel(mTrainerParams.mCriticModelFile);
 	}
 }
 

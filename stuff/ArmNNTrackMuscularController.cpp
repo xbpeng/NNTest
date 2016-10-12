@@ -4,13 +4,11 @@
 #define ENABLE_MTU_STATE_FEATURES
 
 const std::string gMTUsKey = "MusculotendonUnits";
-const double gMinActivation = 0;
-const double gMaxActivation = 1;
 
 
 cArmNNTrackMuscularController::cArmNNTrackMuscularController()
 {
-	mExpNoise = 0.5;
+	mExpNoise = 0.4;
 }
 
 cArmNNTrackMuscularController::~cArmNNTrackMuscularController()
@@ -78,8 +76,11 @@ void cArmNNTrackMuscularController::BuildNNInputOffsetScale(Eigen::VectorXd& out
 
 void cArmNNTrackMuscularController::BuildNNOutputOffsetScale(Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const
 {
-	const double activation_offset = 0;
-	const double activation_scale = 1;
+	double min_act = cMusculotendonUnit::gMinActivation;
+	double max_act = cMusculotendonUnit::gMaxActivation;
+	const double activation_offset = -0.5 * (max_act + min_act);
+	const double activation_scale = 2 / (max_act - min_act);
+
 	int output_size = GetPoliActionSize();
 	out_offset = activation_offset * Eigen::VectorXd::Ones(output_size);
 	out_scale = activation_scale * Eigen::VectorXd::Ones(output_size);
@@ -226,7 +227,7 @@ void cArmNNTrackMuscularController::DecideAction()
 
 	for (int i = 0; i < static_cast<int>(mPoliAction.mParams.size()); ++i)
 	{
-		mPoliAction.mParams[i] = cMathUtil::Clamp(mPoliAction.mParams[i], gMinActivation, gMaxActivation);
+		mPoliAction.mParams[i] = cMathUtil::Clamp(mPoliAction.mParams[i], cMusculotendonUnit::gMinActivation, cMusculotendonUnit::gMaxActivation);
 	}
 }
 
@@ -234,8 +235,8 @@ void cArmNNTrackMuscularController::ApplyExpNoise(tAction& out_action) const
 {
 	// hack hack hack
 	int action_size = GetPoliActionSize();
-	Eigen::VectorXd bound_min = 0 * Eigen::VectorXd::Ones(action_size);
-	Eigen::VectorXd bound_max = 1 * Eigen::VectorXd::Ones(action_size);
+	Eigen::VectorXd bound_min = cMusculotendonUnit::gMinActivation * Eigen::VectorXd::Ones(action_size);
+	Eigen::VectorXd bound_max = cMusculotendonUnit::gMaxActivation * Eigen::VectorXd::Ones(action_size);
 	out_action.mParams = out_action.mParams.cwiseMax(bound_min).cwiseMin(bound_max);
 	
 	cArmNNTrackController::ApplyExpNoise(out_action);

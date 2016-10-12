@@ -1,7 +1,7 @@
 import os
 import subprocess
 
-poli_files_dir = 'data/intermediate/arm_rl/imitate_small_mtu/'
+poli_files_dir = 'output/intermediate/'
 exe_name = 'NNTest.exe'
 root_dir = os.path.dirname(__file__)
 

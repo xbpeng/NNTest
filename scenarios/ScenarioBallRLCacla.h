@@ -20,10 +20,7 @@ public:
 	virtual std::string GetName() const;
 	
 protected:
-	std::string mCriticSolverFile;
-	std::string mCriticNetFile;
-	std::string mCriticModelFile;
-
+	
 	virtual void BuildController(std::shared_ptr<cBallController>& out_ctrl);
 	virtual void InitTrainer();
 	virtual void BuildCriticOutputOffsetScale(Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const;

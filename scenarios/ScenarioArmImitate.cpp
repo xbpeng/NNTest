@@ -49,7 +49,7 @@ const std::shared_ptr<cKinCharacter>& cScenarioArmImitate::GetKinChar() const
 void cScenarioArmImitate::ToggleTraining()
 {
 	cScenarioArmTrain::ToggleTraining();
-	mEnableRandPose = EnableTraining();
+	//mEnableRandPose = EnableTraining();
 }
 
 std::string cScenarioArmImitate::GetName() const
@@ -71,8 +71,6 @@ void cScenarioArmImitate::BuildKinCharacter()
 
 void cScenarioArmImitate::InitTrainer()
 {
-	mTrainerParams.mSolverFile = mCriticSolverFile;
-	mTrainerParams.mNetFile = mCriticNetFile;
 	mTrainerParams.mPlaybackMemSize = 25000;
 	mTrainerParams.mPoolSize = 1;
 	mTrainerParams.mInitInputOffsetScale = false;
@@ -80,16 +78,6 @@ void cScenarioArmImitate::InitTrainer()
 
 	mTrainer->Init(mTrainerParams);
 	SetupScale();
-
-	if (mCriticModelFile != "")
-	{
-		mTrainer->LoadCriticModel(mCriticModelFile);
-	}
-
-	if (mActorModelFile != "")
-	{
-		mTrainer->LoadActorModel(mActorModelFile);
-	}
 
 	SetupActionBounds();
 }

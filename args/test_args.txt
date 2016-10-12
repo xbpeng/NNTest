@@ -6,10 +6,11 @@
 
 -solver_file= data/arm_rl/nets/arm_small_reduced_muscular_track_actor_solver.prototxt
 -net_file= data/arm_rl/nets/arm_small_reduced_muscular_track_actor_deploy.prototxt
--model_file= data/arm_rl/models/trainer_int_model_0000133000.h5
+-model_file= data/arm_rl/models/arm_small_imitate_model.h5
 
 -critic_solver_file= data/arm_rl/nets/arm_small_reduced_muscular_track_critic_solver.prototxt
 -critic_net_file= data/arm_rl/nets/arm_small_reduced_muscular_track_critic_deploy.prototxt
+-critic_model_file= data/arm_rl/models/arm_small_imitate_model_critic.h5
 
 -arm_ctrl_type= nn_track_muscular
 

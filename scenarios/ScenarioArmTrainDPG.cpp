@@ -93,8 +93,6 @@ void cScenarioArmTrainDPG::InitTrainer()
 {
 	//cScenarioArmTrain::InitTrainer();
 
-	mTrainerParams.mSolverFile = mCriticSolverFile;
-	mTrainerParams.mNetFile = mCriticNetFile;
 	mTrainerParams.mPlaybackMemSize = gTrainerPlaybackMemSize;
 	mTrainerParams.mPoolSize = 1;
 	mTrainerParams.mNumInitSamples = 20000;
@@ -104,24 +102,12 @@ void cScenarioArmTrainDPG::InitTrainer()
 	mTrainer->Init(mTrainerParams);
 	SetupScale();
 
-	auto trainer = std::static_pointer_cast<cCaclaTrainer>(mTrainer);
-	if (mCriticModelFile != "")
-	{
-		trainer->LoadCriticModel(mCriticModelFile);
-	}
-
-	if (mActorModelFile != "")
-	{
-		trainer->LoadActorModel(mActorModelFile);
-	}
-
 	SetupActionBounds();
 }
 
 void cScenarioArmTrainDPG::BuildTrainer(std::shared_ptr<cNeuralNetTrainer>& out_trainer) const
 {
 	auto trainer = std::shared_ptr<cDPGTrainer>(new cDPGTrainer());
-	trainer->SetActorFiles(mActorSolverFile, mActorNetFile);
 	trainer->SetDPGReg(0.0001);
 	trainer->SetPretrainIters(5000);
 	trainer->SetQDiff(10);

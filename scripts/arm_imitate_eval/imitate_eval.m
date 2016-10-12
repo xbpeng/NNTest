@@ -2,7 +2,11 @@ line_width = 0.8;
 files = {};
 
 files{end + 1} = {'arm_imitate_torque_eval.txt', 'Torque', 1000};
-files{end + 1} = {'arm_imitate_mtu_eval.txt', 'MTU', 1000};
+%files{end + 1} = {'arm_imitate_mtu_eval.txt', 'MTU', 1000};
+%files{end + 1} = {'arm_imitate_mtu_exp02_eval.txt', 'MTU Exp 0.2', 1000};
+files{end + 1} = {'arm_imitate_mtu_exp04_eval.txt', 'MTU Exp 0.4', 1000};
+files{end + 1} = {'arm_int_imitate_eval0.txt', 'Test0', 1000};
+files{end + 1} = {'arm_int_imitate_eval.txt', 'Test', 1000};
 
 lines = {'b-', 'r-', 'm-', 'k-', 'b--', 'r--', 'm--', 'k--'};
 
@@ -21,6 +25,7 @@ for i = 1:length(files)
    max_iter = max(max_iter, curr_iter_mult * (length(data{i}) - 1));
 end
 
+clf;
 hold on;
 for i = 1:length(data)
    line = lines{mod((i - 1), length(lines)) + 1};
@@ -35,8 +40,8 @@ hold off;
 xlabel('Iterations');
 ylabel('Average Tracking Error (m)');
 title('Performance vs Training Iterations');
-xlim([0, 150000]);
-ylim([0, 1]);
+%xlim([0, 150000]);
+%ylim([0, 1]);
 
 legend(names);
 
