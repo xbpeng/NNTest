@@ -1,4 +1,4 @@
-net: "data/arm_rl/nets/arm_reduced_single_dpg_actor_train.prototxt"
+net: "data/arm_rl/nets/arm_reduced_single_dpg_actor_net.prototxt"
 
 solver_type: ADAM
 solver_mode: CPU

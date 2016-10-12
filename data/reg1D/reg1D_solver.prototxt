@@ -1,6 +1,6 @@
 # The train/test net protocol buffer definition
-net: "data/reg1D/reg1D_train.prototxt"
-#net: "data/reg1D/reg1D_linear_train.prototxt"
+net: "data/reg1D/reg1D_net.prototxt"
+#net: "data/reg1D/reg1D_linear_net.prototxt"
 
 # The base learning rate, momentum and the weight decay of the network.
 base_lr: 0.01

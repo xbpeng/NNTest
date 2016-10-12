@@ -1,4 +1,4 @@
-net: "data/reg_rnn/reg_rnn_train.prototxt"
+net: "data/reg_rnn/reg_rnn_net.prototxt"
 
 solver_mode: CPU
 

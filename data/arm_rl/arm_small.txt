@@ -124,7 +124,7 @@
 			{
 				"Name": "0",
 				"OptCELength": 0.2,
-				"SlackLength": 0.3,
+				"SlackLength": 0.2,
 				"ForceMax": -900,
 				"AttachPts":
 				[
@@ -135,7 +135,7 @@
 			{
 				"Name": "1",
 				"OptCELength": 0.2,
-				"SlackLength": 0.3,
+				"SlackLength": 0.2,
 				"ForceMax": -900,
 				"AttachPts":
 				[

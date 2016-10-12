@@ -1,5 +1,5 @@
 # The train/test net protocol buffer definition
-net: "data/perceptron_test/perceptron_train.prototxt"
+net: "data/perceptron_test/perceptron_net.prototxt"
 
 # The base learning rate, momentum and the weight decay of the network.
 base_lr: 0.01

@@ -1,0 +1,230 @@
+name: "Arm"
+
+layer { 
+  name: 'input' 
+  type: 'Input' 
+  top: "input"
+  top: "label"
+  top: "weights"
+  input_param { 
+	shape: { dim: 32 dim: 1 dim: 1 dim: 10 } 
+    shape: { dim: 32 dim: 1 dim: 1 dim: 2 } 
+	shape: { dim: 32 dim: 1 dim: 1 dim: 2 } 
+  } 
+
+  include: { phase: TRAIN }
+}
+
+layer { 
+  name: 'input' 
+  type: 'Input' 
+  top: 'input' 
+  input_param { 
+    shape: { dim: 1 dim: 1 dim: 1 dim: 10 } 
+  } 
+
+  include: { phase: TEST }
+}
+
+layer {
+  name: "val_ip0"
+  type: "InnerProduct"
+  bottom: "input"
+  top: "val_ip0"
+  param {
+    lr_mult: 1
+	decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+	decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 128
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+layer {
+  name: "val_relu0"
+  type: "ReLU"
+  bottom: "val_ip0"
+  top: "val_relu0"
+}
+
+
+
+layer {
+  name: "val_ip1"
+  type: "InnerProduct"
+  bottom: "val_relu0"
+  top: "val_ip1"
+  param {
+    lr_mult: 1
+	decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+	decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 64
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+layer {
+  name: "val_relu1"
+  type: "ReLU"
+  bottom: "val_ip1"
+  top: "val_relu1"
+}
+
+layer {
+  name: "val_ip2"
+  type: "InnerProduct"
+  bottom: "val_relu1"
+  top: "val_ip2"
+  param {
+    lr_mult: 1
+	decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+	decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 1
+    weight_filler {
+      type: "uniform"
+	  min: -0.01
+	  max: 0.01
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+
+
+layer {
+  name: "a0_ip0"
+  type: "InnerProduct"
+  bottom: "data"
+  top: "a0_ip0"
+  param {
+    lr_mult: 1
+	decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+	decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 128
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+layer {
+  name: "a0_relu0"
+  type: "ReLU"
+  bottom: "a0_ip0"
+  top: "a0_relu0"
+}
+
+
+
+layer {
+  name: "a0_ip1"
+  type: "InnerProduct"
+  bottom: "a0_relu0"
+  top: "a0_ip1"
+  param {
+    lr_mult: 1
+	decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+	decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 64
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+layer {
+  name: "a0_relu1"
+  type: "ReLU"
+  bottom: "a0_ip1"
+  top: "a0_relu1"
+}
+
+layer {
+  name: "a0_ip2"
+  type: "InnerProduct"
+  bottom: "a0_relu1"
+  top: "a0_ip2"
+  param {
+    lr_mult: 1
+	decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+	decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+
+layer {
+	name: "output"
+	type: "Concat"
+	bottom: "val_ip2"
+	bottom: "a0_ip2"
+	top: "output"
+	concat_param {
+		axis: 1
+	}
+}
+
+layer {
+  name: "loss"
+  type: "WeightedEuclideanLoss"
+  bottom: "output"
+  bottom: "label"
+  bottom: "weights"
+  top: "loss"
+
+  include: { phase: TRAIN }
+}

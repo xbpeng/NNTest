@@ -1,4 +1,4 @@
-net: "data/arm_rl/nets/arm_reduced_dmace3_critic_train.prototxt"
+net: "data/arm_rl/nets/arm_reduced_dmace3_critic_net.prototxt"
 
 solver_type: ADAM
 solver_mode: CPU
