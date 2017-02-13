@@ -1,4 +1,4 @@
-net: "data/ball_rl/nets/ball_rl_actor_train.prototxt"
+net: "data/ball_rl/nets/ball_rl_actor_net.prototxt"
 
 solver_mode: CPU
 solver_type: ADADELTA
