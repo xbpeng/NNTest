@@ -504,6 +504,7 @@
     <ClCompile Include="stuff\Ball.cpp" />
     <ClCompile Include="stuff\BallController.cpp" />
     <ClCompile Include="stuff\BallControllerCacla.cpp" />
+    <ClCompile Include="stuff\BallControllerCaclaStochastic.cpp" />
     <ClCompile Include="stuff\BallControllerDPG.cpp" />
     <ClCompile Include="stuff\BallControllerMACE.cpp" />
     <ClCompile Include="stuff\BallControllerMACEDPG.cpp" />
@@ -758,6 +759,7 @@
     <ClInclude Include="stuff\Ball.h" />
     <ClInclude Include="stuff\BallController.h" />
     <ClInclude Include="stuff\BallControllerCacla.h" />
+    <ClInclude Include="stuff\BallControllerCaclaStochastic.h" />
     <ClInclude Include="stuff\BallControllerDPG.h" />
     <ClInclude Include="stuff\BallControllerMACE.h" />
     <ClInclude Include="stuff\BallControllerMACEDPG.h" />

@@ -1,6 +1,7 @@
 #include "ScenarioBallRLCacla.h"
 #include "learning/ACLearner.h"
 #include "learning/AsyncCaclaTrainer.h"
+#include "stuff/BallControllerCaclaStochastic.h"
 
 const int gTrainerPlaybackMemSize = 20000;
 
@@ -52,7 +53,8 @@ std::string cScenarioBallRLCacla::GetName() const
 
 void cScenarioBallRLCacla::BuildController(std::shared_ptr<cBallController>& out_ctrl)
 {
-	out_ctrl = std::shared_ptr<cBallController>(new cBallControllerCacla(mBall));
+	//out_ctrl = std::shared_ptr<cBallController>(new cBallControllerCacla(mBall));
+	out_ctrl = std::shared_ptr<cBallController>(new cBallControllerCaclaStochastic(mBall));
 }
 
 void cScenarioBallRLCacla::InitTrainer()

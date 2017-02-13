@@ -79,6 +79,7 @@ void cBallController::Reset()
 	UpdateDistTravelled();
 	mCurrAction = gActions[0];
 	mGroundSamples = Eigen::VectorXd::Zero(gNumGroundSamples);
+	mPoliState = Eigen::VectorXd::Zero(GetStateSize());
 }
 
 bool cBallController::IsNewCycle() const
@@ -105,6 +106,11 @@ tVector cBallController::GetGroundSamplePos(int s) const
 {
 	double dist = (gGroundSampleDist * s) / (gNumGroundSamples - 1);
 	return tVector(dist, 0, 0, 0) + mPosBeg;
+}
+
+int cBallController::GetNumGroundSamples() const
+{
+	return gNumGroundSamples;
 }
 
 bool cBallController::LoadNet(const std::string& net_file)
@@ -168,6 +174,7 @@ void cBallController::UpdateAction()
 	{
 		SampleGround(mGroundSamples);
 	}
+	BuildPoliState(mPoliState);
 
 	tAction action;
 	if (HasNet())
@@ -264,11 +271,8 @@ void cBallController::ExploreAction(tAction& out_action)
 
 void cBallController::CalcActionNet(tAction& out_action)
 {
-	Eigen::VectorXd state;
-	BuildState(state);
-
 	Eigen::VectorXd action;
-	mNet.Eval(state, action);
+	mNet.Eval(mPoliState, action);
 
 	int a = 0;
 	action.maxCoeff(&a);
@@ -329,7 +333,7 @@ cBallController::tAction cBallController::BuildActionFromParams(const Eigen::Vec
 
 void cBallController::RecordState(Eigen::VectorXd& out_state) const
 {
-	BuildState(out_state);
+	out_state = mPoliState;
 }
 
 void cBallController::RecordAction(Eigen::VectorXd& out_action) const
@@ -401,9 +405,13 @@ cNeuralNet& cBallController::GetNet()
 	return mNet;
 }
 
-void cBallController::BuildState(Eigen::VectorXd& state) const
+void cBallController::BuildPoliState(Eigen::VectorXd& state) const
 {
-	state = mGroundSamples;
+	state = Eigen::VectorXd::Zero(GetStateSize());
+	if (HasGround())
+	{
+		state.segment(0, mGroundSamples.size()) = mGroundSamples;
+	}
 }
 
 void cBallController::ApplyAction(int a)

@@ -1091,6 +1091,9 @@
     <ClCompile Include="..\TerrainRL\sim\CtTargetSoccerController.cpp">
       <Filter>Source Files\util</Filter>
     </ClCompile>
+    <ClCompile Include="stuff\BallControllerCaclaStochastic.cpp">
+      <Filter>Source Files\stuff</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\TerrainRL\util\Rand.h">
@@ -1851,6 +1854,9 @@
     </ClInclude>
     <ClInclude Include="..\TerrainRL\sim\CtTargetSoccerController.h">
       <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="stuff\BallControllerCaclaStochastic.h">
+      <Filter>Source Files\stuff</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

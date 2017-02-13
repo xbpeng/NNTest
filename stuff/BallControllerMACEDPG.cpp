@@ -112,12 +112,9 @@ void cBallControllerMACEDPG::DecideActionBoltzmann(tAction& out_action)
 	mOffPolicy = false;
 	const auto& actor = GetActor();
 
-	Eigen::VectorXd state;
-	BuildState(state);
-
 	Eigen::VectorXd actions;
-	actor.Eval(state, actions);
-	CalcCriticVals(state, actions, mBoltzmannBuffer);
+	actor.Eval(mPoliState, actions);
+	CalcCriticVals(mPoliState, actions, mBoltzmannBuffer);
 
 	int a_max = cMACEDPGTrainer::GetMaxFragValIdx(mBoltzmannBuffer);
 	int a = a_max;

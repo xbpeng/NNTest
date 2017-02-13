@@ -34,6 +34,7 @@ public:
 	virtual void SetCtrlNoise(double noise);
 	virtual const Eigen::VectorXd& GetGroundSamples() const;
 	virtual tVector GetGroundSamplePos(int s) const;
+	virtual int GetNumGroundSamples() const;
 
 	virtual bool LoadNet(const std::string& net_file);
 	virtual void LoadModel(const std::string& model_file);
@@ -77,6 +78,8 @@ protected:
 	double mExpTemp;
 
 	Eigen::VectorXd mGroundSamples;
+	Eigen::VectorXd mPoliState;
+
 	cNeuralNet mNet;
 
 	double mPhase;
@@ -105,7 +108,7 @@ protected:
 	virtual void GetRandomAction(tAction& out_action);
 	virtual void GetRandomActionDiscrete(tAction& out_action) const;
 
-	virtual void BuildState(Eigen::VectorXd& state) const;
+	virtual void BuildPoliState(Eigen::VectorXd& state) const;
 	virtual void ApplyAction(int a);
 	virtual void ApplyAction(const tAction& action);
 

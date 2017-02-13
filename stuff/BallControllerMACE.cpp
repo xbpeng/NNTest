@@ -162,11 +162,8 @@ void cBallControllerMACE::DecideActionBoltzmann(tAction& out_action)
 {
 	mOffPolicy = false;
 
-	Eigen::VectorXd state;
-	BuildState(state);
-
 	Eigen::VectorXd y;
-	mNet.Eval(state, y);
+	mNet.Eval(mPoliState, y);
 
 	int a_max = GetMaxFragIdx(y);
 	int a = a_max;
@@ -239,11 +236,8 @@ void cBallControllerMACE::ExploitPolicy(tAction& out_action)
 
 void cBallControllerMACE::CalcActionNetCont(tAction& out_action)
 {
-	Eigen::VectorXd state;
-	BuildState(state);
-
 	Eigen::VectorXd y;
-	mNet.Eval(state, y);
+	mNet.Eval(mPoliState, y);
 
 	int a = GetMaxFragIdx(y);
 	BuildActorAction(y, a, out_action);
@@ -259,11 +253,8 @@ void cBallControllerMACE::LoadNetIntern(const std::string& net_file)
 
 void cBallControllerMACE::GetRandomActionFrag(tAction& out_action)
 {
-	Eigen::VectorXd state;
-	BuildState(state);
-
 	Eigen::VectorXd y;
-	mNet.Eval(state, y);
+	mNet.Eval(mPoliState, y);
 
 	int max_a = GetMaxFragIdx(y);
 	int a = cMathUtil::RandIntExclude(0, GetNumActionFrags(), max_a);

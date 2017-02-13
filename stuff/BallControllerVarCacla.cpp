@@ -36,11 +36,8 @@ void cBallControllerVarCacla::BuildActorOutputOffsetScale(Eigen::VectorXd& out_o
 
 void cBallControllerVarCacla::GetRandomActionCont(tAction& out_action)
 {
-	Eigen::VectorXd state;
-	BuildState(state);
-
 	Eigen::VectorXd action;
-	mNet.Eval(state, action);
+	mNet.Eval(mPoliState, action);
 
 	out_action.mDist = action[0];
 	
