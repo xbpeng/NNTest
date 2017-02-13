@@ -34,9 +34,9 @@ void cScenarioBallRL::Init()
 
 void cScenarioBallRL::ParseArgs(const std::shared_ptr<cArgParser>& parser)
 {
-	parser->ParseString("solver_file", mSolverFile);
-	parser->ParseString("net_file", mNetFile);
-	parser->ParseString("model_file", mModelFile);
+	parser->ParseString("solver_file", mTrainerParams.mSolverFile);
+	parser->ParseString("net_file", mTrainerParams.mNetFile);
+	parser->ParseString("model_file", mTrainerParams.mModelFile);
 	parser->ParseDouble("ctrl_noise", mCtrlNoise);
 
 	parser->ParseDouble("exp_rate", mExpRate);
@@ -143,18 +143,18 @@ void cScenarioBallRL::SetupController()
 	ctrl->SetGround(&mGround);
 	ctrl->SetCtrlNoise(mCtrlNoise);
 
-	if (mNetFile != "")
+	if (mTrainerParams.mNetFile != "")
 	{
-		bool succ = ctrl->LoadNet(mNetFile);
+		bool succ = ctrl->LoadNet(mTrainerParams.mNetFile);
 		if (!succ)
 		{
-			printf("Failed to load network from %s\n", mNetFile.c_str());
+			printf("Failed to load network from %s\n", mTrainerParams.mNetFile.c_str());
 		}
 	}
 
-	if (mModelFile != "")
+	if (mTrainerParams.mModelFile != "")
 	{
-		ctrl->LoadModel(mModelFile);
+		ctrl->LoadModel(mTrainerParams.mModelFile);
 	}
 
 	ctrl->EnableExp(true);
@@ -332,8 +332,6 @@ void cScenarioBallRL::InitTrainer()
 	std::shared_ptr<cQNetTrainer> trainer = std::shared_ptr<cQNetTrainer>(new cQNetTrainer());
 	//std::shared_ptr<cAsyncQNetTrainer> trainer = std::shared_ptr<cAsyncQNetTrainer>(new cAsyncQNetTrainer());
 	
-	mTrainerParams.mNetFile = mNetFile;
-	mTrainerParams.mSolverFile = mSolverFile;
 	mTrainerParams.mPlaybackMemSize = gTrainerPlaybackMemSize;
 	mTrainerParams.mPoolSize = 2; // double Q learning
 	mTrainerParams.mNumInitSamples = 10000;
@@ -344,9 +342,9 @@ void cScenarioBallRL::InitTrainer()
 
 	trainer->Init(mTrainerParams);
 
-	if (mModelFile != "")
+	if (mTrainerParams.mModelFile != "")
 	{
-		trainer->LoadModel(mModelFile);
+		trainer->LoadModel(mTrainerParams.mModelFile);
 	}
 
 	mTrainer = trainer;

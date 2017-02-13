@@ -51,10 +51,6 @@ protected:
 	double mCtrlNoise;
 	bool mEnableTraining;
 
-	std::string mSolverFile;
-	std::string mNetFile;
-	std::string mModelFile;
-
 	int mNumTuples;
 	std::vector<tExpTuple> mTupleBuffer;
 	tExpTuple mCurrTuple;

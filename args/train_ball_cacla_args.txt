@@ -2,12 +2,12 @@
 -playback_speed= 60
 
 -solver_file= data/ball_rl/nets/ball_rl_actor_solver.prototxt
--net_file= data/ball_rl/nets/balL_rl_actor_deploy.prototxt
+-net_file= data/ball_rl/nets/balL_rl_actor_net.prototxt
 //-model_file= data/ball_rl/models/ball_rl_dpg_actor_init_model.h5
 //-model_file= data/ball_rl/models/ball_rl_dpg_actor_model.h5
 
 -critic_solver_file= data/ball_rl/nets/balL_rl_critic_solver.prototxt
--critic_net_file= data/ball_rl/nets/balL_rl_critic_deploy.prototxt
+-critic_net_file= data/ball_rl/nets/balL_rl_critic_net.prototxt
 
 -exp_rate= 0.2
 -exp_temp= 0.025

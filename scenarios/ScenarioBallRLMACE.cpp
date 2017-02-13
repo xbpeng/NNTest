@@ -32,8 +32,6 @@ void cScenarioBallRLMACE::InitTrainer()
 	auto trainer = std::shared_ptr<cMACETrainer>(new cMACETrainer());
 	//auto trainer = std::shared_ptr<cAsyncMACETrainer>(new cAsyncMACETrainer());
 
-	mTrainerParams.mNetFile = mNetFile;
-	mTrainerParams.mSolverFile = mSolverFile;
 	mTrainerParams.mPlaybackMemSize = gTrainerPlaybackMemSize;
 	mTrainerParams.mPoolSize = 1;
 	mTrainerParams.mNumInitSamples = 10000;
@@ -44,9 +42,9 @@ void cScenarioBallRLMACE::InitTrainer()
 	trainer->SetActionFragSize(ctrl->GetActionFragSize());
 	trainer->Init(mTrainerParams);
 
-	if (mModelFile != "")
+	if (mTrainerParams.mModelFile != "")
 	{
-		trainer->LoadModel(mModelFile);
+		trainer->LoadModel(mTrainerParams.mModelFile);
 	}
 
 	mTrainer = trainer;
