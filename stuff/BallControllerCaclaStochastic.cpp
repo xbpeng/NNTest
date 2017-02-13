@@ -18,15 +18,6 @@ int cBallControllerCaclaStochastic::GetStateSize() const
 	return state_size;
 }
 
-void cBallControllerCaclaStochastic::BuildNNOutputOffsetScale(Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const
-{
-	cBallControllerCacla::BuildNNOutputOffsetScale(out_offset, out_scale);
-	int exp_offset = cBallControllerCacla::GetStateSize();
-	int exp_size = gExpNoiseSize;
-	out_offset.segment(exp_offset, exp_size).setZero();
-	out_scale.segment(exp_offset, exp_size).setOnes();
-}
-
 void cBallControllerCaclaStochastic::GetRandomActionCont(tAction& out_action)
 {
 	ApplyStateExpNoise(mPoliState);
