@@ -33,7 +33,7 @@ cScenarioArm::cScenarioArm()
 	ResetPoseCounter();
 
 	mCtrlType = eCtrlNone;
-	mGravity = tVector(0, 0, 0, 0);
+	mWorldParams.mGravity = tVector(0, 0, 0, 0);
 
 	mRand.Seed(static_cast<unsigned long int>(cMathUtil::RandInt(0, std::numeric_limits<int>::max())));
 }
@@ -53,13 +53,13 @@ void cScenarioArm::Init()
 	ResetPoseCounter();
 }
 
-void cScenarioArm::ParseArgs(const cArgParser& parser)
+void cScenarioArm::ParseArgs(const std::shared_ptr<cArgParser>& parser)
 {
 	cScenarioSimChar::ParseArgs(parser);
-	parser.ParseString("net_file", mNetFile);
-	parser.ParseStringArray("model_file", mModelFiles);
-	parser.ParseString("scale_file", mScaleFile);
-	parser.ParseBool("enable_rand_pose", mEnableRandPose);
+	parser->ParseString("net_file", mNetFile);
+	parser->ParseStringArray("model_file", mModelFiles);
+	parser->ParseString("scale_file", mScaleFile);
+	parser->ParseBool("enable_rand_pose", mEnableRandPose);
 
 	ParseCtrlType(parser, "arm_ctrl_type", mCtrlType);
 }
@@ -205,8 +205,8 @@ std::string cScenarioArm::GetName() const
 void cScenarioArm::BuildWorld()
 {
 	cScenarioSimChar::BuildWorld();
-	mWorld->SetLinearDamping(gLinearDamping);
-	mWorld->SetAngularDamping(gAngularDamping);
+	mWorld->SetDefaultLinearDamping(gLinearDamping);
+	mWorld->SetDefaultAngularDamping(gAngularDamping);
 }
 
 bool cScenarioArm::BuildController(std::shared_ptr<cCharController>& out_ctrl)
@@ -236,7 +236,7 @@ bool cScenarioArm::BuildController(const std::shared_ptr<cSimCharacter>& charact
 	else if (ctrl_type == eCtrlQP)
 	{
 		std::shared_ptr<cArmQPController> curr_ctrl = std::shared_ptr<cArmQPController>(new cArmQPController());
-		curr_ctrl->Init(character.get(), mGravity);
+		curr_ctrl->Init(character.get(), mWorldParams.mGravity);
 		curr_ctrl->SetTorqueLimit(gTorqueLim);
 		curr_ctrl->SetUpdatePeriod(gCtrlUpdatePeriod);
 		out_ctrl = curr_ctrl;
@@ -244,7 +244,7 @@ bool cScenarioArm::BuildController(const std::shared_ptr<cSimCharacter>& charact
 	else if (ctrl_type == eCtrlPDQP)
 	{
 		std::shared_ptr<cArmPDQPController> curr_ctrl = std::shared_ptr<cArmPDQPController>(new cArmPDQPController());
-		curr_ctrl->Init(character.get(), mGravity, mCharacterFile);
+		curr_ctrl->Init(character.get(), mWorldParams.mGravity, mCharacterFile);
 		curr_ctrl->SetTorqueLimit(gTorqueLim);
 		curr_ctrl->SetUpdatePeriod(gCtrlUpdatePeriod);
 		out_ctrl = curr_ctrl;
@@ -252,7 +252,7 @@ bool cScenarioArm::BuildController(const std::shared_ptr<cSimCharacter>& charact
 	else if (ctrl_type == eCtrlVelQP)
 	{
 		std::shared_ptr<cArmVelQPController> curr_ctrl = std::shared_ptr<cArmVelQPController>(new cArmVelQPController());
-		curr_ctrl->Init(character.get(), mGravity, mCharacterFile);
+		curr_ctrl->Init(character.get(), mWorldParams.mGravity, mCharacterFile);
 		curr_ctrl->SetTorqueLimit(gTorqueLim);
 		curr_ctrl->SetUpdatePeriod(gCtrlUpdatePeriod);
 		out_ctrl = curr_ctrl;
@@ -278,13 +278,13 @@ bool cScenarioArm::BuildNNController(eCtrlType ctrl_type, std::shared_ptr<cCharC
 	else if (ctrl_type == eCtrlPDNN)
 	{
 		std::shared_ptr<cArmPDNNController> curr_ctrl = std::shared_ptr<cArmPDNNController>(new cArmPDNNController());
-		curr_ctrl->Init(mChar.get(), mGravity, mCharacterFile);
+		curr_ctrl->Init(mChar.get(), mWorldParams.mGravity, mCharacterFile);
 		out_ctrl = curr_ctrl;
 	}
 	else if (ctrl_type == eCtrlVelNN)
 	{
 		std::shared_ptr<cArmVelNNController> curr_ctrl = std::shared_ptr<cArmVelNNController>(new cArmVelNNController());
-		curr_ctrl->Init(mChar.get(), mGravity, mCharacterFile);
+		curr_ctrl->Init(mChar.get(), mWorldParams.mGravity, mCharacterFile);
 		out_ctrl = curr_ctrl;
 	}
 	else if (ctrl_type == eCtrlNNPixel)
@@ -296,13 +296,13 @@ bool cScenarioArm::BuildNNController(eCtrlType ctrl_type, std::shared_ptr<cCharC
 	else if (ctrl_type == eCtrlPDNNPixel)
 	{
 		std::shared_ptr<cArmPDNNPixelController> curr_ctrl = std::shared_ptr<cArmPDNNPixelController>(new cArmPDNNPixelController());
-		curr_ctrl->Init(mChar.get(), mGravity, mCharacterFile);
+		curr_ctrl->Init(mChar.get(), mWorldParams.mGravity, mCharacterFile);
 		out_ctrl = curr_ctrl;
 	}
 	else if (ctrl_type == eCtrlVelNNPixel)
 	{
 		std::shared_ptr<cArmVelNNPixelController> curr_ctrl = std::shared_ptr<cArmVelNNPixelController>(new cArmVelNNPixelController());
-		curr_ctrl->Init(mChar.get(), mGravity, mCharacterFile);
+		curr_ctrl->Init(mChar.get(), mWorldParams.mGravity, mCharacterFile);
 		out_ctrl = curr_ctrl;
 	}
 	else if (ctrl_type == eCtrlNNPixelNoPose)
@@ -320,7 +320,7 @@ bool cScenarioArm::BuildNNController(eCtrlType ctrl_type, std::shared_ptr<cCharC
 	else if (ctrl_type == eCtrlPDMACE)
 	{
 		std::shared_ptr<cArmPDControllerMACE> curr_ctrl = std::shared_ptr<cArmPDControllerMACE>(new cArmPDControllerMACE());
-		curr_ctrl->Init(mChar.get(), mGravity, mCharacterFile);
+		curr_ctrl->Init(mChar.get(), mWorldParams.mGravity, mCharacterFile);
 		out_ctrl = curr_ctrl;
 	}
 	else if (ctrl_type == eCtrlNNTrack)
@@ -636,10 +636,10 @@ bool cScenarioArm::NeedCtrlUpdate() const
 	return false;
 }
 
-void cScenarioArm::ParseCtrlType(const cArgParser& parser, const std::string& key, eCtrlType& out_ctrl) const
+void cScenarioArm::ParseCtrlType(const std::shared_ptr<cArgParser>& parser, const std::string& key, eCtrlType& out_ctrl) const
 {
 	std::string str = "";
-	parser.ParseString(key, str);
+	parser->ParseString(key, str);
 
 	if (str == "")
 	{

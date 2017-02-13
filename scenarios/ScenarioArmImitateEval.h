@@ -11,7 +11,7 @@ public:
 	cScenarioArmImitateEval();
 	virtual ~cScenarioArmImitateEval();
 
-	virtual void ParseArgs(const cArgParser& parser);
+	virtual void ParseArgs(const std::shared_ptr<cArgParser>& parser);
 	virtual void Init();
 	virtual void Reset();
 	virtual void Clear();

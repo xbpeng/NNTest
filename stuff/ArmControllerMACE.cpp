@@ -133,7 +133,7 @@ void cArmControllerMACE::DecideAction()
 	int a_max = GetMaxFragIdx(y);
 	int a = a_max;
 
-	if (mEnableExp && mExpTemp != 0)
+	if (mEnableExp && mExpParams.mTemp != 0)
 	{
 		int num_actors = GetNumActionFrags();
 		double max_val = GetVal(y, a_max);
@@ -142,7 +142,7 @@ void cArmControllerMACE::DecideAction()
 		for (int i = 0; i < num_actors; ++i)
 		{
 			double curr_val = GetVal(y, i);
-			curr_val = std::exp((curr_val - max_val) / mExpTemp);
+			curr_val = std::exp((curr_val - max_val) / mExpParams.mTemp);
 
 			mBoltzmannBuffer[i] = curr_val;
 			sum += curr_val;
@@ -168,7 +168,7 @@ void cArmControllerMACE::DecideAction()
 	if (mEnableExp)
 	{
 		double rand_noise = cMathUtil::RandDouble();
-		if (rand_noise < mExpRate)
+		if (rand_noise < mExpParams.mRate)
 		{
 			ApplyExpNoise(mPoliAction);
 			mExpActor = true;

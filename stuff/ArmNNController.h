@@ -28,7 +28,6 @@ public:
 
 protected:
 	cNeuralNet mNet;
-	double mExpNoise;
 	bool mOffPolicy;
 
 	virtual void LoadNetIntern(const std::string& net_file);

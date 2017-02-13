@@ -13,7 +13,7 @@ public:
 	virtual ~cDrawScenarioReg1D();
 
 	virtual void Init();
-	virtual void ParseArgs(const cArgParser& parser);
+	virtual void ParseArgs(const std::shared_ptr<cArgParser>& parser);
 
 	virtual void Reset();
 	virtual void Clear();
@@ -25,7 +25,7 @@ public:
 	std::string GetName() const;
 
 protected:
-	cArgParser mArgParser;
+	std::shared_ptr<cArgParser> mArgParser;
 	std::unique_ptr<cScenarioReg1D> mScene;
 	tVector mMousePos;
 	bool mMousePressed;

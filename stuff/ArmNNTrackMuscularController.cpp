@@ -8,7 +8,7 @@ const std::string gMTUsKey = "MusculotendonUnits";
 
 cArmNNTrackMuscularController::cArmNNTrackMuscularController()
 {
-	mExpNoise = 0.4;
+	mExpParams.mNoise = 0.4;
 }
 
 cArmNNTrackMuscularController::~cArmNNTrackMuscularController()

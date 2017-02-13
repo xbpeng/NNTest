@@ -9,7 +9,7 @@ public:
 	cDrawScenarioBallRLMACEDPG(cCamera& cam);
 	virtual ~cDrawScenarioBallRLMACEDPG();
 
-	virtual void ParseArgs(const cArgParser& parser);
+	virtual void ParseArgs(const std::shared_ptr<cArgParser>& parser);
 
 protected:
 	std::string mCriticOutputNetFile;

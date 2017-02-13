@@ -66,7 +66,9 @@ void cArmPDNNPixelController::ApplyPoliAction(double time_step, const tAction& a
 		if (mImpPDCtrl.IsValidPDCtrl(j))
 		{
 			double theta = action.mParams[idx];
-			mImpPDCtrl.SetTargetTheta(j, theta);
+			Eigen::VectorXd tar_theta(1);
+			tar_theta[0] = theta;
+			mImpPDCtrl.SetTargetTheta(j, tar_theta);
 			++idx;
 		}
 	}

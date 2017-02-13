@@ -10,7 +10,7 @@ public:
 	cDrawScenarioBallRLCacla(cCamera& cam);
 	virtual ~cDrawScenarioBallRLCacla();
 
-	virtual void ParseArgs(const cArgParser& parser);
+	virtual void ParseArgs(const std::shared_ptr<cArgParser>& parser);
 
 protected:
 	std::string mCriticOutputNetFile;

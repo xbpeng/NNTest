@@ -13,7 +13,7 @@ cScenarioBallRLDPG::~cScenarioBallRLDPG()
 {
 }
 
-void cScenarioBallRLDPG::ParseArgs(const cArgParser& parser)
+void cScenarioBallRLDPG::ParseArgs(const std::shared_ptr<cArgParser>& parser)
 {
 	cScenarioBallRLCacla::ParseArgs(parser);
 }
@@ -32,8 +32,8 @@ void cScenarioBallRLDPG::InitTrainer()
 	mTrainerParams.mPoolSize = 1;
 	mTrainerParams.mNumInitSamples = 10000;
 	mTrainerParams.mFreezeTargetIters = 500;
+	mTrainerParams.mPretrainIters = 5000;
 
-	trainer->SetPretrainIters(5000);
 	trainer->SetDPGReg(0.1);
 	trainer->SetQDiff(4);
 	trainer->Init(mTrainerParams);

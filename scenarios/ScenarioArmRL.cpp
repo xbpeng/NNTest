@@ -30,14 +30,14 @@ void cScenarioArmRL::Init()
 	InitTupleBuffer();
 }
 
-void cScenarioArmRL::ParseArgs(const cArgParser& parser)
+void cScenarioArmRL::ParseArgs(const std::shared_ptr<cArgParser>& parser)
 {
 	cScenarioArm::ParseArgs(parser);
-	parser.ParseString("solver_file", mSolverFile);
-	parser.ParseBool("arm_pretrain", mPretrain);
+	parser->ParseString("solver_file", mSolverFile);
+	parser->ParseBool("arm_pretrain", mPretrain);
 
-	parser.ParseInt("trainer_int_iter", mTrainerParams.mIntOutputIters);
-	parser.ParseString("trainer_int_output", mTrainerParams.mIntOutputFile);
+	parser->ParseInt("trainer_int_iter", mTrainerParams.mIntOutputIters);
+	parser->ParseString("trainer_int_output", mTrainerParams.mIntOutputFile);
 
 	ParseCtrlType(parser, "coach_type", mCoachType);
 }
@@ -100,7 +100,6 @@ void cScenarioArmRL::BuildCoach()
 	char_params.mPos = GetDefaultCharPos();
 	char_params.mCharFile = mCharacterFile;
 	char_params.mStateFile = mCharStateFile;
-	char_params.mPlaneCons = GetCharPlaneCons();
 
 	bool succ = mCoach->Init(mWorld, char_params);
 	if (succ)

@@ -12,7 +12,7 @@ public:
 	cDrawScenarioArmTrain(cCamera& cam);
 	virtual ~cDrawScenarioArmTrain();
 
-	virtual void ParseArgs(const cArgParser& parser);
+	virtual void ParseArgs(const std::shared_ptr<cArgParser>& parser);
 	virtual void Keyboard(unsigned char key, int x, int y);
 	virtual void Update(double time_elapsed);
 

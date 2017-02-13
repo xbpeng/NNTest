@@ -12,7 +12,7 @@ cScenarioBallRLMACE::~cScenarioBallRLMACE()
 {
 }
 
-void cScenarioBallRLMACE::ParseArgs(const cArgParser& parser)
+void cScenarioBallRLMACE::ParseArgs(const std::shared_ptr<cArgParser>& parser)
 {
 	cScenarioBallRL::ParseArgs(parser);
 }

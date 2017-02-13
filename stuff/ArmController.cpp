@@ -240,8 +240,8 @@ void cArmController::ApplyPoliAction(double time_step, const tAction& action)
 		{
 			double t = action.mParams[idx];
 			t = cMathUtil::Clamp(t, -mTorqueLim, mTorqueLim);
-			tVector torque = tVector(0, 0, t, 0);
-			joint.AddTorque(torque);
+			Eigen::VectorXd tau = t * Eigen::VectorXd::Ones(mChar->GetParamSize(j));
+			joint.AddTau(tau);
 			++idx;
 		}
 	}

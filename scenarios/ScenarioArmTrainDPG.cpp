@@ -98,6 +98,7 @@ void cScenarioArmTrainDPG::InitTrainer()
 	mTrainerParams.mNumInitSamples = 20000;
 	mTrainerParams.mInitInputOffsetScale = false;
 	mTrainerParams.mFreezeTargetIters = 500;
+	mTrainerParams.mPretrainIters = 5000;
 
 	mTrainer->Init(mTrainerParams);
 	SetupScale();
@@ -109,7 +110,6 @@ void cScenarioArmTrainDPG::BuildTrainer(std::shared_ptr<cNeuralNetTrainer>& out_
 {
 	auto trainer = std::shared_ptr<cDPGTrainer>(new cDPGTrainer());
 	trainer->SetDPGReg(0.0001);
-	trainer->SetPretrainIters(5000);
 	trainer->SetQDiff(10);
 	out_trainer = trainer;
 }

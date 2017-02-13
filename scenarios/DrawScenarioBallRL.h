@@ -11,7 +11,7 @@ public:
 	cDrawScenarioBallRL(cCamera& cam);
 	virtual ~cDrawScenarioBallRL();
 
-	virtual void ParseArgs(const cArgParser& parser);
+	virtual void ParseArgs(const std::shared_ptr<cArgParser>& parser);
 	virtual void Keyboard(unsigned char key, int x, int y);
 	virtual void Update(double time_elapsed);
 	virtual void Init();
@@ -23,7 +23,7 @@ public:
 	std::string GetName() const;
 
 protected:
-	cArgParser mArgParser;
+	std::shared_ptr<cArgParser> mArgParser;
 	std::shared_ptr<cScenarioBallRL> mScene;
 	bool mTrackCharacter;
 	std::string mOutputNetFile;

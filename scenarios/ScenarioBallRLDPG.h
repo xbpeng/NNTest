@@ -8,7 +8,7 @@ public:
 	cScenarioBallRLDPG();
 	virtual ~cScenarioBallRLDPG();
 
-	virtual void ParseArgs(const cArgParser& parser);
+	virtual void ParseArgs(const std::shared_ptr<cArgParser>& parser);
 	virtual std::string GetName() const;
 	
 protected:

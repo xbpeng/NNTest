@@ -3,7 +3,6 @@
 
 void cDrawBall::Draw(const cBall& ball, const tVector& col)
 {
-	const int slices = 16;
 	tVector pos = ball.GetPos();
 	double r = ball.GetRadius();
 	pos[1] += r;
@@ -11,11 +10,11 @@ void cDrawBall::Draw(const cBall& ball, const tVector& col)
 	glPushMatrix();
 	cDrawUtil::Translate(pos);
 	cDrawUtil::SetColor(col);
-	cDrawUtil::DrawDisk(r, slices, cDrawUtil::eDrawSolid);
+	cDrawUtil::DrawDisk(r, cDrawUtil::eDrawSolid);
 
 	cDrawUtil::SetLineWidth(1);
 	cDrawUtil::SetColor(tVector(0, 0, 0, 1));
-	cDrawUtil::DrawDisk(r, slices, cDrawUtil::eDrawWire);
+	cDrawUtil::DrawDisk(r, cDrawUtil::eDrawWire);
 	glPopMatrix();
 
 	// draw samples
@@ -30,7 +29,7 @@ void cDrawBall::Draw(const cBall& ball, const tVector& col)
 
 		glPushMatrix();
 		cDrawUtil::Translate(pos);
-		cDrawUtil::DrawDisk(0.02, 16);
+		cDrawUtil::DrawDisk(0.02);
 		glPopMatrix();
 	}
 }

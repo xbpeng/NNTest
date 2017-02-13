@@ -62,7 +62,8 @@ void cArmVelQPController::TorquesToVel(const Eigen::VectorXd& torques, Eigen::Ve
 		if (pd_ctrl.IsValid())
 		{
 			double t = torques[idx];
-			double tar_vel = pd_ctrl.CalcTargetVel(t);
+			//double tar_vel = pd_ctrl.CalcTargetVel(t);
+			double tar_vel = 0; // hack hack hack
 			out_vel[idx] = tar_vel;
 			++idx;
 		}
@@ -80,7 +81,9 @@ void cArmVelQPController::ApplyPoliAction(double time_step, const tAction& actio
 		if (mImpPDCtrl.IsValidPDCtrl(j))
 		{
 			double vel = action.mParams[idx];
-			mImpPDCtrl.SetTargetVel(j, vel);
+			Eigen::VectorXd tar_vel(1);
+			tar_vel[0] = vel;
+			mImpPDCtrl.SetTargetVel(j, tar_vel);
 			++idx;
 		}
 	}

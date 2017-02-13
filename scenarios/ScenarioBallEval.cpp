@@ -18,11 +18,11 @@ void cScenarioBallEval::Init()
 	mBall.GetController()->EnableExp(false);
 }
 
-void cScenarioBallEval::ParseArgs(const cArgParser& parser)
+void cScenarioBallEval::ParseArgs(const std::shared_ptr<cArgParser>& parser)
 {
 	BALL_EVAL_BASE::ParseArgs(parser);
-	parser.ParseInt("ball_eval_samples", mMaxSamples);
-	parser.ParseString("output_file", mOutputFile);
+	parser->ParseInt("ball_eval_samples", mMaxSamples);
+	parser->ParseString("output_file", mOutputFile);
 }
 
 void cScenarioBallEval::Reset()

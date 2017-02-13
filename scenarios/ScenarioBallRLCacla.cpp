@@ -25,12 +25,12 @@ void cScenarioBallRLCacla::InitLearner()
 	learner->Init();
 }
 
-void cScenarioBallRLCacla::ParseArgs(const cArgParser& parser)
+void cScenarioBallRLCacla::ParseArgs(const std::shared_ptr<cArgParser>& parser)
 {
 	cScenarioBallRL::ParseArgs(parser);
-	parser.ParseString("critic_solver_file", mTrainerParams.mCriticSolverFile);
-	parser.ParseString("critic_net_file", mTrainerParams.mCriticNetFile);
-	parser.ParseString("critic_model_file", mTrainerParams.mCriticModelFile);
+	parser->ParseString("critic_solver_file", mTrainerParams.mCriticSolverFile);
+	parser->ParseString("critic_net_file", mTrainerParams.mCriticNetFile);
+	parser->ParseString("critic_model_file", mTrainerParams.mCriticModelFile);
 }
 
 void cScenarioBallRLCacla::SaveCriticNet(const std::string& filename) const

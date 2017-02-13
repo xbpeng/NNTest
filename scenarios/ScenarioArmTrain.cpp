@@ -45,22 +45,22 @@ void cScenarioArmTrain::Init()
 	controller->EnableExp(true);
 }
 
-void cScenarioArmTrain::ParseArgs(const cArgParser& parser)
+void cScenarioArmTrain::ParseArgs(const std::shared_ptr<cArgParser>& parser)
 {
 	cScenarioArm::ParseArgs(parser);
-	parser.ParseBool("arm_pretrain", mPretrain);
-	parser.ParseInt("trainer_int_iter", mTrainerParams.mIntOutputIters);
-	parser.ParseString("trainer_int_output", mTrainerParams.mIntOutputFile);
-	parser.ParseDouble("exp_rate", mExpRate);
-	parser.ParseDouble("init_exp_rate", mInitExpRate);
-	parser.ParseDouble("exp_temp", mExpTemp);
-	parser.ParseDouble("init_exp_temp", mInitExpTemp);
-	parser.ParseInt("num_exp_anneal_iters", mNumAnnealIters);
+	parser->ParseBool("arm_pretrain", mPretrain);
+	parser->ParseInt("trainer_int_iter", mTrainerParams.mIntOutputIters);
+	parser->ParseString("trainer_int_output", mTrainerParams.mIntOutputFile);
+	parser->ParseDouble("exp_rate", mExpRate);
+	parser->ParseDouble("init_exp_rate", mInitExpRate);
+	parser->ParseDouble("exp_temp", mExpTemp);
+	parser->ParseDouble("init_exp_temp", mInitExpTemp);
+	parser->ParseInt("num_exp_anneal_iters", mNumAnnealIters);
 
-	parser.ParseString("critic_solver_file", mTrainerParams.mCriticSolverFile);
-	parser.ParseString("critic_net_file", mTrainerParams.mCriticNetFile);
-	parser.ParseString("critic_model_file", mTrainerParams.mCriticModelFile);
-	parser.ParseString("solver_file", mTrainerParams.mSolverFile);
+	parser->ParseString("critic_solver_file", mTrainerParams.mCriticSolverFile);
+	parser->ParseString("critic_net_file", mTrainerParams.mCriticNetFile);
+	parser->ParseString("critic_model_file", mTrainerParams.mCriticModelFile);
+	parser->ParseString("solver_file", mTrainerParams.mSolverFile);
 
 	mTrainerParams.mNetFile = mNetFile;
 
@@ -394,10 +394,10 @@ void cScenarioArmTrain::UpdatePolicy()
 		ctrl->CopyNet(*learner_net);
 	}
 
-	double exp_rate = CalcExpRate();
-	double exp_temp = CalcExpTemp();
-	ctrl->SetExpRate(exp_rate);
-	ctrl->SetExpTemp(exp_temp);
+	cCharController::tExpParams exp_params = ctrl->GetExpParams();
+	exp_params.mRate = CalcExpRate();
+	exp_params.mTemp = CalcExpTemp();
+	ctrl->SetExpParams(exp_params);
 }
 
 void cScenarioArmTrain::Train()

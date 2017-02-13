@@ -62,7 +62,7 @@ double gPlaybackSpeed = 1;
 const double gPlaybackDelta = 1;
 
 // arg parser
-cArgParser gArgParser;
+std::shared_ptr<cArgParser> gArgParser;
 std::shared_ptr<cDrawScenario> gScenario = NULL;
 int gArgc = 0;
 
@@ -99,7 +99,7 @@ void SetupScenario()
 	ClearScenario();
 	
 	std::string scenario_name = "";
-	gArgParser.ParseString("scenario", scenario_name);
+	gArgParser->ParseString("scenario", scenario_name);
 
 	if (scenario_name == "reg_1d")
 	{
@@ -277,18 +277,18 @@ void StepAnim(double time_step)
 
 void ParseArgs(int argc, char** argv)
 {
-	gArgParser = cArgParser(argv, argc);
+	gArgParser = std::shared_ptr<cArgParser>(new cArgParser(argv, argc));
 
 	std::string arg_file = "";
-	gArgParser.ParseString("arg_file", arg_file);
+	gArgParser->ParseString("arg_file", arg_file);
 	if (arg_file != "")
 	{
 		// append the args from the file to the ones from the commandline
 		// this allows the cmd args to overwrite the file args
-		gArgParser.AppendArgs(arg_file);
+		gArgParser->AppendArgs(arg_file);
 	}
 
-	gArgParser.ParseDouble("playback_speed", gPlaybackSpeed);
+	gArgParser->ParseDouble("playback_speed", gPlaybackSpeed);
 }
 
 
@@ -472,8 +472,8 @@ void InitOpenGl(void)
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
 
-	cDrawUtil::InitDrawUtil();
 	glewInit();
+	cDrawUtil::InitDrawUtil();
 }
 
 int main(int argc, char** argv)

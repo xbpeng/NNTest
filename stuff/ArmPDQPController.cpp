@@ -53,7 +53,8 @@ void cArmPDQPController::TorquesToTheta(const Eigen::VectorXd& torques, Eigen::V
 		if (pd_ctrl.IsValid())
 		{
 			double t = torques[idx];
-			double tar_theta = pd_ctrl.CalcTargetTheta(t);
+			//double tar_theta = pd_ctrl.CalcTargetTheta(t);
+			double tar_theta = 0; // hack hack hack
 			out_theta[idx] = tar_theta;
 			++idx;
 		}
@@ -71,7 +72,9 @@ void cArmPDQPController::ApplyPoliAction(double time_step, const tAction& action
 		if (mImpPDCtrl.IsValidPDCtrl(j))
 		{
 			double theta = action.mParams[idx];
-			mImpPDCtrl.SetTargetTheta(j, theta);
+			Eigen::VectorXd tar_theta(1);
+			tar_theta[0] = theta;
+			mImpPDCtrl.SetTargetTheta(j, tar_theta);
 			++idx;
 		}
 	}

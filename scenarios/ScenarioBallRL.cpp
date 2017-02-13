@@ -32,31 +32,31 @@ void cScenarioBallRL::Init()
 	Reset();
 }
 
-void cScenarioBallRL::ParseArgs(const cArgParser& parser)
+void cScenarioBallRL::ParseArgs(const std::shared_ptr<cArgParser>& parser)
 {
-	parser.ParseString("solver_file", mSolverFile);
-	parser.ParseString("net_file", mNetFile);
-	parser.ParseString("model_file", mModelFile);
-	parser.ParseDouble("ctrl_noise", mCtrlNoise);
+	parser->ParseString("solver_file", mSolverFile);
+	parser->ParseString("net_file", mNetFile);
+	parser->ParseString("model_file", mModelFile);
+	parser->ParseDouble("ctrl_noise", mCtrlNoise);
 
-	parser.ParseDouble("exp_rate", mExpRate);
-	parser.ParseDouble("exp_temp", mExpTemp);
-	parser.ParseInt("num_exp_anneal_iters", mNumExpAnnealIters);
+	parser->ParseDouble("exp_rate", mExpRate);
+	parser->ParseDouble("exp_temp", mExpTemp);
+	parser->ParseInt("num_exp_anneal_iters", mNumExpAnnealIters);
 
-	parser.ParseDouble("ground_height", mGroundParams.mHeight);
-	parser.ParseDouble("ground_min_spacing", mGroundParams.mMinSpacing);
-	parser.ParseDouble("ground_max_spacing", mGroundParams.mMaxSpacing);
-	parser.ParseDouble("ground_min_box_size", mGroundParams.mMinBoxSize);
-	parser.ParseDouble("ground_max_box_size", mGroundParams.mMaxBoxSize);
+	parser->ParseDouble("ground_height", mGroundParams.mHeight);
+	parser->ParseDouble("ground_min_spacing", mGroundParams.mMinSpacing);
+	parser->ParseDouble("ground_max_spacing", mGroundParams.mMaxSpacing);
+	parser->ParseDouble("ground_min_box_size", mGroundParams.mMinBoxSize);
+	parser->ParseDouble("ground_max_box_size", mGroundParams.mMaxBoxSize);
 
-	parser.ParseDouble("ground_spacing_prob1", mGroundParams.mSpacingProb1);
-	parser.ParseDouble("ground_min_spacing1", mGroundParams.mMinSpacing1);
-	parser.ParseDouble("ground_max_spacing1", mGroundParams.mMaxSpacing1);
+	parser->ParseDouble("ground_spacing_prob1", mGroundParams.mSpacingProb1);
+	parser->ParseDouble("ground_min_spacing1", mGroundParams.mMinSpacing1);
+	parser->ParseDouble("ground_max_spacing1", mGroundParams.mMaxSpacing1);
 
-	parser.ParseInt("ground_num_boxes", mGroundParams.mNumBoxes);
+	parser->ParseInt("ground_num_boxes", mGroundParams.mNumBoxes);
 
-	parser.ParseInt("trainer_int_iter", mTrainerParams.mIntOutputIters);
-	parser.ParseString("trainer_int_output", mTrainerParams.mIntOutputFile);
+	parser->ParseInt("trainer_int_iter", mTrainerParams.mIntOutputIters);
+	parser->ParseString("trainer_int_output", mTrainerParams.mIntOutputFile);
 }
 
 void cScenarioBallRL::Reset()

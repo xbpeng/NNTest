@@ -10,7 +10,7 @@ public:
 	cScenarioBallRLCacla();
 	virtual ~cScenarioBallRLCacla();
 
-	virtual void ParseArgs(const cArgParser& parser);
+	virtual void ParseArgs(const std::shared_ptr<cArgParser>& parser);
 
 	virtual void InitLearner();
 

@@ -20,12 +20,12 @@ cDrawScenarioBallRL::~cDrawScenarioBallRL()
 {
 }
 
-void cDrawScenarioBallRL::ParseArgs(const cArgParser& parser)
+void cDrawScenarioBallRL::ParseArgs(const std::shared_ptr<cArgParser>& parser)
 {
 	cDrawScenario::ParseArgs(parser);
 	mArgParser = parser;
 
-	parser.ParseString("output_net_file", mOutputNetFile);
+	parser->ParseString("output_net_file", mOutputNetFile);
 }
 
 void cDrawScenarioBallRL::Keyboard(unsigned char key, int x, int y)

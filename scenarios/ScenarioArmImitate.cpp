@@ -15,10 +15,10 @@ cScenarioArmImitate::~cScenarioArmImitate()
 {
 }
 
-void cScenarioArmImitate::ParseArgs(const cArgParser& parser)
+void cScenarioArmImitate::ParseArgs(const std::shared_ptr<cArgParser>& parser)
 {
 	cScenarioArmTrain::ParseArgs(parser);
-	parser.ParseString("motion_file", mMotionFile);
+	parser->ParseString("motion_file", mMotionFile);
 }
 
 void cScenarioArmImitate::Init()

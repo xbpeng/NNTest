@@ -41,17 +41,17 @@ void cScenarioArmEval::Init()
 	}
 }
 
-void cScenarioArmEval::ParseArgs(const cArgParser& parser)
+void cScenarioArmEval::ParseArgs(const std::shared_ptr<cArgParser>& parser)
 {
 	cScenarioArm::ParseArgs(parser);
-	parser.ParseInt("eval_max_samples", mMaxSamples);
-	parser.ParseString("output_file", mOutputFile);
+	parser->ParseInt("eval_max_samples", mMaxSamples);
+	parser->ParseString("output_file", mOutputFile);
 
-	parser.ParseBool("record_actions", mRecordActions);
-	parser.ParseString("action_output_file", mActionOutputFile);
+	parser->ParseBool("record_actions", mRecordActions);
+	parser->ParseString("action_output_file", mActionOutputFile);
 
-	parser.ParseBool("record_action_id_state", mRecordActionIDState);
-	parser.ParseString("action_id_state_output_file", mActionIDStateOutputFile);
+	parser->ParseBool("record_action_id_state", mRecordActionIDState);
+	parser->ParseString("action_id_state_output_file", mActionIDStateOutputFile);
 }
 
 void cScenarioArmEval::Clear()

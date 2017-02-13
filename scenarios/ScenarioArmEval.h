@@ -11,7 +11,7 @@ public:
 	virtual ~cScenarioArmEval();
 
 	virtual void Init();
-	virtual void ParseArgs(const cArgParser& parser);
+	virtual void ParseArgs(const std::shared_ptr<cArgParser>& parser);
 	virtual void Clear();
 
 	virtual void Update(double time_elapsed);

@@ -26,7 +26,7 @@ void cDrawScenarioReg1D::Init()
 	mAutoTrainer = false;
 }
 
-void cDrawScenarioReg1D::ParseArgs(const cArgParser& parser)
+void cDrawScenarioReg1D::ParseArgs(const std::shared_ptr<cArgParser>& parser)
 {
 	cDrawScenario::ParseArgs(parser);
 	mArgParser = parser;
@@ -127,7 +127,6 @@ void cDrawScenarioReg1D::DrawPoints() const
 	tVector line_col = tVector(0, 0, 0, 1);
 
 	double pt_r = 0.015;
-	int slices = 16;
 	int num_points = mScene->GetNumPts();
 
 	glLineWidth(1);
@@ -138,10 +137,10 @@ void cDrawScenarioReg1D::DrawPoints() const
 		glTranslated(pt[0], pt[1], pt[2]);
 
 		glColor4d(col[0], col[1], col[2], col[3]);
-		cDrawUtil::DrawDisk(pt_r, slices);
+		cDrawUtil::DrawDisk(pt_r);
 
 		glColor4d(line_col[0], line_col[1], line_col[2], line_col[3]);
-		cDrawUtil::DrawDisk(pt_r, slices, cDrawUtil::eDrawWire);
+		cDrawUtil::DrawDisk(pt_r, cDrawUtil::eDrawWire);
 
 		glPopMatrix();
 	}

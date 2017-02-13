@@ -10,10 +10,10 @@ cDrawScenarioBallRLCacla::~cDrawScenarioBallRLCacla()
 {
 }
 
-void cDrawScenarioBallRLCacla::ParseArgs(const cArgParser& parser)
+void cDrawScenarioBallRLCacla::ParseArgs(const std::shared_ptr<cArgParser>& parser)
 {
 	cDrawScenarioBallRL::ParseArgs(parser);
-	parser.ParseString("critic_output_net_file", mCriticOutputNetFile);
+	parser->ParseString("critic_output_net_file", mCriticOutputNetFile);
 }
 
 void cDrawScenarioBallRLCacla::BuildScene()

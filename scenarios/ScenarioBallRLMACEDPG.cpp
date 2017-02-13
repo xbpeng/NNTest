@@ -13,7 +13,7 @@ cScenarioBallRLMACEDPG::~cScenarioBallRLMACEDPG()
 {
 }
 
-void cScenarioBallRLMACEDPG::ParseArgs(const cArgParser& parser)
+void cScenarioBallRLMACEDPG::ParseArgs(const std::shared_ptr<cArgParser>& parser)
 {
 	cScenarioBallRLDPG::ParseArgs(parser);
 }
@@ -32,12 +32,12 @@ void cScenarioBallRLMACEDPG::InitTrainer()
 	mTrainerParams.mPoolSize = 1;
 	mTrainerParams.mNumInitSamples = 10000;
 	mTrainerParams.mFreezeTargetIters = 200;
+	mTrainerParams.mPretrainIters = 5000;
 
 	auto ctrl = std::static_pointer_cast<cBallControllerMACEDPG>(mBall.GetController());
 	trainer->SetNumActionFrags(ctrl->GetNumActionFrags());
 	trainer->SetActionFragSize(ctrl->GetActionFragSize());
 
-	trainer->SetPretrainIters(5000);
 	trainer->SetDPGReg(0.1);
 	trainer->SetQDiff(0.1);
 	trainer->Init(mTrainerParams);

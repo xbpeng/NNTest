@@ -26,7 +26,7 @@ public:
 	virtual ~cScenarioArm();
 
 	virtual void Init();
-	virtual void ParseArgs(const cArgParser& parser);
+	virtual void ParseArgs(const std::shared_ptr<cArgParser>& parser);
 	virtual void Reset();
 	virtual void Clear();
 
@@ -89,7 +89,7 @@ protected:
 	cCamera mRTCam;
 	std::unique_ptr<cTextureDesc> mRenderTarget;
 	Eigen::VectorXd mViewBuffer;
-	std::vector<GLubyte> mViewBufferRaw;
+	std::vector<GLfloat> mViewBufferRaw;
 	
 	cRand mRand;
 
@@ -129,7 +129,7 @@ protected:
 	virtual void InitRenderResources();
 	virtual bool NeedCtrlUpdate() const;
 
-	virtual void ParseCtrlType(const cArgParser& parser, const std::string& key, eCtrlType& out_ctrl) const;
+	virtual void ParseCtrlType(const std::shared_ptr<cArgParser>& parser, const std::string& key, eCtrlType& out_ctrl) const;
 	
 	virtual void GetRandTargetMinMaxTime(double& out_min, double& out_max) const;
 	virtual void GetRandPoseMinMaxTime(double& out_min, double& out_max) const;

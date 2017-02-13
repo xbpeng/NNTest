@@ -3,8 +3,8 @@
 
 cArmNNController::cArmNNController()
 {
-	mExpRate = 0.2;
-	mExpNoise = 0.5;
+	mExpParams.mRate = 0.2;
+	mExpParams.mNoise = 0.5;
 	mEnableExp = false;
 	mOffPolicy = false;
 }
@@ -116,7 +116,7 @@ void cArmNNController::DecideAction()
 
 	if (mEnableExp)
 	{
-		bool exp = cMathUtil::FlipCoin(mExpRate);
+		bool exp = cMathUtil::FlipCoin(mExpParams.mRate);
 		if (exp)
 		{
 			ApplyExpNoise(mPoliAction);
@@ -132,7 +132,7 @@ void cArmNNController::ApplyExpNoise(tAction& out_action) const
 
 	for (int i = 0; i < out_action.mParams.size(); ++i)
 	{
-		double noise = cMathUtil::RandDoubleNorm(0, mExpNoise);
+		double noise = cMathUtil::RandDoubleNorm(0, mExpParams.mNoise);
 		double scale = noise_scale[i];
 		noise *= scale;
 		out_action.mParams[i] += noise;

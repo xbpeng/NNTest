@@ -76,7 +76,9 @@ void cArmVelNNPixelController::ApplyPoliAction(double time_step, const tAction& 
 		if (mImpPDCtrl.IsValidPDCtrl(j))
 		{
 			double vel = action.mParams[idx];
-			mImpPDCtrl.SetTargetVel(j, vel);
+			Eigen::VectorXd tar_vel(1);
+			tar_vel[0] = vel;
+			mImpPDCtrl.SetTargetVel(j, tar_vel);
 			++idx;
 		}
 	}

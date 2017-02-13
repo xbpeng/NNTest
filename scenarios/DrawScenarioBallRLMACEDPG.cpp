@@ -12,10 +12,10 @@ cDrawScenarioBallRLMACEDPG::~cDrawScenarioBallRLMACEDPG()
 {
 }
 
-void cDrawScenarioBallRLMACEDPG::ParseArgs(const cArgParser& parser)
+void cDrawScenarioBallRLMACEDPG::ParseArgs(const std::shared_ptr<cArgParser>& parser)
 {
 	cDrawScenarioBallRL::ParseArgs(parser);
-	parser.ParseString("critic_output_net_file", mCriticOutputNetFile);
+	parser->ParseString("critic_output_net_file", mCriticOutputNetFile);
 }
 
 void cDrawScenarioBallRLMACEDPG::BuildScene()

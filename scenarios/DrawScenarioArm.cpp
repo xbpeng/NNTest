@@ -24,7 +24,7 @@ cDrawScenarioArm::~cDrawScenarioArm()
 {
 }
 
-void cDrawScenarioArm::ParseArgs(const cArgParser& parser)
+void cDrawScenarioArm::ParseArgs(const std::shared_ptr<cArgParser>& parser)
 {
 	cDrawScenario::ParseArgs(parser);
 	mArgParser = parser;

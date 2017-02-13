@@ -26,17 +26,17 @@ void cScenarioReg1D::Init()
 	}
 }
 
-void cScenarioReg1D::ParseArgs(const cArgParser& parser)
+void cScenarioReg1D::ParseArgs(const std::shared_ptr<cArgParser>& parser)
 {
-	parser.ParseString("solver_file", mSolverFile);
-	parser.ParseString("net_file", mNetFile);
-	parser.ParseString("input_file", mInputFile);
-	parser.ParseString("output_file", mOutputFile);
+	parser->ParseString("solver_file", mSolverFile);
+	parser->ParseString("net_file", mNetFile);
+	parser->ParseString("input_file", mInputFile);
+	parser->ParseString("output_file", mOutputFile);
 
-	parser.ParseInt("num_evals_pts", mNumEvalPts);
-	parser.ParseInt("pases_per_step", mPassesPerStep);
+	parser->ParseInt("num_evals_pts", mNumEvalPts);
+	parser->ParseInt("pases_per_step", mPassesPerStep);
 
-	parser.ParseBool("auto_gen_pts", mAutoGenPoints);
+	parser->ParseBool("auto_gen_pts", mAutoGenPoints);
 }
 
 void cScenarioReg1D::Reset()
@@ -213,7 +213,6 @@ void cScenarioReg1D::BuildTuple(const tVector& pt, tExpTuple& out_tuple) const
 
 	out_tuple.mStateBeg[0] = pt[0];
 	out_tuple.mAction[0] = pt[1];
-	out_tuple.mStateEnd = out_tuple.mStateBeg;
 }
 
 tVector cScenarioReg1D::BuildPt(const Eigen::VectorXd& x, const Eigen::VectorXd& y) const
