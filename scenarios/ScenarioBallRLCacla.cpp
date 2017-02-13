@@ -68,7 +68,7 @@ void cScenarioBallRLCacla::InitTrainer()
 
 	mTrainerParams.mPGEnableImportanceSampling = true;
 	mTrainerParams.mPGEnableOnPolicy = false;
-	mTrainerParams.mPGMode = cCaclaTrainer::ePGModeTD;
+	mTrainerParams.mPGMode = cCaclaTrainer::ePGModeCacla;
 	mTrainerParams.mPGAdvScale = 10;
 	mTrainerParams.mPGIWClip = 20;
 
