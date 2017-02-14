@@ -5,6 +5,8 @@
 
 const int gTrainerPlaybackMemSize = 20000;
 
+#define ENABLE_STOCHASTIC_NET
+
 cScenarioBallRLCacla::cScenarioBallRLCacla()
 {
 }
@@ -53,8 +55,11 @@ std::string cScenarioBallRLCacla::GetName() const
 
 void cScenarioBallRLCacla::BuildController(std::shared_ptr<cBallController>& out_ctrl)
 {
-	//out_ctrl = std::shared_ptr<cBallController>(new cBallControllerCacla(mBall));
+#if defined(ENABLE_STOCHASTIC_NET)
 	out_ctrl = std::shared_ptr<cBallController>(new cBallControllerCaclaStochastic(mBall));
+#else
+	out_ctrl = std::shared_ptr<cBallController>(new cBallControllerCacla(mBall));
+#endif
 }
 
 void cScenarioBallRLCacla::InitTrainer()
