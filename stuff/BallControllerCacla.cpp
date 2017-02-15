@@ -159,6 +159,16 @@ void cBallControllerCacla::BuildCriticOutputOffsetScale(Eigen::VectorXd& out_off
 	out_scale = 2 * Eigen::VectorXd::Ones(output_size);
 }
 
+void cBallControllerCacla::BuildCriticInputOffsetScaleTypes(std::vector<cNeuralNet::eOffsetScaleType>& out_types) const
+{
+	BuildNNInputOffsetScaleTypes(out_types);
+}
+
+void cBallControllerCacla::BuildActorInputOffsetScaleTypes(std::vector<cNeuralNet::eOffsetScaleType>& out_types) const
+{
+	BuildNNInputOffsetScaleTypes(out_types);
+}
+
 void cBallControllerCacla::BuildActionExpCovar(Eigen::VectorXd& out_covar) const
 {
 	out_covar = Eigen::VectorXd::Ones(GetActionSize());

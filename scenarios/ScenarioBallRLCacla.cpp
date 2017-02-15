@@ -78,20 +78,26 @@ void cScenarioBallRLCacla::InitTrainer()
 	mTrainerParams.mPGMode = cCaclaTrainer::ePGModeCacla;
 	//mTrainerParams.mPGAdvScale = 10;
 	//mTrainerParams.mPGIWClip = 20;
-	mTrainerParams.mInitInputOffsetScale = false;
+	//mTrainerParams.mInitInputOffsetScale = false;
 
 	trainer->Init(mTrainerParams);
 
 	Eigen::VectorXd critic_output_offset;
 	Eigen::VectorXd critic_output_scale;
+	std::vector<cNeuralNet::eOffsetScaleType> critic_scale_types;
 	BuildCriticOutputOffsetScale(critic_output_offset, critic_output_scale);
+	BuildCriticOutputOffsetScaleType(critic_scale_types);
 	trainer->SetCriticOutputOffsetScale(critic_output_offset, critic_output_scale);
+	trainer->SetCriticInputOffsetScaleType(critic_scale_types);
 
 	Eigen::VectorXd actor_output_offset;
 	Eigen::VectorXd actor_output_scale;
+	std::vector<cNeuralNet::eOffsetScaleType> actor_scale_types;
 	BuildActorOutputOffsetScale(actor_output_offset, actor_output_scale);
+	BuildActorOutputOffsetScaleType(actor_scale_types);
 	trainer->SetActorOutputOffsetScale(actor_output_offset, actor_output_scale);
-	
+	trainer->SetActorInputOffsetScaleType(actor_scale_types);
+
 	Eigen::VectorXd action_min;
 	Eigen::VectorXd action_max;
 	BuildActionBounds(action_min, action_max);
@@ -115,6 +121,18 @@ void cScenarioBallRLCacla::BuildActorOutputOffsetScale(Eigen::VectorXd& out_offs
 {
 	auto ctrl = std::static_pointer_cast<cBallControllerCacla>(mBall.GetController());
 	ctrl->BuildActorOutputOffsetScale(out_offset, out_scale);
+}
+
+void cScenarioBallRLCacla::BuildCriticOutputOffsetScaleType(std::vector<cNeuralNet::eOffsetScaleType>& out_types) const
+{
+	auto ctrl = std::static_pointer_cast<cBallControllerCacla>(mBall.GetController());
+	ctrl->BuildCriticInputOffsetScaleTypes(out_types);
+}
+
+void cScenarioBallRLCacla::BuildActorOutputOffsetScaleType(std::vector<cNeuralNet::eOffsetScaleType>& out_types) const
+{
+	auto ctrl = std::static_pointer_cast<cBallControllerCacla>(mBall.GetController());
+	ctrl->BuildActorInputOffsetScaleTypes(out_types);
 }
 
 void cScenarioBallRLCacla::RecordBegFlags(tExpTuple& out_tuple) const

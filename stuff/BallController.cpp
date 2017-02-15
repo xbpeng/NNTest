@@ -386,6 +386,16 @@ void cBallController::EnableExp(bool enable)
 	mEnableExp = enable;
 }
 
+void cBallController::BuildNNInputOffsetScaleTypes(std::vector<cNeuralNet::eOffsetScaleType>& out_types) const
+{
+	int input_size = GetNetInputSize();
+	out_types.resize(input_size);
+	for (int i = 0; i < input_size; ++i)
+	{
+		out_types[i] = cNeuralNet::eOffsetScaleTypeNone;
+	}
+}
+
 void cBallController::BuildNNOutputOffsetScale(Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const
 {
 	int output_size = GetActionSize();

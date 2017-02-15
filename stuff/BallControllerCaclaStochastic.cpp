@@ -21,6 +21,16 @@ int cBallControllerCaclaStochastic::GetStateSize() const
 	return state_size;
 }
 
+void cBallControllerCaclaStochastic::BuildNNInputOffsetScaleTypes(std::vector<cNeuralNet::eOffsetScaleType>& out_types) const
+{
+	cBallControllerCacla::BuildNNInputOffsetScaleTypes(out_types);
+	int offset = cBallControllerCacla::GetStateSize();
+	for (int i = 0; i < gExpNoiseSize; ++i)
+	{
+		out_types[offset + i] = cNeuralNet::eOffsetScaleTypeFixed;
+	}
+}
+
 void cBallControllerCaclaStochastic::GetRandomActionCont(tAction& out_action)
 {
 	ApplyStateExpNoise(mPoliState);

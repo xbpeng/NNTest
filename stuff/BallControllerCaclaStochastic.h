@@ -10,7 +10,8 @@ public:
 	virtual ~cBallControllerCaclaStochastic();
 
 	virtual int GetStateSize() const;
-	
+	virtual void BuildNNInputOffsetScaleTypes(std::vector<cNeuralNet::eOffsetScaleType>& out_types) const;
+
 protected:
 
 	double mStateExpNoise;

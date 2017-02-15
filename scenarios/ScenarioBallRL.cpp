@@ -368,9 +368,14 @@ void cScenarioBallRL::InitGround()
 
 void cScenarioBallRL::SetupTrainerOutputOffsetScale()
 {
+	const auto& ctrl = mBall.GetController();
+
+	std::vector<cNeuralNet::eOffsetScaleType> scale_types;
+	ctrl->BuildNNInputOffsetScaleTypes(scale_types);
+	mTrainer->SetInputOffsetScaleType(scale_types);
+
 	Eigen::VectorXd output_offset;
 	Eigen::VectorXd output_scale;
-	const auto& ctrl = mBall.GetController();
 	ctrl->BuildNNOutputOffsetScale(output_offset, output_scale);
 	mTrainer->SetOutputOffsetScale(output_offset, output_scale);
 }

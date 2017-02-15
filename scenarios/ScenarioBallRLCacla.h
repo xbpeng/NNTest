@@ -25,7 +25,9 @@ protected:
 	virtual void InitTrainer();
 	virtual void BuildCriticOutputOffsetScale(Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const;
 	virtual void BuildActorOutputOffsetScale(Eigen::VectorXd& out_offset, Eigen::VectorXd& out_scale) const;
-	
+	virtual void BuildCriticOutputOffsetScaleType(std::vector<cNeuralNet::eOffsetScaleType>& out_types) const;
+	virtual void BuildActorOutputOffsetScaleType(std::vector<cNeuralNet::eOffsetScaleType>& out_types) const;
+
 	virtual void RecordBegFlags(tExpTuple& out_tuple) const;
 	virtual bool CheckOffPolicy() const;
 
