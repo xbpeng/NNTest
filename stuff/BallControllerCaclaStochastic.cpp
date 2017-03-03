@@ -5,9 +5,9 @@ const int gExpNoiseSize = 64;
 cBallControllerCaclaStochastic::cBallControllerCaclaStochastic(cBall& ball) :
 								cBallControllerCacla(ball)
 {
-	mExpNoiseStd = 0.5;
-	//mStateExpNoise = 0.2;
-	mStateExpNoise = 0;
+	mExpNoiseStd = 0.2;
+	mStateExpNoise = 0.5;
+	//mStateExpNoise = 0;
 }
 
 cBallControllerCaclaStochastic::~cBallControllerCaclaStochastic()

@@ -244,7 +244,7 @@ bool cScenarioArm::BuildController(const std::shared_ptr<cSimCharacter>& charact
 	else if (ctrl_type == eCtrlPDQP)
 	{
 		std::shared_ptr<cArmPDQPController> curr_ctrl = std::shared_ptr<cArmPDQPController>(new cArmPDQPController());
-		curr_ctrl->Init(character.get(), mWorldParams.mGravity, mCharacterFile);
+		curr_ctrl->Init(character.get(), mWorldParams.mGravity, mCharParams.mCharFile);
 		curr_ctrl->SetTorqueLimit(gTorqueLim);
 		curr_ctrl->SetUpdatePeriod(gCtrlUpdatePeriod);
 		out_ctrl = curr_ctrl;
@@ -252,7 +252,7 @@ bool cScenarioArm::BuildController(const std::shared_ptr<cSimCharacter>& charact
 	else if (ctrl_type == eCtrlVelQP)
 	{
 		std::shared_ptr<cArmVelQPController> curr_ctrl = std::shared_ptr<cArmVelQPController>(new cArmVelQPController());
-		curr_ctrl->Init(character.get(), mWorldParams.mGravity, mCharacterFile);
+		curr_ctrl->Init(character.get(), mWorldParams.mGravity, mCharParams.mCharFile);
 		curr_ctrl->SetTorqueLimit(gTorqueLim);
 		curr_ctrl->SetUpdatePeriod(gCtrlUpdatePeriod);
 		out_ctrl = curr_ctrl;
@@ -278,13 +278,13 @@ bool cScenarioArm::BuildNNController(eCtrlType ctrl_type, std::shared_ptr<cCharC
 	else if (ctrl_type == eCtrlPDNN)
 	{
 		std::shared_ptr<cArmPDNNController> curr_ctrl = std::shared_ptr<cArmPDNNController>(new cArmPDNNController());
-		curr_ctrl->Init(mChar.get(), mWorldParams.mGravity, mCharacterFile);
+		curr_ctrl->Init(mChar.get(), mWorldParams.mGravity, mCharParams.mCharFile);
 		out_ctrl = curr_ctrl;
 	}
 	else if (ctrl_type == eCtrlVelNN)
 	{
 		std::shared_ptr<cArmVelNNController> curr_ctrl = std::shared_ptr<cArmVelNNController>(new cArmVelNNController());
-		curr_ctrl->Init(mChar.get(), mWorldParams.mGravity, mCharacterFile);
+		curr_ctrl->Init(mChar.get(), mWorldParams.mGravity, mCharParams.mCharFile);
 		out_ctrl = curr_ctrl;
 	}
 	else if (ctrl_type == eCtrlNNPixel)
@@ -296,13 +296,13 @@ bool cScenarioArm::BuildNNController(eCtrlType ctrl_type, std::shared_ptr<cCharC
 	else if (ctrl_type == eCtrlPDNNPixel)
 	{
 		std::shared_ptr<cArmPDNNPixelController> curr_ctrl = std::shared_ptr<cArmPDNNPixelController>(new cArmPDNNPixelController());
-		curr_ctrl->Init(mChar.get(), mWorldParams.mGravity, mCharacterFile);
+		curr_ctrl->Init(mChar.get(), mWorldParams.mGravity, mCharParams.mCharFile);
 		out_ctrl = curr_ctrl;
 	}
 	else if (ctrl_type == eCtrlVelNNPixel)
 	{
 		std::shared_ptr<cArmVelNNPixelController> curr_ctrl = std::shared_ptr<cArmVelNNPixelController>(new cArmVelNNPixelController());
-		curr_ctrl->Init(mChar.get(), mWorldParams.mGravity, mCharacterFile);
+		curr_ctrl->Init(mChar.get(), mWorldParams.mGravity, mCharParams.mCharFile);
 		out_ctrl = curr_ctrl;
 	}
 	else if (ctrl_type == eCtrlNNPixelNoPose)
@@ -320,7 +320,7 @@ bool cScenarioArm::BuildNNController(eCtrlType ctrl_type, std::shared_ptr<cCharC
 	else if (ctrl_type == eCtrlPDMACE)
 	{
 		std::shared_ptr<cArmPDControllerMACE> curr_ctrl = std::shared_ptr<cArmPDControllerMACE>(new cArmPDControllerMACE());
-		curr_ctrl->Init(mChar.get(), mWorldParams.mGravity, mCharacterFile);
+		curr_ctrl->Init(mChar.get(), mWorldParams.mGravity, mCharParams.mCharFile);
 		out_ctrl = curr_ctrl;
 	}
 	else if (ctrl_type == eCtrlNNTrack)
@@ -332,7 +332,7 @@ bool cScenarioArm::BuildNNController(eCtrlType ctrl_type, std::shared_ptr<cCharC
 	else if (ctrl_type == eCtrlNNMuscularTrack)
 	{
 		std::shared_ptr<cArmNNTrackMuscularController> curr_ctrl = std::shared_ptr<cArmNNTrackMuscularController>(new cArmNNTrackMuscularController());
-		curr_ctrl->Init(mChar.get(), mCharacterFile);
+		curr_ctrl->Init(mChar.get(), mCharParams.mCharFile);
 		out_ctrl = curr_ctrl;
 	}
 	else

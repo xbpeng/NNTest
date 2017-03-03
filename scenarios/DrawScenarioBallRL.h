@@ -28,6 +28,7 @@ protected:
 	bool mTrackCharacter;
 	std::string mOutputNetFile;
 	bool mEnableTrace;
+
 	cCircularBuffer<tVector, Eigen::aligned_allocator<tVector>> mTraceBuffer;
 
 	virtual void BuildScene();
@@ -36,6 +37,9 @@ protected:
 	virtual void ToggleTraining();
 	virtual void ToggleTrace();
 	virtual void UpdateTrace();
+
+	virtual void DrawActionDist(bool enable);
+	virtual bool DrawActionDist() const;
 
 	virtual tVector GetDefaultCamPos() const;
 	virtual tVector GetCamTrackPos() const;
@@ -49,4 +53,5 @@ protected:
 	virtual void DrawGround() const;
 	virtual void DrawTrace() const;
 	virtual void DrawBall() const;
+	virtual void DrawActionDistSamples() const;
 };

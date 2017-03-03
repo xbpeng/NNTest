@@ -97,9 +97,7 @@ void cScenarioArmRL::BuildCoach()
 	CreateCharacter(eCharNone, mCoach);
 
 	cSimCharacter::tParams char_params;
-	char_params.mPos = GetDefaultCharPos();
-	char_params.mCharFile = mCharacterFile;
-	char_params.mStateFile = mCharStateFile;
+	char_params.mInitPos = GetDefaultCharPos();
 
 	bool succ = mCoach->Init(mWorld, char_params);
 	if (succ)

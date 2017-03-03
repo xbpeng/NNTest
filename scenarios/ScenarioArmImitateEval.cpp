@@ -54,11 +54,11 @@ void cScenarioArmImitateEval::BuildKinCharacter()
 {
 	mKinChar = std::shared_ptr<cKinCharacter>(new cKinCharacter());
 	mKinChar->EnableVelUpdate(true);
-	bool succ = mKinChar->Init(mCharacterFile, mMotionFile);
+	bool succ = mKinChar->Init(mCharParams.mCharFile, mMotionFile);
 
 	if (!succ)
 	{
-		printf("Failed to load kin character from %s\n", mCharacterFile.c_str());
+		printf("Failed to load kin character from %s\n", mCharParams.mCharFile.c_str());
 	}
 }
 

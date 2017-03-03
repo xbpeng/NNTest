@@ -41,7 +41,8 @@ void cScenarioRNN::AddPt(const tVector& pt, bool is_start)
 	int prev_id = (is_start) ? gInvalidIdx : mPrevID;
 
 	auto trainer = GetRNNTrainer();
-	int curr_id = trainer->AddTuple(tuple, prev_id);
+	const int stream_id = 0;
+	int curr_id = trainer->AddTuple(tuple, prev_id, stream_id);
 	mPrevID = curr_id;
 
 	printf("Is start: %s\n", (is_start) ? "true" : "false");

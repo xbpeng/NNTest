@@ -46,6 +46,9 @@ void cDrawScenarioBallRL::Keyboard(unsigned char key, int x, int y)
 	case 'w':
 		ToggleTrace();
 		break;
+	case 'd':
+		DrawActionDist(!DrawActionDist());
+		break;
 	default:
 		break;
 	}
@@ -89,6 +92,11 @@ void cDrawScenarioBallRL::DrawScene()
 	}
 
 	DrawBall();
+
+	if (DrawActionDist())
+	{
+		DrawActionDistSamples();
+	}
 }
 
 void cDrawScenarioBallRL::BuildScene()
@@ -144,6 +152,19 @@ void cDrawScenarioBallRL::UpdateTrace()
 {
 	const tVector& pos = mScene->GetBallPos();
 	mTraceBuffer.Add(pos);
+}
+
+
+void cDrawScenarioBallRL::DrawActionDist(bool enable)
+{
+	const auto& ctrl = mScene->GetBall().GetController();
+	ctrl->RecordActionDist(enable);
+}
+
+bool cDrawScenarioBallRL::DrawActionDist() const
+{
+	const auto& ctrl = mScene->GetBall().GetController();
+	return ctrl->RecordActionDist();
 }
 
 tVector cDrawScenarioBallRL::GetDefaultCamPos() const
@@ -227,6 +248,28 @@ void cDrawScenarioBallRL::DrawBall() const
 
 	const auto& ball = mScene->GetBall();
 	cDrawBall::Draw(ball, col);
+}
+
+void cDrawScenarioBallRL::DrawActionDistSamples() const
+{
+	const auto& ball = mScene->GetBall();
+	const auto& ctrl = ball.GetController();
+	const Eigen::MatrixXd& samples = ctrl->GetActionDistSamples();
+	int num_samples = samples.rows();
+
+	const tVector marker_size = tVector(0, 0.05, 0, 0);
+	const tVector& pos_beg = ctrl->GetPosBeg();
+
+	cDrawUtil::SetColor(tVector(0, 0, 1, 0.25));
+	cDrawUtil::SetLineWidth(4);
+
+	for (int i = 0; i < num_samples; ++i)
+	{
+		tVector curr_pos = pos_beg;
+		curr_pos[0] += samples(i, 0);
+
+		cDrawUtil::DrawLine(curr_pos + marker_size, curr_pos - marker_size);
+	}
 }
 
 std::string cDrawScenarioBallRL::BuildTextInfoStr() const

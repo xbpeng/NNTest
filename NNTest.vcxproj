@@ -350,6 +350,7 @@
     <ClCompile Include="..\TerrainRL\sim\BipedController3DCACLA.cpp" />
     <ClCompile Include="..\TerrainRL\sim\BipedControllerQ.cpp" />
     <ClCompile Include="..\TerrainRL\sim\BipedStepController3D.cpp" />
+    <ClCompile Include="..\TerrainRL\sim\BipedSymStepController3D.cpp" />
     <ClCompile Include="..\TerrainRL\sim\CharController.cpp" />
     <ClCompile Include="..\TerrainRL\sim\CharTracer.cpp" />
     <ClCompile Include="..\TerrainRL\sim\ContactManager.cpp" />
@@ -605,6 +606,7 @@
     <ClInclude Include="..\TerrainRL\sim\BipedController3DCACLA.h" />
     <ClInclude Include="..\TerrainRL\sim\BipedControllerQ.h" />
     <ClInclude Include="..\TerrainRL\sim\BipedStepController3D.h" />
+    <ClInclude Include="..\TerrainRL\sim\BipedSymStepController3D.h" />
     <ClInclude Include="..\TerrainRL\sim\CharController.h" />
     <ClInclude Include="..\TerrainRL\sim\CharTracer.h" />
     <ClInclude Include="..\TerrainRL\sim\ContactManager.h" />

@@ -85,7 +85,9 @@ void cScenarioReg1D::AddPt(const tVector& pt)
 	mPts.push_back(pt);
 	tExpTuple tuple;
 	BuildTuple(pt, tuple);
-	mTrainer->AddTuple(tuple);
+
+	const int stream_id = 0;
+	mTrainer->AddTuple(tuple, gInvalidIdx, stream_id);
 }
 
 const tVectorArr& cScenarioReg1D::GetEvalPts() const

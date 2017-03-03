@@ -20,6 +20,7 @@ const double gGroundSampleDist = 8;
 const double cBallController::gMinDist = 0.1;
 const double cBallController::gMaxDist = 2.5;
 
+const int gNumActionDistSamples = 100;
 
 cBallController::tAction::tAction()
 	: tAction(gInvalidIdx, 0, gInvalidLikelihood)
@@ -43,6 +44,8 @@ cBallController::cBallController(cBall& ball) :
 	mEnableExp = false;
 	mExpRate = 0.2;
 	mExpTemp = 0.5;
+
+	mRecordActionDist = false;
 
 	Reset();
 }
@@ -186,6 +189,11 @@ void cBallController::UpdateAction()
 		GetRandomActionDiscrete(action);
 	}
 	
+	if (mRecordActionDist)
+	{
+		SampleActionDist(gNumActionDistSamples, mActionDistSamples);
+	}
+
 	ApplyAction(action);
 }
 
@@ -415,6 +423,26 @@ cNeuralNet& cBallController::GetNet()
 	return mNet;
 }
 
+void cBallController::RecordActionDist(bool enable)
+{
+	mRecordActionDist = enable;
+}
+
+bool cBallController::RecordActionDist() const
+{
+	return mRecordActionDist;
+}
+
+const Eigen::MatrixXd& cBallController::GetActionDistSamples() const
+{
+	return mActionDistSamples;
+}
+
+const tVector& cBallController::GetPosBeg() const
+{
+	return mPosBeg;
+}
+
 void cBallController::BuildPoliState(Eigen::VectorXd& state) const
 {
 	state = Eigen::VectorXd::Zero(GetStateSize());
@@ -448,4 +476,21 @@ void cBallController::ApplyAction(const tAction& action)
 void cBallController::UpdateDistTravelled()
 {
 	mDistTravelled = mPosEnd[0] - mPosBeg[0];
+}
+
+int cBallController::GetNumActionDistSamples() const
+{
+	return gNumActionDistSamples;
+}
+
+void cBallController::SampleActionDist(int num_samples, Eigen::MatrixXd& out_samples)
+{
+	out_samples.resize(GetNumActionDistSamples(), GetActionSize());
+
+	tAction action;
+	for (int i = 0; i < num_samples; ++i)
+	{
+		GetRandomActionDiscrete(action);
+		out_samples(i, 0) = action.mDist;
+	}
 }

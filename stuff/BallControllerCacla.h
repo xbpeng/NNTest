@@ -49,4 +49,6 @@ protected:
 	virtual void GetRandomAction(tAction& out_action);
 	virtual void GetRandomActionCont(tAction& out_action);
 	virtual void ApplyExpNoise(tAction& out_action);
+
+	virtual void SampleActionDist(int num_samples, Eigen::MatrixXd& out_samples);
 };

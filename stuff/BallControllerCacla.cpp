@@ -213,3 +213,15 @@ void cBallControllerCacla::ApplyExpNoise(tAction& out_action)
 	out_action.mDist = new_dist;
 	out_action.mLikelihood = likelihood;
 }
+
+void cBallControllerCacla::SampleActionDist(int num_samples, Eigen::MatrixXd& out_samples)
+{
+	out_samples.resize(GetNumActionDistSamples(), GetActionSize());
+
+	tAction action;
+	for (int i = 0; i < num_samples; ++i)
+	{
+		GetRandomActionCont(action);
+		out_samples(i, 0) = action.mDist;
+	}
+}

@@ -1,13 +1,13 @@
 files = {};
-files{end + 1} = {'q_learning.txt', 'Q-Learning'};
+%files{end + 1} = {'q_learning.txt', 'Q-Learning'};
 
-files{end + 1} = {'cacla0.txt', 'Cacla 0'};
+%files{end + 1} = {'cacla0.txt', 'Cacla 0'};
 %files{end + 1} = {'cacla1.txt', 'Cacla 1'};
 %files{end + 1} = {'cacla2.txt', 'Cacla 2'};
 %files{end + 1} = {'cacla3.txt', 'Cacla 3'};
 %files{end + 1} = {'cacla4.txt', 'Cacla 4'};
 %files{end + 1} = {'cacla5.txt', 'Cacla 5'};
-files{end + 1} = {'cacla6.txt', 'Cacla 6'};
+files{end + 1} = {'cacla6.txt', 'Cacla'};
 %files{end + 1} = {'cacla_off_poli.txt', 'Cacla Off Policy'};
 
 %files{end + 1} = {'pg_off_poli.txt', 'PG Off Policy'};
@@ -20,8 +20,12 @@ files{end + 1} = {'cacla6.txt', 'Cacla 6'};
 
 %files{end + 1} = {'td_10.txt', 'PG No Importance Sampling'};
 
-files{end + 1} = {'cacla_stochastic0.txt', 'Cacla Stochastic0'};
-files{end + 1} = {'cacla_stochastic_no_state_noise.txt', 'Cacla Stochastic No State Noise'};
+%files{end + 1} = {'cacla_stochastic0.txt', 'Cacla Stochastic0'};
+%files{end + 1} = {'cacla_stochastic1.txt', 'Cacla Stochastic, 0.5 action noise, 0.2 state noise'};
+files{end + 1} = {'cacla_stochastic2.txt', 'Cacla Stochastic'};
+%files{end + 1} = {'cacla_stochastic_no_state_noise.txt', 'Cacla Stochastic No State Noise'};
+
+%files{end + 1} = {'ball_int_eval.txt', 'Test'};
 
 lines = {'b-', 'r-', 'm-', 'k-', 'g-', 'c-', 'k--', 'r--'};
 iter_step = 500 / 1000;

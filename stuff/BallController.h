@@ -69,6 +69,12 @@ public:
 	virtual void BuildActionBounds(Eigen::VectorXd& out_min, Eigen::VectorXd& out_max) const;
 	virtual cNeuralNet& GetNet();
 
+	virtual void RecordActionDist(bool enable);
+	virtual bool RecordActionDist() const;
+	virtual const Eigen::MatrixXd& GetActionDistSamples() const;
+
+	virtual const tVector& GetPosBeg() const;
+
 protected:
 	cBall& mBall;
 	cPenaltyGround* mGround;
@@ -90,6 +96,9 @@ protected:
 
 	tAction mCurrAction;
 	bool mOffPolicy;
+
+	bool mRecordActionDist;
+	Eigen::MatrixXd mActionDistSamples;
 
 	virtual void LoadNetIntern(const std::string& net_file);
 
@@ -113,5 +122,8 @@ protected:
 	virtual void ApplyAction(int a);
 	virtual void ApplyAction(const tAction& action);
 
+	virtual int GetNumActionDistSamples() const;
 	virtual void UpdateDistTravelled();
+
+	virtual void SampleActionDist(int num_samples, Eigen::MatrixXd& out_samples);
 };
