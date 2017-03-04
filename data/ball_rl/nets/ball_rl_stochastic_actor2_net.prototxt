@@ -53,6 +53,20 @@ layer {
 }
 
 layer {
+	name: "slice_weights"
+	type: "Slice"
+	bottom: "weights"
+	top: "weights_action"
+	top: "weights_noise"
+	slice_param {
+		axis: 3
+		slice_point: 1
+	}
+	
+	include: { phase: TRAIN }
+}
+
+layer {
 	name: "noise_flat"
 	type: "Flatten"
 	bottom: "data_noise"
@@ -218,8 +232,6 @@ layer {
   bottom: "noise_flat"
   top: "exp_noise0"
   eltwise_param { operation: SUM }
-  
-  include: { phase: TEST }
 }
 
 layer {
@@ -288,30 +300,27 @@ layer {
 	concat_param {
 		axis: 1
 	}
-	
-	include: { phase: TEST }
 }
 
 layer {
-	name: "output"
-	type: "Concat"
-	bottom: "action"
-	bottom: "noise0"
-	top: "output"
-	concat_param {
-		axis: 1
-	}
-	
-	include: { phase: TRAIN }
-}
-
-layer {
-  name: "loss"
+  name: "loss_action"
   type: "WeightedEuclideanLoss"
-  bottom: "output"
-  bottom: "label"
-  bottom: "weights"
-  top: "loss"
+  bottom: "action"
+  bottom: "label_action"
+  bottom: "weights_action"
+  top: "loss_action"
+  
+  include: { phase: TRAIN }
+}
+
+layer {
+  name: "loss_noise"
+  type: "WeightedEuclideanLoss"
+  bottom: "noise0"
+  bottom: "label_noise"
+  bottom: "weights_noise"
+  top: "loss_noise"
+  loss_weight: 0.0625
   
   include: { phase: TRAIN }
 }

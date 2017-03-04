@@ -20,6 +20,8 @@ protected:
 
 	double mStateExpNoise;
 
+	virtual void DecideAction(tAction& out_action);
+	
 	virtual void GetRandomActionCont(tAction& out_action);
 	virtual void ApplyStateExpNoise(Eigen::VectorXd& out_state) const;
 

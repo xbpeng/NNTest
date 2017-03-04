@@ -204,7 +204,6 @@ void cBallControllerCacla::ApplyExpNoise(tAction& out_action)
 	double old_dist = out_action.mParams[0];
 	double rand_dist = cMathUtil::RandDoubleNorm(dist_mean, dist_stdev);
 	double new_dist = old_dist + rand_dist;
-	new_dist = cMathUtil::Clamp(new_dist, gMinDist, gMaxDist);
 	rand_dist = new_dist - old_dist;
 
 	double likelihood = cMathUtil::EvalGaussian(old_dist, dist_stdev * dist_stdev, new_dist);

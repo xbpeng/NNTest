@@ -470,6 +470,7 @@ void cBallController::ApplyAction(const tAction& action)
 
 	mPosEnd[0] += noisy_dist;
 	mCurrAction = action;
+	mCurrAction.mDist = dist;
 	mCurrAction.mParams[0] = dist;
 }
 

@@ -22,10 +22,12 @@ files{end + 1} = {'cacla6.txt', 'Cacla'};
 
 %files{end + 1} = {'cacla_stochastic0.txt', 'Cacla Stochastic0'};
 %files{end + 1} = {'cacla_stochastic1.txt', 'Cacla Stochastic, 0.5 action noise, 0.2 state noise'};
-files{end + 1} = {'cacla_stochastic2.txt', 'Cacla Stochastic'};
+files{end + 1} = {'cacla_stochastic2.txt', 'Cacla Stochastic (Reparameterization Trick)'};
 %files{end + 1} = {'cacla_stochastic_no_state_noise.txt', 'Cacla Stochastic No State Noise'};
 
-%files{end + 1} = {'ball_int_eval.txt', 'Test'};
+files{end + 1} = {'cacla_param_noise0.txt', 'Cacla Stochastic (Parameteric Noise)'};
+
+files{end + 1} = {'ball_int_eval.txt', 'Test'};
 
 lines = {'b-', 'r-', 'm-', 'k-', 'g-', 'c-', 'k--', 'r--'};
 iter_step = 500 / 1000;
