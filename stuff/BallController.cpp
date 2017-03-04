@@ -31,6 +31,7 @@ cBallController::tAction::tAction(int id, double dist, double likelihood)
 {
 	mID = id;
 	mDist = dist;
+	mParams = dist * Eigen::VectorXd::Ones(1);
 	mLikelihood = likelihood;
 }
 
@@ -179,6 +180,11 @@ void cBallController::UpdateAction()
 	}
 	BuildPoliState(mPoliState);
 
+	if (mRecordActionDist)
+	{
+		SampleActionDist(gNumActionDistSamples, mActionDistSamples);
+	}
+	
 	tAction action;
 	if (HasNet())
 	{
@@ -189,11 +195,6 @@ void cBallController::UpdateAction()
 		GetRandomActionDiscrete(action);
 	}
 	
-	if (mRecordActionDist)
-	{
-		SampleActionDist(gNumActionDistSamples, mActionDistSamples);
-	}
-
 	ApplyAction(action);
 }
 
@@ -279,16 +280,15 @@ void cBallController::ExploreAction(tAction& out_action)
 
 void cBallController::CalcActionNet(tAction& out_action)
 {
-	Eigen::VectorXd action;
-	mNet.Eval(mPoliState, action);
+	mNet.Eval(mPoliState, out_action.mParams);
 
 	int a = 0;
-	action.maxCoeff(&a);
+	out_action.mParams.maxCoeff(&a);
 
 	printf("action: %i ", a);
-	for (int i = 0; i < action.size(); ++i)
+	for (int i = 0; i < out_action.mParams.size(); ++i)
 	{
-		printf("%.4f ", action[i]);
+		printf("%.4f ", out_action.mParams[i]);
 	}
 	printf("\n");
 
@@ -464,13 +464,13 @@ void cBallController::ApplyAction(const tAction& action)
 	double noise = cMathUtil::RandDouble(-1, 1);
 	noise *= mCtrlNoise;
 
-	double dist = action.mDist;
+	double dist = action.mParams[0];
 	dist = cMathUtil::Clamp(dist, gMinDist, gMaxDist);
 	double noisy_dist = dist * (1 + noise);
 
 	mPosEnd[0] += noisy_dist;
 	mCurrAction = action;
-	mCurrAction.mDist = dist;
+	mCurrAction.mParams[0] = dist;
 }
 
 void cBallController::UpdateDistTravelled()
@@ -491,6 +491,6 @@ void cBallController::SampleActionDist(int num_samples, Eigen::MatrixXd& out_sam
 	for (int i = 0; i < num_samples; ++i)
 	{
 		GetRandomActionDiscrete(action);
-		out_samples(i, 0) = action.mDist;
+		out_samples = action.mParams;
 	}
 }

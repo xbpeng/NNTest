@@ -27,8 +27,7 @@ void cBallControllerCacla::ApplyRandAction()
 
 void cBallControllerCacla::RecordAction(Eigen::VectorXd& out_action) const
 {
-	out_action = Eigen::VectorXd::Zero(GetActionSize());
-	out_action[0] = mCurrAction.mDist;
+	out_action = mCurrAction.mParams;
 }
 
 cBallControllerCacla::tAction cBallControllerCacla::BuildActionFromParams(const Eigen::VectorXd& action_params) const
@@ -36,6 +35,7 @@ cBallControllerCacla::tAction cBallControllerCacla::BuildActionFromParams(const 
 	assert(action_params.size() == 1);
 	tAction action;
 	action.mDist = action_params[0];
+	action.mParams = action_params;
 	return action;
 }
 
@@ -177,13 +177,12 @@ void cBallControllerCacla::BuildActionExpCovar(Eigen::VectorXd& out_covar) const
 
 void cBallControllerCacla::CalcActionNet(tAction& out_action)
 {
-	Eigen::VectorXd action;
-	mNet.Eval(mPoliState, action);
+	mNet.Eval(mPoliState, out_action.mParams);
 
-	out_action.mDist = action[0];
+	out_action.mDist = out_action.mParams[0];
 	out_action.mLikelihood = gInvalidLikelihood;
 
-	printf("action: %.5f\n", action[0], out_action.mDist);
+	printf("action: %.5f\n", out_action.mParams[0]);
 }
 
 void cBallControllerCacla::GetRandomAction(tAction& out_action)
@@ -202,7 +201,7 @@ void cBallControllerCacla::ApplyExpNoise(tAction& out_action)
 	const double dist_mean = 0;
 	const double dist_stdev = mExpNoiseStd;
 
-	double old_dist = out_action.mDist;
+	double old_dist = out_action.mParams[0];
 	double rand_dist = cMathUtil::RandDoubleNorm(dist_mean, dist_stdev);
 	double new_dist = old_dist + rand_dist;
 	new_dist = cMathUtil::Clamp(new_dist, gMinDist, gMaxDist);
@@ -211,6 +210,7 @@ void cBallControllerCacla::ApplyExpNoise(tAction& out_action)
 	double likelihood = cMathUtil::EvalGaussian(old_dist, dist_stdev * dist_stdev, new_dist);
 
 	out_action.mDist = new_dist;
+	out_action.mParams[0] = new_dist;
 	out_action.mLikelihood = likelihood;
 }
 
@@ -222,6 +222,6 @@ void cBallControllerCacla::SampleActionDist(int num_samples, Eigen::MatrixXd& ou
 	for (int i = 0; i < num_samples; ++i)
 	{
 		GetRandomActionCont(action);
-		out_samples(i, 0) = action.mDist;
+		out_samples.row(i) = action.mParams;
 	}
 }

@@ -13,6 +13,7 @@ public:
 	struct tAction
 	{
 		int mID;
+		Eigen::VectorXd mParams;
 		double mDist;
 		double mLikelihood;
 

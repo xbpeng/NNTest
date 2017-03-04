@@ -1,8 +1,8 @@
 -scenario= ball_rl_cacla
-//-playback_speed= 60
+-playback_speed= 60
 
--solver_file= data/ball_rl/nets/ball_rl_stochastic_actor_solver.prototxt
--net_file= data/ball_rl/nets/balL_rl_stochastic_actor_net.prototxt
+-solver_file= data/ball_rl/nets/ball_rl_stochastic_actor1_solver.prototxt
+-net_file= data/ball_rl/nets/balL_rl_stochastic_actor1_net.prototxt
 
 -critic_solver_file= data/ball_rl/nets/balL_rl_stochastic_critic_solver.prototxt
 -critic_net_file= data/ball_rl/nets/balL_rl_stochastic_critic_net.prototxt

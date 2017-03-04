@@ -7,7 +7,7 @@ layer {
   top: "label"
   top: "weights"
   input_param { 
-	shape: { dim: 32 dim: 1 dim: 1 dim: 164 } 
+	shape: { dim: 32 dim: 1 dim: 1 dim: 116 } 
     shape: { dim: 32 dim: 1 dim: 1 dim: 1 } 
 	shape: { dim: 32 dim: 1 dim: 1 dim: 1 } 
   } 
@@ -20,7 +20,7 @@ layer {
   type: 'Input' 
   top: 'input' 
   input_param { 
-    shape: { dim: 1 dim: 1 dim: 1 dim: 164 } 
+    shape: { dim: 1 dim: 1 dim: 1 dim: 116 } 
   } 
 
   include: { phase: TEST }
