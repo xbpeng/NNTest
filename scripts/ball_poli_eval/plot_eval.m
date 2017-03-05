@@ -7,7 +7,11 @@ files = {};
 %files{end + 1} = {'cacla3.txt', 'Cacla 3'};
 %files{end + 1} = {'cacla4.txt', 'Cacla 4'};
 %files{end + 1} = {'cacla5.txt', 'Cacla 5'};
-files{end + 1} = {'cacla6.txt', 'Cacla'};
+%files{end + 1} = {'cacla6.txt', 'Cacla'};
+
+files{end + 1} = {'cacla_net1.txt', 'Cacla'};
+files{end + 1} = {'cacla_net1_025exp.txt', 'Cacla, 0.25 exp'};
+
 %files{end + 1} = {'cacla_off_poli.txt', 'Cacla Off Policy'};
 
 %files{end + 1} = {'pg_off_poli.txt', 'PG Off Policy'};
@@ -25,7 +29,8 @@ files{end + 1} = {'cacla6.txt', 'Cacla'};
 files{end + 1} = {'cacla_stochastic2.txt', 'Cacla Stochastic (Reparameterization Trick)'};
 %files{end + 1} = {'cacla_stochastic_no_state_noise.txt', 'Cacla Stochastic No State Noise'};
 
-files{end + 1} = {'cacla_param_noise0.txt', 'Cacla Stochastic (Parameteric Noise)'};
+%files{end + 1} = {'cacla_param_noise0.txt', 'Cacla Stochastic (Parameteric Noise)'};
+files{end + 1} = {'cacla_param_noise1.txt', 'Cacla Stochastic Net3 (Parameteric Noise)'};
 
 files{end + 1} = {'ball_int_eval.txt', 'Test'};
 
@@ -58,7 +63,7 @@ hold off;
 y_lim = get(gca, 'YLim');
 y_lim(1) = 0;
 ylim(y_lim);
-%xlim([0, 20]);
+xlim([0, 100]);
 
 xlabel('Iterations (10^3)');
 ylabel('Success Rate');

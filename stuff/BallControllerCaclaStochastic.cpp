@@ -6,8 +6,8 @@ cBallControllerCaclaStochastic::cBallControllerCaclaStochastic(cBall& ball) :
 								cBallControllerCacla(ball)
 {
 	mExpNoiseStd = 0.2;
-	mStateExpNoise = 1;
-	//mStateExpNoise = 0;
+	mInternNoise = 1;
+	//mInternNoise = 0;
 }
 
 cBallControllerCaclaStochastic::~cBallControllerCaclaStochastic()
@@ -43,8 +43,8 @@ void cBallControllerCaclaStochastic::BuildActorOutputOffsetScale(Eigen::VectorXd
 
 void cBallControllerCaclaStochastic::BuildActionBounds(Eigen::VectorXd& out_min, Eigen::VectorXd& out_max) const
 {
-	const double noise_bound = 3;
-	//const double noise_bound = std::numeric_limits<double>::infinity();
+	//const double noise_bound = 3;
+	const double noise_bound = std::numeric_limits<double>::infinity();
 
 	cBallControllerCacla::BuildActionBounds(out_min, out_max);
 	
@@ -59,6 +59,11 @@ int cBallControllerCaclaStochastic::GetActionSize() const
 	int size = cBallControllerCacla::GetActionSize();
 	size += GetNumNoiseUnits();
 	return size;
+}
+
+void cBallControllerCaclaStochastic::SetInternNoise(double exp)
+{
+	mInternNoise = exp;
 }
 
 void cBallControllerCaclaStochastic::DecideAction(tAction& out_action)
@@ -78,7 +83,7 @@ void cBallControllerCaclaStochastic::GetRandomActionCont(tAction& out_action)
 
 void cBallControllerCaclaStochastic::ApplyStateExpNoise(Eigen::VectorXd& out_state) const
 {
-	const double noise_bound = 3 * mStateExpNoise;
+	const double noise_bound = 3 * mInternNoise;
 
 	int exp_offset = cBallControllerCacla::GetStateSize();
 	for (int i = 0; i < GetNumNoiseUnits(); ++i)
@@ -86,7 +91,7 @@ void cBallControllerCaclaStochastic::ApplyStateExpNoise(Eigen::VectorXd& out_sta
 		double curr_noise = 0;
 		do
 		{
-			curr_noise = cMathUtil::RandDoubleNorm(0, mStateExpNoise);
+			curr_noise = cMathUtil::RandDoubleNorm(0, mInternNoise);
 		} while (std::abs(curr_noise) > noise_bound);
 		
 		out_state[exp_offset + i] = curr_noise;

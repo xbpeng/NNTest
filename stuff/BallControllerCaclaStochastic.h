@@ -15,10 +15,11 @@ public:
 	virtual void BuildActionBounds(Eigen::VectorXd& out_min, Eigen::VectorXd& out_max) const;
 
 	virtual int GetActionSize() const;
+	virtual void SetInternNoise(double exp);
 
 protected:
 
-	double mStateExpNoise;
+	double mInternNoise;
 
 	virtual void DecideAction(tAction& out_action);
 	

@@ -4,7 +4,7 @@
 cBallControllerCacla::cBallControllerCacla(cBall& ball) :
 	cBallController(ball)
 {
-	mExpNoiseStd = 0.5;
+	mExpNoiseStd = 0.25;
 }
 
 cBallControllerCacla::~cBallControllerCacla()
@@ -172,6 +172,11 @@ void cBallControllerCacla::BuildActionExpCovar(Eigen::VectorXd& out_covar) const
 {
 	out_covar = Eigen::VectorXd::Ones(GetActionSize());
 	out_covar *= mExpNoiseStd * mExpNoiseStd;
+}
+
+void cBallControllerCacla::SetExpNoise(double exp)
+{
+	mExpNoiseStd = exp;
 }
 
 void cBallControllerCacla::CalcActionNet(tAction& out_action)
