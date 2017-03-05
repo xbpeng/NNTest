@@ -52,7 +52,8 @@ void cScenarioBallRLMACEDPG::InitTrainer()
 	BuildActorOutputOffsetScale(trainer, actor_output_offset, actor_output_scale);
 	trainer->SetActorOutputOffsetScale(actor_output_offset, actor_output_scale);
 	
-	double temp = GetExpTemp();
+	const auto& exp_params = ctrl->GetExpParams();
+	double temp = exp_params.mTemp;
 	trainer->SetTemp(gTrainerTempScale * temp);
 }
 
@@ -97,7 +98,9 @@ void cScenarioBallRLMACEDPG::BuildActorOutputOffsetScale(const std::shared_ptr<c
 
 void cScenarioBallRLMACEDPG::Train()
 {
-	double temp = GetExpTemp();
+	auto ctrl = std::static_pointer_cast<cBallControllerMACEDPG>(mBall.GetController());
+	const auto& exp_params = ctrl->GetExpParams();
+	double temp = exp_params.mTemp;
 	auto learner = std::static_pointer_cast<cMACEDPGLearner>(mLearner);
 	learner->SetTemp(gTrainerTempScale * temp);
 	cScenarioBallRLDPG::Train();

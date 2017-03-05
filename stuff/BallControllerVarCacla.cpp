@@ -31,7 +31,7 @@ void cBallControllerVarCacla::BuildActorOutputOffsetScale(Eigen::VectorXd& out_o
 	out_offset.segment(0, action_size) *= offset;
 	out_scale.segment(0, action_size) *= scale;
 	out_offset.segment(action_size, action_size) *= 0;
-	out_scale.segment(action_size, action_size) *= 1 / mExpNoiseStd;
+	out_scale.segment(action_size, action_size) *= 1 / mExpParams.mNoise;
 }
 
 void cBallControllerVarCacla::GetRandomActionCont(tAction& out_action)

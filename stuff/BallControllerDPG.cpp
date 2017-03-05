@@ -4,7 +4,7 @@
 cBallControllerDPG::cBallControllerDPG(cBall& ball) :
 	cBallControllerCacla(ball)
 {
-	mExpNoiseStd = 0.5;
+	mExpParams.mNoise = 0.5;
 }
 
 cBallControllerDPG::~cBallControllerDPG()

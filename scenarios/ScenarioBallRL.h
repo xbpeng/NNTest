@@ -44,10 +44,8 @@ protected:
 	bool mFirstCycle;
 	int mNumExpAnnealIters;
 
-	double mInitExpRate;
-	double mInitExpTemp;
-	double mExpRate;
-	double mExpTemp;
+	cBallController::tExpParams mInitExpParams;
+	cBallController::tExpParams mExpParams;
 	double mCtrlNoise;
 	bool mEnableTraining;
 
@@ -87,6 +85,5 @@ protected:
 	
 	virtual int GetIter() const;
 	virtual void Train();
-	virtual double GetExpRate() const;
-	virtual double GetExpTemp() const;
+	virtual void CalcExpParams(cBallController::tExpParams& out_params) const;
 };

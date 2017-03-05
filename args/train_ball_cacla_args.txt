@@ -9,8 +9,14 @@
 -critic_solver_file= data/ball_rl/nets/balL_rl_critic_solver.prototxt
 -critic_net_file= data/ball_rl/nets/balL_rl_critic_net.prototxt
 
+-init_exp_rate= 1
+-init_exp_temp= 20
+-init_exp_noise= 0.25
+-init_exp_intern_noise= 1
 -exp_rate= 0.2
 -exp_temp= 0.025
+-exp_noise= 0.25
+-exp_intern_noise= 1
 -num_exp_anneal_iters= 10000
 
 -trainer_int_iter= 500

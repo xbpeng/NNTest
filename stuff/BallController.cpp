@@ -22,6 +22,14 @@ const double cBallController::gMaxDist = 2.5;
 
 const int gNumActionDistSamples = 2000;
 
+cBallController::tExpParams::tExpParams()
+{
+	mRate = 0.2;
+	mTemp = 0.5;
+	mNoise = 0.25;
+	mInternNoise = 1;
+}
+
 cBallController::tAction::tAction()
 	: tAction(gInvalidIdx, 0, gInvalidLikelihood)
 {
@@ -43,8 +51,6 @@ cBallController::cBallController(cBall& ball) :
 	mCtrlNoise = 0;
 
 	mEnableExp = false;
-	mExpRate = 0.2;
-	mExpTemp = 0.5;
 
 	mRecordActionDist = false;
 
@@ -248,7 +254,7 @@ bool cBallController::ShouldExplore() const
 	if (mEnableExp)
 	{
 		double exp_rand = cMathUtil::RandDouble();
-		explore = (exp_rand < mExpRate);
+		explore = (exp_rand < mExpParams.mRate);
 	}
 	return explore;
 }
@@ -370,14 +376,14 @@ double cBallController::GetDistTravelled() const
 	return mDistTravelled;
 }
 
-void cBallController::SetExpRate(double rate)
+void cBallController::SetExpParams(const tExpParams& params)
 {
-	mExpRate = rate;
+	mExpParams = params;
 }
 
-void cBallController::SetExpTemp(double temp)
+const cBallController::tExpParams& cBallController::GetExpParams() const
 {
-	mExpTemp = temp;
+	return mExpParams;
 }
 
 void cBallController::EnableExp(bool enable)

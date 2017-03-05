@@ -41,11 +41,8 @@ public:
 
 	virtual void BuildActionExpCovar(Eigen::VectorXd& out_covar) const;
 
-	virtual void SetExpNoise(double exp);
-
 protected:
 	cNeuralNet mCriticNet;
-	double mExpNoiseStd;
 
 	virtual void CalcActionNet(tAction& out_action);
 	virtual void GetRandomAction(tAction& out_action);

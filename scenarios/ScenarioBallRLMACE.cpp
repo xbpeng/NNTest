@@ -5,7 +5,7 @@ const int gTrainerPlaybackMemSize = 50000;
 
 cScenarioBallRLMACE::cScenarioBallRLMACE()
 {
-	mInitExpRate = 0.9;
+	mInitExpParams.mRate = 0.9;
 }
 
 cScenarioBallRLMACE::~cScenarioBallRLMACE()

@@ -4,7 +4,6 @@
 cBallControllerCacla::cBallControllerCacla(cBall& ball) :
 	cBallController(ball)
 {
-	mExpNoiseStd = 0.25;
 }
 
 cBallControllerCacla::~cBallControllerCacla()
@@ -171,12 +170,7 @@ void cBallControllerCacla::BuildActorInputOffsetScaleTypes(std::vector<cNeuralNe
 void cBallControllerCacla::BuildActionExpCovar(Eigen::VectorXd& out_covar) const
 {
 	out_covar = Eigen::VectorXd::Ones(GetActionSize());
-	out_covar *= mExpNoiseStd * mExpNoiseStd;
-}
-
-void cBallControllerCacla::SetExpNoise(double exp)
-{
-	mExpNoiseStd = exp;
+	out_covar *= mExpParams.mNoise * mExpParams.mNoise;
 }
 
 void cBallControllerCacla::CalcActionNet(tAction& out_action)
@@ -201,7 +195,7 @@ void cBallControllerCacla::GetRandomActionCont(tAction& out_action)
 void cBallControllerCacla::ApplyExpNoise(tAction& out_action)
 {
 	const double dist_mean = 0;
-	const double dist_stdev = mExpNoiseStd;
+	const double dist_stdev = mExpParams.mNoise;
 
 	double old_dist = out_action.mParams[0];
 	double rand_dist = cMathUtil::RandDoubleNorm(dist_mean, dist_stdev);

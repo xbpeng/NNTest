@@ -6,7 +6,7 @@ cBallControllerMACEDPG::cBallControllerMACEDPG(cBall& ball) :
 	cBallControllerDPG(ball)
 {
 	mNumActionFrags = 0;
-	mExpNoiseStd = 0.5;
+	mExpParams.mNoise = 0.5;
 	mExpCritic = false;
 	mExpActor = false;
 }
@@ -119,7 +119,7 @@ void cBallControllerMACEDPG::DecideActionBoltzmann(tAction& out_action)
 	int a_max = cMACEDPGTrainer::GetMaxFragValIdx(mBoltzmannBuffer);
 	int a = a_max;
 
-	if (mEnableExp && mExpTemp != 0)
+	if (mEnableExp && mExpParams.mTemp != 0)
 	{
 		int num_actors = GetNumActionFrags();
 		double max_val = cMACEDPGTrainer::GetVal(mBoltzmannBuffer, a_max);
@@ -128,7 +128,7 @@ void cBallControllerMACEDPG::DecideActionBoltzmann(tAction& out_action)
 		for (int i = 0; i < num_actors; ++i)
 		{
 			double curr_val = cMACEDPGTrainer::GetVal(mBoltzmannBuffer, i);
-			curr_val = std::exp((curr_val - max_val) / mExpTemp);
+			curr_val = std::exp((curr_val - max_val) / mExpParams.mTemp);
 
 			mBoltzmannBuffer[i] = curr_val;
 			sum += curr_val;
@@ -154,7 +154,7 @@ void cBallControllerMACEDPG::DecideActionBoltzmann(tAction& out_action)
 	if (mEnableExp)
 	{
 		double rand_noise = cMathUtil::RandDouble();
-		if (rand_noise < mExpRate)
+		if (rand_noise < mExpParams.mRate)
 		{
 			ApplyExpNoise(out_action);
 			mExpActor = true;

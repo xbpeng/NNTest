@@ -21,6 +21,16 @@ public:
 		tAction(int id, double dist, double likelihood);
 	};
 
+	struct tExpParams
+	{
+		double mRate;
+		double mTemp;
+		double mNoise;
+		double mInternNoise;
+
+		tExpParams();
+	};
+
 	static const double gMinDist;
 	static const double gMaxDist;
 
@@ -61,8 +71,8 @@ public:
 
 	virtual double GetDistTravelled() const;
 
-	virtual void SetExpRate(double rate);
-	virtual void SetExpTemp(double temp);
+	virtual void SetExpParams(const tExpParams& params);
+	virtual const tExpParams& GetExpParams() const;
 	virtual void EnableExp(bool enable);
 
 	virtual void BuildNNInputOffsetScaleTypes(std::vector<cNeuralNet::eOffsetScaleType>& out_types) const;
@@ -82,8 +92,7 @@ protected:
 	double mCtrlNoise;
 
 	bool mEnableExp;
-	double mExpRate;
-	double mExpTemp;
+	tExpParams mExpParams;
 
 	Eigen::VectorXd mGroundSamples;
 	Eigen::VectorXd mPoliState;

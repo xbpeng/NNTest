@@ -7,10 +7,10 @@ const int gTrainerPlaybackMemSize = 50000;
 cScenarioBallRL::cScenarioBallRL()
 {
 	Clear();
-	mInitExpRate = 1;
-	mInitExpTemp = 20;
-	mExpRate = 0.1;
-	mExpTemp = 0.025;
+	mInitExpParams.mRate = 1;
+	mInitExpParams.mTemp = 20;
+	mExpParams.mRate = 0.1;
+	mExpParams.mTemp = 0.025;
 	mNumExpAnnealIters = 5000;
 	mCtrlNoise = 0;
 	mEnableTraining = true;
@@ -39,8 +39,14 @@ void cScenarioBallRL::ParseArgs(const std::shared_ptr<cArgParser>& parser)
 	parser->ParseString("model_file", mTrainerParams.mModelFile);
 	parser->ParseDouble("ctrl_noise", mCtrlNoise);
 
-	parser->ParseDouble("exp_rate", mExpRate);
-	parser->ParseDouble("exp_temp", mExpTemp);
+	parser->ParseDouble("init_exp_rate", mInitExpParams.mRate);
+	parser->ParseDouble("init_exp_temp", mInitExpParams.mTemp);
+	parser->ParseDouble("init_exp_noise", mInitExpParams.mNoise);
+	parser->ParseDouble("init_exp_intern_noise", mInitExpParams.mInternNoise);
+	parser->ParseDouble("exp_rate", mExpParams.mRate);
+	parser->ParseDouble("exp_temp", mExpParams.mTemp);
+	parser->ParseDouble("exp_noise", mExpParams.mNoise);
+	parser->ParseDouble("exp_intern_noise", mExpParams.mInternNoise);
 	parser->ParseInt("num_exp_anneal_iters", mNumExpAnnealIters);
 
 	parser->ParseDouble("ground_height", mGroundParams.mHeight);
@@ -67,10 +73,9 @@ void cScenarioBallRL::Reset()
 	mNumTuples = 0;
 
 	auto ctrl = mBall.GetController();
-	double exp_rate = GetExpRate();
-	double exp_temp = GetExpTemp();
-	ctrl->SetExpRate(exp_rate);
-	ctrl->SetExpTemp(exp_temp);
+	cBallController::tExpParams exp_params;
+	CalcExpParams(exp_params);
+	ctrl->SetExpParams(exp_params);
 }
 
 void cScenarioBallRL::Clear()
@@ -214,15 +219,17 @@ void cScenarioBallRL::NewCycleUpdate()
 			{
 				Train();
 
-				double exp_rate = GetExpRate();
-				double exp_temp = GetExpTemp();
 				auto& ctrl = mBall.GetController();
-				ctrl->SetExpRate(exp_rate);
-				ctrl->SetExpTemp(exp_temp);
+				cBallController::tExpParams exp_params;
+				CalcExpParams(exp_params);
+				ctrl->SetExpParams(exp_params);
 
 				printf("\n");
-				printf("Exp Rate: %.3f\n", exp_rate);
-				printf("Exp Temp: %.3f\n", exp_temp);
+				printf("Exp Rate: %.3f\n", exp_params.mRate);
+				printf("Exp Temp: %.3f\n", exp_params.mTemp);
+				printf("Exp Noise: %.3f\n", exp_params.mNoise);
+				printf("Exp Intern Noise: %.3f\n", exp_params.mInternNoise);
+				printf("\n");
 			}
 		}
 		
@@ -394,20 +401,15 @@ void cScenarioBallRL::Train()
 	mNumTuples = 0;
 }
 
-double cScenarioBallRL::GetExpRate() const
+void cScenarioBallRL::CalcExpParams(cBallController::tExpParams& out_params) const
 {
 	int iter = GetIter();
-	double eps = 1 - static_cast<double>(iter) / mNumExpAnnealIters;
-	eps = cMathUtil::Clamp(eps, 0.0, 1.0);
-	eps = eps * (mInitExpRate - mExpRate) + mExpRate;
-	return eps;
-}
-
-double cScenarioBallRL::GetExpTemp() const
-{
-	int iter = GetIter();
-	double temp = 1 - static_cast<double>(iter) / mNumExpAnnealIters;
-	temp = cMathUtil::Clamp(temp, 0.0, 1.0);
-	temp = temp * (mInitExpTemp - mExpTemp) + mExpTemp;
-	return temp;
+	double t = static_cast<double>(iter) / mNumExpAnnealIters;
+	t = cMathUtil::Clamp(t, 0.0, 1.0);
+	
+	out_params = mExpParams;
+	out_params.mRate = (1 - t) * mInitExpParams.mRate + t * mExpParams.mRate;
+	out_params.mTemp = (1 - t) * mInitExpParams.mTemp + t * mExpParams.mTemp;
+	out_params.mNoise = (1 - t) * mInitExpParams.mNoise + t * mExpParams.mNoise;
+	out_params.mInternNoise = (1 - t) * mInitExpParams.mInternNoise + t * mExpParams.mInternNoise;
 }
