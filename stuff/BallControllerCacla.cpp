@@ -22,7 +22,6 @@ void cBallControllerCacla::ApplyRandAction()
 	GetRandomActionCont(action);
 	ApplyAction(action);
 	mOffPolicy = true;
-	printf("rand action: %.3f\n", action.mDist);
 }
 
 void cBallControllerCacla::RecordAction(Eigen::VectorXd& out_action) const
@@ -181,8 +180,6 @@ void cBallControllerCacla::CalcActionNet(tAction& out_action)
 
 	out_action.mDist = out_action.mParams[0];
 	out_action.mLikelihood = gInvalidLikelihood;
-
-	printf("action: %.5f\n", out_action.mParams[0]);
 }
 
 void cBallControllerCacla::GetRandomAction(tAction& out_action)

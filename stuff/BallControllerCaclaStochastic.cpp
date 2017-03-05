@@ -43,9 +43,11 @@ void cBallControllerCaclaStochastic::BuildActorOutputOffsetScale(Eigen::VectorXd
 
 void cBallControllerCaclaStochastic::BuildActionBounds(Eigen::VectorXd& out_min, Eigen::VectorXd& out_max) const
 {
+	const double noise_bound = 3;
+	//const double noise_bound = std::numeric_limits<double>::infinity();
+
 	cBallControllerCacla::BuildActionBounds(out_min, out_max);
 	
-	const double noise_bound = 3;
 	int offset = cBallControllerCacla::GetActionSize();
 	int size = GetNumNoiseUnits();
 	out_min.segment(offset, size) = -noise_bound * Eigen::VectorXd::Ones(size);

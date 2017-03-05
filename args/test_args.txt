@@ -3,7 +3,7 @@
 
 -solver_file= data/ball_rl/nets/ball_rl_stochastic_actor3_solver.prototxt
 -net_file= data/ball_rl/nets/balL_rl_stochastic_actor3_net.prototxt
-//-model_file= data/ball_rl/models/ball_rl_stochastic_model.h5
+-model_file= data/ball_rl/models/ball_rl_stochastic_model.h5
 
 -critic_solver_file= data/ball_rl/nets/balL_rl_stochastic_critic_solver.prototxt
 -critic_net_file= data/ball_rl/nets/balL_rl_stochastic_critic_net.prototxt

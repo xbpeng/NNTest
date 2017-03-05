@@ -20,7 +20,7 @@ const double gGroundSampleDist = 8;
 const double cBallController::gMinDist = 0.1;
 const double cBallController::gMaxDist = 2.5;
 
-const int gNumActionDistSamples = 200;
+const int gNumActionDistSamples = 2000;
 
 cBallController::tAction::tAction()
 	: tAction(gInvalidIdx, 0, gInvalidLikelihood)
@@ -284,14 +284,6 @@ void cBallController::CalcActionNet(tAction& out_action)
 
 	int a = 0;
 	out_action.mParams.maxCoeff(&a);
-
-	printf("action: %i ", a);
-	for (int i = 0; i < out_action.mParams.size(); ++i)
-	{
-		printf("%.4f ", out_action.mParams[i]);
-	}
-	printf("\n");
-
 	out_action = gActions[a];
 }
 
@@ -361,7 +353,6 @@ void cBallController::ApplyRandAction()
 	GetRandomActionDiscrete(action);
 	ApplyAction(action);
 	mOffPolicy = true;
-	printf("rand action: %i\n", action.mID);
 }
 
 void cBallController::CopyNet(const cNeuralNet& net)
@@ -472,6 +463,13 @@ void cBallController::ApplyAction(const tAction& action)
 	mCurrAction = action;
 	mCurrAction.mDist = dist;
 	mCurrAction.mParams[0] = dist;
+
+	printf("action: %i\n", mCurrAction.mID);
+	for (int i = 0; i < mCurrAction.mParams.size(); ++i)
+	{
+		printf("%.4f ", mCurrAction.mParams[i]);
+	}
+	printf("\n");
 }
 
 void cBallController::UpdateDistTravelled()
