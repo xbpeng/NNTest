@@ -84,7 +84,7 @@ void cBallControllerCaclaStochastic::ApplyStateExpNoise(Eigen::VectorXd& out_sta
 		double curr_noise = 0;
 		do
 		{
-			curr_noise = cMathUtil::RandDouble(0, mStateExpNoise);
+			curr_noise = cMathUtil::RandDoubleNorm(0, mStateExpNoise);
 		} while (std::abs(curr_noise) > noise_bound);
 		
 		out_state[exp_offset + i] = curr_noise;

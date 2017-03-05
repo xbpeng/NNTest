@@ -252,23 +252,48 @@ void cDrawScenarioBallRL::DrawBall() const
 
 void cDrawScenarioBallRL::DrawActionDistSamples() const
 {
+	const int num_bins = 20;
+
 	const auto& ball = mScene->GetBall();
 	const auto& ctrl = ball.GetController();
 	const Eigen::MatrixXd& samples = ctrl->GetActionDistSamples();
 	int num_samples = samples.rows();
 
-	const tVector marker_size = tVector(0, 0.05, 0, 0);
-	const tVector& pos_beg = ctrl->GetPosBeg();
-
-	cDrawUtil::SetColor(tVector(0, 0, 1, 0.25));
-	cDrawUtil::SetLineWidth(4);
-
-	for (int i = 0; i < num_samples; ++i)
+	if (num_samples > 0)
 	{
-		tVector curr_pos = pos_beg;
-		curr_pos[0] += samples(i, 0);
+		const tVector marker_size = tVector(0, 0.05, 0, 0);
+		const tVector& pos_beg = ctrl->GetPosBeg();
 
-		cDrawUtil::DrawLine(curr_pos + marker_size, curr_pos - marker_size);
+		cDrawUtil::SetColor(tVector(0, 0, 1, 0.5));
+		cDrawUtil::SetLineWidth(4);
+
+		Eigen::VectorXi bins = Eigen::VectorXi::Zero(num_bins);
+		double min_dist = samples.col(0).minCoeff();
+		double max_dist = samples.col(0).maxCoeff();
+
+		for (int i = 0; i < num_samples; ++i)
+		{
+			tVector curr_pos = pos_beg;
+			double curr_dist = samples(i, 0);
+
+			int curr_bin = num_bins * (curr_dist - min_dist) / (max_dist - min_dist);
+			curr_bin = cMathUtil::Clamp(curr_bin, 0, num_bins - 1);
+
+			++bins[curr_bin];
+		}
+
+		double bar_w = (max_dist - min_dist) / num_bins;
+		for (int b = 0; b < num_bins; ++b)
+		{
+			int curr_count = bins[b];
+			double bar_h = static_cast<double>(curr_count) / num_samples;
+			bar_h *= 2;
+
+			tVector pos = pos_beg;
+			pos[0] += bar_w * (b + 0.5) + min_dist;
+			pos[1] += 0.5 * bar_h;
+			cDrawUtil::DrawRect(pos, tVector(bar_w, bar_h, 0, 0));
+		}
 	}
 }
 

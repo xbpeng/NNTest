@@ -20,7 +20,7 @@ const double gGroundSampleDist = 8;
 const double cBallController::gMinDist = 0.1;
 const double cBallController::gMaxDist = 2.5;
 
-const int gNumActionDistSamples = 100;
+const int gNumActionDistSamples = 200;
 
 cBallController::tAction::tAction()
 	: tAction(gInvalidIdx, 0, gInvalidLikelihood)
