@@ -138,7 +138,7 @@ void cScenarioBallRLCacla::BuildActorOutputOffsetScaleType(std::vector<cNeuralNe
 void cScenarioBallRLCacla::RecordBegFlags(tExpTuple& out_tuple) const
 {
 	bool off_policy = CheckOffPolicy();
-	out_tuple.SetFlag(off_policy, cCaclaTrainer::eFlagOffPolicy);
+	out_tuple.SetFlag(off_policy, tExpTuple::eFlagOffPolicy);
 }
 
 bool cScenarioBallRLCacla::CheckOffPolicy() const

@@ -55,8 +55,8 @@ void cScenarioBallRLMACE::RecordBegFlags(tExpTuple& out_tuple) const
 {
 	bool exp_critic = CheckExpCritic();
 	bool exp_actor = CheckExpActor();
-	out_tuple.SetFlag(exp_critic, cMACETrainer::eFlagExpCritic);
-	out_tuple.SetFlag(exp_actor, cMACETrainer::eFlagExpActor);
+	out_tuple.SetFlag(exp_critic, tExpTuple::eFlagExpCritic);
+	out_tuple.SetFlag(exp_actor, tExpTuple::eFlagExpActor);
 }
 
 bool cScenarioBallRLMACE::CheckExpCritic() const

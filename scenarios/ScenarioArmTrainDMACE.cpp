@@ -24,14 +24,14 @@ void cScenarioArmTrainDMACE::RecordFlagsBeg(tExpTuple& out_tuple) const
 {
 	bool exp_critic = CheckExpCritic();
 	bool exp_actor = CheckExpActor();
-	out_tuple.SetFlag(exp_critic, cDMACETrainer::eFlagExpCritic);
-	out_tuple.SetFlag(exp_actor, cDMACETrainer::eFlagExpActor);
+	out_tuple.SetFlag(exp_critic, tExpTuple::eFlagExpCritic);
+	out_tuple.SetFlag(exp_actor, tExpTuple::eFlagExpActor);
 }
 
 void cScenarioArmTrainDMACE::RecordFlagsEnd(tExpTuple& out_tuple) const
 {
 	bool fail = CheckFail();
-	out_tuple.SetFlag(fail, cDMACETrainer::eFlagFail);
+	out_tuple.SetFlag(fail, tExpTuple::eFlagFail);
 }
 
 void cScenarioArmTrainDMACE::InitTrainer()

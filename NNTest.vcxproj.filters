@@ -1097,6 +1097,12 @@
     <ClCompile Include="..\TerrainRL\sim\BipedSymStepController3D.cpp">
       <Filter>Source Files\util</Filter>
     </ClCompile>
+    <ClCompile Include="..\TerrainRL\sim\CtStochController.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TerrainRL\sim\BipedSymStepStochController3D.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\TerrainRL\util\Rand.h">
@@ -1862,6 +1868,12 @@
       <Filter>Source Files\stuff</Filter>
     </ClInclude>
     <ClInclude Include="..\TerrainRL\sim\BipedSymStepController3D.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\sim\CtStochController.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TerrainRL\sim\BipedSymStepStochController3D.h">
       <Filter>Source Files\util</Filter>
     </ClInclude>
   </ItemGroup>

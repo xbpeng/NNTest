@@ -351,6 +351,7 @@
     <ClCompile Include="..\TerrainRL\sim\BipedControllerQ.cpp" />
     <ClCompile Include="..\TerrainRL\sim\BipedStepController3D.cpp" />
     <ClCompile Include="..\TerrainRL\sim\BipedSymStepController3D.cpp" />
+    <ClCompile Include="..\TerrainRL\sim\BipedSymStepStochController3D.cpp" />
     <ClCompile Include="..\TerrainRL\sim\CharController.cpp" />
     <ClCompile Include="..\TerrainRL\sim\CharTracer.cpp" />
     <ClCompile Include="..\TerrainRL\sim\ContactManager.cpp" />
@@ -374,6 +375,7 @@
     <ClCompile Include="..\TerrainRL\sim\CtQVelController.cpp" />
     <ClCompile Include="..\TerrainRL\sim\CtQVelTrackController.cpp" />
     <ClCompile Include="..\TerrainRL\sim\CtRNNController.cpp" />
+    <ClCompile Include="..\TerrainRL\sim\CtStochController.cpp" />
     <ClCompile Include="..\TerrainRL\sim\CtTargetController.cpp" />
     <ClCompile Include="..\TerrainRL\sim\CtTargetSoccerController.cpp" />
     <ClCompile Include="..\TerrainRL\sim\CtTargetTerrController.cpp" />
@@ -607,6 +609,7 @@
     <ClInclude Include="..\TerrainRL\sim\BipedControllerQ.h" />
     <ClInclude Include="..\TerrainRL\sim\BipedStepController3D.h" />
     <ClInclude Include="..\TerrainRL\sim\BipedSymStepController3D.h" />
+    <ClInclude Include="..\TerrainRL\sim\BipedSymStepStochController3D.h" />
     <ClInclude Include="..\TerrainRL\sim\CharController.h" />
     <ClInclude Include="..\TerrainRL\sim\CharTracer.h" />
     <ClInclude Include="..\TerrainRL\sim\ContactManager.h" />
@@ -630,6 +633,7 @@
     <ClInclude Include="..\TerrainRL\sim\CtQVelController.h" />
     <ClInclude Include="..\TerrainRL\sim\CtQVelTrackController.h" />
     <ClInclude Include="..\TerrainRL\sim\CtRNNController.h" />
+    <ClInclude Include="..\TerrainRL\sim\CtStochController.h" />
     <ClInclude Include="..\TerrainRL\sim\CtTargetController.h" />
     <ClInclude Include="..\TerrainRL\sim\CtTargetSoccerController.h" />
     <ClInclude Include="..\TerrainRL\sim\CtTargetTerrController.h" />

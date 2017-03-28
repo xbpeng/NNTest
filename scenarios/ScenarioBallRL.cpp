@@ -257,7 +257,7 @@ void cScenarioBallRL::RecordBegFlags(tExpTuple& out_tuple) const
 void cScenarioBallRL::RecordEndFlags(tExpTuple& out_tuple) const
 {
 	bool fail = CheckFail();
-	out_tuple.SetFlag(fail, cQNetTrainer::eFlagFail);
+	out_tuple.SetFlag(fail, tExpTuple::eFlagFail);
 }
 
 void cScenarioBallRL::RecordState(Eigen::VectorXd& out_state) const

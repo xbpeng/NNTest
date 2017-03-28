@@ -83,7 +83,7 @@ void cScenarioRNN::BuildTuple(const tVector& pt, bool is_start, tExpTuple& out_t
 	out_tuple.mAction.resize(action_size);
 
 	out_tuple.ClearFlags();
-	out_tuple.SetFlag(is_start, cRNNTrainer::eFlagStart);
+	out_tuple.SetFlag(is_start, tExpTuple::eFlagStart);
 
 	out_tuple.mStateBeg[0] = gDefaultInput;
 	out_tuple.mAction[0] = pt[1];

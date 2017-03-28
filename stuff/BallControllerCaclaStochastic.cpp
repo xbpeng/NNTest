@@ -24,7 +24,7 @@ int cBallControllerCaclaStochastic::GetStateSize() const
 void cBallControllerCaclaStochastic::BuildNNInputOffsetScaleTypes(std::vector<cNeuralNet::eOffsetScaleType>& out_types) const
 {
 	cBallControllerCacla::BuildNNInputOffsetScaleTypes(out_types);
-	int offset = cBallControllerCacla::GetStateSize();
+	int offset = GetStateNoiseOffset();
 	for (int i = 0; i < GetNumNoiseUnits(); ++i)
 	{
 		out_types[offset + i] = cNeuralNet::eOffsetScaleTypeFixed;
@@ -35,7 +35,7 @@ void cBallControllerCaclaStochastic::BuildActorOutputOffsetScale(Eigen::VectorXd
 {
 	cBallControllerCacla::BuildActorOutputOffsetScale(out_offset, out_scale);
 	
-	int offset = cBallControllerCacla::GetActionSize();
+	int offset = GetActionNoiseOffset();
 	int size = GetNumNoiseUnits();
 	out_offset.segment(offset, size) = Eigen::VectorXd::Zero(size);
 	out_scale.segment(offset, size) = Eigen::VectorXd::Ones(size);
@@ -43,12 +43,12 @@ void cBallControllerCaclaStochastic::BuildActorOutputOffsetScale(Eigen::VectorXd
 
 void cBallControllerCaclaStochastic::BuildActionBounds(Eigen::VectorXd& out_min, Eigen::VectorXd& out_max) const
 {
-	//const double noise_bound = 3;
-	const double noise_bound = std::numeric_limits<double>::infinity();
+	const double noise_bound = 3;
+	//const double noise_bound = std::numeric_limits<double>::infinity();
 
 	cBallControllerCacla::BuildActionBounds(out_min, out_max);
 	
-	int offset = cBallControllerCacla::GetActionSize();
+	int offset = GetActionNoiseOffset();
 	int size = GetNumNoiseUnits();
 	out_min.segment(offset, size) = -noise_bound * Eigen::VectorXd::Ones(size);
 	out_max.segment(offset, size) = noise_bound * Eigen::VectorXd::Ones(size);
@@ -80,7 +80,7 @@ void cBallControllerCaclaStochastic::ApplyStateExpNoise(Eigen::VectorXd& out_sta
 {
 	const double noise_bound = 3 * mExpParams.mInternNoise;
 
-	int exp_offset = cBallControllerCacla::GetStateSize();
+	int exp_offset = GetStateNoiseOffset();
 	for (int i = 0; i < GetNumNoiseUnits(); ++i)
 	{
 		double curr_noise = 0;
@@ -93,7 +93,17 @@ void cBallControllerCaclaStochastic::ApplyStateExpNoise(Eigen::VectorXd& out_sta
 	}
 }
 
+int cBallControllerCaclaStochastic::GetStateNoiseOffset() const
+{
+	return cBallControllerCacla::GetStateSize();
+}
+
+int cBallControllerCaclaStochastic::GetActionNoiseOffset() const
+{
+	return cBallControllerCacla::GetActionSize();
+}
+
 int cBallControllerCaclaStochastic::GetNumNoiseUnits() const
 {
-	return gExpNoiseSize;
+	return mNet.GetInputSize() - cBallControllerCacla::GetStateSize();
 }

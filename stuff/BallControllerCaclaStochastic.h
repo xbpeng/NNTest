@@ -23,5 +23,7 @@ protected:
 	virtual void GetRandomActionCont(tAction& out_action);
 	virtual void ApplyStateExpNoise(Eigen::VectorXd& out_state) const;
 
+	virtual int GetStateNoiseOffset() const;
+	virtual int GetActionNoiseOffset() const;
 	virtual int GetNumNoiseUnits() const;
 };

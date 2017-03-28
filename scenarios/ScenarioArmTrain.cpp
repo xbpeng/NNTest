@@ -223,13 +223,13 @@ void cScenarioArmTrain::ClearFlags(tExpTuple& out_tuple) const
 void cScenarioArmTrain::RecordFlagsBeg(tExpTuple& out_tuple) const
 {
 	bool off_policy = CheckOffPolicy();
-	out_tuple.SetFlag(off_policy, cCaclaTrainer::eFlagOffPolicy);
+	out_tuple.SetFlag(off_policy, tExpTuple::eFlagOffPolicy);
 }
 
 void cScenarioArmTrain::RecordFlagsEnd(tExpTuple& out_tuple) const
 {
 	bool fail = CheckFail();
-	out_tuple.SetFlag(fail, cCaclaTrainer::eFlagFail);
+	out_tuple.SetFlag(fail, tExpTuple::eFlagFail);
 }
 
 void cScenarioArmTrain::UpdateCharacter(double time_step)

@@ -86,7 +86,7 @@ std::string cScenarioArmTrainDPG::GetName() const
 void cScenarioArmTrainDPG::RecordFlagsEnd(tExpTuple& out_tuple) const
 {
 	bool fail = CheckFail();
-	out_tuple.SetFlag(fail, cDPGTrainer::eFlagFail);
+	out_tuple.SetFlag(fail, tExpTuple::eFlagFail);
 }
 
 void cScenarioArmTrainDPG::InitTrainer()
