@@ -470,12 +470,14 @@ void cBallController::ApplyAction(const tAction& action)
 	mCurrAction.mDist = dist;
 	mCurrAction.mParams[0] = dist;
 
+	/*
 	printf("action: %i\n", mCurrAction.mID);
 	for (int i = 0; i < mCurrAction.mParams.size(); ++i)
 	{
 		printf("%.4f ", mCurrAction.mParams[i]);
 	}
 	printf("\n");
+	*/
 }
 
 void cBallController::UpdateDistTravelled()

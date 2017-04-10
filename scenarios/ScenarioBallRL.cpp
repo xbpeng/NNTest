@@ -2,7 +2,7 @@
 #include "learning/AsyncQNetTrainer.h"
 
 const int gTupleBufferSize = 32;
-const int gTrainerPlaybackMemSize = 50000;
+const int gTrainerPlaybackMemSize = 5000;
 
 cScenarioBallRL::cScenarioBallRL()
 {

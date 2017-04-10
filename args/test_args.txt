@@ -1,9 +1,9 @@
 -scenario= ball_rl_cacla
-//-playback_speed= 60
+-playback_speed= 60
 
 -solver_file= data/ball_rl/nets/ball_rl_stochastic_actor4_solver.prototxt
 -net_file= data/ball_rl/nets/balL_rl_stochastic_actor4_net.prototxt
--model_file= data/ball_rl/models/ball_rl_stochastic_model.h5
+-model_file= data/ball_rl/models/ball_rl_stochpg_01_model.h5
 
 -critic_solver_file= data/ball_rl/nets/balL_rl_stochastic_critic_solver.prototxt
 -critic_net_file= data/ball_rl/nets/balL_rl_stochastic_critic_net.prototxt
@@ -11,12 +11,12 @@
 
 -init_exp_rate= 1
 -init_exp_temp= 20
--init_exp_noise= 0.2
--init_exp_intern_noise= 1
+-init_exp_noise= 0.05
+-init_exp_intern_noise= 0.2
 -exp_rate= 0.2
 -exp_temp= 0.025
--exp_noise= 0.2
--exp_intern_noise= 1
+-exp_noise= 0.05
+-exp_intern_noise= 0.2
 -num_exp_anneal_iters= 10000
 
 -trainer_int_iter= 500
