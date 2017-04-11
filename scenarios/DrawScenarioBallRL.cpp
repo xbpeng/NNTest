@@ -287,7 +287,7 @@ void cDrawScenarioBallRL::DrawActionDistSamples() const
 		{
 			int curr_count = bins[b];
 			double bar_h = static_cast<double>(curr_count) / num_samples;
-			bar_h *= 2;
+			bar_h *= 2 / (max_dist - min_dist);
 
 			tVector pos = pos_beg;
 			pos[0] += bar_w * (b + 0.5) + min_dist;

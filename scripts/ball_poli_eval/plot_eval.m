@@ -33,6 +33,7 @@ files{end + 1} = {'cacla_stochastic2.txt', 'Cacla Stochastic (Reparameterization
 files{end + 1} = {'cacla_param_noise1.txt', 'Cacla Stochastic Net3 (Parameteric Noise)'};
 
 files{end + 1} = {'ball_int_eval.txt', 'Test'};
+files{end + 1} = {'cacla_param_noise_entropy_001.txt', 'Cacla Stochastic Entropy 0.01 (Parameteric Noise)'};
 
 lines = {'b-', 'r-', 'm-', 'k-', 'g-', 'c-', 'k--', 'r--'};
 iter_step = 500 / 1000;
