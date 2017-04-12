@@ -15,6 +15,8 @@ public:
 	virtual void BuildActionBounds(Eigen::VectorXd& out_min, Eigen::VectorXd& out_max) const;
 
 	virtual int GetActionSize() const;
+	virtual int GetStateNoiseOffset() const;
+	virtual int GetNumNoiseUnits() const;
 
 protected:
 
@@ -23,7 +25,5 @@ protected:
 	virtual void GetRandomActionCont(tAction& out_action);
 	virtual void ApplyStateExpNoise(Eigen::VectorXd& out_state) const;
 
-	virtual int GetStateNoiseOffset() const;
 	virtual int GetActionNoiseOffset() const;
-	virtual int GetNumNoiseUnits() const;
 };

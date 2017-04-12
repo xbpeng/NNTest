@@ -69,10 +69,34 @@ void cScenarioBallRLCacla::InitTrainer()
 	//auto trainer = std::shared_ptr<cAsyncCaclaTrainer>(new cAsyncCaclaTrainer());
 	auto trainer = std::shared_ptr<cStochPGTrainer>(new cStochPGTrainer());
 
+	auto stoch_ctrl = std::dynamic_pointer_cast<cBallControllerCaclaStochastic>(mBall.GetController());
+	cStochPGTrainer::tNoiseParams noise_params = trainer->GetNoiseParams();
+	assert(mExpParams.mInternNoise == mInitExpParams.mInternNoise);
+	const double kernel_std = 0.5;
+	int action_size = stoch_ctrl->GetActionSize();
+	int num_noise_units = stoch_ctrl->GetNumNoiseUnits();
+
+	action_size -= num_noise_units;
+	noise_params.mInputOffset = stoch_ctrl->GetStateNoiseOffset();
+	noise_params.mInputSize = num_noise_units;
+	noise_params.mStdev = mExpParams.mInternNoise;
+	noise_params.mKernel = (1 / (kernel_std * kernel_std)) * Eigen::MatrixXd::Identity(action_size, action_size);
+
+	trainer->SetNoiseParams(noise_params);
+
+	/*
+	// hack hack hack
+	// ball test
+	mNoiseInputOffset = 100;
+	mNoiseInputSize = 16;
+	mNoiseStd = 0.2;
+	mKernel = (1 / (0.5 * 0.5)) * Eigen::MatrixXd::Identity(1, 1);
+	*/
+
 	mTrainerParams.mPlaybackMemSize = gTrainerPlaybackMemSize;
 	mTrainerParams.mPoolSize = 1;
 	mTrainerParams.mNumInitSamples = 10000;
-	//mTrainerParams.mNumInitSamples = 100;
+	mTrainerParams.mNumInitSamples = 100;
 	//mTrainerParams.mFreezeTargetIters = 100;
 
 	//mTrainerParams.mPGEnableImportanceSampling = true;
