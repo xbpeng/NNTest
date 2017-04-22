@@ -32,6 +32,7 @@ files{end + 1} = {'cacla_net1_025exp.txt', 'Cacla, 0.25 exp'};
 %files{end + 1} = {'cacla_param_noise0.txt', 'Cacla Stochastic (Parameteric Noise)'};
 %files{end + 1} = {'cacla_param_noise1.txt', 'Cacla Stochastic Net3 (Parameteric Noise)'};
 
+files{end + 1} = {'ball_int_eval.txt', 'Test'};
 files{end + 1} = {'ball_int_eval0.txt', 'Test0'};
 files{end + 1} = {'ball_int_eval1.txt', 'Test1'};
 %files{end + 1} = {'cacla_param_noise_entropy_001.txt', 'Cacla Stochastic Entropy 0.01 (Parameteric Noise)'};

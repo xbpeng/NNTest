@@ -69,10 +69,18 @@ void cScenarioBallRLCacla::InitTrainer()
 	//auto trainer = std::shared_ptr<cAsyncCaclaTrainer>(new cAsyncCaclaTrainer());
 	auto trainer = std::shared_ptr<cStochPGTrainer>(new cStochPGTrainer());
 
+	Eigen::VectorXd actor_output_offset;
+	Eigen::VectorXd actor_output_scale;
+	std::vector<cNeuralNet::eOffsetScaleType> actor_scale_types;
+	BuildActorOutputOffsetScale(actor_output_offset, actor_output_scale);
+	BuildActorOutputOffsetScaleType(actor_scale_types);
+
 	auto stoch_ctrl = std::dynamic_pointer_cast<cBallControllerCaclaStochastic>(mBall.GetController());
 	cStochPGTrainer::tNoiseParams noise_params = trainer->GetNoiseParams();
 	assert(mExpParams.mInternNoise == mInitExpParams.mInternNoise);
-	const double kernel_std = 0.5;
+	//const double kernel_std = 0.5;
+	//const double kernel_std = 0.25;
+	const double kernel_std = actor_output_scale[0];
 	int action_size = stoch_ctrl->GetActionSize();
 	int num_noise_units = stoch_ctrl->GetNumNoiseUnits();
 
@@ -96,7 +104,7 @@ void cScenarioBallRLCacla::InitTrainer()
 	mTrainerParams.mPlaybackMemSize = gTrainerPlaybackMemSize;
 	mTrainerParams.mPoolSize = 1;
 	mTrainerParams.mNumInitSamples = 10000;
-	mTrainerParams.mNumInitSamples = 100;
+	//mTrainerParams.mNumInitSamples = 100;
 	//mTrainerParams.mFreezeTargetIters = 100;
 
 	//mTrainerParams.mPGEnableImportanceSampling = true;
@@ -116,11 +124,6 @@ void cScenarioBallRLCacla::InitTrainer()
 	trainer->SetCriticOutputOffsetScale(critic_output_offset, critic_output_scale);
 	trainer->SetCriticInputOffsetScaleType(critic_scale_types);
 
-	Eigen::VectorXd actor_output_offset;
-	Eigen::VectorXd actor_output_scale;
-	std::vector<cNeuralNet::eOffsetScaleType> actor_scale_types;
-	BuildActorOutputOffsetScale(actor_output_offset, actor_output_scale);
-	BuildActorOutputOffsetScaleType(actor_scale_types);
 	trainer->SetActorOutputOffsetScale(actor_output_offset, actor_output_scale);
 	trainer->SetActorInputOffsetScaleType(actor_scale_types);
 

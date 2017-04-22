@@ -11,12 +11,12 @@
 
 -init_exp_rate= 1
 -init_exp_temp= 20
--init_exp_noise= 0
--init_exp_intern_noise= 0.5
+-init_exp_noise= 0.05
+-init_exp_intern_noise= 1
 -exp_rate= 0.2
 -exp_temp= 0.025
--exp_noise= 0
--exp_intern_noise= 0.5
+-exp_noise= 0.05
+-exp_intern_noise= 1
 -num_exp_anneal_iters= 10000
 
 -trainer_int_iter= 500
