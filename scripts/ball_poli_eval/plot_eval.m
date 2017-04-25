@@ -35,6 +35,7 @@ files{end + 1} = {'cacla_net1_025exp.txt', 'Cacla, 0.25 exp'};
 files{end + 1} = {'ball_int_eval.txt', 'Test'};
 files{end + 1} = {'ball_int_eval0.txt', 'Test0'};
 files{end + 1} = {'ball_int_eval1.txt', 'Test1'};
+files{end + 1} = {'ball_int_eval2.txt', 'Test2'};
 %files{end + 1} = {'cacla_param_noise_entropy_001.txt', 'Cacla Stochastic Entropy 0.01 (Parameteric Noise)'};
 
 lines = {'b-', 'r-', 'm-', 'k-', 'g-', 'c-', 'k--', 'r--'};
