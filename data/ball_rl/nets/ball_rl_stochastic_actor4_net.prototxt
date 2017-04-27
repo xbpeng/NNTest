@@ -314,7 +314,9 @@ layer {
   inner_product_param {
     num_output: 1
     weight_filler {
-      type: "xavier"
+      type: "uniform"
+      min: -0.01
+      max: 0.01
     }
     bias_filler {
       type: "constant"
@@ -340,6 +342,7 @@ layer {
   bottom: "label_action"
   bottom: "weights_action"
   top: "loss_action"
+  loss_weight: 4
   
   include: { phase: TRAIN }
 }
