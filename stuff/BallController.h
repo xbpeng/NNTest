@@ -15,10 +15,10 @@ public:
 		int mID;
 		Eigen::VectorXd mParams;
 		double mDist;
-		double mLikelihood;
+		double mLogp;
 
 		tAction();
-		tAction(int id, double dist, double likelihood);
+		tAction(int id, double dist, double logp);
 	};
 
 	struct tExpParams
@@ -56,7 +56,7 @@ public:
 	virtual int GetActionSize() const;
 	virtual const tAction& GetAction(int a) const;
 	virtual const tAction& GetCurrAction() const;
-	virtual double GetActionLikelihood() const;
+	virtual double GetActionLogp() const;
 	virtual tAction BuildActionFromParams(const Eigen::VectorXd& action_params) const;
 
 	virtual void RecordState(Eigen::VectorXd& out_state) const;

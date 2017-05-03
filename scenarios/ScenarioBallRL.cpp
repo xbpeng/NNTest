@@ -236,7 +236,7 @@ void cScenarioBallRL::NewCycleUpdate()
 		// start recording new tuple
 		mCurrTuple.mStateBeg = mCurrTuple.mStateEnd;
 		RecordAction(mCurrTuple.mAction);
-		mCurrTuple.mActionLikelihood = GetActionLikelihood();
+		mCurrTuple.mActionLogp = GetActionLogp();
 
 		ClearFlags(mCurrTuple);
 		RecordBegFlags(mCurrTuple);
@@ -272,10 +272,10 @@ void cScenarioBallRL::RecordAction(Eigen::VectorXd& out_action) const
 	ctrl->RecordAction(out_action);
 }
 
-double cScenarioBallRL::GetActionLikelihood() const
+double cScenarioBallRL::GetActionLogp() const
 {
 	const auto& ctrl = mBall.GetController();
-	return ctrl->GetActionLikelihood();
+	return ctrl->GetActionLogp();
 }
 
 double cScenarioBallRL::CalcReward(const tExpTuple& tuple) const
@@ -339,6 +339,7 @@ void cScenarioBallRL::InitTrainer()
 	std::shared_ptr<cQNetTrainer> trainer = std::shared_ptr<cQNetTrainer>(new cQNetTrainer());
 	//std::shared_ptr<cAsyncQNetTrainer> trainer = std::shared_ptr<cAsyncQNetTrainer>(new cAsyncQNetTrainer());
 	
+	mTrainerParams.mNumThreads = 4;
 	mTrainerParams.mPlaybackMemSize = gTrainerPlaybackMemSize;
 	mTrainerParams.mPoolSize = 2; // double Q learning
 	mTrainerParams.mNumInitSamples = 10000;

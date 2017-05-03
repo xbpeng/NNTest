@@ -101,6 +101,7 @@ void cScenarioBallRLCacla::InitTrainer()
 	mKernel = (1 / (0.5 * 0.5)) * Eigen::MatrixXd::Identity(1, 1);
 	*/
 
+	mTrainerParams.mNumThreads = 4;
 	mTrainerParams.mPlaybackMemSize = gTrainerPlaybackMemSize;
 	mTrainerParams.mPoolSize = 1;
 	mTrainerParams.mNumInitSamples = 10000;
@@ -113,6 +114,7 @@ void cScenarioBallRLCacla::InitTrainer()
 	//mTrainerParams.mPGAdvScale = 10;
 	//mTrainerParams.mPGIWClip = 20;
 	//mTrainerParams.mInitInputOffsetScale = false;
+	mTrainerParams.mEntropyWeight = 0.02;
 
 	trainer->Init(mTrainerParams);
 

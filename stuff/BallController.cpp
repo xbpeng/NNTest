@@ -4,14 +4,14 @@
 const double gDuration = 0.65;
 const cBallController::tAction gActions[] =
 {
-	{ 0, 0.4, gInvalidLikelihood },
-	{ 1, 0.6, gInvalidLikelihood },
-	{ 2, 0.8, gInvalidLikelihood },
-	{ 3, 1.1, gInvalidLikelihood },
-	{ 4, 1.4, gInvalidLikelihood },
-	{ 5, 1.7, gInvalidLikelihood },
-	{ 6, 2.0, gInvalidLikelihood },
-	{ 7, 2.3, gInvalidLikelihood },
+	{ 0, 0.4, 0 },
+	{ 1, 0.6, 0 },
+	{ 2, 0.8, 0 },
+	{ 3, 1.1, 0 },
+	{ 4, 1.4, 0 },
+	{ 5, 1.7, 0 },
+	{ 6, 2.0, 0 },
+	{ 7, 2.3, 0 },
 };
 const int gNumActions = sizeof(gActions) / sizeof(gActions[0]);
 const int gNumGroundSamples = 100;
@@ -31,16 +31,16 @@ cBallController::tExpParams::tExpParams()
 }
 
 cBallController::tAction::tAction()
-	: tAction(gInvalidIdx, 0, gInvalidLikelihood)
+	: tAction(gInvalidIdx, 0, 0)
 {
 }
 
-cBallController::tAction::tAction(int id, double dist, double likelihood)
+cBallController::tAction::tAction(int id, double dist, double logp)
 {
 	mID = id;
 	mDist = dist;
 	mParams = dist * Eigen::VectorXd::Ones(1);
-	mLikelihood = likelihood;
+	mLogp = logp;
 }
 
 cBallController::cBallController(cBall& ball) :
@@ -324,9 +324,9 @@ const cBallController::tAction& cBallController::GetCurrAction() const
 	return mCurrAction;
 }
 
-double cBallController::GetActionLikelihood() const
+double cBallController::GetActionLogp() const
 {
-	return mCurrAction.mLikelihood;
+	return mCurrAction.mLogp;
 }
 
 cBallController::tAction cBallController::BuildActionFromParams(const Eigen::VectorXd& action_params) const

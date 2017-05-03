@@ -178,7 +178,7 @@ void cBallControllerCacla::CalcActionNet(tAction& out_action)
 	mNet.Eval(mPoliState, out_action.mParams);
 
 	out_action.mDist = out_action.mParams[0];
-	out_action.mLikelihood = gInvalidLikelihood;
+	out_action.mLogp = 0;
 }
 
 void cBallControllerCacla::GetRandomAction(tAction& out_action)
@@ -202,11 +202,11 @@ void cBallControllerCacla::ApplyExpNoise(tAction& out_action)
 	double new_dist = old_dist + rand_dist;
 	rand_dist = new_dist - old_dist;
 
-	double likelihood = cMathUtil::EvalGaussian(old_dist, dist_stdev * dist_stdev, new_dist);
+	double logp = cMathUtil::EvalGaussianLogp(old_dist, dist_stdev * dist_stdev, new_dist);
 
 	out_action.mDist = new_dist;
 	out_action.mParams[0] = new_dist;
-	out_action.mLikelihood = likelihood;
+	out_action.mLogp = logp;
 }
 
 void cBallControllerCacla::SampleActionDist(int num_samples, Eigen::MatrixXd& out_samples)
